@@ -1545,5 +1545,678 @@ que passou)
 # [imagem]
 ```
 
+# Aula 02 mesmo - Infrestutura Computacional - Parte 1: Linux e Shell
+
+## Fltros e Expressões regulares
+
+Princípio Unix (e Linux): todo comando deve fazer apenas
+uma coisa, e pode-se facilmente concatenar resultados de
+diferentes comandos
+Um filtro é um programa de linha de comando que recebe
+dados em forma de texto e transforma estes dados
+- Concatenando comandos, podemos aumentar sua aplicabilidade
+(mais sobre isso daqui a pouco)
+- Veremos alguns filtros de maneira individual
+
+
+Comando Significado
+
+- cat mostra o conteúdo
+- tac mostra o conteúdo do fim para o início
+head, tail mostra as primeiras/últimas linhas
+nl numera linhas
+diff mostra diferença entre dois arquivos
+wc conta linhas, palavras e caracteres (word count)
+cut separa colunas
+uniq remove linhas adjacentes duplicadas
+sort ordena os dados
+sed busca padrões e substitui (stream editor)
+
+
+Arquivo:
+```{r}
+# Fred apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Lisa peaches 7
+# Susy oranges 12
+# Mark grapes 39
+# Mark grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+```
+
+
+```{r}
+# > he2@h8:~$ cd Downloads/
+# 
+# > he2@h8:~/Downloads$ cat dados.txt 
+# Frced apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Lisa peaches 7
+# Susy oranges 12
+# Mark grapes 39
+# Mark grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+# 
+# > he2@h8:~/Downloads$ tac dados.txt 
+# Betty limes 14
+# Oliver rockmellons 2
+# Greg pineapples 3
+# Anne mangoes 7
+# Mark grapes 39
+# Mark grapes 39
+# Susy oranges 12
+# Lisa peaches 7
+# Terry oranges 9
+# Robert pears 4
+# Mark watermellons 12
+# Susy oranges 5
+# Susy oranges 5
+# Fred apples 20
+# 
+# > he2@h8:~/Downloads$ head -4 dados.txt 
+# Fred apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# 
+# > he2@h8:~/Downloads$ nl -s '. ' -w 5 dados.txt
+#     1. Fred apples 20
+#     2. Susy oranges 5
+#     3. Susy oranges 5
+#     4. Mark watermellons 12
+#     5. Robert pears 4
+#     6. Terry oranges 9
+#     7. Lisa peaches 7
+#     8. Susy oranges 12
+#     9. Mark grapes 39
+#    10. Mark grapes 39
+#    11. Anne mangoes 7
+#    12. Greg pineapples 3
+#    13. Oliver rockmellons 2
+#    14. Betty limes 14
+# 
+# 
+# > he2@h8:~/Downloads$ cat dados_del.txt 
+# Fred apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Mark grapes 39
+# Mark grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+# 
+# > he2@h8:~/Downloads$ diff dados.txt dados_del.txt 
+# 7,8d6
+# < Lisa peaches 7
+# < Susy oranges 12
+# 
+# > he2@h8:~/Downloads$ wc -l dados.txt
+# 14 dados.txt
+# 
+# 
+# > he2@h8:~/Downloads$ cut -f 1 -d ' ' dados.txt
+# Fred
+# Susy
+# Susy
+# Mark
+# Robert
+# Terry
+# Lisa
+# Susy
+# Mark
+# Mark
+# Anne
+# Greg
+# Oliver
+# Betty
+# 
+# > he2@h8:~/Downloads$ cut -f 1,2 -d ' ' dados.txt
+# Fred apples
+# Susy oranges
+# Susy oranges
+# Mark watermellons
+# Robert pears
+# Terry oranges
+# Lisa peaches
+# Susy oranges
+# Mark grapes
+# Mark grapes
+# Anne mangoes
+# Greg pineapples
+# Oliver rockmellons
+# Betty limes
+# 
+# > he2@h8:~/Downloads$ sort dados.txt
+# Anne mangoes 7
+# Betty limes 14
+# Fred apples 20
+# Greg pineapples 3
+# Lisa peaches 7
+# Mark grapes 39
+# Mark grapes 39
+# Mark watermellons 12
+# Oliver rockmellons 2
+# Robert pears 4
+# Susy oranges 12
+# Susy oranges 5
+# Susy oranges 5
+# Terry oranges 9
+# 
+# > he2@h8:~/Downloads$ cat dados.txt 
+# Fred apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Lisa peaches 7
+# Susy oranges 12
+# Mark grapes 39
+# Mark grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+# 
+# 
+# > he2@h8:~/Downloads$ sed 's/oranges/bananas/g' dados.txt
+# Fred apples 20
+# Susy bananas 5
+# Susy bananas 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry bananas 9
+# Lisa peaches 7
+# Susy bananas 12
+# Mark grapes 39
+# Mark grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+
+```
+
+### Expressões Regulares
+
+ 
+\begin{tabular}{|c|c|}
+\hline
+Símbolo & Significado\\
+\hline
+. (ponto) & um caractere simples\\
+\hline
+? & o caractere anterior é casa 0 ou 1 vez\\
+\hline
+* & o caractere anterior casa 0 ou mais vezes\\
+
+\hline
++ & o caractere anterior casa 1 ou mais vezes\\
+\hline
+\{n\} & o caractere anterior casa exatamente n vezes\\
+\hline
+{n} & o caractere anterior casa exatamente n vezes\\
+\hline
+{n} & o caractere anterior casa exatamente n vezes\\
+\hline
+{n} & o caractere anterior casa exatamente n vezes\\
+\hline
+{n} & o caractere anterior casa exatamente n vezes\\
+
+\hline
+\end{tabular}
+
+{n,m} o caractere anterior casa pelo menos n e não mais que m vezes
+[agd] o caractere é um dos incluídos entre colchetes
+[^agd] o caractere não é um dos incluídos entre colchetes
+[c-f] o caractere é um no intervalo entre c e f
+() permite agrupar diversos caracteres como se
+fossem um
+| (pipe symbol) - operação lógica OU
+^ casa com início de linha
+$ casa com final de linha
+
+
+```{r}
+# > he2@h8:~/Downloads$ egrep 'mellon' dados.txt 
+# Mark watermellons 12
+# Oliver rockmellons 2
+# 
+# 
+# he2@h8:~/Downloads$ egrep -n 'mellon' dados.txt 
+# 4:Mark watermellons 12
+# 13:Oliver rockmellons 2
+# 
+# he2@h8:~/Downloads$ egrep -c 'mellon' dados.txt 
+# 2
+# 
+# he2@h8:~/Downloads$ egrep -c 'banana' dados.txt 
+# 0
+# 
+# he2@h8:~/Downloads$ egrep -c 'oranges' dados.txt 
+# 4
+# 
+# he2@h8:~/Downloads$ egrep '[aeiou]{2,}' dados.txt 
+# Robert pears 4
+# Lisa peaches 7
+# Anne mangoes 7
+# Greg pineapples 3
+# 
+# 
+# he2@h8:~/Downloads$ egrep -n '[aeiou]{2,}' dados.txt 
+# 5:Robert pears 4
+# 7:Lisa peaches 7
+# 11:Anne mangoes 7
+# 12:Greg pineapples 3
+# 
+# he2@h8:~/Downloads$ egrep -c '[aeiou]{2,}' dados.txt 
+# 4
+# 
+# he2@h8:~/Downloads$ egrep '2.+' dados.txt 
+# Fred apples 20
+# 
+# he2@h8:~/Downloads$ egrep '2$' dados.txt 
+# Mark watermellons 12
+# Susy oranges 12
+# Oliver rockmellons 2
+
+# he2@h8:~/Downloads$ egrep 'or|is|go' dados.txt
+# Susy oranges 5
+# Susy oranges 5
+# Terry oranges 9
+# Lisa peaches 7
+# Susy oranges 12
+# Anne mangoes 7
+#
+# he2@h8:~/Downloads$ cat dados_del.txt 
+# Fred apples 20
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Mark grapes 39
+# MarK grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Oliver rockmellons 2
+# Betty limes 14
+
+# he2@h8:~/Downloads$ egrep '[A-K]' dados_del.txt 
+# Fred apples 20
+# MarK grapes 39
+# Anne mangoes 7
+# Greg pineapples 3
+# Betty limes 14
+
+# he2@h8:~/Downloads$ egrep '^[A-K]' dados_del.txt 
+# Fred apples 20
+# Anne mangoes 7
+# Greg pineapples 3
+# Betty limes 14
+
+# he2@h8:~/Downloads$ egrep '^[^A-K]' dados_del.txt 
+# Susy oranges 5
+# Susy oranges 5
+# Mark watermellons 12
+# Robert pears 4
+# Terry oranges 9
+# Mark grapes 39
+# MarK grapes 39
+# Oliver rockmellons 2
+
+```
+
+```{r}
+# 
+# # he2@h8:~$ alias egrep='egrep --color=auto'
+# 
+# he2@h8:~$ cd Downloads/
+#   
+# he2@h8:~/Downloads$ cd
+# 
+# he2@h8:~$ ls .bashrc -l
+# -rw-r--r-- 1 he2 espinf 3526 mar 15 19:41 .bashrc
+# 
+# he2@h8:~$ open .bashrc
+# 
+# 
+# "if [ -x /usr/bin/dircolors ]; then
+#     test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+#     alias ls='ls --color=auto'
+#     alias dir='dir --color=auto'
+#     #alias vdir='vdir --color=auto'
+# 
+#     alias grep='grep --color=auto'
+#     #alias fgrep='fgrep --color=auto'
+#     alias egrep='egrep --color=auto'"
+# 
+# 
+
+
+```
+
+
+
+
+
+```{r}
+# > he2@h8:~$ ls -l
+# total 13
+# drwx------ 2 he2 espinf  2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf  2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf 11 mar 16 10:38  Downloads
+# drwx------ 2 he2 espinf  4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf  2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf  2 mar 15 19:45  Música
+# drwx------ 2 he2 espinf  2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf  3 mar 16 08:02  R
+# drwx------ 2 he2 espinf  2 mar 15 19:45  Vídeos
+# 
+# he2@h8:~$ ls -l > saida.txt
+# 
+# he2@h8:~$ cat saida.txt 
+# total 13
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf 11 mar 16 10:38 Downloads
+# drwx------ 2 he2 espinf  4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Música
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf  3 mar 16 08:02 R
+# -rw------- 1 he2 espinf  0 mar 16 10:40 saida.txt
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Vídeos
+# 
+# 
+# he2@h8:~$ ls -l $HOME >> saida.txt
+# he2@h8:~$ cat saida.txt 
+# total 13
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf 11 mar 16 10:38 Downloads
+# drwx------ 2 he2 espinf  4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Música
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf  3 mar 16 08:02 R
+# -rw------- 1 he2 espinf  0 mar 16 10:40 saida.txt
+# drwx------ 2 he2 espinf  2 mar 15 19:45 Vídeos
+# total 17
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 10:38 Downloads
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf 501 mar 16 10:40 saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# 
+# he2@h8:~$ wc -c saida.txt 
+# 1012 saida.txt
+# 
+# he2@h8:~$ cat saida.txt | grep saida.txt
+# -rw------- 1 he2 espinf  0 mar 16 10:40 saida.txt
+# -rw------- 1 he2 espinf 501 mar 16 10:40 saida.txt
+# 
+# he2@h8:~$ cat saida.txt | grep saida.txt > teste_saida.txt
+# 
+# he2@h8:~$ cat teste_saida.txt 
+# -rw------- 1 he2 espinf  0 mar 16 10:40 saida.txt
+# -rw------- 1 he2 espinf 501 mar 16 10:40 saida.txt
+# 
+# 
+# he2@h8:~$ wc -l <saida.txt 
+# 22
+# 
+# he2@h8:~$ wc -l < saida.txt > numerolinhas.txt
+# 
+# he2@h8:~$ cat numerolinhas.txt 
+# 22
+
+# he2@h8:~$ wc -l < saida.txt > numerolinhas.txt | cat numerolinhas.txt 
+# 
+# he2@h8:~$ wc -l < saida.txt > numerolinhas.txt | sleep 5 | cat numerolinhas.txt 
+# 
+# he2@h8:~$ time wc -l < saida.txt > numerolinhas.txt | sleep 5 | cat numerolinhas.txt 
+# 
+# real	0m5,007s
+# user	0m0,005s
+# sys	0m0,011s
+# he2@h8:~$ time wc -l < saida.txt > numerolinhas.txt | cat numerolinhas.txt 
+# 
+# real	0m0,012s
+# user	0m0,001s
+# sys	0m0,010s
+# 
+# he2@h8:~$ wc -l < saida.txt > numerolinhas.txt && cat numerolinhas.txt 
+# 22
+# 
+# he2@h8:~$ ls -l naoexiste
+# ls: não foi possível acessar 'naoexiste': Arquivo ou diretório inexistente
+# 
+# he2@h8:~$ ls -l naoexiste 2> erros.txt
+# 
+# he2@h8:~$ cat erros.txt 
+# ls: não foi possível acessar 'naoexiste': Arquivo ou diretório inexistente
+# 
+# he2@h8:~$ ls -l $HOME bla
+# ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
+# /home/espinf/he2:
+# total 19
+# drwx------ 2 he2 espinf    2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf   11 mar 16 10:50  Downloads
+# -rw------- 1 he2 espinf   78 mar 16 10:55  erros.txt
+# drwx------ 2 he2 espinf    4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Música
+# -rw------- 1 he2 espinf    3 mar 16 10:54  numerolinhas.txt
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf    3 mar 16 08:02  R
+# -rw------- 1 he2 espinf 1012 mar 16 10:43  saida.txt
+# -rw------- 1 he2 espinf  101 mar 16 10:45  teste_saida.txt
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Vídeos
+# 
+# he2@h8:~$ ls -l $HOME bla > saida.txt 2> erros.txt 
+# 
+# he2@h8:~$ cat saida.txt 
+# /home/espinf/he2:
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 10:50 Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 10:56 saida.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# 
+# he2@h8:~$ cat erros.txt 
+# ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
+# 
+# 
+# he2@h8:~$ ls -l $HOME bla 2> erros.txt 
+# /home/espinf/he2:
+# total 19
+# drwx------ 2 he2 espinf    2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf   11 mar 16 10:50  Downloads
+# -rw------- 1 he2 espinf   72 mar 16 10:56  erros.txt
+# drwx------ 2 he2 espinf    4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Música
+# -rw------- 1 he2 espinf    3 mar 16 10:54  numerolinhas.txt
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf    3 mar 16 08:02  R
+# -rw------- 1 he2 espinf 1012 mar 16 10:43  saida.txt
+# -rw------- 1 he2 espinf  101 mar 16 10:45  teste_saida.txt
+# drwx------ 2 he2 espinf    2 mar 15 19:45  Vídeos
+# 
+# he2@h8:~$ ls -l $HOME bla > saida.txt
+# ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
+# 
+# he2@h8:~$ ls -l $HOME bla > saida.txt
+# ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
+# he2@h8:~$ ls -l $HOME bla > saida.txt 2>&1
+# he2@h8:~$ cat saida.txt 
+# ls: não foi possível acessar 'bla': Arquivo ou diretório inexistente
+# /home/espinf/he2:
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 10:50 Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf  72 mar 16 10:59 saida.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+
+# he2@h8:~$ ls -l $HOME
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:01  Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56  erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54  numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02  R
+# -rw------- 1 he2 espinf 767 mar 16 10:59  saida.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45  teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Vídeos
+# 
+# 
+# he2@h8:~$ ls -l $HOME | head -3
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# 
+# he2@h8:~$ ls -l $HOME | tail -5 | head -3
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf 767 mar 16 10:59 saida.txt
+# 
+# 
+# he2@h8:~$ ls -l $HOME | tail -5 | head -3 > saida.txt 
+# 
+# he2@h8:~$ cat saida.txt 
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 11:03 saida.txt
+
+# he2@h8:~$ ls -l $HOME | head -5 | tail -1
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+
+# he2@h8:~$ cat saida.txt 
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 11:03 saida.txt
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+
+he2@h8:~$ ls -l $HOME | tee saida.txt
+total 19
+drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+-rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+-rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+drwx------ 3 he2 espinf   3 mar 16 08:02 R
+-rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
+-rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+
+he2@h8:~$ cat saida.txt 
+total 19
+drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+-rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+-rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+drwx------ 3 he2 espinf   3 mar 16 08:02 R
+-rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
+-rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+
+he2@h8:~$ ls -l $HOME | tee saida.txt | head -3
+total 19
+drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+
+he2@h8:~$ ls -l $HOME | tee saida.txt | head -3 > tee_file.txt
+
+he2@h8:~$ cat saida.txt 
+total 19
+drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+-rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+-rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+drwx------ 3 he2 espinf   3 mar 16 08:02 R
+-rw------- 1 he2 espinf   0 mar 16 11:09 saida.txt
+-rw------- 1 he2 espinf   0 mar 16 11:09 tee_file.txt
+-rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+
+he2@h8:~$ cat tee_file.txt 
+total 19
+drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+
+
+
+
+```
+
+
+
+
+
+
 
 
