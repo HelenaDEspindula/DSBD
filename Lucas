@@ -1,0 +1,1147 @@
+---
+title: "Caderno_Infraestrutura_Computacional"
+output: pdf_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+##Parte 1: GNU/Linux e Shell
+Prof Lucas Ferrari de Oliveira (USP)
+
+web.inf.ufpr.br/lferrari 
+
+Áreas de Pesquisa:
+- Processamento de Imagens
+- Processamento de Imagens Médicas
+- Reconhecimento de Padrões
+
+Arquitetura de von Neumann -> CPU 
+
+
+				Central Processing Unit
+					Control Unit
+Imput Device			Arithmetic / Logic Unit			Output Device	
+
+
+
+				Memory Unit
+
+Exemplo Python:
+```{python}
+input (a)
+print (a+1)
+```
+ 
+
+No principio era UNIX…
+- S.O. criado no AT&T Bell Labs
+	- Introduziu e popularizou conceitos:
+- Sistema de arquivos, shell, processos, usuários (cada usuário o seu home, permissões)
+•	Por volta de 1990
+o	Patentes e copyright isolaram o UNIX em nichos
+o	Não eram compatíveis com PC “personal computer” (x86 - Intel)
+o	UNIX foi padronizado (POSIX)
+o	Processadores “vetorizados”
+
+E o UNIX se fez GNU, e habitou entre nós
+•	GNU’s Not Unix: conjunto de programas FOSS compatíveis com POSIX e funcionalidade similar ao UNIX
+o	Shell (interpretador de comandos)
+o	Utilidades básicas UNIX: cp, mv, cat, ls, awk, sed, grep, lessm man, kill, ps, chmod
+o	Editor de texto (Emacs, vi)
+o	Interface Gráfica (GNOME)
+Todo S.O. precisa de um “kernel” que controle o hardware
+•	Linux foi criado em 1992 por Linus Torvalds para x86 (conversa no IRC nas férias)
+•	Compatível com UNIX: mesma API de chamadas de sistema, design e arquitetura semelhantes
+•	Programas GNU podiam ser compilados e rodar em x86
+•	Distribuições = kernel + software
+o	GNU / Linux
+o	Debian, Slackware, SUSE, RedHat, Fedora, Ubuntu, CentOS, Mint
+
+Por que GNU/Linux?
+•	Boa implementação de excelentes ideias UNIX
+•	Grande comunidade de Software Livre
+o	Adicionando funcionalidades, suporte a hardware, correção de bugs, testando
+•	Licença GLP (GNU General Public Licence) permite uso mas exige distribuição do código fonte
+•	Alta performace, escalabilidade, suporte a grande quantidade de dispositivos 
+•	Windows da tela azul -> leitor de mídia dentro do S.O. *face palm*
+
+Cluster – conjunto de computadores
+
+Por que GNU/Linux?
+•	Computadores pessoais (Desktop)
+o	Escolha uma distribuição e experimente
+	Geração de pendrive para carga do SO
+	Instalação concomitante com outro SO
+•	Smartfones (Android, Tizen)
+•	Dispositivos Embarcados
+o	Roteadores, GPS, Raspberry Pi
+•	Servidores WEB
+
+•	Supercomputadores
+o	TOP 500 (100% desde nov/2017)
+•	Space X Falcon 9
+
+Características:
+•	Portável: diferentes tipos de hardware
+•	Open Source: site gnu (copyleft)
+•	Multi usuário: acesso simultâneo
+•	Multi processos: diversos programas simultaneamente
+•	SISTEMA DE Arquivos Hierárquico
+•	Shell: programa interpretador de comandos
+•	Segurança: autenticação de usuários, criptografia, controle de acesso
+
+Sistema Operacional
+
+O Sistema Operacional é um software que controla o hardware e faz a interface deste com as aplicações 
+Applications -> Libraries, System Daemons, Shells, Tools
+Operating system
+Kernel (tipo um conjunto de drivers)
+hardware
+
+S.O. GNU/Linux
+
+É um gerenciador de recursos composto pelo Kernel e um conjunto de aplicações básicas
+•	Servidor e daemon
+•	Programas utilitários (shell, editor, compilador)
+•	........
+
+User x Kernel space
+
+O GNU/Linux executa seu kernel (Linux) em uma região de memoria restrita e protegida (kernel space)
+Programas do SO e dos usuários rodam em outra região de memoria (user space)
+•	Spectre & Meltdown
+
+Componentes do Linux
+
+•	System Call Interface (SCI)
+•	Process Manegment (PM) | Virtual File Systems
+•	…..
+
+•	Interface de system call (SCI)
+o	Funçoes que podem ser invocadas 
+•	.....
+•	Gerenciamento de Memória (MM)
+o	Divide a memoria em blocos e gerencia sua alocação 
+o	Permite crescimento e redução dinâmicos da memoria ocupada
+o	
+
+•	Sistema de Arquivos Virtuais (VFS)
+o	Provê uma interface abstrata comum para sistemas de arquivos (open, close, read, write)
+	O sistema tem um diretório raiz: “/”
+•	Gerencia “buffer caches” para acelerar acesso ao sistema de aruivos 
+•	Interface para acesso ao sistema ....
+•	Camada de rede
+o	Protocolos de rede (TCP, IP....)
+•	Drivers de dispositivos 
+o	Software específico para aceso aos diferentes dispositivos
+•	Código dependente de arquitetura
+
+Computação de Alto Desempenho - High Performance Computing
+	HPC refere-se à prática de agregar poder computacional (diversos processadores) de forma a obter uma performace muito maior do que poderia ser obtida com um computador individual a fim de resolver problemas de grande escala
+Tera flops (operação de ponto flutuante por segundo)
+
+Unidades de Medida
+Bytes (armazenamento de dados)
+•	1 Byte = 8 bits (0 ou 1)
+•	Imagens em tons de cinza: 1 Byte por ponto (pixel)
+•	Caracteres de texto: 1 a 2 Bytes por caracter (depende da codificação)
+•	Números: inteiro (int: 4 bytes, long: 8 bytes), real (float: 4 Bytes, double: 8 Bytes)
+•	Disco rigido (HD) de 8TB, memoria RAM DE 16GB
+Bps (bits por segundo):
+•	Velocidade de transmissão de dados (rede de 1 Mbps)
+
+FLOP/s (Float Operations por Segundo)
+•	Velocidade de operações aritméticas
+
+Nomenclatura:
+•	Core:
+o	Cada núcleo de uma pastilha. É a unidade básica de computação
+o	Podem efetuar algumas operações aritméticas em paralelo
+•	Nodo
+o	Possui diversas pastilhas (CPU) combinadas em uma placa mãe
+o	Compartilha memoria entre cores e entre pastilhas
+o	Pastilhas tem de 8 a 64 cores
+o	Aceleradores 
+o	Troca de dados entre cores de uma mesma pastilha é rápida
+
+•	Cluster
+o	Milhares de nodos conectados 
+o	.....
+o	
+o	Limitada pela banda da rede
+
+Bewolf
+
+S.O. para HPC
+
+Nodo de acesso e nodo de processamento (~= mestre e escravo)
+Sistema de gerenciamento de trabalhos (Jobs)
+•	Alocação de programas e usuários nos diversos nodos
+•	Controla tempo de execução e recursos/ usuários
+•	Ex: slurm, pbs
+Sistema de arquivo papalelo
+•	Acesso simultaneo e paralelo
+•	Escalabilidade e redundancis a falhas
+
+Hard Disk Drive
+Braço atuador | Discos - divididos em setores (512B) | Atuador | Cabeça
+
+RAM é volatil
+
+Solid State Drive (SSD) – não tem disco, são pastilhas
+
+
+Armazenamento de Dados
+•	Volátil x Não volátil
+•	Acesso aleatório x sequencial
+
+
+Memory Hierarchy
+•	Registers – 1ns – 1x
+•	Cache – 10 ns – 10x
+•	Main memory – 100ns – 100x -> uso do programa (RAM)
+•	SSD
+•	Magnetic disk – 100ms – 100.000.000x
+•	Magnetic tape – 10s – 1e+10x
+
+RAID (Redundant Array of Inexpensive Disks)
+•	Combinação de dois ou mais discos
+•	Padrões de organização, ou níveis:
+o	RAID 0: stripping
+o	1: espelhamento
+o	6}: stripping de blocos com reundancis de 2 discos
+o	1+0 ou 10: combinação
+•	Implementação via software (md) ou hardware (controladora)
+
+Macalan.c3sl......
+Ssh? – acesso visual
+lferrari@thanos – 19T – 12T
+
+```{bash}
+df – h pasta/
+```
+
+
+Sistemas de Arquivo
+
+Virtual File System (VFS)
+(Linux não tem pasta, tem diretório)
+•	Camada do Linux que permite acesso uniforme a diversos sistemas de arquivo;
+•	“~/” – minha home
+•	“ls -lh” (lista de files com detalhes):
+o	“drwx” – diretório, read, write, excusão
+o	“l” link para
+o	Se não pode escrever não pode apagar
+•	“cd ..” -> voltar diretório
+•	“pwd” -> ver diretório completo
+
+
+# Aula 02
+
+## Continuação da aula anterior
+
+"Em sistema UNIX, tudo é um arquivo; se algo não é um arquivo, é um processo"
+
+Tipos de arquivo (opção -l do comando ls):
+
+- Arquivos regulares (-): armazenam dados. Não há divisão em
+nome.extensão
+- Diretórios (d): são arquivos que contém outros arquivos
+- Dispositivos (b,c): acessam dispositivos de hardware. Podem ser arquivos
+de bloco ou caracteres
+- Links (l): ponteiros para outros arquivos. Podem ser soft ou hard links.
+
+Caminhos
+- $PATH
+- caminhos relativos (. e ..) e absolutos (/)
+Diretório HOME
+- quota -vs
+- ~
+
+
+```{r}
+> he2@h8:~$ df -h
+df: /run/user/5298/doc: Operação não permitida
+Sist. Arq.                                               Tam. Usado Disp. Uso% Montado em
+udev                                                     3,8G     0  3,8G   0% /dev
+tmpfs                                                    783M  9,1M  774M   2% /run
+10.254.222.3:/exports/terminais/config/loginlocal_grub/   22T  9,4T   13T  43% /.overlay/ro
+tmpfs                                                    3,9G   14M  3,9G   1% /.overlay/rw
+overlay                                                  3,9G   14M  3,9G   1% /
+200.17.202.3:/exports/terminais/syslog_terminais/h8       22T  9,4T   13T  43% /var/log
+tmpfs                                                    3,9G   26M  3,8G   1% /dev/shm
+tmpfs                                                    5,0M  4,0K  5,0M   1% /run/lock
+tmpfs                                                    3,9G  5,6M  3,9G   1% /tmp
+urquell:/home                                             22T  3,6T   19T  17% /home
+urquell:/nobackup                                         22T  9,4T   13T  43% /nobackup
+tmpfs                                                    783M  160K  783M   1% /run/user/5298
+
+> he2@h8:~$ ls
+'Área de trabalho'   Documentos   Downloads   Imagens   Modelos   Música   Público   R   Vídeos
+
+> he2@h8:~$ ls -l
+total 5
+drwx------ 2 he2 espinf 2 mar 15 19:45 'Área de trabalho'
+drwx------ 2 he2 espinf 2 mar 15 19:45  Documentos
+drwx------ 2 he2 espinf 5 mar 15 19:52  Downloads
+drwx------ 2 he2 espinf 2 mar 15 19:45  Imagens
+drwx------ 2 he2 espinf 2 mar 15 19:45  Modelos
+drwx------ 2 he2 espinf 2 mar 15 19:45  Música
+drwx------ 2 he2 espinf 2 mar 15 19:45  Público
+drwx------ 3 he2 espinf 3 mar 16 08:02  R
+drwx------ 2 he2 espinf 2 mar 15 19:45  Vídeos
+
+> he2@h8:~$ ls -lh
+total 4,5K
+drwx------ 2 he2 espinf 2 mar 15 19:45 'Área de trabalho'
+drwx------ 2 he2 espinf 2 mar 15 19:45  Documentos
+drwx------ 2 he2 espinf 5 mar 15 19:52  Downloads
+drwx------ 2 he2 espinf 2 mar 15 19:45  Imagens
+drwx------ 2 he2 espinf 2 mar 15 19:45  Modelos
+drwx------ 2 he2 espinf 2 mar 15 19:45  Música
+drwx------ 2 he2 espinf 2 mar 15 19:45  Público
+drwx------ 3 he2 espinf 3 mar 16 08:02  R
+drwx------ 2 he2 espinf 2 mar 15 19:45  Vídeos
+
+
+> he2@h8:~$ ls -l /dev/sd*
+brw-rw---- 1 root disk 8, 0 mar 16 07:58 /dev/sda
+brw-rw---- 1 root disk 8, 1 mar 16 07:58 /dev/sda1
+
+> he2@h8:~$ $PATH
+bash: /usr/local/bin:/usr/bin:/bin:/usr/local/games:/usr/games:/usr/local/sbin:/usr/sbin:/sbin: Arquivo ou diretório inexistente
+
+> he2@h8:~$ /usr/bin/ls
+'Área de trabalho'   Documentos   Downloads   Imagens   Modelos   Música   Público   R	 Vídeos
+
+
+> he2@h8:~$ cat /proc/cpuinfo 
+processor	: 0
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 158
+model name	: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+stepping	: 9
+microcode	: 0x5e
+cpu MHz		: 900.018
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 0
+cpu cores	: 4
+apicid		: 0
+initial apicid	: 0
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+vmx flags	: vnmi preemption_timer invvpid ept_x_only ept_ad ept_1gb flexpriority tsc_offset vtpr mtf vapic ept vpid unrestricted_guest ple shadow_vmcs pml ept_mode_based_exec
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs taa itlb_multihit srbds mmio_stale_data retbleed
+bogomips	: 6799.81
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 1
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 158
+model name	: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+stepping	: 9
+microcode	: 0x5e
+cpu MHz		: 899.249
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 1
+cpu cores	: 4
+apicid		: 2
+initial apicid	: 2
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+vmx flags	: vnmi preemption_timer invvpid ept_x_only ept_ad ept_1gb flexpriority tsc_offset vtpr mtf vapic ept vpid unrestricted_guest ple shadow_vmcs pml ept_mode_based_exec
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs taa itlb_multihit srbds mmio_stale_data retbleed
+bogomips	: 6799.81
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 2
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 158
+model name	: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+stepping	: 9
+microcode	: 0x5e
+cpu MHz		: 1091.987
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 2
+cpu cores	: 4
+apicid		: 4
+initial apicid	: 4
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+vmx flags	: vnmi preemption_timer invvpid ept_x_only ept_ad ept_1gb flexpriority tsc_offset vtpr mtf vapic ept vpid unrestricted_guest ple shadow_vmcs pml ept_mode_based_exec
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs taa itlb_multihit srbds mmio_stale_data retbleed
+bogomips	: 6799.81
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+processor	: 3
+vendor_id	: GenuineIntel
+cpu family	: 6
+model		: 158
+model name	: Intel(R) Core(TM) i5-7500 CPU @ 3.40GHz
+stepping	: 9
+microcode	: 0x5e
+cpu MHz		: 900.103
+cache size	: 6144 KB
+physical id	: 0
+siblings	: 4
+core id		: 3
+cpu cores	: 4
+apicid		: 6
+initial apicid	: 6
+fpu		: yes
+fpu_exception	: yes
+cpuid level	: 22
+wp		: yes
+flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf pni pclmulqdq dtes64 monitor ds_cpl vmx smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb invpcid_single pti tpr_shadow vnmi flexpriority ept vpid ept_ad fsgsbase tsc_adjust bmi1 hle avx2 smep bmi2 erms invpcid rtm mpx rdseed adx smap clflushopt intel_pt xsaveopt xsavec xgetbv1 xsaves dtherm ida arat pln pts hwp hwp_notify hwp_act_window hwp_epp
+vmx flags	: vnmi preemption_timer invvpid ept_x_only ept_ad ept_1gb flexpriority tsc_offset vtpr mtf vapic ept vpid unrestricted_guest ple shadow_vmcs pml ept_mode_based_exec
+bugs		: cpu_meltdown spectre_v1 spectre_v2 spec_store_bypass l1tf mds swapgs taa itlb_multihit srbds mmio_stale_data retbleed
+bogomips	: 6799.81
+clflush size	: 64
+cache_alignment	: 64
+address sizes	: 39 bits physical, 48 bits virtual
+power management:
+
+> he2@h8:~$ ls /usr/bin/
+'['                                   dh_installtex                                     grub-mkpasswd-pbkdf2          lto-dump-10                        pipewire-pulse                      strace-log-merge
+ 411toppm                             dh_installtmpfiles                                grub-mkrelpath                ltrace                             pix                                 stream
+ 7z                                   dh_installudev                                    grub-mkrescue                 ltx2crossrefxml                    pjtoppm                             streamer
+ 7za                                  dh_installwm                                      grub-mkstandalone             ltxfileinfo                        pk2bm                               stream-im6
+ 7zr                                  dh_installxfonts                                  grub-mount                    ltximg                             pkaction                            stream-im6.q16
+ a2ping                               dh_installxmlcatalogs                             grub-render-label             lua                                pkcheck                             streamzip
+ a2ps                                 dh_link                                           grub-script-check             lua5.2                             pkexec                              strings
+ a2ps-lpr-wrapper                     dh_lintian                                        grub-syslinux2cfg             luac                               pkfix                               strip
+ a52dec                               dh_listpackages                                   gs                            luac5.2                            pkfix-helper                        stty
+ a5booklet                            dh_makeshlibs                                     gsbj                          luahbtex                           pkg-config                          sty2dtx
+ a5toa4                               dh_md5sums                                        gsdj                          luajithbtex                        pkgdata                             su
+ aa-enabled                           dh_missing                                        gsdj500                       luajittex                          pkill                               subl
+ aa-exec                              dh_movefiles                                      gsettings                     lualatex                           pktogf                              sudo
+ aclocal                              dh_numpy3                                         gsf                           lualatex-dev                       pkttyagent                          sudoedit
+ aclocal-1.16                         dh_perl                                           gsf-office-thumbnailer        luaotfload-tool                    pktype                              sudoreplay
+ aconnect                             dh_perl_openssl                                   gsftopk                       luatex                             pl2pm                               sum
+ acpi_listen                          dh_prep                                           gsf-vba-dump                  luatools                           plasmapkg2                          su-to-root
+ acyclic                              dh_python3-ply                                    gsl-config                    luit                               platex                              svgpp
+ add-apt-repository                   dh_shlibdeps                                      gslj                          lwarpmk                            platex-dev                          svlc
+ addpart                              dh_strip                                          gslp                          lwp-download                       pldd                                svndiff
+ addr2line                            dh_strip_nondeterminism                           gsnd                          lwp-dump                           plex                                svndiffview
+ add-remove-locales                   dh_systemd_enable                                 gst-device-monitor-1.0        lwp-mirror                         plex-3.2.0                          svn-multi
+ adhocfilelist                        dh_systemd_start                                  gst-discoverer-1.0            lwp-request                        plocate                             swarp
+ afm2afm                              dh_testdir                                        gst-inspect-1.0               lxterm                             plog                                swipl
+ afm2pl                               dh_testroot                                       gst-launch-1.0                lynx                               pltotf                              swipl-ld
+ afm2tfm                              dh_ucf                                            gst-play-1.0                  lz                                 plymouth                            switcherooctl
+ aggregate_profile                    dh_update_autotools_config                        gst-stats-1.0                 lzcat                              pmap                                sxw2txt
+ aleph                                dh_usrlocal                                       gst-tester-1.0                lzip                               pm-is-supported                     synaptic-pkexec
+ allcm                                dia                                               gst-typefind-1.0              lzip-compressor                    pmpost                              sync
+ allec                                diadia                                            gtbl                          lzip-decompressor                  pmxab                               synctex
+ allneeded                            dialog                                            gtester                       lzip.lzip                          pmxchords                           syslinux
+ alpine                               diff                                              gtester-report                lzma                               pn2pdf                              system-config-printer
+ alpinef                              diff3                                             gtf                           lzmainfo                           pngfix                              system-config-printer-applet
+ alsabat                              diffimg                                           gtk-builder-convert           lzmp                               png-fix-itxt                        systemctl
+ alsaloop                             diffpp                                            gtk-builder-tool              lzop                               pngtopnm                            systemd
+ alsamixer                            diffstat                                          gtk-encode-symbolic-svg       m17n-db                            pnm2ppa                             systemd-analyze
+ alsatplg                             dig                                               gtk-launch                    m2300w                             pnmalias                            systemd-ask-password
+ alsaucm                              dijkstra                                          gtk-query-settings            m2300w-wrapper                     pnmarith                            systemd-cat
+ amidi                                dir                                               gtk-redshift                  m2400w                             pnmcat                              systemd-cgls
+ amixer                               dircolors                                         gtk-update-icon-cache         m4                                 pnmcolormap                         systemd-cgtop
+ amstex                               dirmngr                                           gts2dxf                       mac2unix                           pnmcomp                             systemd-delta
+ amuFormat.sh                         dirmngr-client                                    gts2oogl                      macptopbm                          pnmconvol                           systemd-detect-virt
+ animate                              dirname                                           gts2stl                       mag                                pnmcrop                             systemd-escape
+ animate-im6                          dirsplit                                          gts2xyz                       mail                               pnmcut                              systemd-hwdb
+ animate-im6.q16                      disdvi                                            gtscheck                      Mail                               pnmdepth                            systemd-id128
+ ant                                  display                                           gtscompare                    mail.mailutils                     pnmenlarge                          systemd-inhibit
+ anytopnm                             display-im6                                       gts-config                    mailstat                           pnmfile                             systemd-machine-id-setup
+ apg                                  display-im6.q16                                   gtstemplate                   mailx                              pnmflip                             systemd-mount
+ apgbfm                               djpeg                                             gucharmap                     make                               pnmgamma                            systemd-notify
+ aplay                                dmenu                                             gufw                          make4ht                            pnmhisteq                           systemd-path
+ aplaymidi                            dmenu_path                                        gufw-pkexec                   makeconv                           pnmhistmap                          systemd-resolve
+ appres                               dmenu_run                                         gunzip                        makedtx                            pnmindex                            systemd-run
+ appstreamcli                         dmesg                                             gv2gml                        make-first-existing-target         pnminterp                           systemd-socket-activate
+ apropos                              dm-tool                                           gv2gxl                        makeglossaries                     pnminterp-gen                       systemd-stdio-bridge
+ apt                                  dnsdomainname                                     gvcolor                       makeglossaries-lite                pnminvert                           systemd-sysusers
+ apt-add-repository                   dns-fix                                           gvfs-cat                      makeindex                          pnmmargin                           systemd-tmpfiles
+ apt-cache                            dnstap-read                                       gvfs-copy                     makeinfo                           pnmmontage                          systemd-tty-ask-password-agent
+ apt-cdrom                            domainname                                        gvfs-info                     makejvf                            pnmnlfilt                           systemd-umount
+ apt-changelog                        dos2unix                                          gvfs-less                     makeskel                           pnmnoraw                            systool
+ apt-clone                            dosepsbin                                         gvfs-ls                       makeskel-3.2.0                     pnmnorm                             t1ascii
+ apt-config                           dot                                               gvfs-mime                     mako-render                        pnmpad                              t1asm
+ aptdcon                              dot2gxl                                           gvfs-mkdir                    malcontent-client                  pnmpaste                            t1binary
+ apt-extracttemplates                 dot2tex                                           gvfs-monitor-dir              malcontent-control                 pnmpsnr                             t1c2pfb
+ apt-file                             dot_builtins                                      gvfs-monitor-file             man                                pnmquant                            t1disasm
+ apt-ftparchive                       dotlock                                           gvfs-mount                    mandb                              pnmremap                            t1dotlessj
+ apt-get                              dotlockfile                                       gvfs-move                     manpath                            pnmrotate                           t1lint
+ aptitude                             dotlock.mailutils                                 gvfs-open                     man-recode                         pnmscale                            t1mac
+ aptitude-changelog-parser            dotty                                             gvfs-rename                   mapscrn                            pnmscalefixed                       t1rawafm
+ aptitude-create-state-bundle         dpkg                                              gvfs-rm                       match_parens                       pnmshear                            t1reencode
+ aptitude-curses                      dpkg-architecture                                 gvfs-save                     mate-about                         pnmsmooth                           t1testpage
+ aptitude-run-state-bundle            dpkg-buildflags                                   gvfs-set-attribute            mate-color-select                  pnmsplit                            t1unmac
+ apt-key                              dpkg-buildpackage                                 gvfs-trash                    mate-desktop-item-edit             pnmtile                             t4ht
+ apt-mark                             dpkg-checkbuilddeps                               gvfs-tree                     mate-help                          pnmtoddif                           tabbed
+ apt-sortpkgs                         dpkg-deb                                          gvgen                         mate-panel                         pnmtofiasco                         tabbed.default
+ apturl                               dpkg-distaddfile                                  gvmap                         mate-panel-test-applets            pnmtofits                           tabbed.meta
+ apturl-gtk                           dpkg-divert                                       gvmap.sh                      mathspic                           pnmtojpeg                           tabs
+ ar                                   dpkg-genbuildinfo                                 gvpack                        mattrib                            pnmtopalm                           tac
+ arara                                dpkg-genchanges                                   gvpr                          mawk                               pnmtoplainpnm                       tail
+ arch                                 dpkg-gencontrol                                   gxl2dot                       maxima                             pnmtopng                            tangle
+ arduino                              dpkg-gensymbols                                   gxl2gv                        mbadblocks                         pnmtops                             tar
+ arduino-add-groups                   dpkg-maintscript-helper                           gyp                           mcat                               pnmtorast                           tasksel
+ arduino-builder                      dpkg-mergechangelogs                              gzexe                         mcd                                pnmtorle                            taskset
+ arduino-ctags                        dpkg-name                                         gzip                          mcheck                             pnmtosgi                            tbl
+ arecord                              dpkg-parsechangelog                               h2pas                         mclasserase                        pnmtosir                            tbl-dctrl
+ arecordmidi                          dpkg-query                                        h2pas-3.2.0                   mcomp                              pnmtotiff                           tclsh
+ arlatex                              dpkg-realpath                                     h2paspp                       mcookie                            pnmtotiffcmyk                       tclsh8.6
+ arm2hpdl                             dpkg-repack                                       h2paspp-3.2.0                 mcopy                              pnmtoxwd                            tcpdump
+ arping                               dpkg-scanpackages                                 h2ph                          md5sum                             po2debconf                          teckit_compile
+ as                                   dpkg-scansources                                  h2xs                          md5sum.textutils                   pod2html                            tee
+ asan_symbolize                       dpkg-shlibdeps                                    haddock                       mdatopbm                           pod2man                             telnet
+ asan_symbolize-11                    dpkg-source                                       haddock-ghc-8.8.4             mdel                               pod2texi                            telnet.netkit
+ asciitopgm                           dpkg-split                                        haskell-compiler              mdeltree                           pod2text                            tempfile
+ aseqdump                             dpkg-statoverride                                 hattrib                       mdig                               pod2usage                           terminator
+ aseqnet                              dpkg-trigger                                      hbf2gf                        mdir                               podchecker                          test
+ aspell                               dpkg-vendor                                       hbpldecode                    mdsearch                           podebconf-display-po                testparm
+ aspell-import                        drawing                                           hcd                           mdu                                podebconf-report-po                 test_physfs
+ asy                                  driverless                                        hciattach                     mendex                             poff                                tex
+ atktopbm                             driverless-fax                                    hciconfig                     mesa-overlay-control.py            polybar                             tex2aspc
+ atobm                                dropdb                                            hcitool                       mesg                               polybar-msg                         tex4ebook
+ authorindex                          droplang                                          hcopy                         messages                           pon                                 tex4ht
+ autoconf                             dropuser                                          hd                            messages.mailutils                 pooltype                            texconfig
+ autoconf2.13                         dssp                                              hdel                          metacity                           POST                                texconfig-dialog
+ autoheader                           dsymutil-11                                       hdir                          metacity-message                   postw32                             texconfig-sys
+ autoheader2.13                       dt2dv                                             head                          metacity-theme-viewer              postw32-3.2.0                       texcount
+ autoinst                             dtxgen                                            HEAD                          mex                                ppcx64                              texdef
+ autom4te                             du                                                helpztags                     mf                                 ppcx64-3.2.0                        texdiff
+ automake                             dumpkeys                                          hex2hcd                       mf2pt1                             ppdc                                texdirflatten
+ automake-1.16                        dunst                                             hexchat                       mflua                              ppdep                               texdoc
+ autopoint                            dunstctl                                          hexdump                       mfluajit                           ppdep-3.2.0                         texdoctk
+ autoreconf                           dunstify                                          hformat                       mfluajit-nowin                     ppdhtml                             texexec
+ autoreconf2.13                       duplicity                                         hipercdecode                  mflua-nowin                        ppdi                                texexpand
+ autoscan                             dv2dt                                             hipstopgm                     mf-nowin                           ppdmerge                            texfind
+ autoscan2.13                         dvdauthor                                         hls                           mformat                            ppdpo                               texfont
+ autosp                               dvddirdel                                         hmkdir                        mfplain                            pphs                                texfot
+ autoupdate                           dvd+rw-format                                     hmount                        mft                                ppltotf                             texhash
+ autoupdate2.13                       dvdunauthor                                       host                          mgrtopbm                           ppm3d                               texi2any
+ avahi-browse                         dvi2fax                                           hostid                        migrate-pubring-from-classic-gpg   ppmbrighten                         texi2dvi
+ avahi-browse-domains                 dvi2tty                                           hostname                      mimeopen                           ppmchange                           texi2dvi4a2ps
+ avahi-publish                        dviasm                                            hostnamectl                   mimetype                           ppmcie                              texi2html
+ avahi-publish-address                dvibook                                           hp2ps                         mimeview                           ppmcolormask                        texi2pdf
+ avahi-publish-service                dviconcat                                         hp-align                      min12xxw                           ppmcolors                           texindex
+ avahi-resolve                        dvicopy                                           hpc                           minfo                              ppmdim                              texlinks
+ avahi-resolve-address                dvidvi                                            hpcd                          mingle                             ppmdist                             texliveonfly
+ avahi-resolve-host-name              dvigif                                            hp-check                      mintbackup                         ppmdither                           texloganalyser
+ avahi-set-host-name                  dvihp                                             hp-clean                      mintBackup                         ppmfade                             texlua
+ avr-addr2line                        dviinfox                                          hp-colorcal                   mint-drivers                       ppmflash                            texluac
+ avr-ar                               dvilj                                             hp-config_usb_printer         mint-iso-verify                    ppmforge                            texluajit
+ avr-as                               dvilj2p                                           hpcopy                        mintlocale                         ppmhist                             texluajitc
+ avr-c++                              dvilj4                                            hp-doctor                     mintlocale-im                      ppmlabel                            texmfstart
+ avr-c++filt                          dvilj4l                                           hp-firmware                   mintmenu                           ppmmake                             texosquery
+ avr-cpp                              dvilj6                                            hpfsck                        mint-remove-application            ppmmix                              texosquery-jre5
+ avrdude                              dvilualatex                                       hpijs                         mintsources                        ppmnorm                             texosquery-jre8
+ avr-elfedit                          dvilualatex-dev                                   hp-info                       mintstick                          ppmntsc                             texplate
+ avr-g++                              dviluatex                                         hp-levels                     mint-switch-to-local-mirror        ppmpat                              texsis
+ avr-gcc                              dvipdf                                            hp-logcapture                 mintwelcome                        ppmquant                            tftopl
+ avr-gcc-5.4.0                        dvipdfm                                           hpls                          mintwelcome-launcher               ppmquantall                         tftp
+ avr-gcc-ar                           dvipdfmx                                          hp-makeuri                    mint-xfce-delete                   ppmqvga                             tgatoppm
+ avr-gcc-nm                           dvipdft                                           hpmkdir                       mk4ht                              ppmrainbow                          tgz
+ avr-gcc-ranlib                       dvipng                                            hpmount                       mkafmmap                           ppmrelief                           thingy
+ avr-gcov                             dvipos                                            hp-pkservice                  mkdir                              ppmshadow                           thinkjettopbm
+ avr-gcov-tool                        dvips                                             hp-plugin                     mkdssp                             ppmshift                            thumbpdf
+ avr-gprof                            dvired                                            hp-probe                      mkfifo                             ppmspread                           Thunar-daemon
+ avr-ld                               dviselect                                         hppwd                         mkfontdir                          ppmtoacad                           thunderbird
+ avr-ld.bfd                           dvispc                                            hp-query                      mkfontscale                        ppmtobmp                            tic
+ avr-man                              dvisvgm                                           hprm                          mkgrkindex                         ppmtoeyuv                           tie
+ avr-nm                               dvitodvi                                          hp-scan                       mkindex                            ppmtogif                            tifftopnm
+ avr-objcopy                          dvitomp                                           hp-setup                      mkisofs                            ppmtoicr                            tificc
+ avr-objdump                          dvitype                                           hp-testpage                   mkjobtexmf                         ppmtoilbm                           tightvncconnect
+ avr-ranlib                           dwp                                               hp-timedate                   mkmanifest                         ppmtojpeg                           tightvncpasswd
+ avr-readelf                          dwz                                               hpumount                      mk_modmap                          ppmtoleaf                           tightvncserver
+ avr-size                             e2pall                                            hpwd                          mknod                              ppmtolj                             tikztosvg
+ avr-strings                          ebb                                               hrename                       mkocp                              ppmtomap                            time
+ avr-strip                            ebrowse                                           hrmdir                        mkofm                              ppmtomitsu                          timedatectl
+ awk                                  ebrowse.emacs                                     hsc2hs                        mkpasswd                           ppmtompeg                           timeout
+ axfer                                echo                                              ht                            mkpic                              ppmtoneo                            tjbench
+ axohelp                              ecryptfs-add-passphrase                           htcontext                     mksquashfs                         ppmtopcx                            tlmgr
+ b2sum                                ecryptfsd                                         htlatex                       mkt1font                           ppmtopgm                            tload
+ baobab                               ecryptfs-find                                     htmex                         mktemp                             ppmtopi1                            tl-paper
+ base32                               ecryptfs-generate-tpm-key                         html2text                     mktexfmt                           ppmtopict                           tmux
+ base64                               ecryptfs-insert-wrapped-passphrase-into-keyring   htop                          mktexlsr                           ppmtopj                             toc2cddb
+ basename                             ecryptfs-manager                                  httex                         mktexmf                            ppmtopuzz                           toc2cue
+ basenc                               ecryptfs-migrate-home                             httexi                        mktexpk                            ppmtorgb3                           toe
+ bash                                 ecryptfs-mount-private                            htxelatex                     mktextfm                           ppmtosixel                          top
+ bashbug                              ecryptfs-recover-private                          htxetex                       mkzftree                           ppmtotga                            totem
+ bbl2bib                              ecryptfs-rewrap-passphrase                        humount                       mlabel                             ppmtouil                            totem-video-thumbnailer
+ bbox                                 ecryptfs-rewrite-file                             hvol                          mllatex                            ppmtowinicon                        touch
+ bc                                   ecryptfs-setup-private                            hypnotix                      mlock                              ppmtoxpm                            tpic2pdftex
+ bccmd                                ecryptfs-setup-swap                               i3                            mltex                              ppmtoyuv                            tput
+ bcomps                               ecryptfs-stat                                     i386                          mm2gv                              ppmtoyuvsplit                       tr
+ bdftopcf                             ecryptfs-umount-private                           i3bar                         mmafm                              ppmtv                               tracepath
+ bdftruncate                          ecryptfs-unwrap-passphrase                        i3-config-wizard              mmd                                ppudump                             traceproto
+ bf_compact                           ecryptfs-verify                                   i3-dmenu-desktop              mmount                             ppudump-3.2.0                       traceproto.db
+ bf_compact-bdb                       ecryptfs-wrap-passphrase                          i3-dump-log                   mmove                              ppufiles                            traceroute
+ bf_copy                              ed                                                i3-input                      mmpfb                              ppufiles-3.2.0                      traceroute6
+ bf_copy-bdb                          edgepaint                                         i3lock                        modelicac                          ppumove                             traceroute6.db
+ bf_tar                               edit                                              i3-migrate-config-to-v4       modelicat                          ppumove-3.2.0                       traceroute6.iputils
+ bf_tar-bdb                           editdiff                                          i3-msg                        mogrify                            pr                                  traceroute.db
+ bg5conv                              editor                                            i3-nagbar                     mogrify-im6                        precat                              traceroute-nanog
+ bg5+latex                            editres                                           i3-save-tree                  mogrify-im6.q16                    preconv                             transfig
+ bg5latex                             efibootdump                                       i3-sensible-editor            mokutil                            prename                             transform
+ bg5+pdflatex                         efibootmgr                                        i3-sensible-pager             monitor-sensor                     preparetips5                        transicc
+ bg5pdflatex                          egrep                                             i3-sensible-terminal          montage                            prepmx                              translit
+ bib2gls                              eject                                             i3status                      montage-im6                        prerex                              transmission-gtk
+ bibdoiadd                            elfedit                                           i3-with-shmlog                montage-im6.q16                    preunzip                            transset
+ biber                                emacs                                             i686-linux-gnu-pkg-config     more                               prezip                              tred
+ bibexport                            emacsclient                                       iceauth                       mount                              prezip-bin                          tree
+ bibmradd                             emacsclient.emacs                                 icehelp                       mountpoint                         print                               troff
+ bibtex                               emacs-gtk                                         icesh                         mousetweaks                        printafm                            true
+ bibtex8                              enc2xs                                            icesound                      movemail                           printenv                            truncate
+ bibtex.original                      encguess                                          icewm                         movemail.mailutils                 printer-profile                     trust
+ bibtexu                              enchant-2                                         icewmbg                       mpartition                         printf                              tryaffix
+ biburl2doi                           enchant-lsmod-2                                   icewmhint                     mpeg2desc                          prlimit                             tset
+ bibzbladd                            enscript                                          icewm-menu-fdo                mpic++                             procmail                            tsort
+ bin2obj                              env                                               icewm-menu-xrandr             mpicc                              profile2mat                         ttf2afm
+ bin2obj-3.2.0                        envsubst                                          icewm-session                 mpiCC                              proj                                ttf2kotexfont
+ bioradtopgm                          eog                                               ico                           mpicc.openmpi                      projinfo                            ttf2pk
+ bison                                eplain                                            icombine                      mpiCC.openmpi                      projsync                            ttf2svg
+ bison.yacc                           eps2eps                                           icontopbm                     mpic++.openmpi                     prolog                              ttf2tfm
+ bitmap                               epsffit                                           iconv                         mpicxx                             protocoltojson                      ttfdump
+ blender                              epspdf                                            icotool                       mpicxx.openmpi                     prove                               ttfread
+ blueberry                            epspdftk                                          icuinfo                       mpiexec                            proxy                               ttftotype42
+ blueberry-tray                       epstool                                           id                            mpiexec.openmpi                    prtstat                             tty
+ bluemoon                             epstopdf                                          id3                           mpif77                             prune                               twopi
+ bluetoothctl                         eptex                                             identify                      mpif77.openmpi                     ps                                  txixml2texi
+ bluetooth-sendto                     eqn                                               identify-im6                  mpif90                             ps2ascii                            txtconv
+ bmptopnm                             erb                                               identify-im6.q16              mpif90.openmpi                     ps2eps                              typeoutfileinfo
+ bmptoppm                             erb2.7                                            idevicebackup                 mpifort                            ps2epsi                             tzselect
+ bmtoa                                esc-m                                             idevicebackup2                mpifort.openmpi                    ps2frag                             ucf
+ bogofilter                           Esetroot                                          idevicecrashreport            mpijavac                           ps2lexmark                          ucfq
+ bogofilter-bdb                       espdiff                                           idevicedate                   mpijavac.pl                        ps2pdf                              ucfr
+ bogolexer                            etags                                             idevicedebug                  mpirun                             ps2pdf12                            uconv
+ bogolexer-bdb                        etags.emacs                                       idevicedebugserverproxy       mpirun.openmpi                     ps2pdf13                            ucs2any
+ bogotune                             Etbg                                              idevicediagnostics            mplayer                            ps2pdf14                            udevadm
+ bogotune-bdb                         Etbg_update_list                                  ideviceenterrecovery          mpost                              ps2pdfwr                            udisksctl
+ bogoupgrade                          Etcolors                                          idevice_id                    mpris-proxy                        ps2pk                               ul
+ bogoupgrade-bdb                      Eterm                                             ideviceimagemounter           mptopdf                            ps2ps                               ulqda
+ bogoutil                             etex                                              ideviceinfo                   mrd                                ps2ps2                              umax_pp
+ bogoutil-bdb                         Etsearch                                          ideviceinstaller              mren                               ps2txt                              umount
+ boltctl                              Ettable                                           idevicename                   mscompress                         ps4pdf                              uname
+ bootctl                              euptex                                            idevicenotificationproxy      msexpand                           psbook                              uncompress
+ brasero                              evince                                            idevicepair                   msgattrib                          psfaddtable                         unexpand
+ broadwayd                            evince-previewer                                  ideviceprovision              msgcat                             psfgettable                         unflatten
+ brushtopbm                           evince-thumbnailer                                idevicescreenshot             msgcmp                             psfstriptable                       unicode_start
+ bsd-csh                              evolution                                         idevicesetlocation            msgcomm                            psfxtable                           unicode_stop
+ bsd-mailx                            ex                                                idevicesyslog                 msgconv                            psicc                               uniq
+ bsh                                  exceltex                                          idle                          msgen                              psidtopgm                           unison
+ bt-adapter                           exif                                              idle-python3.9                msgexec                            psjoin                              unison-2.51+4.11.1
+ bt-agent                             exifautotran                                      iecset                        msgfilter                          pslatex                             unitdiff
+ btattach                             exiv2                                             ifnames                       msgfmt                             pslog                               unitdiff-3.2.0
+ bt-device                            exmendis                                          ifnames2.13                   msggrep                            psmandup                            unity-scope-loader
+ btmgmt                               exmenen                                           ifpc                          msginit                            psmerge                             unix2dos
+ btmon                                expand                                            ifpc-3.2.0                    msgmerge                           psnup                               unix2mac
+ bt-network                           expiry                                            ijoin                         msgunfmt                           psql                                unlink
+ bt-obex                              expr                                              ijs_pxljr                     msguniq                            psresize                            unlzma
+ btrfs                                extconv                                           ilbmtoppm                     mshortname                         psselect                            unmkinitramfs
+ btrfsck                              extract_a52                                       imagetops                     mshowfat                           psset                               unopkg
+ btrfs-convert                        extractbb                                         im-config                     ms_print                           pst2pdf                             unpack200
+ btrfs-find-root                      extractres                                        imdbpy                        msxlint                            pstoedit                            unrar
+ btrfs-image                          extresso                                          imgtoppm                      mt                                 pstoimg                             unrar-nonfree
+ btrfs-map-logical                    eyuvtoppm                                         im-launch                     mt-gnu                             pstopnm                             unshar
+ btrfs-select-super                   f2py3                                             import                        mtools                             pstops                              unshare
+ btrfstune                            f2py3.9                                           import-im6                    mtoolstest                         pstree                              unshield
+ bugpoint-11                          f77                                               import-im6.q16                mtr                                pstree.x11                          unsquashfs
+ buildhash                            f95                                               includeres                    mtr-packet                         ptar                                untex
+ bulky                                factor                                            info                          mtvtoppm                           ptardiff                            unwrapdiff
+ bundle2.7                            faillog                                           infobrowser                   m-tx                               ptargrep                            unxz
+ bundledoc                            faked-sysv                                        infocmp                       mtxrun                             ptex                                unzip
+ bundler2.7                           faked-tcp                                         infotocap                     mtxrunjit                          ptex2pdf                            unzipsfx
+ bunzip2                              fakeroot                                          inimf                         mtype                              ptftopl                             upbibtex
+ busctl                               fakeroot-sysv                                     initex                        muffin                             ptop                                update-alternatives
+ busybox                              fakeroot-tcp                                      inkscape                      multibibliography                  ptop-3.2.0                          updatedb
+ bwrap                                fallocate                                         inkview                       munchlist                          ptx                                 update-desktop-database
+ bzcat                                false                                             inputattach                   muscle                             pulseaudio                          update-menus
+ bzcmp                                fastjar                                           install                       musixflx                           purifyeps                           update-mime-database
+ bzdiff                               fc-cache                                          installfont-tl                musixtex                           pw-cat                              update-perl-sax-parsers
+ bzegrep                              fc-cat                                            install-info                  mustang                            pw-cli                              update_rubygems
+ bzexe                                fc-conflist                                       install-menu                  mutt                               pwd                                 updmap
+ bzfgrep                              fc-list                                           install-printerdriver         mutt_dotlock                       pw-dot                              updmap-sys
+ bzgrep                               fc-match                                          instantfpc                    mv                                 pw-dump                             updmap-user
+ bzip2                                fc-pattern                                        instmodsh                     mxtar                              pwdx                                updvitomp
+ bzip2recover                         fc-query                                          intel-virtual-output          mzip                               pw-metadata                         updvitype
+ bzless                               fc-scan                                           interdiff                     namei                              pw-mididump                         uplatex
+ bzmore                               fc-validate                                       inv                           nano                               pw-midiplay                         uplatex-dev
+ c++                                  fd2pascal-3.2.0                                   invgeod                       nawk                               pw-midirecord                       upload-system-info
+ c2050                                fdp                                               invoke                        nc                                 pw-mon                              upmendex
+ c89                                  feynmf                                            invproj                       ncal                               pw-play                             upmpost
+ c89-gcc                              ffmpeg                                            inxi                          nc.openbsd                         pw-profiler                         upower
+ c99                                  ffmpegthumbnailer                                 ionice                        ncurses5-config                    pw-record                           uppltotf
+ c99-gcc                              ffplay                                            ip                            ncurses6-config                    pw-reserve                          uptex
+ cabextract                           ffprobe                                           ipcmk                         ncursesw5-config                   pw-top                              uptftopl
+ caca-config                          fgconsole                                         ipcrm                         ncursesw6-config                   py3clean                            uptime
+ cachepic                             fgrep                                             ipcs                          neato                              py3compile                          urlbst
+ caf                                  fiascotopnm                                       iperf                         nemiver                            py3versions                         usb-devices
+ caf.openmpi                          fig2dev                                           ipod-read-sysinfo-extended    nemo                               pyacc                               usbhid-dump
+ cafrun                               fig2mpdf                                          ipod-time-sync                nemo-autorun-software              pyacc-3.2.0                         usb_printerid
+ cafrun.openmpi                       fig2ps2tex                                        ippfind                       nemo-connect-server                pydoc3                              usbreset
+ cal                                  fig4latex                                         ipptool                       nemo-desktop                       pydoc3.9                            users
+ calibrate_ppa                        file                                              iptables-xml                  nemo-epub2text                     pygettext3                          user-setup
+ callgrind_annotate                   file2brl                                          irb                           nemo-mso-to-txt                    pygettext3.9                        utf8mex
+ callgrind_control                    FileCheck-11                                      irb2.7                        nemo-open-with                     pygmentize                          utmpdump
+ canberra-gtk-play                    file-rename                                       ischroot                      nemo-ppt-to-txt                    pyjwt3                              uudecode
+ cancel                               file-roller                                       isdv4-serial-debugger         nemo-preview                       py.test-3                           uuencode
+ captoinfo                            filterdiff                                        isdv4-serial-inputattach      nemo-xls-to-txt                    pytest-3                            uuidgen
+ card                                 fincore                                           isodump                       neofetch                           python3                             uuidparse
+ caribou-preferences                  find                                              isoinfo                       neomutt                            python3.9                           uxterm
+ cat                                  findaffix                                         isovfy                        neotoppm                           python3.9-config                    uz
+ catchsegv                            findhyph                                          ispell                        neqn                               python3-config                      vacuumdb
+ catdoc                               findmnt                                           ispell-wrapper                net                                python3-futurize                    vacuumlo
+ catman                               findrule                                          isql                          netaddr                            python3-pasteurize                  valgrind
+ catppt                               findsmb                                           iusql                         netcat                             pythontex                           valgrind.bin
+ cb_console_runner                    finger                                            jadetex                       netkit-ftp                         qpdldecode                          valgrind-di-server
+ cb_share_config                      firefox                                           jags                          netstat                            qrttoppm                            valgrind-listener
+ cc                                   fitstopnm                                         jamo-normalize                networkctl                         qt5ct                               vdir
+ ccat                                 fixcvsdiff                                        jaotc                         newgrp                             qt-faststart                        verify-uselistorder-11
+ ccdecrypt                            fixdlsrps                                         jar                           ngettext                           quota                               vftovp
+ ccencrypt                            fixfmps                                           jardetector                   nice                               quotasync                           vgdb
+ ccguess                              fixnt                                             jarsigner                     nisdomainname                      qvlc                                vi
+ ccomps                               fixps                                             jarwrapper                    nitrogen                           r                                   view
+ ccrypt                               fixpsditps                                        java                          nl                                 R                                   viewres
+ cct                                  fixpspps                                          java2groovy                   nm                                 racc2.7                             vim
+ ccx                                  fixscribeps                                       javac                         nmap                               racc2y2.7                           vim.basic
+ cd-create-profile                    fixtpps                                           javacc                        nm-applet                          rake                                vimdiff
+ cd-fix-profile                       fixwfwps                                          javadoc                       nmblookup                          ranger                              vimdot
+ cd-iccdump                           fixwpps                                           javap                         nmcli                              ranlib                              vim.tiny
+ cd-it8                               fixwwps                                           jcmd                          nm-connection-editor               rar                                 vimtutor
+ cdrdao                               flatpak                                           jconsole                      nm-online                          rasterizer                          virtualenv
+ cdrecord                             flex                                              jdb                           nmtui                              rasttopnm                           vlc
+ cef5conv                             flex++                                            jdeprscan                     nmtui-connect                      rawtopgm                            vlcdvd
+ cef5latex                            flipdiff                                          jdeps                         nmtui-edit                         rawtoppm                            vlc-wrapper
+ cef5pdflatex                         flock                                             jexec                         nmtui-hostname                     rbash                               vlna
+ cefconv                              fmt                                               jfmutil                       node                               rcp                                 vmstat
+ ceflatex                             fmtutil                                           jfr                           node-gyp                           rctest                              vmwarectrl
+ cefpdflatex                          fmtutil-sys                                       jhindexer                     nodejs                             rdesktop                            vncconnect
+ cefsconv                             fmtutil-user                                      jhsdb                         nohup                              rdiff                               vncpasswd
+ cefslatex                            fold                                              jhsearch                      nop                                rdiffdir                            vncserver
+ cefspdflatex                         fontinst                                          jimage                        nosetests3                         rdjpgcom                            vncviewer
+ celluloid                            fonttosfnt                                        jinfo                         not-11                             rdma                                vpe
+ cfftot1                              foo2ddst                                          jjdoc                         notify-send                        rdoc                                vpl2ovp
+ c++filt                              foo2ddst-wrapper                                  jjs                           nping                              rdoc2.7                             vpl2vpl
+ cg_annotate                          foo2hbpl2                                         jjtree                        npm                                readelf                             vprerex
+ cg_diff                              foo2hbpl2-wrapper                                 jlink                         nproc                              readlink                            vptovf
+ cg_merge                             foo2hiperc                                        jmacs                         npx                                readmsg                             w
+ chacl                                foo2hiperc-wrapper                                jmap                          nroff                              readmsg.mailutils                   w3m
+ chage                                foo2hp                                            jmapviewer                    nsenter                            readom                              w3mman
+ chardet                              foo2hp2600-wrapper                                jmod                          nslookup                           realpath                            wall
+ chardetect                           foo2lava                                          joe                           nstat                              recode-sr-latin                     warpinator
+ charmap                              foo2lava-wrapper                                  join                          nsupdate                           recountdiff                         watch
+ chattr                               foo2oak                                           join-dctrl                    ntfs-3g                            red                                 watchgnupg
+ chcon                                foo2oak-wrapper                                   journalctl                    ntfs-3g.probe                      rediff                              wbmptopbm
+ checkcites                           foo2qpdl                                          jpackage                      ntfscat                            redshift                            wc
+ checklistings                        foo2qpdl-wrapper                                  jpegexiforient                ntfscluster                        redshift-gtk                        wdctl
+ check_signals                        foo2slx                                           jpegtopnm                     ntfscmp                            regexp-assemble                     wdiff
+ cheese                               foo2slx-wrapper                                   jpegtran                      ntfsdecrypt                        reindexdb                           weave
+ chfn                                 foo2xqx                                           jpgicc                        ntfsfallocate                      relpath                             webapp-manager
+ chgrp                                foo2xqx-wrapper                                   jpico                         ntfsfix                            relpath-3.2.0                       webquiz
+ chkdvifont                           foo2zjs                                           jps                           ntfsinfo                           remotinator                         wget
+ chklref                              foo2zjs-icc2ps                                    jrunscript                    ntfsls                             rename                              whatis
+ chktex                               foo2zjs-pstops                                    js                            ntfsmove                           rendercheck                         whereis
+ chkweb                               foo2zjs-wrapper                                   jshell                        ntfsrecover                        renice                              which
+ chmcmd                               foomatic-rip                                      json_pp                       ntfssecaudit                       repstopdf                           whiptail
+ chmcmd-3.2.0                         fop                                               JSONStream                    ntfstruncate                       reset                               who
+ chmls                                fop-ttfreader                                     json_xs                       ntfsusermap                        resize                              whoami
+ chmls-3.2.0                          formail                                           jstack                        ntfswipe                           resizecons                          whois
+ chmod                                fp                                                jstar                         numfmt                             resizepart                          winicontoppm
+ choom                                fp-3.2.0                                          jstat                         nvim                               resolvectl                          wish
+ chown                                fpc                                               jstatd                        nvlc                               rev                                 wish8.6
+ chromedriver                         fpc-depends                                       jtb                           oakdecode                          rfcomm                              wmctrl
+ chrome-gnome-shell                   fpc-depends-3.2.0                                 junit                         obamenu                            rgb3toppm                           wmf2eps
+ chromium                             fpcjres-3.2.0                                     JxrDecApp                     obconf                             rgrep                               wmf2fig
+ chrt                                 fpclasschart                                      JxrEncApp                     obexctl                            rhythmbox                           wmf2gd
+ chsh                                 fpclasschart-3.2.0                                k5srvutil                     obj2yaml-11                        rhythmbox-client                    wmf2svg
+ chsh.ldap                            fpcmake                                           k5start                       objcopy                            ri                                  wmf2x
+ chvt                                 fpcmake-3.2.0                                     kactivities-cli               objdump                            ri2.7                               wmname
+ cifscreds                            fpcmkcfg                                          kadmin                        obsession-exit                     rifle                               wodim
+ cifsdd                               fpcres                                            kanji-config-updmap           obsession-logout                   rimraf                              wofm2opl
+ cinnamon                             fpcsubst                                          kanji-config-updmap-sys       obxprop                            rjoe                                wopl2ofm
+ cinnamon2d                           fpcsubst-3.2.0                                    kanji-config-updmap-user      oclock                             rletopnm                            word-list-compress
+ cinnamon-calendar-server             fpdoc                                             kanji-fontmap-creator         octave                             rlogin                              wordview
+ cinnamon-close-dialog                fpdoc-3.2.0                                       kbdinfo                       octave-cli                         rm                                  wovf2ovp
+ cinnamon-control-center              fp-fix-timestamps                                 kbd_mode                      od                                 rmcvsdir                            wovp2ovf
+ cinnamon-dbus-command                fppkg                                             kbookmarkmerger               odbcinst                           rmcvsdir-3.2.0                      wpa_passphrase
+ cinnamon-desktop-editor              fppkg-3.2.0                                       kbuildsycoca5                 odp2txt                            rmdir                               wrestool
+ cinnamon-display-changes-dialog      fprcp                                             kbxutil                       ods2txt                            rmic                                write
+ cinnamon-file-dialog                 fprcp-3.2.0                                       kcookiejar5                   odt2txt                            rmid                                write.ul
+ cinnamon-hover-click                 fprintd-delete                                    kdeconnect-app                odt2txt.odt2txt                    rmiregistry                         wrjpgcom
+ cinnamon-install-spice               fprintd-enroll                                    kdeconnect-cli                odvicopy                           r-mpost                             www-browser
+ cinnamon-json-makepot                fprintd-list                                      kdeconnect-handler            odvitype                           rnano                               wxmaxima
+ cinnamon-killer-daemon               fprintd-verify                                    kdeconnect-indicator          ofm2opl                            rofi                                X
+ cinnamon-launcher                    fragmaster                                        kdeconnect-settings           ogonkify                           rofi-sensible-terminal              X11
+ cinnamon-looking-glass               free                                              kdeconnect-sms                okular                             rofi-theme-selector                 x11perf
+ cinnamon-menu-editor                 freecad                                           kded5                         omfonts                            routef                              x11perfcomp
+ cinnamon-preview-gtk-theme           freecadcmd                                        kdeinit5                      ompi-clean                         routel                              x86_64
+ cinnamon-remove-application          freeplane                                         kdeinit5_shutdown             ompi_info                          rpcclient                           x86_64-linux-gnu-addr2line
+ cinnamon-screensaver                 frm                                               kdeinit5_wrapper              ompi-server                        rpcgen                              x86_64-linux-gnu-ar
+ cinnamon-screensaver-command         frm.mailutils                                     kdestroy                      on_ac_power                        rpcinfo                             x86_64-linux-gnu-as
+ cinnamon-screensaver-lock-dialog     from                                              keditbookmarks                onboard                            rpdfcrop                            x86_64-linux-gnu-c++filt
+ cinnamon-session                     from.mailutils                                    kernel-install                onboard-settings                   rpdump                              x86_64-linux-gnu-cpp
+ cinnamon-session-cinnamon            fsc                                               kEsetroot                     opalc++                            rpload                              x86_64-linux-gnu-cpp-10
+ cinnamon-session-cinnamon2d          fscip                                             ketcindy                      opalcc                             r-pmpost                            x86_64-linux-gnu-dwp
+ cinnamon-session-quit                fstopgm                                           keyctl                        opal_wrapper                       rrsync                              x86_64-linux-gnu-elfedit
+ cinnamon-settings                    ftp                                               keytool                       open                               Rscript                             x86_64-linux-gnu-fpc-3.2.0
+ cinnamon-settings-users              funzip                                            kglobalaccel5                 openbox                            rsh                                 x86_64-linux-gnu-fpcmkcfg-3.2.0
+ cinnamon-slideshow                   fuser                                             kiconfinder5                  openbox-session                    rst2html                            x86_64-linux-gnu-fpcres-3.2.0
+ cinnamon-spice-updater               fusermount                                        kile                          opener                             rst2html4                           x86_64-linux-gnu-g++
+ cinnamon-subprocess-wrapper          fusermount3                                       kill                          openjade                           rst2html5                           x86_64-linux-gnu-g++-10
+ cinnamon-unlock-desktop              futurize                                          killall                       openjade-1.4devel                  rst2latex                           x86_64-linux-gnu-gcc
+ cinnamon-xlet-makepot                fvwm                                              kinit                         openssl                            rst2man                             x86_64-linux-gnu-gcc-10
+ ciptool                              fvwm2                                             klist                         openvt                             rst2odt                             x86_64-linux-gnu-gcc-ar
+ circo                                fvwm-bug                                          kmod                          opl2ofm                            rst2odt_prepstyles                  x86_64-linux-gnu-gcc-ar-10
+ cjet                                 FvwmCommand                                       koi8rxterm                    opldecode                          rst2pseudoxml                       x86_64-linux-gnu-gcc-nm
+ cjk-gs-integrate                     fvwm-config                                       komkindex                     opt-11                             rst2s5                              x86_64-linux-gnu-gcc-nm-10
+ cjpeg                                fvwm-convert-2.6                                  kpackagelauncherqml           optex                              rst2xetex                           x86_64-linux-gnu-gcc-ranlib
+ cjs                                  fvwm-menu-desktop                                 kpackagetool5                 orca                               rst2xml                             x86_64-linux-gnu-gcc-ranlib-10
+ cjs-console                          fvwm-menu-directory                               kpasswd                       orca-dm-wrapper                    rstart                              x86_64-linux-gnu-gcov
+ ckbcomp                              fvwm-menu-headlines                               kpseaccess                    ortecc                             rstartd                             x86_64-linux-gnu-gcov-10
+ cksum                                fvwm-menu-xlock                                   kpsepath                      orte-clean                         rst-buildhtml                       x86_64-linux-gnu-gcov-dump
+ clang                                fvwm-perllib                                      kpsereadlink                  orted                              rstconv                             x86_64-linux-gnu-gcov-dump-10
+ clang++                              fvwm-root                                         kpsestat                      orte-info                          rstconv-3.2.0                       x86_64-linux-gnu-gcov-tool
+ clang++-11                           fwupdagent                                        kpsetool                      orterun                            rstpep2html                         x86_64-linux-gnu-gcov-tool-10
+ clang-11                             fwupdate                                          kpsewhere                     orte-server                        rstudio                             x86_64-linux-gnu-gfortran
+ clang-cpp-11                         fwupdmgr                                          kpsewhich                     osage                              rsync                               x86_64-linux-gnu-gfortran-10
+ clear                                fwupdtool                                         kpsexpand                     oshc++                             rsync-ssl                           x86_64-linux-gnu-gold
+ clear_console                        fwupdtpmevlog                                     kquitapp5                     oshcc                              rtfm                                x86_64-linux-gnu-gprof
+ clisp                                g++                                               kreadconfig5                  oshCC                              rtstat                              x86_64-linux-gnu-ld
+ clisp-link                           g++-10                                            krenew                        oshcxx                             rubibtex                            x86_64-linux-gnu-ld.bfd
+ clustalo                             g3topbm                                           kshell5                       oshfort                            rubikrotation                       x86_64-linux-gnu-ld.gold
+ cluster                              gamemoded                                         ksu                           oshmem_info                        ruby                                x86_64-linux-gnu-lto-dump-10
+ clusterdb                            gamma4scanimage                                   kswitch                       oshrun                             ruby2.7                             x86_64-linux-gnu-nm
+ cluttex                              gapplication                                      ktelnetservice5               os-prober                          rumakeindex                         x86_64-linux-gnu-objcopy
+ cmake                                gatttool                                          ktrash5                       ot2kpx                             runantlr                            x86_64-linux-gnu-objdump
+ cmp                                  gawk                                              ktutil                        otangle                            runcon                              x86_64-linux-gnu-pkg-config
+ cmuwmtopbm                           gbklatex                                          kvno                          otfinfo                            runghc                              x86_64-linux-gnu-python3.9-config
+ code                                 gbkpdflatex                                       kwalletd5                     otftotfm                           runghc-8.8.4                        x86_64-linux-gnu-python3-config
+ codeblocks                           gc                                                kwallet-query                 otp2ocp                            rungs                               x86_64-linux-gnu-ranlib
+ codepage                             gcalccmd                                          kwrapper5                     outocp                             runhaskell                          x86_64-linux-gnu-readelf
+ col                                  gcc                                               kwriteconfig5                 over                               run-mailcap                         x86_64-linux-gnu-size
+ colcrt                               gcc-10                                            l2ping                        ovf2ovp                            run-parts                           x86_64-linux-gnu-strings
+ colormgr                             gcc-ar                                            l2test                        ovp2ovf                            run-with-aspell                     x86_64-linux-gnu-strip
+ colrm                                gcc-ar-10                                         l3build                       p11-kit                            runxlrd                             x86_64-pc-linux-gnu-pkg-config
+ column                               gcc-nm                                            l4p-tmpl                      p7zip                              r-upmpost                           xapp-appimage-thumbnailer
+ combinediff                          gcc-nm-10                                         lacheck                       pacat                              rview                               xapp-epub-thumbnailer
+ comm                                 gcc-ranlib                                        laptop-detect                 pack200                            rvim                                xapp-mp3-thumbnailer
+ command-not-found                    gcc-ranlib-10                                     last                          pacmd                              rvlc                                xapp-raw-thumbnailer
+ compare                              gcg                                               lastb                         pactl                              rygel                               xargs
+ compare-im6                          gcore                                             lastlog                       padsp                              rzsh                                xauth
+ compare-im6.q16                      gcov                                              latex                         pager                              s32imdbpy.py                        xbiff
+ compose                              gcov-10                                           latex2html                    pa-info                            samba-regedit                       xbmtopbm
+ composeglyphs                        gcov-dump                                         latex2man                     palmtopnm                          samba-tool                          xbrlapi
+ composite                            gcov-dump-10                                      latex2nemeth                  pamcut                             samplecfg                           xbsh
+ composite-im6                        gcov-tool                                         latexdef                      pamdeinterlace                     sane-find-scanner                   xcalc
+ composite-im6.q16                    gcov-tool-10                                      latex-dev                     pamdice                            sanstats-11                         xclip
+ conjure                              gcr-viewer                                        latexdiff                     pamfile                            savelog                             xclipboard
+ conjure-im6                          gdb                                               latexdiff-cvs                 pamoil                             saxon-xslt                          xclip-copyfile
+ conjure-im6.q16                      gdb-add-index                                     latexdiff-fast                pamon                              sbigtopgm                           xclip-cutfile
+ context                              gdbserver                                         latexdiff-git                 pamphletangler                     scala                               xclip-pastefile
+ contextjit                           gdbtui                                            latexdiff-hg                  pamstack                           scalac                              xclock
+ convbkmk                             gdbus                                             latexdiff-rcs                 pamstretch                         scaladoc                            xcmsdb
+ convert                              gdbus-codegen                                     latexdiff-svn                 pamstretch-gen                     scalap                              xconsole
+ convertgls2bib                       gdebi                                             latexdiff-vc                  pandoc                             scanimage                           xcos
+ convert-im6                          gdebi-gtk                                         latexfileversion              pango-list                         sccmap                              xcursorgen
+ convert-im6.q16                      gdialog                                           latex-git-log                 pango-view                         scilab                              xcutsel
+ coredumpctl                          gdk-pixbuf-csource                                latexindent                   paperconf                          scilab-adv-cli                      xdg-autostart
+ corelist                             gdk-pixbuf-pixdata                                latexmk                       paplay                             scilab-bin                          xdg-dbus-proxy
+ count-11                             gdk-pixbuf-thumbnailer                            latexpand                     parec                              scilab-cli                          xdg-desktop-icon
+ cp                                   gdm-control                                       latex-papersize               parecord                           scilab-cli-bin                      xdg-desktop-menu
+ cpack                                gdmflexiserver                                    latexrevise                   partx                              scinotes                            xdg-email
+ cpan                                 gdm-screenshot                                    latex-wordcount               pas2fpm-3.2.0                      scip                                xdg-icon-resource
+ cpan5.32-x86_64-linux-gnu            gedit                                             lavadecode                    pas2jni-3.2.0                      scor2prt                            xdg-mime
+ cpanel_json_xs                       gem                                               lcf                           pas2ut-3.2.0                       scp                                 xdg-open
+ cpio                                 gem2.7                                            ld                            passwd                             scp-dbus-service                    xdg-screensaver
+ cpio-filter                          gemtopbm                                          ldapadd                       paste                              screendump                          xdg-settings
+ cpp                                  gemtopnm                                          ldapcompare                   pastebin                           script                              xdg-user-dir
+ cpp-10                               genbrk                                            ldapdelete                    pasteurize                         scriptlive                          xdg-user-dirs-gtk-update
+ crc32                                gencat                                            ldapexop                      pasuspender                        scriptreplay                        xdg-user-dirs-update
+ createdb                             gencfu                                            ldapmodify                    patch                              scrot                               xditview
+ createlang                           gencnval                                          ldapmodrdn                    patchview                          sdiff                               xdpyinfo
+ createuser                           gendict                                           ldappasswd                    patchwork                          sdl-config                          xdriinfo
+ c_rehash                             genisoimage                                       ldapsearch                    patgen                             sdptool                             xdvi
+ crontab                              genrb                                             ldapurl                       pathchk                            seahorse                            xdvi.bin
+ cs2cs                                genresscript                                      ldapwhoami                    pax11publish                       search4files                        xdvipdfmx
+ csd-a11y-settings                    geod                                              ld.bfd                        pbibtex                            sed                                 xdvi-xaw
+ csd-automount                        geqn                                              ldd                           pbmclean                           see                                 xed
+ csd-background                       GET                                               ld.gold                       pbmlife                            select-default-iwrap                xedit
+ csd-backlight-helper                 getafm                                            leaftoppm                     pbmmake                            select-editor                       xelatex
+ csd-clipboard                        getcifsacl                                        lefty                         pbmmask                            semver                              xelatex-dev
+ csd-color                            getconf                                           less                          pbmpage                            sensible-browser                    Xephyr
+ csd-datetime-mechanism               geteltorito                                       lessecho                      pbmpscale                          sensible-editor                     xetex
+ csd-housekeeping                     getent                                            lessfile                      pbmreduce                          sensible-pager                      xev
+ csd-input-helper                     getent.ldap                                       lesskey                       pbmtext                            sensors                             xeyes
+ csd-keyboard                         getfacl                                           lesspipe                      pbmtextps                          sensors-conf-convert                xfce4-panel-start
+ csd-media-keys                       getkeycodes                                       lex                           pbmto10x                           seq                                 xfce4-set-wallpaper
+ csd-power                            getmapdl                                          lexgrog                       pbmtoascii                         serialver                           xfd
+ csd-printer                          getopt                                            lft                           pbmtoatk                           sessreg                             xfdesktop-start
+ csd-print-notifications              gettext                                           lft.db                        pbmtobbnbg                         setarch                             xfig
+ csd-screensaver-proxy                gettextize                                        libmikmod-config              pbmtocmuwm                         setcifsacl                          xfontsel
+ csd-smartcard                        gettext.sh                                        libnetcfg                     pbmtoepsi                          set-default-locale                  xgamma
+ csd-wacom                            gfortran                                          libpng16-config               pbmtoepson                         setfacl                             xgc
+ csd-xsettings                        gfortran-10                                       libpng-config                 pbmtog3                            setfont                             xgettext
+ csh                                  gftodvi                                           libreoffice                   pbmtogem                           setkeycodes                         xhlatex
+ cslatex                              gftopk                                            libtoolize                    pbmtogo                            setleds                             xhost
+ csplain                              gftype                                            libwacom-list-local-devices   pbmtoicon                          setlogcons                          ximtoppm
+ csplit                               ggobi                                             lightdm-settings              pbmtolj                            setmetamode                         xindex
+ ctags                                ghc                                               link                          pbmtomacp                          setpci                              xinit
+ ctags.emacs                          ghc-8.8.4                                         linkicc                       pbmtomda                           setpriv                             xinput
+ ctanbib                              ghci                                              lintian                       pbmtomgr                           setsid                              xkbbell
+ ctangle                              ghci-8.8.4                                        lintian-annotate-hints        pbmtonokia                         setterm                             xkbcomp
+ ctanify                              ghc-pkg                                           lintian-explain-tags          pbmtopgm                           setupcon                            xkbevd
+ ctan-o-mat                           ghc-pkg-8.8.4                                     lintian-info                  pbmtopi3                           setvtrgb                            xkbprint
+ ctanupload                           ghostscript                                       linux32                       pbmtoplot                          setxkbmap                           xkbset
+ ctest                                gie                                               linux64                       pbmtoppa                           sfconv                              xkbset-gui
+ ctie                                 giftopnm                                          linux-boot-prober             pbmtopsg3                          sfdp                                xkbvleds
+ ctstat                               gimp                                              linux-check-removal           pbmtoptx                           sftp                                xkbwatch
+ ctwill                               gimp-2.10                                         linux-update-symlinks         pbmtowbmp                          sg                                  xkeystone
+ ctwill-refsort                       gimp-console                                      linux-version                 pbmtox10bm                         sgitopnm                            xkill
+ ctwill-twinx                         gimp-console-2.10                                 lispmtopgm                    pbmtoxbm                           sh                                  xlet-about-dialog
+ cups-calibrate                       gimp-test-clipboard-2.0                           listbib                       pbmtoybm                           sha1sum                             xlet-settings
+ cupstestppd                          ginstall-info                                     listings-ext                  pbmtozinc                          sha224sum                           xload
+ curl                                 gio                                               listres                       pbmupc                             sha256sum                           xlogo
+ cut                                  gio-querymodules                                  llc-11                        pc                                 sha256sum-mint                      xls2csv
+ cvlc                                 gipddecode                                        lli-11                        pcre2-config                       sha384sum                           xlsatoms
+ cvs                                  git                                               lli-child-target-11           pcre-config                        sha512sum                           xlsclients
+ cvs-switchroot                       gitdiff                                           llvm-addr2line-11             pcxtoppm                           shar                                xlsfonts
+ cvt                                  gitdiffview                                       llvm-ar-11                    pdb3                               shasum                              xmag
+ cvtsudoers                           git-latexdiff                                     llvm-as-11                    pdb3.9                             shiboken2                           xman
+ cweave                               git-receive-pack                                  llvm-bcanalyzer-11            pdf2dsc                            shmemc++                            xmessage
+ dash                                 git-shell                                         llvm-cat-11                   pdf2ps                             shmemcc                             XML2Modelica
+ data2inc                             git-upload-archive                                llvm-cfi-verify-11            pdfannotextractor                  shmemCC                             xmlcatalog
+ data2inc-3.2.0                       git-upload-pack                                   llvm-config-11                pdfatfi                            shmemcxx                            xmllint
+ date                                 gjs                                               llvm-cov-11                   pdfattach                          shmemfort                           xmltex
+ dbus-cleanup-sockets                 gjs-console                                       llvm-c-test-11                pdfbook2                           shmemrun                            xmodmap
+ dbus-daemon                          gkbd-keyboard-display                             llvm-cvtres-11                pdfclose                           showchar                            xmore
+ dbus-launch                          glib-compile-resources                            llvm-cxxdump-11               pdfcrop                            showconsolefont                     Xorg
+ dbus-monitor                         glib-compile-schemas                              llvm-cxxfilt-11               pdfcslatex                         showkey                             xournal
+ dbus-run-session                     glib-genmarshal                                   llvm-cxxmap-11                pdfcsplain                         showrgb                             xpdf
+ dbus-send                            glib-gettextize                                   llvm-diff-11                  pdfdetach                          shred                               xpdf.real
+ dbus-update-activation-environment   glib-mkenums                                      llvm-dis-11                   pdfetex                            shuf                                xpmroot
+ dbus-uuidgen                         glxdemo                                           llvm-dlltool-11               pdffonts                           sieve                               xpmtoppm
+ dbwrap_tool                          glxgears                                          llvm-dwarfdump-11             pdfimages                          simpdftex                           xprop
+ dbxtool                              glxheads                                          llvm-dwp-11                   pdfinfo                            simple-scan                         xqxdecode
+ dc                                   glxinfo                                           llvm-elfabi-11                pdfjadetex                         simplyhtml                          xrandr
+ dccleancrw                           gmake                                             llvm-exegesis-11              pdfjam                             sirtopnm                            xrdb
+ dcfujigreen                          gml2gv                                            llvm-extract-11               pdflatex                           size                                xreader
+ dcfujiturn                           gmplayerdvd                                       llvm-gsymutil-11              pdflatex-dev                       sjisconv                            xreader-previewer
+ dcfujiturn16                         gnome-calculator                                  llvm-ifs-11                   pdflatexpicscale                   sjislatex                           xreader-thumbnailer
+ dconf                                gnome-calendar                                    llvm-install-name-tool-11     pdfmex                             sjispdflatex                        xrefresh
+ dcparse                              gnome-control-center                              llvm-jitlink-11               pdfopen                            skill                               xscreensaver
+ dcraw                                gnome-disk-image-mounter                          llvm-lib-11                   pdfseparate                        slabtop                             xscreensaver-command
+ dd                                   gnome-disks                                       llvm-link-11                  pdfsig                             sldtoppm                            xscreensaver-demo
+ ddstdecode                           gnome-extensions                                  llvm-lipo-11                  pdftex                             sleep                               xscreensaver-getimage
+ deallocvt                            gnome-font-viewer                                 llvm-lto-11                   pdftexi2dvi                        sliceprint                          xscreensaver-getimage-file
+ debconf                              gnome-help                                        llvm-lto2-11                  pdftex-quiet                       slick-greeter-check-hidpi           xscreensaver-getimage-video
+ debconf-apt-progress                 gnome-keyring                                     llvm-mc-11                    pdftocairo                         slick-greeter-set-keyboard-layout   xscreensaver-systemd
+ debconf-communicate                  gnome-keyring-3                                   llvm-mca-11                   pdftohtml                          slock                               xscreensaver-text
+ debconf-copydb                       gnome-keyring-daemon                              llvm-ml-11                    pdftoppm                           slogin                              x-session-manager
+ debconf-escape                       gnome-logs                                        llvm-modextract-11            pdftops                            slxdecode                           xset
+ debconf-gettextize                   gnome-power-statistics                            llvm-mt-11                    pdftosrc                           smb2-quota                          xsetmode
+ debconf-set-selections               gnome-screenshot                                  llvm-nm-11                    pdftotext                          smbcacls                            xsetpointer
+ debconf-show                         gnome-session                                     llvm-objcopy-11               pdftrimwhite                       smbclient                           xsetroot
+ debconf-updatepo                     gnome-session-custom-session                      llvm-objdump-11               pdfunite                           smbcquotas                          xsetwacom
+ deb-systemd-helper                   gnome-session-inhibit                             llvm-opt-report-11            pdfxmltex                          smbget                              xslate
+ deb-systemd-invoke                   gnome-session-quit                                llvm-pdbutil-11               pdfxup                             smbinfo                             xsltproc
+ decodemail                           gnome-shell                                       llvm-PerfectShuffle-11        pdiff                              smbpasswd                           xsm
+ defmt-c                              gnome-shell-extension-tool                        llvm-profdata-11              pdvitomp                           smbspool                            xssstate
+ defmt-sh                             gnome-shell-perf-tool                             llvm-ranlib-11                pdvitype                           smbtar                              xstdcmap
+ dehtmldiff                           gnome-system-monitor                              llvm-rc-11                    pedigree                           smbtree                             xsubpp
+ delaunay                             gnome-terminal                                    llvm-readelf-11               peekfd                             smime_keys                          xterm
+ delp                                 gnome-terminal.wrapper                            llvm-readobj-11               perf                               smproxy                             x-terminal-emulator
+ delp-3.2.0                           gnome-text-editor                                 llvm-reduce-11                perf.wrapper                       snice                               Xtightvnc
+ delpart                              gnome-thumbnail-font                              llvm-rtdyld-11                perl                               soelim                              xtightvncviewer
+ delv                                 gnome-www-browser                                 llvm-size-11                  perl5.32.1                         soffice                             xvidtune
+ depythontex                          gnumeric                                          llvm-split-11                 perl5.32-x86_64-linux-gnu          software-properties-gtk             xviewer
+ derb                                 gnuplot                                           llvm-stress-11                perlbug                            software-sources                    xvinfo
+ desktop-file-edit                    gnuplot-qt                                        llvm-strings-11               perldoc                            soplex                              xvminitoppm
+ desktop-file-install                 gobject-query                                     llvm-strip-11                 perldoc.stub                       sort                                Xvnc
+ desktop-file-validate                gold                                              llvm-symbolizer-11            perli11ndoc                        sort-dctrl                          xvncviewer
+ detex                                google-chrome                                     llvm-tblgen-11                perlivp                            spa-acp-tool                        Xwayland
+ devdump                              google-chrome-stable                              llvm-undname-11               perltex                            spa-inspect                         xwd
+ devnag                               gouldtoppm                                        llvm-xray-11                  perlthanks                         spa-monitor                         xwdtopnm
+ deweb                                gpasswd                                           ln                            pf2afm                             spa-resample                        x-window-manager
+ df                                   gpg                                               lneato                        pfarrei                            spctoppm                            xwininfo
+ dfu-tool                             gpg2                                              lnstat                        pfb2pfa                            spd-conf                            xwud
+ dh                                   gpg-agent                                         loadkeys                      pfb2t1c                            spd-say                             x-www-browser
+ dh_auto_build                        gpgcompose                                        loadunimap                    pfbtopfa                           spdsend                             xxd
+ dh_auto_clean                        gpgconf                                           lobase                        pftp                               speaker-test                        xz
+ dh_auto_configure                    gpg-connect-agent                                 localc                        pg_basebackup                      speech-dispatcher                   xzcat
+ dh_auto_install                      gpgparsemail                                      locale                        pgbench                            spell                               xzcmp
+ dh_autoreconf                        gpgsm                                             localectl                     pg_dump                            spellintian                         xzdiff
+ dh_autoreconf_clean                  gpgsplit                                          localedef                     pg_dumpall                         splain                              xzegrep
+ dh_auto_test                         gpgtar                                            locate                        pg_isready                         split                               xzfgrep
+ dh_autotools-dev_restoreconfig       gpgv                                              lockfile                      pgmbentley                         splitdiff                           xzgrep
+ dh_autotools-dev_updateconfig        gpg-wks-server                                    lodraw                        pgmcrater                          splitfont                           xzless
+ dh_bash-completion                   gpg-zip                                           loffice                       pgmedge                            splitindex                          xzmore
+ dh_bugfiles                          gpic                                              lofromtemplate                pgmenhance                         sprop                               y2racc2.7
+ dh_builddeb                          gprof                                             logger                        pgmhist                            spumux                              yacc
+ dh_clean                             grab_vcsa                                         login                         pgmkernel                          sputoppm                            yaml2obj-11
+ dh_compress                          grab_vcsa-3.2.0                                   loginctl                      pgmnoise                           spuunmux                            yaml-bench-11
+ dh_dkms                              grape                                             logname                       pgmnorm                            sqldiff                             ybmtopbm
+ dh_dwz                               graphml2gv                                        loimpress                     pgmoil                             sqlite3                             yelp
+ dh_fixperms                          gregorio                                          lollipop                      pgmramp                            squiggle                            yes
+ dh_gconf                             grep                                              lomath                        pgmslice                           srcredact                           youtube-dl
+ dh_gencontrol                        grep-aptavail                                     look                          pgmtexture                         ss                                  ypdomainname
+ dh_icons                             grep-available                                    loweb                         pgmtofs                            ssconvert                           yplan
+ dh_install                           grep-dctrl                                        lowntfs-3g                    pgmtolispm                         ssdiff                              yuvsplittoppm
+ dh_installalternatives               grep-debtags                                      lowriter                      pgmtopbm                           sselp                               yuvtoppm
+ dh_installcatalogs                   grepdiff                                          lp                            pgmtoppm                           ssgrep                              zcat
+ dh_installchangelogs                 grepjar                                           lpoptions                     pg_receivewal                      ssh                                 zcmp
+ dh_installcron                       grepmail                                          lpq                           pg_receivexlog                     ssh-add                             zdiff
+ dh_installdeb                        grep-status                                       lpr                           pg_recvlogical                     ssh-agent                           zdump
+ dh_installdebconf                    gresource                                         lprm                          pgrep                              ssh-argv0                           zegrep
+ dh_installdirs                       groff                                             lp_solve                      pg_restore                         ssh-copy-id                         zeisstopnm
+ dh_installdocs                       grog                                              lpstat                        pi1toppm                           sshfs                               zenity
+ dh_installemacsen                    groovy                                            ls                            pi3topbm                           ssh-keygen                          zfgrep
+ dh_installexamples                   groovyc                                           lsattr                        pic                                ssh-keyscan                         zforce
+ dh_installgsettings                  groovyConsole                                     lsblk                         pic2tpic                           sshpk-conv                          zgrep
+ dh_installifupdown                   groovydoc                                         lsb_release                   pico                               sshpk-sign                          zimpl
+ dh_installinfo                       groovysh                                          lscpu                         piconv                             sshpk-verify                        zip
+ dh_installinit                       grops                                             lsdiff                        pidof                              ssid                                zipcloak
+ dh_installinitramfs                  grotty                                            lshw                          pidwait                            ssindex                             zipdetails
+ dh_installlogcheck                   groups                                            lsinitramfs                   pinentry                           st4topgm                            zipgrep
+ dh_installlogrotate                  growisofs                                         lsipc                         pinentry-curses                    startcaja                           zipinfo
+ dh_installman                        grub-editenv                                      lslocks                       pinentry-gnome3                    startGroovy                         zipnote
+ dh_installmanpages                   grub-file                                         lslogins                      pinentry-x11                       start-pulseaudio-x11                zipsplit
+ dh_installmenu                       grub-fstest                                       lsmem                         ping                               startx                              zjsdecode
+ dh_installmime                       grub-glue-efi                                     lsmod                         ping4                              stat                                zless
+ dh_installmodules                    grub-kbdcomp                                      lsns                          ping6                              states                              zmore
+ dh_installpam                        grub-menulst2cfg                                  lsof                          pinky                              stdbuf                              znew
+ dh_installppp                        grub-mkfont                                       lspci                         pip                                stest                               zsh
+ dh_installsystemd                    grub-mkimage                                      lspgpot                       pip3                               sticky                              zsh5
+ dh_installsystemduser                grub-mklayout                                     lsusb                         pipewire                           stl2gts
+ dh_installsysusers                   grub-mknetdir                                     lsw                           pipewire-media-session             strace
+
+> he2@h8:~$ id
+uid=5298(he2) gid=1016(espinf) grupos=1016(espinf)
+
+> he2@h8:~$ pwd
+/home/espinf/he2
+
+> he2@h8:~$ ls
+'Área de trabalho'   Downloads   Modelos   Público   Vídeos
+ Documentos          Imagens     Música    R
+> he2@h8:~$ cd Downloads/
+> he2@h8:~/Downloads$ ls
+DSBD2024-Aula02b.pdf  DSBD2024-Aula02c.pdf  DSBD2024-Aula02.pdf
+> he2@h8:~/Downloads$ pwd
+/home/espinf/he2/Downloads
+
+> he2@h8:~/Downloads$ cd ..
+> he2@h8:~$ pwd
+/home/espinf/he2
+
+> he2@h8:~$ quota -vs
+Disk quotas for user he2 (uid 5298): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+10.254.222.3:/exports/terminais/config/loginlocal_grub/
+                 41356K   7813M   8008M             471       0       0        
+200.17.202.3:/exports/terminais/syslog_terminais/h8
+                 41356K   7813M   8008M             471       0       0        
+urquell:/nobackup
+                 41356K   7813M   8008M             471       0       0        
+
+> he2@h8:~$ cd /nobackup/
+
+> he2@h8:/nobackup$ ls
+bcc               curso     espinf  fisica  lbd         ppginf   simcaq  trappist
+c3sl              cvs       est     html    lost+found  prof     soft    visit
+contas_removidas  especial  fis     ibm     mat         profest  temp
+
+<pre>he2@h8:/nobackup$ cd espinf
+he2@h8:/nobackup/espinf$ ls
+<font color="#729FCF"><b>aagortencio</b></font>   <font color="#729FCF"><b>cmmartins</b></font>    <font color="#729FCF"><b>fmiecznikowski</b></font>  <font color="#729FCF"><b>jderenevick</b></font>      <font color="#729FCF"><b>mamcsantos</b></font>    <font color="#729FCF"><b>rdgoncalves</b></font>
+<font color="#729FCF"><b>acbpaul</b></font>       <font color="#729FCF"><b>cocachoeira</b></font>  <font color="#729FCF"><b>fmkowalski</b></font>      <font color="#729FCF"><b>jfanobrega</b></font>       <font color="#729FCF"><b>manasguewitz</b></font>  <font color="#729FCF"><b>rdxavier</b></font>
+<font color="#729FCF"><b>accbecker</b></font>     <font color="#729FCF"><b>cpcouto</b></font>      <font color="#729FCF"><b>fodias</b></font>          <font color="#729FCF"><b>jgslsilva</b></font>        <font color="#729FCF"><b>massis</b></font>        <font color="#729FCF"><b>rffchen</b></font>
+<font color="#729FCF"><b>acploposki</b></font>    <font color="#729FCF"><b>crconceicao</b></font>  <font color="#729FCF"><b>fsmdias</b></font>         <font color="#729FCF"><b>jhbleite</b></font>         <font color="#729FCF"><b>mbfernandes</b></font>   <font color="#729FCF"><b>ripumeyama</b></font>
+<font color="#729FCF"><b>acsangelo</b></font>     <font color="#729FCF"><b>csmjunior</b></font>    <font color="#729FCF"><b>fssantos</b></font>        <font color="#729FCF"><b>jjbrito</b></font>          <font color="#729FCF"><b>mboliveira</b></font>    <font color="#729FCF"><b>rmalange</b></font>
+<font color="#729FCF"><b>admarques</b></font>     <font color="#729FCF"><b>dafpereira</b></font>   <font color="#729FCF"><b>fwerner</b></font>         <font color="#729FCF"><b>jlino</b></font>            <font color="#729FCF"><b>mejpalma</b></font>      <font color="#729FCF"><b>rmcastillo</b></font>
+<font color="#729FCF"><b>aenascimento</b></font>  <font color="#729FCF"><b>dbplopes</b></font>     <font color="#729FCF"><b>fztrevisan</b></font>      <font color="#729FCF"><b>jmbooliveira</b></font>     <font color="#729FCF"><b>mekumlehn</b></font>     <font color="#729FCF"><b>rmjunior</b></font>
+<font color="#729FCF"><b>afcarassai</b></font>    <font color="#729FCF"><b>dbribas</b></font>      <font color="#729FCF"><b>gbfrehse</b></font>        <font color="#729FCF"><b>jmmsantos</b></font>        <font color="#729FCF"><b>mfcosta</b></font>       <font color="#729FCF"><b>rnjunior</b></font>
+<font color="#729FCF"><b>afcobre</b></font>       <font color="#729FCF"><b>dbsantiago</b></font>   <font color="#729FCF"><b>gccsilva</b></font>        <font color="#729FCF"><b>jmojunior</b></font>        <font color="#729FCF"><b>mffpoleto</b></font>     <font color="#729FCF"><b>rnsantos</b></font>
+<font color="#729FCF"><b>afsapavao</b></font>     <font color="#729FCF"><b>dfmoro</b></font>       <font color="#729FCF"><b>gdbal</b></font>           <font color="#729FCF"><b>jnkozak</b></font>          <font color="#729FCF"><b>mgarcia</b></font>       <font color="#729FCF"><b>rpinter</b></font>
+<font color="#729FCF"><b>agmazeto</b></font>      <font color="#729FCF"><b>dgaspar</b></font>      <font color="#729FCF"><b>gdsantos</b></font>        <font color="#729FCF"><b>jolalbanaz</b></font>       <font color="#729FCF"><b>mgoliveira</b></font>    <font color="#729FCF"><b>rpscosta</b></font>
+<font color="#729FCF"><b>agsilva</b></font>       <font color="#729FCF"><b>dghermam</b></font>     <font color="#729FCF"><b>gfberger</b></font>        <font color="#729FCF"><b>jpcalmeida</b></font>       <font color="#729FCF"><b>mjcandido</b></font>     <font color="#729FCF"><b>rrdias</b></font>
+<font color="#729FCF"><b>aharafael</b></font>     <font color="#729FCF"><b>djsoares</b></font>     <font color="#729FCF"><b>ghbarzotto</b></font>      <font color="#729FCF"><b>jpcosta</b></font>          <font color="#729FCF"><b>mlamacedo</b></font>     <font color="#729FCF"><b>rrpetterle</b></font>
+<font color="#729FCF"><b>algrion</b></font>       <font color="#729FCF"><b>dlsfilho</b></font>     <font color="#729FCF"><b>gjgrocha</b></font>        <font color="#729FCF"><b>jpcwolff</b></font>         <font color="#729FCF"><b>mliz</b></font>          <font color="#729FCF"><b>rscherner</b></font>
+<font color="#729FCF"><b>amassuncao</b></font>    <font color="#729FCF"><b>dmschneider</b></font>  <font color="#729FCF"><b>gmandrade</b></font>       <font color="#729FCF"><b>jrbfernandes</b></font>     <font color="#729FCF"><b>mmfachi</b></font>       <font color="#729FCF"><b>rvsaraujo</b></font>
+<font color="#729FCF"><b>amcarvalho</b></font>    <font color="#729FCF"><b>dmscsouza</b></font>    <font color="#729FCF"><b>gmcardoso</b></font>       <font color="#729FCF"><b>jrwithoeft</b></font>       <font color="#729FCF"><b>mmmoura</b></font>       <font color="#729FCF"><b>scavila</b></font>
+<font color="#729FCF"><b>amvidal</b></font>       <font color="#729FCF"><b>dmtmoro</b></font>      <font color="#729FCF"><b>gpboiko</b></font>         <font color="#729FCF"><b>jsilva</b></font>           <font color="#729FCF"><b>mmretka</b></font>       <font color="#729FCF"><b>scspereira</b></font>
+<font color="#729FCF"><b>apandrade</b></font>     <font color="#729FCF"><b>dpbravo</b></font>      <font color="#729FCF"><b>gpereira</b></font>        <font color="#729FCF"><b>jskamarowski</b></font>     <font color="#729FCF"><b>mmtmartinez</b></font>   <font color="#729FCF"><b>sfsfarinelli</b></font>
+<font color="#729FCF"><b>apinto</b></font>        <font color="#729FCF"><b>ds2</b></font>          <font color="#729FCF"><b>grdortas</b></font>        <font color="#729FCF"><b>jssantos</b></font>         <font color="#729FCF"><b>mofsouza</b></font>      <font color="#729FCF"><b>taalves</b></font>
+<font color="#729FCF"><b>aplroberto</b></font>    <font color="#729FCF"><b>dscoelho</b></font>     <font color="#729FCF"><b>gribeiro</b></font>        <font color="#729FCF"><b>jtanchante</b></font>       <font color="#729FCF"><b>mpgoliveira</b></font>   <font color="#729FCF"><b>tbcalvo</b></font>
+<font color="#729FCF"><b>ardresch</b></font>      <font color="#729FCF"><b>dsmariano</b></font>    <font color="#729FCF"><b>grteixeira</b></font>      <font color="#729FCF"><b>jtgfernandes</b></font>     <font color="#729FCF"><b>mrlara</b></font>        <font color="#729FCF"><b>tcara</b></font>
+<font color="#729FCF"><b>arlunardi</b></font>     <font color="#729FCF"><b>dssantiago</b></font>   <font color="#729FCF"><b>gtsilva</b></font>         <font color="#729FCF"><b>jwosiack</b></font>         <font color="#729FCF"><b>mrnascimento</b></font>  <font color="#729FCF"><b>tcvaz</b></font>
+<font color="#729FCF"><b>asalmeida</b></font>     <font color="#729FCF"><b>dvsouza</b></font>      <font color="#729FCF"><b>gursilva</b></font>        <font color="#729FCF"><b>karodrigues</b></font>      <font color="#729FCF"><b>mschwab</b></font>       <font color="#729FCF"><b>telestacio</b></font>
+<font color="#729FCF"><b>asazuma</b></font>       <font color="#729FCF"><b>dwcatelan</b></font>    <font color="#729FCF"><b>hamiyamoto</b></font>      <font color="#729FCF"><b>kfdalt</b></font>           <font color="#729FCF"><b>msnlamorte</b></font>    <font color="#729FCF"><b>tgpinto</b></font>
+<font color="#729FCF"><b>asmesquita</b></font>    <font color="#729FCF"><b>ebprado</b></font>      <font color="#729FCF"><b>he2</b></font>             <font color="#729FCF"><b>khvpedroso</b></font>       <font color="#729FCF"><b>mvbatista</b></font>     <font color="#729FCF"><b>tmrabelo</b></font>
+<font color="#729FCF"><b>asyoshimoto</b></font>   <font color="#729FCF"><b>ecsoares</b></font>     <font color="#729FCF"><b>hfavre</b></font>          <font color="#729FCF"><b>lakulik</b></font>          <font color="#729FCF"><b>mvggarcia</b></font>     <font color="#729FCF"><b>tsalves</b></font>
+<font color="#729FCF"><b>avkuduavski</b></font>   <font color="#729FCF"><b>eers</b></font>         <font color="#729FCF"><b>hgarbin</b></font>         <font color="#729FCF"><b>ldkvieira</b></font>        <font color="#729FCF"><b>mwmsantos</b></font>     <font color="#729FCF"><b>tvssantana</b></font>
+<font color="#729FCF"><b>bbicalho</b></font>      <font color="#729FCF"><b>egfreire</b></font>     <font color="#729FCF"><b>hhyamamura</b></font>      <font color="#729FCF"><b>lgferreira</b></font>       <font color="#729FCF"><b>ngs2</b></font>          <font color="#729FCF"><b>tzbarboza</b></font>
+<font color="#729FCF"><b>bboger</b></font>        <font color="#729FCF"><b>ejsjunior</b></font>    <font color="#729FCF"><b>hmdjustina</b></font>      <font color="#729FCF"><b>lgsouza</b></font>          <font color="#729FCF"><b>ngsainz</b></font>       <font color="#729FCF"><b>ufalves</b></font>
+<font color="#729FCF"><b>bcbileski</b></font>     <font color="#729FCF"><b>elhenequi</b></font>    <font color="#729FCF"><b>hmsferreira</b></font>     <font color="#729FCF"><b>lhcosta</b></font>          <font color="#729FCF"><b>nmribeiro</b></font>     <font color="#729FCF"><b>vaaguiar</b></font>
+<font color="#729FCF"><b>bioflores</b></font>     <font color="#729FCF"><b>elsantos</b></font>     <font color="#729FCF"><b>hnkato</b></font>          <font color="#729FCF"><b>lhfmoraes</b></font>        <font color="#729FCF"><b>nrsjunior</b></font>     <font color="#729FCF"><b>vcavanco</b></font>
+<font color="#729FCF"><b>bluzzi</b></font>        <font color="#729FCF"><b>ephilippi</b></font>    <font color="#729FCF"><b>hptortiz</b></font>        <font color="#729FCF"><b>lhrtroscianczuk</b></font>  <font color="#729FCF"><b>nsrfilho</b></font>      <font color="#729FCF"><b>vcrfrancisco</b></font>
+<font color="#729FCF"><b>bmbsouza</b></font>      <font color="#729FCF"><b>ergaioski</b></font>    <font color="#729FCF"><b>hrsdespindula</b></font>   <font color="#729FCF"><b>lkmkoyashiki</b></font>     <font color="#729FCF"><b>pccarvalho</b></font>    <font color="#729FCF"><b>vfmereles</b></font>
+<font color="#729FCF"><b>btonet</b></font>        <font color="#729FCF"><b>ersouza</b></font>      <font color="#729FCF"><b>iacuco</b></font>          <font color="#729FCF"><b>llcruz</b></font>           <font color="#729FCF"><b>pcfalcaraz</b></font>    <font color="#729FCF"><b>vmlopes</b></font>
+<font color="#729FCF"><b>cacaetano</b></font>     <font color="#729FCF"><b>estromberg</b></font>   <font color="#729FCF"><b>ihchiarelli</b></font>     <font color="#729FCF"><b>lmorettini</b></font>       <font color="#729FCF"><b>pcfcneto</b></font>      <font color="#729FCF"><b>vrsouza</b></font>
+<font color="#729FCF"><b>camhfilho</b></font>     <font color="#729FCF"><b>estupka</b></font>      <font color="#729FCF"><b>ipsouza</b></font>         <font color="#729FCF"><b>lmprestes</b></font>        <font color="#729FCF"><b>pesjardim</b></font>     <font color="#729FCF"><b>vsoliveira</b></font>
+<font color="#729FCF"><b>cbosch</b></font>        <font color="#729FCF"><b>fawazny</b></font>      <font color="#729FCF"><b>irmello</b></font>         <font color="#729FCF"><b>loflima</b></font>          <font color="#729FCF"><b>phpgoncalves</b></font>  <font color="#729FCF"><b>vvcosta</b></font>
+<font color="#729FCF"><b>ccckrauss</b></font>     <font color="#729FCF"><b>faweber</b></font>      <font color="#729FCF"><b>izerger</b></font>         <font color="#729FCF"><b>lpcavalheiro</b></font>     <font color="#729FCF"><b>phtdirene</b></font>     <font color="#729FCF"><b>vviana</b></font>
+<font color="#729FCF"><b>chasantos</b></font>     <font color="#729FCF"><b>fbklas</b></font>       <font color="#729FCF"><b>jataide</b></font>         <font color="#729FCF"><b>lpmiranda</b></font>        <font color="#729FCF"><b>pjscrosa</b></font>      <font color="#729FCF"><b>wjcampos</b></font>
+<font color="#729FCF"><b>cjrcjr</b></font>        <font color="#729FCF"><b>fbveiga</b></font>      <font color="#729FCF"><b>jbajunior</b></font>       <font color="#729FCF"><b>lraferreira</b></font>      <font color="#729FCF"><b>prrsampaio</b></font>    <font color="#729FCF"><b>wofurriel</b></font>
+<font color="#729FCF"><b>cjrodrigues</b></font>   <font color="#729FCF"><b>fccarvalho</b></font>   <font color="#729FCF"><b>jbguilherme</b></font>     <font color="#729FCF"><b>lsgoncalves</b></font>      <font color="#729FCF"><b>psereda</b></font>       <font color="#729FCF"><b>wtreis</b></font>
+<font color="#729FCF"><b>cjsouza</b></font>       <font color="#729FCF"><b>fcfarias</b></font>     <font color="#729FCF"><b>jcfmineo</b></font>        <font color="#729FCF"><b>lvcarvalho</b></font>       <font color="#729FCF"><b>pvpbarros</b></font>     <font color="#729FCF"><b>ycfurusho</b></font>
+<font color="#729FCF"><b>cjvivan</b></font>       <font color="#729FCF"><b>ffjeronimo</b></font>   <font color="#729FCF"><b>jchagas</b></font>         <font color="#729FCF"><b>lvmaldonado</b></font>      <font color="#729FCF"><b>rafpcostardi</b></font>
+<font color="#729FCF"><b>clpsilva</b></font>      <font color="#729FCF"><b>fhkotani</b></font>     <font color="#729FCF"><b>jcmonate</b></font>        <font color="#729FCF"><b>lwcjunior</b></font>        <font color="#729FCF"><b>ramonastier</b></font>
+<font color="#729FCF"><b>cmbfialho</b></font>     <font color="#729FCF"><b>fjrmoreira</b></font>   <font color="#729FCF"><b>jcsjunior</b></font>       <font color="#729FCF"><b>maacampos</b></font>        <font color="#729FCF"><b>rblima</b></font>
+he2@h8:/nobackup/espinf$ ls h*
+ls: não foi possível abrir o diretório &apos;hamiyamoto&apos;: Permissão negada
+he2:
+ls: não foi possível abrir o diretório &apos;hfavre&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hgarbin&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hhyamamura&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hmdjustina&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hmsferreira&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hnkato&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hptortiz&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hrsdespindula&apos;: Permissão negada
+</pre>
+
+```
+
+
+
+
