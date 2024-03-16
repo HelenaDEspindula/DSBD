@@ -1047,8 +1047,98 @@ power management:
 > he2@h8:~$ id
 uid=5298(he2) gid=1016(espinf) grupos=1016(espinf)
 
+> he2@h8:~$ pwd
+/home/espinf/he2
 
+> he2@h8:~$ ls
+'Área de trabalho'   Downloads   Modelos   Público   Vídeos
+ Documentos          Imagens     Música    R
+> he2@h8:~$ cd Downloads/
+> he2@h8:~/Downloads$ ls
+DSBD2024-Aula02b.pdf  DSBD2024-Aula02c.pdf  DSBD2024-Aula02.pdf
+> he2@h8:~/Downloads$ pwd
+/home/espinf/he2/Downloads
 
+> he2@h8:~/Downloads$ cd ..
+> he2@h8:~$ pwd
+/home/espinf/he2
+
+> he2@h8:~$ quota -vs
+Disk quotas for user he2 (uid 5298): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+10.254.222.3:/exports/terminais/config/loginlocal_grub/
+                 41356K   7813M   8008M             471       0       0        
+200.17.202.3:/exports/terminais/syslog_terminais/h8
+                 41356K   7813M   8008M             471       0       0        
+urquell:/nobackup
+                 41356K   7813M   8008M             471       0       0        
+
+> he2@h8:~$ cd /nobackup/
+
+> he2@h8:/nobackup$ ls
+bcc               curso     espinf  fisica  lbd         ppginf   simcaq  trappist
+c3sl              cvs       est     html    lost+found  prof     soft    visit
+contas_removidas  especial  fis     ibm     mat         profest  temp
+
+<pre>he2@h8:/nobackup$ cd espinf
+he2@h8:/nobackup/espinf$ ls
+<font color="#729FCF"><b>aagortencio</b></font>   <font color="#729FCF"><b>cmmartins</b></font>    <font color="#729FCF"><b>fmiecznikowski</b></font>  <font color="#729FCF"><b>jderenevick</b></font>      <font color="#729FCF"><b>mamcsantos</b></font>    <font color="#729FCF"><b>rdgoncalves</b></font>
+<font color="#729FCF"><b>acbpaul</b></font>       <font color="#729FCF"><b>cocachoeira</b></font>  <font color="#729FCF"><b>fmkowalski</b></font>      <font color="#729FCF"><b>jfanobrega</b></font>       <font color="#729FCF"><b>manasguewitz</b></font>  <font color="#729FCF"><b>rdxavier</b></font>
+<font color="#729FCF"><b>accbecker</b></font>     <font color="#729FCF"><b>cpcouto</b></font>      <font color="#729FCF"><b>fodias</b></font>          <font color="#729FCF"><b>jgslsilva</b></font>        <font color="#729FCF"><b>massis</b></font>        <font color="#729FCF"><b>rffchen</b></font>
+<font color="#729FCF"><b>acploposki</b></font>    <font color="#729FCF"><b>crconceicao</b></font>  <font color="#729FCF"><b>fsmdias</b></font>         <font color="#729FCF"><b>jhbleite</b></font>         <font color="#729FCF"><b>mbfernandes</b></font>   <font color="#729FCF"><b>ripumeyama</b></font>
+<font color="#729FCF"><b>acsangelo</b></font>     <font color="#729FCF"><b>csmjunior</b></font>    <font color="#729FCF"><b>fssantos</b></font>        <font color="#729FCF"><b>jjbrito</b></font>          <font color="#729FCF"><b>mboliveira</b></font>    <font color="#729FCF"><b>rmalange</b></font>
+<font color="#729FCF"><b>admarques</b></font>     <font color="#729FCF"><b>dafpereira</b></font>   <font color="#729FCF"><b>fwerner</b></font>         <font color="#729FCF"><b>jlino</b></font>            <font color="#729FCF"><b>mejpalma</b></font>      <font color="#729FCF"><b>rmcastillo</b></font>
+<font color="#729FCF"><b>aenascimento</b></font>  <font color="#729FCF"><b>dbplopes</b></font>     <font color="#729FCF"><b>fztrevisan</b></font>      <font color="#729FCF"><b>jmbooliveira</b></font>     <font color="#729FCF"><b>mekumlehn</b></font>     <font color="#729FCF"><b>rmjunior</b></font>
+<font color="#729FCF"><b>afcarassai</b></font>    <font color="#729FCF"><b>dbribas</b></font>      <font color="#729FCF"><b>gbfrehse</b></font>        <font color="#729FCF"><b>jmmsantos</b></font>        <font color="#729FCF"><b>mfcosta</b></font>       <font color="#729FCF"><b>rnjunior</b></font>
+<font color="#729FCF"><b>afcobre</b></font>       <font color="#729FCF"><b>dbsantiago</b></font>   <font color="#729FCF"><b>gccsilva</b></font>        <font color="#729FCF"><b>jmojunior</b></font>        <font color="#729FCF"><b>mffpoleto</b></font>     <font color="#729FCF"><b>rnsantos</b></font>
+<font color="#729FCF"><b>afsapavao</b></font>     <font color="#729FCF"><b>dfmoro</b></font>       <font color="#729FCF"><b>gdbal</b></font>           <font color="#729FCF"><b>jnkozak</b></font>          <font color="#729FCF"><b>mgarcia</b></font>       <font color="#729FCF"><b>rpinter</b></font>
+<font color="#729FCF"><b>agmazeto</b></font>      <font color="#729FCF"><b>dgaspar</b></font>      <font color="#729FCF"><b>gdsantos</b></font>        <font color="#729FCF"><b>jolalbanaz</b></font>       <font color="#729FCF"><b>mgoliveira</b></font>    <font color="#729FCF"><b>rpscosta</b></font>
+<font color="#729FCF"><b>agsilva</b></font>       <font color="#729FCF"><b>dghermam</b></font>     <font color="#729FCF"><b>gfberger</b></font>        <font color="#729FCF"><b>jpcalmeida</b></font>       <font color="#729FCF"><b>mjcandido</b></font>     <font color="#729FCF"><b>rrdias</b></font>
+<font color="#729FCF"><b>aharafael</b></font>     <font color="#729FCF"><b>djsoares</b></font>     <font color="#729FCF"><b>ghbarzotto</b></font>      <font color="#729FCF"><b>jpcosta</b></font>          <font color="#729FCF"><b>mlamacedo</b></font>     <font color="#729FCF"><b>rrpetterle</b></font>
+<font color="#729FCF"><b>algrion</b></font>       <font color="#729FCF"><b>dlsfilho</b></font>     <font color="#729FCF"><b>gjgrocha</b></font>        <font color="#729FCF"><b>jpcwolff</b></font>         <font color="#729FCF"><b>mliz</b></font>          <font color="#729FCF"><b>rscherner</b></font>
+<font color="#729FCF"><b>amassuncao</b></font>    <font color="#729FCF"><b>dmschneider</b></font>  <font color="#729FCF"><b>gmandrade</b></font>       <font color="#729FCF"><b>jrbfernandes</b></font>     <font color="#729FCF"><b>mmfachi</b></font>       <font color="#729FCF"><b>rvsaraujo</b></font>
+<font color="#729FCF"><b>amcarvalho</b></font>    <font color="#729FCF"><b>dmscsouza</b></font>    <font color="#729FCF"><b>gmcardoso</b></font>       <font color="#729FCF"><b>jrwithoeft</b></font>       <font color="#729FCF"><b>mmmoura</b></font>       <font color="#729FCF"><b>scavila</b></font>
+<font color="#729FCF"><b>amvidal</b></font>       <font color="#729FCF"><b>dmtmoro</b></font>      <font color="#729FCF"><b>gpboiko</b></font>         <font color="#729FCF"><b>jsilva</b></font>           <font color="#729FCF"><b>mmretka</b></font>       <font color="#729FCF"><b>scspereira</b></font>
+<font color="#729FCF"><b>apandrade</b></font>     <font color="#729FCF"><b>dpbravo</b></font>      <font color="#729FCF"><b>gpereira</b></font>        <font color="#729FCF"><b>jskamarowski</b></font>     <font color="#729FCF"><b>mmtmartinez</b></font>   <font color="#729FCF"><b>sfsfarinelli</b></font>
+<font color="#729FCF"><b>apinto</b></font>        <font color="#729FCF"><b>ds2</b></font>          <font color="#729FCF"><b>grdortas</b></font>        <font color="#729FCF"><b>jssantos</b></font>         <font color="#729FCF"><b>mofsouza</b></font>      <font color="#729FCF"><b>taalves</b></font>
+<font color="#729FCF"><b>aplroberto</b></font>    <font color="#729FCF"><b>dscoelho</b></font>     <font color="#729FCF"><b>gribeiro</b></font>        <font color="#729FCF"><b>jtanchante</b></font>       <font color="#729FCF"><b>mpgoliveira</b></font>   <font color="#729FCF"><b>tbcalvo</b></font>
+<font color="#729FCF"><b>ardresch</b></font>      <font color="#729FCF"><b>dsmariano</b></font>    <font color="#729FCF"><b>grteixeira</b></font>      <font color="#729FCF"><b>jtgfernandes</b></font>     <font color="#729FCF"><b>mrlara</b></font>        <font color="#729FCF"><b>tcara</b></font>
+<font color="#729FCF"><b>arlunardi</b></font>     <font color="#729FCF"><b>dssantiago</b></font>   <font color="#729FCF"><b>gtsilva</b></font>         <font color="#729FCF"><b>jwosiack</b></font>         <font color="#729FCF"><b>mrnascimento</b></font>  <font color="#729FCF"><b>tcvaz</b></font>
+<font color="#729FCF"><b>asalmeida</b></font>     <font color="#729FCF"><b>dvsouza</b></font>      <font color="#729FCF"><b>gursilva</b></font>        <font color="#729FCF"><b>karodrigues</b></font>      <font color="#729FCF"><b>mschwab</b></font>       <font color="#729FCF"><b>telestacio</b></font>
+<font color="#729FCF"><b>asazuma</b></font>       <font color="#729FCF"><b>dwcatelan</b></font>    <font color="#729FCF"><b>hamiyamoto</b></font>      <font color="#729FCF"><b>kfdalt</b></font>           <font color="#729FCF"><b>msnlamorte</b></font>    <font color="#729FCF"><b>tgpinto</b></font>
+<font color="#729FCF"><b>asmesquita</b></font>    <font color="#729FCF"><b>ebprado</b></font>      <font color="#729FCF"><b>he2</b></font>             <font color="#729FCF"><b>khvpedroso</b></font>       <font color="#729FCF"><b>mvbatista</b></font>     <font color="#729FCF"><b>tmrabelo</b></font>
+<font color="#729FCF"><b>asyoshimoto</b></font>   <font color="#729FCF"><b>ecsoares</b></font>     <font color="#729FCF"><b>hfavre</b></font>          <font color="#729FCF"><b>lakulik</b></font>          <font color="#729FCF"><b>mvggarcia</b></font>     <font color="#729FCF"><b>tsalves</b></font>
+<font color="#729FCF"><b>avkuduavski</b></font>   <font color="#729FCF"><b>eers</b></font>         <font color="#729FCF"><b>hgarbin</b></font>         <font color="#729FCF"><b>ldkvieira</b></font>        <font color="#729FCF"><b>mwmsantos</b></font>     <font color="#729FCF"><b>tvssantana</b></font>
+<font color="#729FCF"><b>bbicalho</b></font>      <font color="#729FCF"><b>egfreire</b></font>     <font color="#729FCF"><b>hhyamamura</b></font>      <font color="#729FCF"><b>lgferreira</b></font>       <font color="#729FCF"><b>ngs2</b></font>          <font color="#729FCF"><b>tzbarboza</b></font>
+<font color="#729FCF"><b>bboger</b></font>        <font color="#729FCF"><b>ejsjunior</b></font>    <font color="#729FCF"><b>hmdjustina</b></font>      <font color="#729FCF"><b>lgsouza</b></font>          <font color="#729FCF"><b>ngsainz</b></font>       <font color="#729FCF"><b>ufalves</b></font>
+<font color="#729FCF"><b>bcbileski</b></font>     <font color="#729FCF"><b>elhenequi</b></font>    <font color="#729FCF"><b>hmsferreira</b></font>     <font color="#729FCF"><b>lhcosta</b></font>          <font color="#729FCF"><b>nmribeiro</b></font>     <font color="#729FCF"><b>vaaguiar</b></font>
+<font color="#729FCF"><b>bioflores</b></font>     <font color="#729FCF"><b>elsantos</b></font>     <font color="#729FCF"><b>hnkato</b></font>          <font color="#729FCF"><b>lhfmoraes</b></font>        <font color="#729FCF"><b>nrsjunior</b></font>     <font color="#729FCF"><b>vcavanco</b></font>
+<font color="#729FCF"><b>bluzzi</b></font>        <font color="#729FCF"><b>ephilippi</b></font>    <font color="#729FCF"><b>hptortiz</b></font>        <font color="#729FCF"><b>lhrtroscianczuk</b></font>  <font color="#729FCF"><b>nsrfilho</b></font>      <font color="#729FCF"><b>vcrfrancisco</b></font>
+<font color="#729FCF"><b>bmbsouza</b></font>      <font color="#729FCF"><b>ergaioski</b></font>    <font color="#729FCF"><b>hrsdespindula</b></font>   <font color="#729FCF"><b>lkmkoyashiki</b></font>     <font color="#729FCF"><b>pccarvalho</b></font>    <font color="#729FCF"><b>vfmereles</b></font>
+<font color="#729FCF"><b>btonet</b></font>        <font color="#729FCF"><b>ersouza</b></font>      <font color="#729FCF"><b>iacuco</b></font>          <font color="#729FCF"><b>llcruz</b></font>           <font color="#729FCF"><b>pcfalcaraz</b></font>    <font color="#729FCF"><b>vmlopes</b></font>
+<font color="#729FCF"><b>cacaetano</b></font>     <font color="#729FCF"><b>estromberg</b></font>   <font color="#729FCF"><b>ihchiarelli</b></font>     <font color="#729FCF"><b>lmorettini</b></font>       <font color="#729FCF"><b>pcfcneto</b></font>      <font color="#729FCF"><b>vrsouza</b></font>
+<font color="#729FCF"><b>camhfilho</b></font>     <font color="#729FCF"><b>estupka</b></font>      <font color="#729FCF"><b>ipsouza</b></font>         <font color="#729FCF"><b>lmprestes</b></font>        <font color="#729FCF"><b>pesjardim</b></font>     <font color="#729FCF"><b>vsoliveira</b></font>
+<font color="#729FCF"><b>cbosch</b></font>        <font color="#729FCF"><b>fawazny</b></font>      <font color="#729FCF"><b>irmello</b></font>         <font color="#729FCF"><b>loflima</b></font>          <font color="#729FCF"><b>phpgoncalves</b></font>  <font color="#729FCF"><b>vvcosta</b></font>
+<font color="#729FCF"><b>ccckrauss</b></font>     <font color="#729FCF"><b>faweber</b></font>      <font color="#729FCF"><b>izerger</b></font>         <font color="#729FCF"><b>lpcavalheiro</b></font>     <font color="#729FCF"><b>phtdirene</b></font>     <font color="#729FCF"><b>vviana</b></font>
+<font color="#729FCF"><b>chasantos</b></font>     <font color="#729FCF"><b>fbklas</b></font>       <font color="#729FCF"><b>jataide</b></font>         <font color="#729FCF"><b>lpmiranda</b></font>        <font color="#729FCF"><b>pjscrosa</b></font>      <font color="#729FCF"><b>wjcampos</b></font>
+<font color="#729FCF"><b>cjrcjr</b></font>        <font color="#729FCF"><b>fbveiga</b></font>      <font color="#729FCF"><b>jbajunior</b></font>       <font color="#729FCF"><b>lraferreira</b></font>      <font color="#729FCF"><b>prrsampaio</b></font>    <font color="#729FCF"><b>wofurriel</b></font>
+<font color="#729FCF"><b>cjrodrigues</b></font>   <font color="#729FCF"><b>fccarvalho</b></font>   <font color="#729FCF"><b>jbguilherme</b></font>     <font color="#729FCF"><b>lsgoncalves</b></font>      <font color="#729FCF"><b>psereda</b></font>       <font color="#729FCF"><b>wtreis</b></font>
+<font color="#729FCF"><b>cjsouza</b></font>       <font color="#729FCF"><b>fcfarias</b></font>     <font color="#729FCF"><b>jcfmineo</b></font>        <font color="#729FCF"><b>lvcarvalho</b></font>       <font color="#729FCF"><b>pvpbarros</b></font>     <font color="#729FCF"><b>ycfurusho</b></font>
+<font color="#729FCF"><b>cjvivan</b></font>       <font color="#729FCF"><b>ffjeronimo</b></font>   <font color="#729FCF"><b>jchagas</b></font>         <font color="#729FCF"><b>lvmaldonado</b></font>      <font color="#729FCF"><b>rafpcostardi</b></font>
+<font color="#729FCF"><b>clpsilva</b></font>      <font color="#729FCF"><b>fhkotani</b></font>     <font color="#729FCF"><b>jcmonate</b></font>        <font color="#729FCF"><b>lwcjunior</b></font>        <font color="#729FCF"><b>ramonastier</b></font>
+<font color="#729FCF"><b>cmbfialho</b></font>     <font color="#729FCF"><b>fjrmoreira</b></font>   <font color="#729FCF"><b>jcsjunior</b></font>       <font color="#729FCF"><b>maacampos</b></font>        <font color="#729FCF"><b>rblima</b></font>
+he2@h8:/nobackup/espinf$ ls h*
+ls: não foi possível abrir o diretório &apos;hamiyamoto&apos;: Permissão negada
+he2:
+ls: não foi possível abrir o diretório &apos;hfavre&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hgarbin&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hhyamamura&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hmdjustina&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hmsferreira&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hnkato&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hptortiz&apos;: Permissão negada
+ls: não foi possível abrir o diretório &apos;hrsdespindula&apos;: Permissão negada
+</pre>
 
 ```
 
