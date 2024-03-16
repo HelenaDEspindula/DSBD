@@ -1371,7 +1371,7 @@ real	0m5,005s
 user	0m0,000s
 sys	0m0,002s
 
-he2@h8:~$ echo $HOME 
+> he2@h8:~$ echo $HOME 
 /home/espinf/he2
 
 > he2@h8:~$ top
@@ -1430,7 +1430,7 @@ MB swap:      0,0 total,      0,0 livre,      0,0 usados,   4927,5 mem dispon.
      48 root       0 -20       0      0      0 I   0,0   0,0   0:00.00 kblockd                          
 
 
-he2@h8:~$ history
+> he2@h8:~$ history
     1  passwd
     2  df -h
     3  mount
@@ -1512,6 +1512,15 @@ he2@h8:~$ history
    79  top
    80  clear
    81  history
+
+> he2@h8:~$ ps ax | grep gedit
+  12797 pts/0    S+     0:00 grep gedit
+
+> he2@h8:~$ kill 12797
+
+> he2@h8:~$ xkill
+Select the window whose client you wish to kill with button 1....
+xkill:  killing creator of resource 0x3000007
 
 
 
@@ -2414,7 +2423,8 @@ he2@h8:/nobackup/espinf$ ls
 <font color="#729FCF"><b>cjvivan</b></font>       <font color="#729FCF"><b>ffjeronimo</b></font>   <font color="#729FCF"><b>jchagas</b></font>         <font color="#729FCF"><b>lvmaldonado</b></font>      <font color="#729FCF"><b>rafpcostardi</b></font>
 <font color="#729FCF"><b>clpsilva</b></font>      <font color="#729FCF"><b>fhkotani</b></font>     <font color="#729FCF"><b>jcmonate</b></font>        <font color="#729FCF"><b>lwcjunior</b></font>        <font color="#729FCF"><b>ramonastier</b></font>
 <font color="#729FCF"><b>cmbfialho</b></font>     <font color="#729FCF"><b>fjrmoreira</b></font>   <font color="#729FCF"><b>jcsjunior</b></font>       <font color="#729FCF"><b>maacampos</b></font>        <font color="#729FCF"><b>rblima</b></font>
-he2@h8:/nobackup/espinf$ ls h*
+
+> he2@h8:/nobackup/espinf$ ls h*
 ls: não foi possível abrir o diretório &apos;hamiyamoto&apos;: Permissão negada
 he2:
 ls: não foi possível abrir o diretório &apos;hfavre&apos;: Permissão negada
@@ -2429,15 +2439,14 @@ ls: não foi possível abrir o diretório &apos;hrsdespindula&apos;: Permissão 
 
 
 
-
-
-
 he2@h8:~$ pwd
 /home/espinf/he2
 
-he2@h8:~$ $HOME
+> he2@h8:~$ $HOME
 bash: /home/espinf/he2: É um diretório
 
+> he2@h8:~$ htop
+[imagem]
 ```
 
 
