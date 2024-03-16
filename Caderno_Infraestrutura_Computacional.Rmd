@@ -240,24 +240,50 @@ o	Se não pode escrever não pode apagar
 •	“pwd” -> ver diretório completo
 
 
+# Aula 02
+
+## Continuação da aula anterior
 
 
-## R Markdown
+```{r}
+> he2@h8:~$ df -h
+df: /run/user/5298/doc: Operação não permitida
+Sist. Arq.                                               Tam. Usado Disp. Uso% Montado em
+udev                                                     3,8G     0  3,8G   0% /dev
+tmpfs                                                    783M  9,1M  774M   2% /run
+10.254.222.3:/exports/terminais/config/loginlocal_grub/   22T  9,4T   13T  43% /.overlay/ro
+tmpfs                                                    3,9G   14M  3,9G   1% /.overlay/rw
+overlay                                                  3,9G   14M  3,9G   1% /
+200.17.202.3:/exports/terminais/syslog_terminais/h8       22T  9,4T   13T  43% /var/log
+tmpfs                                                    3,9G   26M  3,8G   1% /dev/shm
+tmpfs                                                    5,0M  4,0K  5,0M   1% /run/lock
+tmpfs                                                    3,9G  5,6M  3,9G   1% /tmp
+urquell:/home                                             22T  3,6T   19T  17% /home
+urquell:/nobackup                                         22T  9,4T   13T  43% /nobackup
+tmpfs                                                    783M  160K  783M   1% /run/user/5298
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+> he2@h8:~$ ls -l
+total 5
+drwx------ 2 he2 espinf 2 mar 15 19:45 'Área de trabalho'
+drwx------ 2 he2 espinf 2 mar 15 19:45  Documentos
+drwx------ 2 he2 espinf 5 mar 15 19:52  Downloads
+drwx------ 2 he2 espinf 2 mar 15 19:45  Imagens
+drwx------ 2 he2 espinf 2 mar 15 19:45  Modelos
+drwx------ 2 he2 espinf 2 mar 15 19:45  Música
+drwx------ 2 he2 espinf 2 mar 15 19:45  Público
+drwx------ 3 he2 espinf 3 mar 16 08:02  R
+drwx------ 2 he2 espinf 2 mar 15 19:45  Vídeos
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+> he2@h8:~$ ls -l /dev/sd*
+brw-rw---- 1 root disk 8, 0 mar 16 07:58 /dev/sda
+brw-rw---- 1 root disk 8, 1 mar 16 07:58 /dev/sda1
 
-```{r cars}
-summary(cars)
+
+
+
 ```
 
-## Including Plots
 
-You can also embed plots, for example:
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
