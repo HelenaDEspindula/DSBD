@@ -1,14 +1,22 @@
 ---
 title: "Caderno_Infraestrutura_Computacional"
-output: pdf_document
+output:
+  pdf_document: default
+  word_document: default
+  html_document: default
+  odt_document: default
 date: "`r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+knitr::knit_engines$set(shell = function(options) {
+  # the source code is in options$code; just do
+  # whatever you want with it
+})
 ```
 
-# Aula 02 - Parte 1: GNU/Linux e Shell - Prof Lucas Ferrari de Oliveira (USP)
+# Aula 01 - Parte 1: GNU/Linux e Shell - Prof Lucas Ferrari de Oliveira (USP)
 
 web.inf.ufpr.br/lferrari 
 
@@ -230,7 +238,7 @@ Macalan.c3sl......
 Ssh? – acesso visual
 
 
-```{r}
+```{r, results = FALSE}
 # lferrari@thanos – 19T – 12T
 # df – h pasta/
 ```
@@ -249,6 +257,7 @@ Virtual File System (VFS)
 -	“cd ..” -> voltar diretório
 -	“pwd” -> ver diretório completo
 
+\newpage
 
 # Aula 02
 
@@ -1774,27 +1783,29 @@ Símbolo & Significado\\
 \hline
 \{n\} & o caractere anterior casa exatamente n vezes\\
 \hline
-{n} & o caractere anterior casa exatamente n vezes\\
+\{n,m\} & o caractere anterior casa pelo menos n e não mais que m vezes\\
 \hline
-{n} & o caractere anterior casa exatamente n vezes\\
-\hline
-{n} & o caractere anterior casa exatamente n vezes\\
-\hline
-{n} & o caractere anterior casa exatamente n vezes\\
 
-\hline
 \end{tabular}
 
-{n,m} o caractere anterior casa pelo menos n e não mais que m vezes
-[agd] o caractere é um dos incluídos entre colchetes
-[^agd] o caractere não é um dos incluídos entre colchetes
-[c-f] o caractere é um no intervalo entre c e f
-() permite agrupar diversos caracteres como se
-fossem um
-| (pipe symbol) - operação lógica OU
-^ casa com início de linha
-$ casa com final de linha
+```{r}
+# \hline
+# \[agd\] & o caractere é um dos incluídos entre colchetes\\
+# \hline
+# \[^agd\] & o caractere não é um dos incluídos entre colchetes\\
+# \hline
+# \[c-f\] & o caractere é um no intervalo entre c e f\\
+# () & permite agrupar diversos caracteres como se fossem um\\
+# \hline
+# | (pipe symbol) & operação lógica OU\\
+# \hline
+# ^ & casa com início de linha\\
+# \hline
+# $ & casa com final de linha\\
+# \hline
+```
 
+#### Exemplos de execussão
 
 ```{r}
 # > he2@h8:~/Downloads$ egrep 'mellon' dados.txt 
@@ -2146,67 +2157,283 @@ $ casa com final de linha
 # drwx------ 3 he2 espinf   3 mar 16 08:02 R
 # -rw------- 1 he2 espinf   0 mar 16 11:03 saida.txt
 # -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# 
+# he2@h8:~$ ls -l $HOME | tee saida.txt
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# 
+# he2@h8:~$ cat saida.txt 
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# 
+# he2@h8:~$ ls -l $HOME | tee saida.txt | head -3
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# 
+# he2@h8:~$ ls -l $HOME | tee saida.txt | head -3 > tee_file.txt
+# 
+# he2@h8:~$ cat saida.txt 
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf   0 mar 16 11:09 saida.txt
+# -rw------- 1 he2 espinf   0 mar 16 11:09 tee_file.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# 
+# he2@h8:~$ cat tee_file.txt 
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
+# 
+# 
+# he2@h8:~$ ls -l $HOME
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:11  Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56  erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54  numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02  R
+# -rw------- 1 he2 espinf 731 mar 16 11:09  saida.txt
+# -rw------- 1 he2 espinf 120 mar 16 11:09  tee_file.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45  teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Vídeos
+# 
+# 
+# he2@h8:~$ chmod 200 tee_file.txt 
+# he2@h8:~$ ls -l $HOME
+# total 19
+# drwx------ 2 he2 espinf   2 mar 15 19:45 'Área de trabalho'
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Documentos
+# drwx------ 2 he2 espinf  11 mar 16 11:11  Downloads
+# -rw------- 1 he2 espinf  72 mar 16 10:56  erros.txt
+# drwx------ 2 he2 espinf   4 mar 16 09:06  Imagens
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Modelos
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Música
+# -rw------- 1 he2 espinf   3 mar 16 10:54  numerolinhas.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Público
+# drwx------ 3 he2 espinf   3 mar 16 08:02  R
+# -rw------- 1 he2 espinf 731 mar 16 11:09  saida.txt
+# --w------- 1 he2 espinf 120 mar 16 11:09  tee_file.txt
+# -rw------- 1 he2 espinf 101 mar 16 10:45  teste_saida.txt
+# drwx------ 2 he2 espinf   2 mar 15 19:45  Vídeos
+# 
+# he2@h8:~$ ls -l $HOME | tee saida.txt | head -3 > tee_file.txt
+# 
+# he2@h8:~$ cat tee_file.txt 
+# cat: tee_file.txt: Permissão negada
+# 
+# he2@h8:~$ ls -l $HOME | tail -n +8 | sort
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Música
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Público
+# drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# drwx------ 3 he2 espinf   3 mar 16 08:02 R
+# -rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
+# -rw------- 1 he2 espinf 120 mar 16 11:17 tee_file.txt
+# -rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
+# -rw------- 1 he2 espinf 731 mar 16 11:17 saida.txt
 
-he2@h8:~$ ls -l $HOME | tee saida.txt
-total 19
-drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
-drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
-drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
--rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
-drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
-drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
-drwx------ 2 he2 espinf   2 mar 15 19:45 Música
--rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Público
-drwx------ 3 he2 espinf   3 mar 16 08:02 R
--rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
--rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
+# he2@h8:~$ wc -l saida.txt 
+# 15 saida.txt
+# 
+# he2@h8:~$ wc -l < saida.txt 
+# 15
+# 
+# he2@h8:~$ ls /bin | sort | head -20
+# [
+# 411toppm
+# 7z
+# 7za
+# 7zr
+# a2ping
+# a2ps
+# a2ps-lpr-wrapper
+# a52dec
+# a5booklet
+# a5toa4
+# aa-enabled
+# aa-exec
+# aclocal
+# aclocal-1.16
+# aconnect
+# acpi_listen
+# acyclic
+# add-apt-repository
+# addpart
+# 
+# he2@h8:~$ cat /tmp/lista | head -20
+# [
+# 411toppm
+# 7z
+# 7za
+# 7zr
+# a2ping
+# a2ps
+# a2ps-lpr-wrapper
+# a52dec
+# a5booklet
+# a5toa4
+# aa-enabled
+# aa-exec
+# aclocal
+# aclocal-1.16
+# aconnect
+# acpi_listen
+# acyclic
+# add-apt-repository
+# addpart
+# 
+# he2@h8:~$ ls /bin | sort | tee /tmp/lista | wc
+#    3658    3658   37829
+# 
+# he2@h8:~$ ls /bin | sort | tee /tmp/lista | wc -l
+# 3658
+# 
+# 
+# he2@h8:~$ ls -l /home/espinf/ |tail -n +250
+# drwx------ 17 tgpinto         espinf  28 jun 21  2022 tgpinto
+# drwx------  2 tmrabelo        espinf   7 out 13  2021 tmrabelo
+# drwx------ 26 tsalves         espinf  40 jun 21  2022 tsalves
+# drwx------ 30 tvssantana      espinf  57 dez  9 09:21 tvssantana
+# drwx------ 31 tzbarboza       espinf  55 dez  9 10:10 tzbarboza
+# drwx------  7 ufalves         espinf  14 jun 21  2022 ufalves
+# drwx------  5 vaaguiar        espinf  12 jun 21  2022 vaaguiar
+# drwx------ 14 vcavanco        espinf  26 mar 16 10:35 vcavanco
+# drwx------ 22 vcrfrancisco    espinf  35 jun  3  2023 vcrfrancisco
+# drwx------ 17 vfmereles       espinf  28 mar 15 21:28 vfmereles
+# drwx------ 26 vmlopes         espinf  45 dez  9 08:19 vmlopes
+# drwx------  2 vrsouza         espinf   7 fev 22 11:10 vrsouza
+# drwx------ 26 vsoliveira      espinf  52 out 20 20:06 vsoliveira
+# drwx------ 29 vvcosta         espinf  49 nov 17 19:15 vvcosta
+# drwxr----- 31 vviana          espinf 110 jun 21  2022 vviana
+# drwx------ 20 wjcampos        espinf  33 jun 21  2022 wjcampos
+# drwx------ 22 wofurriel       espinf  34 nov 26  2022 wofurriel
+# drwx------ 34 wtreis          espinf  49 jun 21  2022 wtreis
+# drwx------ 17 ycfurusho       espinf  36 jan 26 14:24 ycfurusho
+# 
+# he2@h8:~$ ls -l /home/espinf/ |tail -n +250 | sed 's/  */ /g'
+# drwx------ 17 tgpinto espinf 28 jun 21 2022 tgpinto
+# drwx------ 2 tmrabelo espinf 7 out 13 2021 tmrabelo
+# drwx------ 26 tsalves espinf 40 jun 21 2022 tsalves
+# drwx------ 30 tvssantana espinf 57 dez 9 09:21 tvssantana
+# drwx------ 31 tzbarboza espinf 55 dez 9 10:10 tzbarboza
+# drwx------ 7 ufalves espinf 14 jun 21 2022 ufalves
+# drwx------ 5 vaaguiar espinf 12 jun 21 2022 vaaguiar
+# drwx------ 14 vcavanco espinf 26 mar 16 10:35 vcavanco
+# drwx------ 22 vcrfrancisco espinf 35 jun 3 2023 vcrfrancisco
+# drwx------ 17 vfmereles espinf 28 mar 15 21:28 vfmereles
+# drwx------ 26 vmlopes espinf 45 dez 9 08:19 vmlopes
+# drwx------ 2 vrsouza espinf 7 fev 22 11:10 vrsouza
+# drwx------ 26 vsoliveira espinf 52 out 20 20:06 vsoliveira
+# drwx------ 29 vvcosta espinf 49 nov 17 19:15 vvcosta
+# drwxr----- 31 vviana espinf 110 jun 21 2022 vviana
+# drwx------ 20 wjcampos espinf 33 jun 21 2022 wjcampos
+# drwx------ 22 wofurriel espinf 34 nov 26 2022 wofurriel
+# drwx------ 34 wtreis espinf 49 jun 21 2022 wtreis
+# drwx------ 17 ycfurusho espinf 36 jan 26 14:24 ycfurusho
+# 
+# 
+# he2@h8:~$ ls -l /home/espinf/ |tail -n +250 | sed 's/  */ /g' | cut -d ' ' -f 3
+# tgpinto
+# tmrabelo
+# tsalves
+# tvssantana
+# tzbarboza
+# ufalves
+# vaaguiar
+# vcavanco
+# vcrfrancisco
+# vfmereles
+# vmlopes
+# vrsouza
+# vsoliveira
+# vvcosta
+# vviana
+# wjcampos
+# wofurriel
+# wtreis
+# ycfurusho
+# 
+# he2@h8:~$ ls -l /home/espinf/ |tail -n +250 | sed 's/  */ /g' | cut -d ' ' -f 3 | sort
+# tgpinto
+# tmrabelo
+# tsalves
+# tvssantana
+# tzbarboza
+# ufalves
+# vaaguiar
+# vcavanco
+# vcrfrancisco
+# vfmereles
+# vmlopes
+# vrsouza
+# vsoliveira
+# vvcosta
+# vviana
+# wjcampos
+# wofurriel
+# wtreis
+# ycfurusho
+# 
+# he2@h8:~$ ls -l /home/espinf/ |tail -n +250 | sed 's/  */ /g' | cut -d ' ' -f 3 | sort | uniq -c
+#       1 tgpinto
+#       1 tmrabelo
+#       1 tsalves
+#       1 tvssantana
+#       1 tzbarboza
+#       1 ufalves
+#       1 vaaguiar
+#       1 vcavanco
+#       1 vcrfrancisco
+#       1 vfmereles
+#       1 vmlopes
+#       1 vrsouza
+#       1 vsoliveira
+#       1 vvcosta
+#       1 vviana
+#       1 wjcampos
+#       1 wofurriel
+#       1 wtreis
+#       1 ycfurusho
 
-he2@h8:~$ cat saida.txt 
-total 19
-drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
-drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
-drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
--rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
-drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
-drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
-drwx------ 2 he2 espinf   2 mar 15 19:45 Música
--rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Público
-drwx------ 3 he2 espinf   3 mar 16 08:02 R
--rw------- 1 he2 espinf   0 mar 16 11:08 saida.txt
--rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
-
-he2@h8:~$ ls -l $HOME | tee saida.txt | head -3
-total 19
-drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
-drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
-
-he2@h8:~$ ls -l $HOME | tee saida.txt | head -3 > tee_file.txt
-
-he2@h8:~$ cat saida.txt 
-total 19
-drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
-drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
-drwx------ 2 he2 espinf  11 mar 16 11:06 Downloads
--rw------- 1 he2 espinf  72 mar 16 10:56 erros.txt
-drwx------ 2 he2 espinf   4 mar 16 09:06 Imagens
-drwx------ 2 he2 espinf   2 mar 15 19:45 Modelos
-drwx------ 2 he2 espinf   2 mar 15 19:45 Música
--rw------- 1 he2 espinf   3 mar 16 10:54 numerolinhas.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Público
-drwx------ 3 he2 espinf   3 mar 16 08:02 R
--rw------- 1 he2 espinf   0 mar 16 11:09 saida.txt
--rw------- 1 he2 espinf   0 mar 16 11:09 tee_file.txt
--rw------- 1 he2 espinf 101 mar 16 10:45 teste_saida.txt
-drwx------ 2 he2 espinf   2 mar 15 19:45 Vídeos
-
-he2@h8:~$ cat tee_file.txt 
-total 19
-drwx------ 2 he2 espinf   2 mar 15 19:45 Área de trabalho
-drwx------ 2 he2 espinf   2 mar 15 19:45 Documentos
 
 
 
