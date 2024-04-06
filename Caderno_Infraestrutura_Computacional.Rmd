@@ -9,7 +9,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-##Parte 1: GNU/Linux e Shell
+# Parte 1: GNU/Linux e Shell
 Prof Lucas Ferrari de Oliveira (USP)
 
 web.inf.ufpr.br/lferrari 
@@ -20,7 +20,6 @@ web.inf.ufpr.br/lferrari
 - Reconhecimento de Padrões
 
 Arquitetura de von Neumann -> CPU 
-
 
 				Central Processing Unit
 					Control Unit
@@ -37,6 +36,17 @@ print (a+1)
 ```
  
 
+<<<<<<< HEAD
+## No principio era UNIX…
+-	S.O. criado no AT&T Bell Labs
+- Introduziu e popularizou conceitos:
+  -	Sistema de arquivos, shell, processos, usuários (cada usuário o seu home, permissões)
+- Por volta de 1990
+  - Patentes e copyright isolaram o UNIX em nichos
+  - Não eram compatíveis com PC “personal computer” (x86 - Intel)
+  - UNIX foi padronizado (POSIX)
+  - Processadores “vetorizados”
+=======
 No principio era UNIX…
 - S.O. criado no AT&T Bell Labs
 	- Introduziu e popularizou conceitos:
@@ -46,36 +56,39 @@ o	Patentes e copyright isolaram o UNIX em nichos
 o	Não eram compatíveis com PC “personal computer” (x86 - Intel)
 o	UNIX foi padronizado (POSIX)
 o	Processadores “vetorizados”
+>>>>>>> 24972b5025f2da0412405ace6658858268c21fb7
 
-E o UNIX se fez GNU, e habitou entre nós
-•	GNU’s Not Unix: conjunto de programas FOSS compatíveis com POSIX e funcionalidade similar ao UNIX
-o	Shell (interpretador de comandos)
-o	Utilidades básicas UNIX: cp, mv, cat, ls, awk, sed, grep, lessm man, kill, ps, chmod
-o	Editor de texto (Emacs, vi)
-o	Interface Gráfica (GNOME)
+## E o UNIX se fez GNU, e habitou entre nós
+
+-	GNU’s Not Unix: conjunto de programas FOSS compatíveis com POSIX e funcionalidade similar ao UNIX
+  - Shell (interpretador de comandos)
+  - Utilidades básicas UNIX: cp, mv, cat, ls, awk, sed, grep, lessm man, kill, ps, chmod
+  - Editor de texto (Emacs, vi)
+  - Interface Gráfica (GNOME)
+  
 Todo S.O. precisa de um “kernel” que controle o hardware
-•	Linux foi criado em 1992 por Linus Torvalds para x86 (conversa no IRC nas férias)
-•	Compatível com UNIX: mesma API de chamadas de sistema, design e arquitetura semelhantes
-•	Programas GNU podiam ser compilados e rodar em x86
-•	Distribuições = kernel + software
-o	GNU / Linux
-o	Debian, Slackware, SUSE, RedHat, Fedora, Ubuntu, CentOS, Mint
+- Linux foi criado em 1992 por Linus Torvalds para x86 (conversa no IRC nas férias)
+- Compatível com UNIX: mesma API de chamadas de sistema, design e arquitetura semelhantes
+- Programas GNU podiam ser compilados e rodar em x86
+- Distribuições = kernel + software
+  - GNU / Linux
+  - Debian, Slackware, SUSE, RedHat, Fedora, Ubuntu, CentOS, Mint
 
 Por que GNU/Linux?
-•	Boa implementação de excelentes ideias UNIX
-•	Grande comunidade de Software Livre
-o	Adicionando funcionalidades, suporte a hardware, correção de bugs, testando
-•	Licença GLP (GNU General Public Licence) permite uso mas exige distribuição do código fonte
-•	Alta performace, escalabilidade, suporte a grande quantidade de dispositivos 
-•	Windows da tela azul -> leitor de mídia dentro do S.O. *face palm*
+- Boa implementação de excelentes ideias UNIX
+-	Grande comunidade de Software Livre
+  - Adicionando funcionalidades, suporte a hardware, correção de bugs, testando
+- Licença GLP (GNU General Public Licence) permite uso mas exige distribuição do código fonte
+- Alta performace, escalabilidade, suporte a grande quantidade de dispositivos 
+- Windows da tela azul -> leitor de mídia dentro do S.O. (face palm)
 
 Cluster – conjunto de computadores
 
 Por que GNU/Linux?
-•	Computadores pessoais (Desktop)
-o	Escolha uma distribuição e experimente
-	Geração de pendrive para carga do SO
-	Instalação concomitante com outro SO
+-	Computadores pessoais (Desktop)
+  - Escolha uma distribuição e experimente
+    - Geração de pendrive para carga do SO
+	 Instalação concomitante com outro SO
 •	Smartfones (Android, Tizen)
 •	Dispositivos Embarcados
 o	Roteadores, GPS, Raspberry Pi
