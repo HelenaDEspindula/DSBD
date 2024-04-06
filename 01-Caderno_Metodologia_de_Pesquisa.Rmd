@@ -1,0 +1,82 @@
+---
+title: "Caderno_Metodologia_de_Pesquisa"
+output: pdf_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Sumario
+
+## IDEIAS DE PESQUISA
+
+Ideias Monografia e Pesquisas:
+- Imagens hematologicas - para que?
+- Genetica, dados livre: NCBI, geneaogia
+- Trabalho de Vitiligo?
+- TDT para modelo?
+
+
+Ideias outras:
+- App de contagem
+- Microscopio vitual
+- Dados Helo / DB
+- Programas comerciais
+- Parceria HC
+- Parceria LACEN
+
+Moodle c3sl
+
+
+## Aula inaugural – Prof. Wagner (Coordenador da pós) – 01/03/2024
+
+
+Seis módulos de 60hs e 1 modulo de 30h (Método de Pesquisa - TCC)
+1.	Primeiro semestre:
+a.	Linguagem de programação (Pyton e R)
+b.	Infraestrutura computacional
+c.	Inferência estatística para Ciência de Dados
+d.	Métodos de Pesquisa – pensar na monografia
+2.	Segundo semestre
+a.	Processamento de Big Data
+b.	Modelos Estatísticos
+c.	Mineração de dados e aprendizado de máquina
+d.	Métodos de pesquisa – apresentação de projeto de monografia
+
+Cada disciplina tem 3 módulos (20h cada, 60h total)
+Cada modulo:
+•	3 encontros síncronos (12h)
+•	3 atividades (8h)
+o	1 quis longo (3h)
+o	1 quis curto (3h)
+o	1 projeto (2h)
+•	Avaliação final é soma das horas (%) – média 70, sem final
+•	Prazo de entrega: 2 semanas após o último encontro síncrono do modulo
+
+Certificação:
+
+•	Requisitos básicos:
+o	70% aproveitamento cada disciplina
+o	Defesa monografia
+•	Monografia
+o	Artigo para conferência (8 – 10 pág.)
+o	Definir assunto com orientador
+o	Apresentação no DSBD-Day (ultima semana de junho ou primeira de julho – 15 semanas depois do carnaval)
+•	Orientação:
+o	Cada orientador até 5 alunos
+o	Co-orientação a critério de alunos e profs
+
+
+Professores (doutores DE):
+•	6 estatística 
+•	6 computação
+Area
+•	Métodos estatísticos
+•	Inteligência computacional
+•	Sistemas de computação – infraestrutura, processamento paralelo etc.
+
+Aulas anfiteatro ou Lab1/2
+Material no Moodle
+
+

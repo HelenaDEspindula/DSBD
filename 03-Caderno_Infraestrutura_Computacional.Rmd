@@ -1,0 +1,261 @@
+---
+title: "Caderno_Infraestrutura_Computacional"
+output: pdf_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Parte 1: GNU/Linux e Shell
+Prof Lucas Ferrari de Oliveira (USP)
+
+web.inf.ufpr.br/lferrari 
+
+Áreas de Pesquisa:
+
+- Processamento de Imagens
+- Processamento de Imagens Médicas
+- Reconhecimento de Padrões
+
+Arquitetura de von Neumann -> CPU 
+
+				Central Processing Unit
+					Control Unit
+Imput Device			Arithmetic / Logic Unit			Output Device	
+
+
+
+				Memory Unit
+
+Exemplo Python:
+```{r}
+#input (a)
+#print (a+1)
+```
+ 
+
+### No principio era UNIX…
+
+-	S.O. criado no AT&T Bell Labs
+- Introduziu e popularizou conceitos:
+  -	Sistema de arquivos, shell, processos, usuários (cada usuário o seu home, permissões)
+- Por volta de 1990
+  - Patentes e copyright isolaram o UNIX em nichos
+  - Não eram compatíveis com PC “personal computer” (x86 - Intel)
+  - UNIX foi padronizado (POSIX)
+  - Processadores “vetorizados”
+
+### E o UNIX se fez GNU, e habitou entre nós
+
+-	GNU’s Not Unix: conjunto de programas FOSS compatíveis com POSIX e funcionalidade similar ao UNIX
+  - Shell (interpretador de comandos)
+  - Utilidades básicas UNIX: cp, mv, cat, ls, awk, sed, grep, lessm man, kill, ps, chmod
+  - Editor de texto (Emacs, vi)
+  - Interface Gráfica (GNOME)
+  
+### Todo S.O. precisa de um “kernel” que controle o hardware:
+
+- Linux foi criado em 1992 por Linus Torvalds para x86 (conversa no IRC nas férias)
+- Compatível com UNIX: mesma API de chamadas de sistema, design e arquitetura semelhantes
+- Programas GNU podiam ser compilados e rodar em x86
+- Distribuições = kernel + software
+  - GNU / Linux
+  - Debian, Slackware, SUSE, RedHat, Fedora, Ubuntu, CentOS, Mint
+
+### Por que GNU/Linux?
+
+- Boa implementação de excelentes ideias UNIX
+-	Grande comunidade de Software Livre
+  - Adicionando funcionalidades, suporte a hardware, correção de bugs, testando
+- Licença GLP (GNU General Public Licence) permite uso mas exige distribuição do código fonte
+- Alta performace, escalabilidade, suporte a grande quantidade de dispositivos 
+- Windows da tela azul -> leitor de mídia dentro do S.O. (face palm)
+
+Cluster – conjunto de computadores
+
+### Por que GNU/Linux?
+
+-	Computadores pessoais (Desktop)
+  - Escolha uma distribuição e experimente
+    - Geração de pendrive para carga do SO
+    - Instalação concomitante com outro SO
+-	Smartfones (Android, Tizen)
+-	Dispositivos Embarcados
+  -	Roteadores, GPS, Raspberry Pi
+-	Servidores WEB
+
+-	Supercomputadores
+  -	TOP 500 (100% desde nov/2017)
+-	Space X Falcon 9
+
+### Características:
+
+-	Portável: diferentes tipos de hardware
+-	Open Source: site gnu (copyleft)
+-	Multi usuário: acesso simultâneo
+-	Multi processos: diversos programas simultaneamente
+-	SISTEMA DE Arquivos Hierárquico
+-	Shell: programa interpretador de comandos
+-	Segurança: autenticação de usuários, criptografia, controle de acesso
+
+### Sistema Operacional
+
+O Sistema Operacional é um software que controla o hardware e faz a interface deste com as aplicações 
+Applications -> Libraries, System Daemons, Shells, Tools
+Operating system
+Kernel (tipo um conjunto de drivers)
+hardware
+
+### S.O. GNU/Linux
+
+É um gerenciador de recursos composto pelo Kernel e um conjunto de aplicações básicas:
+
+-	Servidor e daemon
+-	Programas utilitários (shell, editor, compilador)
+-	........
+
+### User x Kernel space
+
+O GNU/Linux executa seu kernel (Linux) em uma região de memoria restrita e protegida (kernel space)
+Programas do SO e dos usuários rodam em outra região de memoria (user space)
+-	Spectre & Meltdown
+
+### Componentes do Linux
+
+-	System Call Interface (SCI)
+-	Process Manegment (PM) | Virtual File Systems
+-	…..
+
+-	Interface de system call (SCI)
+  -	Funçoes que podem ser invocadas 
+-	.....
+-	Gerenciamento de Memória (MM)
+  -	Divide a memoria em blocos e gerencia sua alocação 
+  -	Permite crescimento e redução dinâmicos da memoria ocupada
+
+-	Sistema de Arquivos Virtuais (VFS)
+  -	Provê uma interface abstrata comum para sistemas de arquivos (open, close, read, write)
+    -	O sistema tem um diretório raiz: “/”
+-	Gerencia “buffer caches” para acelerar acesso ao sistema de aruivos 
+-	Interface para acesso ao sistema ....
+-	Camada de rede
+  -	Protocolos de rede (TCP, IP....)
+-	Drivers de dispositivos 
+-	Software específico para aceso aos diferentes dispositivos
+-	Código dependente de arquitetura
+
+### Computação de Alto Desempenho - High Performance Computing
+	HPC refere-se à prática de agregar poder computacional (diversos processadores) de forma a obter uma performace muito maior do que poderia ser obtida com um computador individual a fim de resolver problemas de grande escala
+Tera flops (operação de ponto flutuante por segundo)
+
+### Unidades de Medida
+
+Bytes (armazenamento de dados)
+
+-	1 Byte = 8 bits (0 ou 1)
+-	Imagens em tons de cinza: 1 Byte por ponto (pixel)
+-	Caracteres de texto: 1 a 2 Bytes por caracter (depende da codificação)
+-	Números: inteiro (int: 4 bytes, long: 8 bytes), real (float: 4 Bytes, double: 8 Bytes)
+-	Disco rigido (HD) de 8TB, memoria RAM DE 16GB
+
+Bps (bits por segundo):
+
+-	Velocidade de transmissão de dados (rede de 1 Mbps)
+
+FLOP/s (Float Operations por Segundo) -	Velocidade de operações aritméticas
+
+### Nomenclatura
+
+-	Core:
+  -	Cada núcleo de uma pastilha. É a unidade básica de computação
+  -	Podem efetuar algumas operações aritméticas em paralelo
+-	Nodo
+  -	Possui diversas pastilhas (CPU) combinadas em uma placa mãe
+  -	Compartilha memoria entre cores e entre pastilhas
+  -	Pastilhas tem de 8 a 64 cores
+  -	Aceleradores 
+  -	Troca de dados entre cores de uma mesma pastilha é rápida
+
+-	Cluster
+  -	Milhares de nodos conectados 
+  -	.....
+  -	Limitada pela banda da rede
+
+Bewolf
+
+### S.O. para HPC
+
+Nodo de acesso e nodo de processamento (~= mestre e escravo)
+Sistema de gerenciamento de trabalhos (Jobs)
+
+-	Alocação de programas e usuários nos diversos nodos
+-	Controla tempo de execução e recursos/ usuários
+-	Ex: slurm, pbs
+
+### Sistema de arquivo papalelo
+
+-	Acesso simultaneo e paralelo
+-	Escalabilidade e redundancis a falhas
+
+Hard Disk Drive
+Braço atuador | Discos - divididos em setores (512B) | Atuador | Cabeça
+
+RAM é volatil
+
+Solid State Drive (SSD) – não tem disco, são pastilhas
+
+
+### Armazenamento de Dados
+
+-	Volátil x Não volátil
+-	Acesso aleatório x sequencial
+
+
+### Memory Hierarchy
+
+-	Registers – 1ns – 1x
+-	Cache – 10 ns – 10x
+-	Main memory – 100ns – 100x -> uso do programa (RAM)
+-	SSD
+-	Magnetic disk – 100ms – 100.000.000x
+-	Magnetic tape – 10s – 1e+10x
+
+### RAID (Redundant Array of Inexpensive Disks)
+
+-	Combinação de dois ou mais discos
+-	Padrões de organização, ou níveis:
+  -	RAID 0: stripping
+  -	1: espelhamento
+  -	6: stripping de blocos com reundancis de 2 discos
+  -	1+0 ou 10: combinação
+-	Implementação via software (md) ou hardware (controladora)
+
+Macalan.c3sl......
+Ssh? – acesso visual
+
+
+```{r}
+# No terminal
+#lferrari@thanos – 19T – 12T
+#df – h pasta/
+```
+
+
+### Sistemas de Arquivo
+
+Virtual File System (VFS)
+(Linux não tem pasta, tem diretório)
+
+-	Camada do Linux que permite acesso uniforme a diversos sistemas de arquivo;
+-	“~/” – minha home
+-	“ls -lh” (lista de files com detalhes):
+  -	“drwx” – diretório, read, write, excusão
+  -	“l” link para
+  -	Se não pode escrever não pode apagar
+-	“cd ..” -> voltar diretório
+-	“pwd” -> ver diretório completo
+
+

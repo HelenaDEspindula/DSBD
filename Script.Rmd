@@ -1,0 +1,151 @@
+---
+title: "Estatística descritiva com R e Python"
+output: html_document
+date: "2022-10-26"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Leitura de uma base de dados
+
+### Código R
+
+```{r}
+# Carregando pacotes adicionais
+library(readr)
+library(dplyr)
+
+# Caso esteja conectado na internet
+url = "http://www.leg.ufpr.br/~wagner/DataSet/AppleStore.csv" 
+
+# Lendo a base de dados
+dados <- read_csv(file = url)
+View(dados)
+
+```
+
+### Código Python
+
+```{python}
+import pandas as pd
+import io
+import requests
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+url = "http://www.leg.ufpr.br/~wagner/DataSet/AppleStore.csv" 
+dados = pd.read_csv(url, sep = ",", index_col = 0, header = 0)
+
+dados = pd.read_csv("AppleStore.csv", sep = ",", index_col = 0, header = 0)
+dados.dtypes
+```
+
+## Descrevendo variáveis qualitativas
+
+### Código R
+
+```{r}
+# Tabela de frequencias (absoluta e relativa)
+dados %>%
+  count(prime_genre) %>%
+  mutate(prop = prop.table(n)*100) %>%
+  arrange(desc(n))
+
+
+# Tabela de dupla entrada
+dados$prime_genre <- as.factor(dados$prime_genre)
+dados$cont_rating <- as.factor(dados$cont_rating)
+dados$cont_rating <- factor(dados$cont_rating, levels = levels(dados$cont_rating)[c(3,4,1,2)])
+table(dados$prime_genre, dados$cont_rating)
+
+# Gráfico de pizza
+library(ggplot2)
+tabela <- dados %>%
+    count(cont_rating)
+ggplot(tabela, aes(x = "", y = n, fill = cont_rating)) +
+    geom_bar(stat = "identity", width = 1) + 
+    coord_polar("y", start = 0)
+
+# Gráfico de barras
+ggplot(dados) +
+    geom_bar(aes(x = cont_rating))
+```
+
+### Código Python
+
+```{python}
+# Tabela de frequências
+dados["prime_genre"].value_counts()
+
+# Frequencias relativas
+pd.crosstab(index = dados["prime_genre"], columns = "count", normalize = 'all')*100
+
+# Tabela de dupla entrada
+dados["cont_rating"] = pd.Categorical(dados["cont_rating"], 
+                                      categories = ["4+","9+","12+","17+"], 
+                                      ordered = True)
+tabela2 = pd.crosstab(index = dados["prime_genre"], columns = dados["cont_rating"])
+tabela2.sort_values(["4+"], ascending = False)
+
+
+# Gráfico de pizza
+contagem = pd.value_counts(values = dados["cont_rating"], sort = False)
+labels = contagem.index
+plt.pie(contagem, labels = labels, autopct='%1.1f%%', shadow=True)
+plt.show()
+
+# Gráfico de barras
+dados_plot = pd.DataFrame({"y": contagem, "x": labels})
+pp2 = dados_plot.plot.bar(rot = 0, y = 'y')
+plt.title('Classificação indicativa')
+plt.show()
+```
+
+## Descrevendo variáveis quantitativas
+
+```{r}
+## Estatísticas descritivas
+summary(dados[,c("price", "user_rating", "rating_count_tot")])
+
+# Histograma
+ggplot(dados) +
+    geom_histogram(aes(price))
+
+ggplot(dados) +
+    geom_histogram(aes(log(price)))
+
+```
+
+
+```{python}
+# Estatísticas descrtivas
+dados[['price', 'user_rating', 'rating_count_tot']].describe()
+
+# Histograma
+dados.hist(column='price')
+plt.show()
+
+dados.hist(column='price', log = True)
+plt.show()
+```
+
+
+## Descrevendo associação
+
+
+```{r}
+ggplot(dados) +
+    geom_point(aes(x = user_rating, y = rating_count_tot))
+```
+
+
+```{python}
+plt.scatter(x = dados["user_rating"], y = dados["rating_count_tot"])
+plt.show()
+
+```
+
+
+

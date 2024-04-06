@@ -1,0 +1,569 @@
+---
+title: "Caderno_Linguagens_de_Programacao"
+output: pdf_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Sumario
+
+## Modulo 1 –  Pyton e R - Introdução ao Python 3 para Ciência de Dados – Prof. André Grégio - 02/03/2024
+
+“IA é a nova corrida espacial”
+
+Python
+•	Muito usado em prototipagem
+•	Também usado em modelos, mas pouco eficiente em aparelhos com limitações técnicas
+
+1.	Sobre o Curso
+•	Áreas de Interesse e Pesquisa: Segurança Computacional e Ciência de Dados
+
+Explorar os dados antes de analisá-los
+KEEG?
+Ciência de Dados aplicada a Segurança – matéria ocasional na pós - checar
+Panda / Pytorent?
+
+Especificidade dos dados (diferentes bancos por exemplo)
+Máquinas aqui tem Mind
+
+Objetivos de curso:
+•	Aprender a utilizar a linguagem de programação Python para análise de dados
+•	Entender os elementos e estruturas básicas da programação
+•	Criar soluções (programas) para ......
+•	Ciência de dados na prática
+•	Conceitos de problemas reais corretamente
+•	Incentivar a exploração dos dados (compreensão do problema)
+•	Estudar técnicas e ferramentas mais adequadas para problemas específicos
+•	Criar consciência sobre organização de dados e reprodução de experimentos
+
+Procurar “data set” publico
+“Barata voa”
+
+Python 3 - Google Colab ou VSCode
+
+```{phyton}
+
+```
+
+
+Ter conhecimentos básicos:
+•	Criar diretório etc
+
+Bibliografia:
+•	McKinney 2019
+•	Dale, K. 2016
+•	Chen, D. 2018
+•	Matthes, E, 2019
+•	“Pense Python”
+
+2.	Introdução a Ciência de Dados
+Josh Wills (Twitter)
+“Person who is better at statistics than any software engineer and better at software engineering than any statistician”.
+
+“.ipnb” - caderno
+“.py” – codigo
+
+Processo: [ Imagem Wikipedia “Data analysis” – Schutt & O’Neil (2013) ]
+Grupamento hierárquico – tipo arvore genealógica com cortes em diferentes alturas na raiz é um grupo só, na folha extrema são dados individuais
+“Concept driven” -> mudanças de conceito que tornam um modelo “obsoleto”
+
+Perceptor – neurônio artificial
+MLP – Multi layer Perceptor -> Rede neural
+Depe learnig -> várias redes nerais -> treino de várias “épocas” (passagens com ajutes de peso) -> até 0,001 -> baseado em matriz aleatória -> mínimo local e mínimo global (processamento paralelo para não travar um pc só)
+
+BigBird – treinamento de palavras do Google
+
+Sanitização de dados com encoders
+•	Tirar meta dados de docs
+
+Redes para segmentação de imagens (vídeo faz frame a frame) -> achar vagas no estacionamento
+24GB de vídeo
+Placas A5000 – 4 placas para treinar os modelos – 48h de processamento para cada experimento
+Tokenizar – separar por palavras
+Pós-modelo -> capacidade de execução (infraestrutura), tamanho do modelo e dos dados. 
+Infraestrutura elástica – aumenta e diminui conforme demanda
+Mínimo produto viável – um exemplo simplificado
+
+Limpar dados antes de usar – retirar ruido, duplicado, padronizar etc.
+
+Developer
+DevOps – quem vai botar em produção (produto), portar o sistema para o cliente por exemplo
+Data augmentation
+
+Estágios de Ciência de Dados
+1.	Questione o que vc quer fazer e qual o objetivo disso (prevenir, estimar)
+2.	Obtenha o dado e saiba sua amostragem, relevância e questões como privacidade
+3.	Explore, faça gráficos, entenda seu dado (há padrões, anomalias? Precisa limpar?)
+4.	Modele seu dado, valide e teste o modelo
+5.	Apresente os resultados de maneira que sejam compreensíveis e reproduzíveis
+
+Imagem - Havard data Science course cs 109 org
+
+LGPD – anonimização
+
+Habilidades do Cientista de Dados
+1.	Consultas SQL E Pipelines robustos
+2.	Transformação de dados e Eng de características
+3.	Controle de versão (git)
+4.	........
+5.	Processamento de Linguagem Natural (NLP) – variação de escrita, dicionário de termos (siglas, termos técnicos etc) – analise de similaridade, analise de sentimentos (qualidade/intuito do texto, exemplo, buscar discurso de ódio)
+
+Train -> Teste -> Valideted
+
+“Crir um modelo” vs. “Extrair conhecimento dos dados”
+Capacidade de explicação/compreensão, aplicabilidade em tempo/dados reais!
+Modelos multi-rótulos, ex: “binário” – doente ou saudável; diagnostico – qual a doença
+
+###No quiz
+
+```{python}
+import math
+
+nome = "Maria"
+sobrenome = "Silva"
+calculo = 36
+calculo = math.sqrt(36)
+print("nome ", nome, "sobrenome ", sobrenome, calculo)
+```
+
+
+
+###Continuando a aula
+
+No laboratorio de informatica
+
+```{r}
+# hrsdespindula@h8:~$ python3
+# Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+# [GCC 10.2.1 20210110] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >> quit()
+# 
+# hrsdespindula@h8:~$ python3
+# Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+# [GCC 10.2.1 20210110] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>> print("SEU TEXTO")
+# SEU TEXTO
+# >>> print("ola mundo")
+# ola mundo
+```
+
+####Realizando Operações
+
+O interpretador é capaz de realizar operações e exibir o resultado
+Alguns operadores que podem ser usados:<br>
+"+" Adição<br>
+"-" Subtração<br>
+"/" Divisão<br>
+"*" Multiplicação<br>
+"**" Exponenciação<br>
+"%" Módulo (resto da divisão)
+
+```{r}
+# hrsdespindula@h8:~$ python3
+# Python 3.9.2 (default, Feb 28 2021, 17:03:44)
+# [GCC 10.2.1 20210110] on linux
+# Type "help", "copyright", "credits" or "license" for more information.
+# >>> print("SEU TEXTO")
+# SEU TEXTO
+# >>> print("ola mundo")
+# ola mundo
+# >>> 2+3
+# 5
+# >>> 2-1
+# 1
+# >>> 3*2
+# 6
+# >>> 15/5
+# 3.0
+# >>> 2**3
+# 8
+
+```
+
+Fazendo no programa
+
+```{python}
+print("2+3 = ",2+3)
+print("2-1 = ",2-1)
+print("3*2 = ",3*2)
+print("15/5 = ",15/5)
+print("2**3 = ", 2**3)
+```
+
+
+```{python}
+qtde_alunos = 30
+nome = "Maria"
+pi = 3.14
+
+print(qtde_alunos, " ", nome, " ", pi)
+
+qtde_alunos = 200
+alunos_externos = 20
+total_alunos = qtde_alunos + alunos_externos
+print(total_alunos)
+print(qtde_alunos - alunos_externos)
+
+print("qtde_alunos = ", type(qtde_alunos))
+print("nome = ", type(nome))
+print("pi = ", type(pi))
+
+```
+
+####Tipos dinamicos de variaveis
+
+```{python}
+x = 20
+print("x = ", x, " = ", type(x))
+
+x = 20.13
+print("x = ", x, " = ", type(x))
+
+x = "20"
+print("x = ", x, " = ", type(x))
+```
+
+Concatenar é somar str
+
+```{python}
+str1 = "sou a"
+str2 = " Helena"
+x = str1 + str2
+print(x)
+
+print(10*str2)
+```
+
+
+```{python}
+# variavel_destino = input("Texto opcional para exibir: ")
+# 
+# print(variavel_destino)
+```
+
+Exemplo errado:
+( não vai dar certo assim pq o tipo automatico tá errado)
+
+```{python}
+print("Olá mundo!")
+#nome = input("Digite seu nome: ")
+nome = "Demo"
+print("Seu nome é", nome)
+
+#idade = input("Digite sua idade: ")
+idade = 33
+#idadeapos = input("Com quantos anos você quer aposentar: ")
+idadeapos = 80
+anosapos = idadeapos - idade
+print("Faltam", anosapos, "anos para você aposentar")
+```
+
+Exemplo certo:
+
+```{python}
+idade = int(input("Digite sua idade: "))
+idade_apos = int(input("Com quantos anos você quer aposentar: "))
+anos_apos = idade_apos - idade
+print("Faltam ", anos_apos, " para você aposentar")
+
+idade = float(input("Digite sua idade: "))
+idade_apos = float(input("Com quantos anos você quer aposentar: "))
+anos_apos = idade_apos - idade
+print("Faltam ", anos_apos, " para você aposentar")
+print("Faltam", anos_apos, "para você aposentar")
+```
+
+
+
+No arquivo "Downloads/meu_script.py":
+```{python}
+import sys
+entrada = sys.argv[1]
+print("Voce digitou o numero {}.".format(entrada))
+```
+
+no terminal
+```{r}
+# $ python meu_script.py 5
+# Voce digitou o numero 5.
+```
+
+Para receber argumentos direto da linha de comando usamos o
+
+```{r}
+# sys.argv[1]
+```
+
+No arquivo "Downloads/meu_script.py":
+
+```{python}
+import sys
+print(sys.argv)
+```
+
+
+```{r}
+# hrsdespindula@h8:~/Downloads$ python3 meu_script.py 5 -15 nome 0 sim
+# ['meu_script.py', '5', '-15', 'nome', '0', 'sim']
+```
+
+No arquivo "Downloads/meu_script.py":
+
+```{python}
+import sys
+def fat(n):
+  res = 1
+  for i in range(2,n+1):
+    res *= i
+  print(res)
+
+n = int(sys.argv[1])
+fat(n)
+```
+
+
+```{r}
+# hrsdespindula@h8:~/Downloads$ python3 meu_script.py 1
+# 1
+# hrsdespindula@h8:~/Downloads$ python3 meu_script.py 2
+# 2
+# hrsdespindula@h8:~/Downloads$ python3 meu_script.py 3
+# 6
+# hrsdespindula@h8:~/Downloads$ python3 meu_script.py 4
+# 24
+```
+
+Novo script processa_texto.py
+
+```{python}
+import sys
+
+arq_nome = sys.argv[1] # caminho para arquivo
+arq_handle = open(arq_nome)# abre para leitura
+texto = arq_handle.read() # lê para uma string
+
+print(texto)
+print(type(texto))
+```
+
+
+```{python}
+#READ
+
+import sys
+
+texto = open(sys.argv[1]).read()
+linhas = texto.split("\n")
+
+print(linhas)
+print(type(linhas))
+```
+
+
+
+
+```{python}
+#READLINE (SINGULAR)
+
+import sys
+
+texto = open(sys.argv[1]).readline()
+linhas = texto.split("\n")
+
+print(linhas)
+print(type(linhas))
+```
+
+
+
+
+```{python}
+#READLINES
+
+import sys
+
+texto = open(sys.argv[1]).readlines()
+linhas = texto.split("\n")
+
+print(linhas)
+print(type(linhas))
+```
+
+
+
+```{python}
+import sys
+
+texto = open(sys.argv[1]).read().sliptlines()
+
+print(texto)
+print(type(texto))
+```
+
+
+
+```{python}
+import sys
+
+arq = open(sys.argv[1])
+texto = arq.read().splitlines()
+
+print(texto)
+print(type(texto))
+
+arq.close() # não esqueça de fechar o arquivo
+```
+
+Modos de escrita de arquivos
+
+```{python}
+arq_saida = open(sys.argv[2], 'w')
+```
+
+‘w’ abre o arquivo em modo escrita <br>
+Se o arquivo *não* existir, cria um novo<br>
+Senão, sobrescreve!
+
+
+```{python}
+arq_saida = open(sys.argv[2], 'a')
+```
+
+‘a’ abre o arquivo em modo append <br>
+Se o arquivo *não* existir, cria um novo<br>
+Senão, insere no final!<br>
+
+
+##Importações
+
+```{python}
+import nome_atquivo # tipo biblioteca R
+```
+
+
+
+```{python}
+import math
+
+valor = 4
+raiz = math.sqrt(valor)
+print("A raiz de ", valor, "é", raiz)
+```
+
+omentários precedidos por “#”
+
+Função básica - print()
+O comando print( ): ► Sintaxe: ► print(valor1, valor2, …, valorN) ► Se nenhum argumento é passado, imprime uma linha em branco ► Os valores a serem impressos são separados por um espaço: − print(“Resposta:”, 6 * 7, “!!!”)
+
+Condicionais básicos ► if (condição): ► Instrução 1 ► Instrução 2 ► elif (outra condição): ► Instrução 3 ► else: ► Instrução 4 ► Instrução 5 (fora do IF-ELIF-ELSE)
+
+Laços básicos ► for i in range(5): ► print(“%d “ %i) ► 0 ► 1 ► 2 ► 3 ► 4 ► while True: ► print(“laço infinito!”)
+
+
+##Exercício 1
+
+Faça um programa que pergunta o peso (em kg) e a altura (em metros) do usuário. O programa deve calcular o Índice de Massa Corpórea (IMC) do usuário, que é dado por peso/(altura*altura) e exibir o valor de IMC na tela.
+
+Dica: use float para ler o input. Para separar as casas decimais quando estiver digitando, utilize ponto (e.g., digite 1.8 para uma altura de um e oitenta). Isso pode ser diferente em alguns sistemas. Por exemplo, alguns terminais de sistemas Mac utilizam vírgula para separar as casas decimais.
+
+```{python}
+import sys
+
+peso = float(input("insira seu peso em kg: "))
+
+altura = float(input("insira sua altura em m: "))
+
+imc = (peso / (altura * altura))
+
+print("Seu IMC =", imc)
+```
+
+##Exercício 2
+
+Exercício 2 <br>
+Escreva um programa que solicita o raio de um círculo, e exibe o perímetro e a área desse círculo. Para calcular a área, utilize o operador de exponenciação **.
+
+```{python}
+import sys
+import math
+
+raio = float(input("insira um raio de um círculo: "))
+pi = math.pi
+perimetro = 2*pi*raio
+area = pi * raio**2
+
+print (pi)
+print (perimetro)
+print (area)
+```
+
+##Exercício 3
+
+Faça um programa que leia os coeficientes a, b e c de uma equação de segundo grau. O programa deve calcular por Bhaskara as raízes dessa equação. Para esse problema, assuma que a equação sempre vai ter raízes reais (o usuário não vai digitar valores a, b e c que levam a uma equação que não possui raízes). Caso a equação possua apenas uma raiz, como a equação x2, repita a raiz na resposta duas vezes.
+
+Exemplo de execução do programa:
+
+Digite a: 2 Digite b: 0 Digite c: 0 Raíz 1: 0 Raíz 2: 0
+
+```{python}
+import sys
+import math
+
+coef_a = float(input("Digite a: "))
+coef_b = float(input("Digite b: "))
+coef_c = float(input("Digite c: "))
+
+raiz_1 = (- coef_b + math.sqrt(coef_b**2 - 4*coef_a*coef_c))/2*coef_a
+raiz_2 = (- coef_b - math.sqrt(coef_b**2 - 4*coef_a*coef_c))/2*coef_a
+
+print("Raiz 1:", raiz_1)
+print("Raiz 2:", raiz_2)
+```
+
+
+##Exercício 4
+
+Dado um retângulo de lado a=7 e área=63, escreva:
+
+Uma instrução em Python que calcule o valor do lado b.
+
+Uma instrução que calcule a diagonal deste retângulo.
+
+Uma função que calcule a área e a diagonal de qualquer retângulo, dados os valores dos lados a e b.
+
+```{python}
+
+```
+
+# Aula 02 - 15/03/2024
+
+```{r}
+data <- read.csv("Gregio/dsbd_trab1.csv", header = FALSE)
+head(data)
+
+
+```
+
+
+```{python}
+import sys
+
+arq_nome = "Gregio/dsbd_trab1.csv" # caminho para arquivo
+
+arq_handle = open(arq_nome) # abre para leitura
+
+texto = arq_handle.read() # lê para uma string
+
+print(texto)
+#print(linhas)
+#print(type(linhas))
+
+
+```
+
+
+
