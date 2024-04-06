@@ -43,7 +43,11 @@ for dia in $(seq -f "%02g" $inicioPeriodo $fimPeriodo); do
   echo OK
 done
 
+# Limpar cabeçalho de todos (menos o primeiro arquivo)
+
+
 # Dados são copiados do diretório temporário para o diretório dados
 cat $tmpDir/*.csv > $dataDir/$ano$mes-ItemEmpenho.csv
+
 # Diretório temporário é apagado
 rm -f $tmpDir/*.csv
