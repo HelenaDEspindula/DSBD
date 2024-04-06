@@ -353,6 +353,8 @@ he2@h8:~$ seq -f "%02g" 1 5
 05
 ```
 
+```{bash baixaDadosTransp_v2 eval=FALSE}```
+
 ```{bash eval=FALSE}
 he2@h8:~/Downloads$ ./baixaDadosTransp_v2.sh 05 2015
 Baixando arquivo 20150501_Despesas.zip ...OK
@@ -396,6 +398,27 @@ he2@h8:~/Downloads/dados$ ls 2015* -lh
 ```
 
 ```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./baixaDadosTransp_v2.sh 08 2015
+mkdir: não foi possível criar o diretório “./dados”: Arquivo existe
+Baixando arquivo 20150801_Despesas.zip ...OK
+Descompactando arquivo 20150801_Despesas.zip ...OK
+Removendo arquivo 20150801_Despesas.zip ...OK
+Baixando arquivo 20150802_Despesas.zip ...OK
+Descompactando arquivo 20150802_Despesas.zip ...OK
+Removendo arquivo 20150802_Despesas.zip ...OK
+Baixando arquivo 20150803_Despesas.zip ...OK
+Descompactando arquivo 20150803_Despesas.zip ...OK
+Removendo arquivo 20150803_Despesas.zip ...OK
+Baixando arquivo 20150804_Despesas.zip ...OK
+Descompactando arquivo 20150804_Despesas.zip ...OK
+Removendo arquivo 20150804_Despesas.zip ...OK
+Baixando arquivo 20150805_Despesas.zip ...OK
+Descompactando arquivo 20150805_Despesas.zip ...OK
+Removendo arquivo 20150805_Despesas.zip ...OK
+
+he2@h8:~/Downloads/dados$ ls
+201505-ItemEmpenho.csv  201508-ItemEmpenho.csv
+
 
 ```
 
