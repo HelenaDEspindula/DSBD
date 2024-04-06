@@ -351,15 +351,47 @@ he2@h8:~$ seq -f "%02g" 1 5
 03
 04
 05
+```
 
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./baixaDadosTransp_v2.sh 05 2015
+Baixando arquivo 20150501_Despesas.zip ...OK
+Descompactando arquivo 20150501_Despesas.zip ...OK
+Removendo arquivo 20150501_Despesas.zip ...OK
+Baixando arquivo 20150502_Despesas.zip ...OK
+Descompactando arquivo 20150502_Despesas.zip ...OK
+Removendo arquivo 20150502_Despesas.zip ...OK
+Baixando arquivo 20150503_Despesas.zip ...OK
+Descompactando arquivo 20150503_Despesas.zip ...OK
+Removendo arquivo 20150503_Despesas.zip ...OK
+Baixando arquivo 20150504_Despesas.zip ...OK
+Descompactando arquivo 20150504_Despesas.zip ...OK
+Removendo arquivo 20150504_Despesas.zip ...OK
+Baixando arquivo 20150505_Despesas.zip ...OK
+Descompactando arquivo 20150505_Despesas.zip ...OK
+Removendo arquivo 20150505_Despesas.zip ...OK
 
 ```
 
 ```{bash eval=FALSE}
+he2@h8:~/Downloads$ ls
+ 2024-04-05-Inf_Comp.Rmd   dic_bom_conselho       foto.jpg                                  meuscript.sh
+ aula02_2021.pdf          'dic_bom_conselho(1)'   fotos2.sh                                 png2jpg.zip
+ backup2.sh               'dic_bom_conselho(2)'   fotos.sh                                  rmarkdown.pdf
+ backup.sh                 DSBD2024-Aula02b.pdf  'historico-alg1_SIGA_ANONIMIZADO(1).csv'   tmp
+ baixaDadosTransp_v2.sh    DSBD2024-Aula02c.pdf   historico-alg1_SIGA_ANONIMIZADO.csv       variaveis.sh
+ bom_conselho              DSBD2024-Aula02.pdf    Inf_Comp--05-04-2024.html                 vgg19_grafico.tar.gz
+ dados                     DSBD-main.zip          Inf_Comp--05-04-2024.Rmd
+ dados_del.txt             dsbd_trab1.csv         Lucas.pdf
+ dados.txt                 figura.jpg             Lucas.Rmd
 
-```
+he2@h8:~/Downloads$ cd dados/
 
-```{bash eval=FALSE}
+he2@h8:~/Downloads/dados$ ls
+201505-ItemEmpenho.csv
+
+he2@h8:~/Downloads/dados$ ls 2015* -lh
+-rw------- 1 he2 espinf 18M abr  5 21:56 201505-ItemEmpenho.csv
 
 ```
 
