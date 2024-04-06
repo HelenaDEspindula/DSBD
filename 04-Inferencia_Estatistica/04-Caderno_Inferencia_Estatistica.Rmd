@@ -1416,3 +1416,3847 @@ ychapeu = 2622.752 + 3608.499* metrosquadrados
 
 
 
+---
+title: "Caderno_Inferencia_Estatistica"
+output: pdf_document
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+library(ggplot2)
+```
+# Sumario
+
+# Aula
+
+## Subtitulo
+
+### Silde
+
+# Instrumentação Matemática para Estatística – Prof Wagner Hugo Bonat – 09/03/2024
+
+- Matemática (5 partes)
+-	Probabilidade (1 parte)
+-	Inferência (3 partes)
+
+### Tópicos em matemática customizados para DS:
+
+-	Fornecer base matemática para entender e criar técnicas de análise de dados
+-	Visão geral e intuitiva
+-	Focar nos resultados e suas aplicações 
+-	Não ser exaustivo em cada tópico ou matematicamente (muito) rigoroso
+-	Suporte computacional para compreender conceitos matemáticos abstratos
+-	Formar uma base sólida para entender técnicas avançadas:
+  -	Modelagem estatística
+  -	Machine learnig
+
+### O curso não é de receitas, é de fundamentos
+
+- Os objetivos desta abordagem são:
+  -	Desmestificar o processo peos quais os algoritmos resolvem problemas
+  -	Mostrar que apesar de existir um conjunto enrme de técnicas, muitas delas são pequenas melhorias em técnicas já existentes
+-	Promover um uso qualificado das ferramentas já disponíveis
+
+## Referencias:
+
+-	Deep Learning, Ian Goodfellow and Yoshua Bengio and Aaro Courville, MIT Press, 2016.
+-	Mathematics for Machine Learning, Marc Peter Deisenroth, A. Aldo Faisal and Cheng Soon Ong, Cambridge, 2019
+-	Livro do prof: Matemática para Ciências de Dados
+
+## O que precisamos saber?
+
+-	Cálculo Diferencial e Integral
+  -	Funções, limites e continuidade
+  -	Derivadas
+  -	Integrais
+-	Álgebra Matricial
+  -	Vetores e escalares
+  -	Matrizes
+  -	Sistemas de equações lineares
+  -	Decomposições matriciais
+-	Métodos Numéricos
+  -	Sistemas de equações não-lineares
+  -	Diferenciação e integração numérica
+  -	Otimização
+
+## Exemplos motivacionais:
+
+### Classificador binário
+Ferramenta popular em modelagem estatística e aprendizagem de maquina
+
+Objetivo: classificar um individuo ou observação em uma entre duas categorias
+
+Exemplos:
+
+-	Classificar um paciente como sadio ou doente
+-	Classificar um cliente como bom ou mal pagador etc
+	
+## Diversos algoritmos disponíveis:
+
+-	Arvores de classificação
+-	Máquinas de vetores de suporte
+-	Redes neurais
+-	Gradient boost
+-	Regressão logística é muito popular
+
+## Descrição matemática:
+
+- Suponha que temos um conjunto de dados $y_{i}$  para $i=1,…,n$ .
+-	Cada $y_{i}  \in [0,1]$ (é zero ou 1) -> sim ou não, saudável ou doente etc
+
+Potenciais objetivos:
+
+-	Descrever o relacionamento de $y_{i}$ com um conjunto de variáveis explanatórios $x_{ij}$  com $j=1,…,p$
+-	Classificar uma nova observação como 0 ou 1
+
+Exemplo - Conjunto de dados com 3 colunas:
+
+- Renda anual do usuário
+-	Anos de experiencia do usuário
+-	Se é premium ou não
+
+Objetivos:
+
+-	Identificar como as covariáveis renda e anos influenciem a compra premium
+-	Predizer se um novo usuário será ou não premium
+-	Orientar campanha de marketing
+
+
+```{r eval=FALSE}
+dados_reg_log <- read.table("./Wagner/reg_log.txt", header = TRUE)
+
+head(dados_reg_log,n =10)
+
+```
+
+```{r eval=FALSE}
+plot(dados_reg_log$Anos, dados_reg_log$Renda, main = "Anos de Exp vs Renda")
+```
+
+```{r eval=FALSE}
+library(ggplot2)
+grafico <- ggplot(dados_reg_log,aes(x = Anos, y = Renda, colour = Premium)) + geom_point()
+
+grafico
+```
+
+
+
+
+$i$	$y$	$=f($ 	$x_{i1} = renda$ $x_{i2} = anos)$
+
+$y_{i} = f (x_{ij})$
+$y_{i} = f(x_{ij})+erro$
+$erro = y_{i}-f (x_{ij} )$
+
+
+Construção do classificador:
+
+-	Explicar o modelo que descreve a relação entre $y_{i}$ e $x_{ij}$ (i linha-usuário, j coluna-covariável)
+
+$y=f(renda,xp)$, ou seja,  y é função dependente de renda e xp
+
+-	 Especificar função perda (medida de erro)
+
+$erro=g( y_{i},f(x_{ij}))$ função g
+
+```{r}
+f_logit <- function(par, y, renda, anos){
+  mu <- 1/(1+exp(-(par[1] + par[2]*renda + par[3]*anos)))
+  SQ_logit <- sum((y - mu)^2)
+  return(SQ_logit)
+}
+
+
+#f_logit()
+```
+
+
+-	Características satisfaça duas equações de distância: 
+$d(y,\mu)>0 | y= \mu$     e     $d(y,\mu)=0 | \mu=f(x_{ij})$
+
+Otimizar a função perda:
+
+-	Qual algoritmo escolher?
+-	Como implementá-la?
+-	Analisar o modelo ajustando
+
+## Kmeans
+
+Clusterização usando kmeans
+
+- Agrupar indivíduos semelhantes
+-	Individuos no mesmo grupo sejam mais parecidos do que indivíduos em grupos diferentes
+-	Distância da media 
+
+
+
+# Math part
+
+## Linha reta
+
+$$y_{i} = \beta_{0} + \beta_{1} * renda$$
+
+## Sigmoide
+
+$$y_{i} = \frac{1}{1 + exp^{ -(\beta_{0} + \beta_{1} * renda +  \beta_{2} * anos)}} $$
+
+Combinando o modelo logistico com a função perda
+
+
+$$SQ_{logit}(\beta) = \sum_{i=1}^{n}(y_{1} - \frac{1}{1 + exp^{ -(\beta_{0} + \beta_{1} * renda +  \beta_{2} * anos)}})^2 $$
+
+```{r}
+# f_logit <- funcao(par, y, renda, anos) {
+#   mu <- 1 / (1 + exp(-(par[1] + par[2] * renda + par[3] * anos)))
+#   SQ_logit <- sum((y - mu) ^ 2)
+#   return(SQ_logit)
+# }
+```
+
+
+# Cálculo Diferencial e Integral
+
+## Problemas convencionais em ciência de dados
+
+- Problemas convencionais em ciência de dados
+- Previsão ou predição → O que vai acontecer?
+- Classificação → Qual o tipo de um determinado objeto?
+- Agrupamento → Qual a melhor forma de agregar objetos?
+- Prescrição → O que devo fazer?
+
+
+- Como resolvê-los?
+- Em geral usamos algum tipo de modelo.
+- O que é um modelo?
+- Representação simplificada da realidade.
+- Qual o objetivo de um modelo?
+- Representar como o cientista imagina ou supõe que a realidade está sendo gerada e refletida por meio dos dados.
+- Características de um bom modelo
+- Deve representar os principais aspectos do fenômeno sendo avaliado.
+- Pode conter uma ou mais quantidades desconhecidas (parâmetros).
+- Deve permitir generalizações.
+- Deve fornecer um resumo rápido e interpretável do fenômeno em estudo.
+- Deve ser matematicamente preciso e coerente.
+
+
+## Funções
+
+- Definição: uma função escrita como $y = f(x)$ associa um número $y$ a cada valor de $x$.
+- $x$ é chamada de variável independente.
+- Domínio de $f(x)$ é a faixa de valores que $x$ pode assumir.
+- $y$ é chamada de variável dependente.
+- Imagem de $f(x)$ é a faixa de valores que $y$ pode assumir.
+- Resumindo temos,
+
+$$ \frac{x \in Dominio}{Independente} \longrightarrow f(x) \longrightarrow \frac{x \in Imagem}{Dependente}$$
+
+
+- O domínio e imagem de uma função
+são intervalos.
+- Tipos de intervalos:
+  - Intervalo aberto não contém as extremidades: Notação (a,b).
+  - Intervalo fechado contém as extremidades: Notação [a,b].
+- O que entra e o que sai de uma função?
+  - Naturais: $ {N} = \{0, 1, 2, 3...\} $ {N} = \{0,1,2,3, … \}$.
+  - Inteiros: ${Z} = {… , -3, -2, -1, 0, 1,2,3, …}$
+  - Racionais ${Q} = {ab |a, b \in {Z}, b {!=} 0}$
+  - Irracionais: Conjunto de números que não são racionais.
+  - Reais: União de todos os números mencionados acima, notação {R}.
+- Distinção importante ${R}$ (double) e ${Z}$
+(integer).
+
+
+- Considere a função y = x2.
+- Em R temos
+```{r}
+minha_funcao <- function(x) {
+  y <- x^2
+  return(y)
+}
+```
+
+- Avaliando a função em alguns pontos.
+```{r}
+x_vec <- c(-5, -4, -3, -2, -1,
+0, 1, 2, 3, 4, 5) #concatenação
+minha_funcao(x = x_vec) #automaticamente vetorizado
+```
+
+
+## Funções unidimensionais
+
+- Uma função y = f(x) é dita ser de apenas uma variável (unidimensional). Ou seja, só uma entrada
+- Pode ser desenhada em um espaço bidimensional, o chamado {R}2. Gafico de x e y
+- O espaço {R}2 é formado por todas as duplas ordenadas de valores reais.
+- A variável dependente y é representada no eixo vertical.
+- A variável dependente x é representada no eixo horizontal.
+
+```{r}
+
+## Avaliando a função
+y <- minha_funcao(x = x_vec)
+## Gráfico da função
+plot(y ~ x_vec, xlab = "x", type = "l",
+ylab = expression(y = f(x)))
+points(x_vec,y)
+
+## ou com GGPLOT
+
+ggplot(mapping = aes(x_vec,y))
+
+```
+
+## Funções parametrizadas
+
+- Definição - parâmetro é uma quantidade conhecida que indexa ou parametriza uma determinada função.
+- Os parâmetros mudam o comportamento da função e descrevem quantidades/características de interesse.
+- Notação: $y = f(x - \theta)$, onde $\theta$ denota o parâmetro.
+- O conjunto de valores que $\theta$ (theta minusculo) pode assumir é chamado de espaço paramétrico (theta maiusculo).
+- Notação $\theta \in \Theta $.
+- Exemplo: $y = (x - \theta)^2$. Theta joga o grafico mais para direita ou esquerda
+- Computacionalmente:
+
+```{r}
+fx <- function(x, theta) {
+out <- (x - theta)^2
+return(out)
+}
+```
+
+
+```{r}
+## Criar grafico
+```
+
+## Funções com vários parâmetros
+
+- Em geral uma função pode ter vários parâmetros.
+- O ideal é que cada parâmetro controle um aspecto da função.
+- Exemplo: $y = f(x; \theta)$, onde $\theta$ é um vetor de parâmetros.
+- Função com dois parâmetros:
+$$ y = \frac{(x - \theta_{1})^2}{\theta_{2}}$$
+
+```{r}
+## Criar grafico
+```
+
+
+
+## Declividade
+
+- A declividade mede a variação Δ no valor de y dividido pela variação no valor de x, ou seja, declividade é $ \frac{\Delta y}{\Delta x}$ (quanto varia y quando mudamos x).
+- A declividade do desenho de uma função pode ser constante (A), positiva (B) ou negativa (C).
+
+
+```{r}
+## Criar grafico
+```
+Figura 4. Exemplos de declividade.
+
+- O intercepto vertical é o ponto no qual o gráfico cruza o eixo vertical e é obtido quando
+x = 0.
+Prof
+
+
+
+
+## Funções com duas ou mais variáveis independentes
+
+Funções com duas ou mais variáveis independentes
+- Definição - uma função escrita como y = f(x) associa um número y a cada vetor de entrada x. (x é um vetor!)
+- x = (x1, … , x𝑝)⊤ denota um vetor linha transposto (vetor coluna).
+- Exemplo: considere a função de duas variáveis x1 e x2 definida por
+
+$$ f(x1, x2) = √(25 - x21- x22)$$
+,avalie a função nos pontos x = (0, 0)trasp, x = (3, 0)transpo= e desenhe seu gráfico.
+- Avaliando nos pontos
+y =
+√
+25 - 02 - 02 = 5 e y =
+√
+25 - 32 - 02 = 4.
+
+Computacionalmente
+- Implementação computacional
+```{r}
+fx1x2 <- function(x) {
+y = sqrt(25 - x[1]^2 - x[2]^2)
+return(y)
+}
+entrada1 <- c(0, 0)
+entrada2 <- c(3, 0)
+fx1x2(x = entrada1)
+## [1] 5
+fx1x2(x = entrada2)
+## [1] 4
+```
+
+- Avaliando uma função bidimensional.
+```{r}
+
+entrada <- matrix(c(entrada1, entrada2),
+                  ncol = 2, nrow = 2,
+                  byrow = TRUE)
+entrada
+## [,1] [,2]
+## [1,] 0 0
+## [2,] 3 0
+
+saida <- c()
+for(i in 1:2) {
+  saida[i] <- fx1x2(entrada[i,])
+}
+saida
+## [1] 5 4
+```
+
+
+
+- O gráfico da função é o conjunto das triplas ordenadas (y, x1, x2) que satisfazem a função.
+
+
+## Passo-a-passo para desenhar funções bidimensionais
+
+- Neste caso estamos no espaço {R}3.
+- (A) Montar uma grade de valores combinando valores para x1 com valores para x2.
+- (B) Avaliar a função em cada um dos pontos criados.
+- (C) Representar o valor da função no gráfico. Neste caso usando uma paleta de cores. (poderia ser uma topografia, seria uma hemi-esfera)
+
+```{r}
+
+```
+
+Figura 5. Passo-a-passo para desenhar uma função de duas variáveis independentes.
+
+Gráficos bidimensionais
+- Em geral usamos uma grade mais precisa.
+
+curva de nivel ou iso-linha
+
+```{r}
+
+```
+
+
+Figura 6. Ilustração do gráfico de uma função de duas variáveis de entrada.
+
+## Funções multidimensionais
+
+- Definição - uma função escrita como y = f(x; \theta) associa um número y a cada vetor de entrada x e \theta denota um vetor de parâmetros conhecidos.
+- Para funções com mais de duas variáveis de entrada não temos uma forma simples de representação gráfica.
+- Em termos práticos as funções vão representar ou modelar situações reais.
+- Precisamos de funções flexíveis para representar fenômenos complexos.
+
+
+
+Funções polinômiais
+- Funções polinômiais são funções do tipo $y = \beta_{0} + \beta_{1}x + \beta_{2} x^2 + … \beta_{p} x^p$.
+- Exemplo: funções polinômiais de grau até três.  
+  - Função linear: y = 𝛽0 + 𝛽1x.
+  - Função quadrática: y = 𝛽0 + 𝛽1x + 𝛽2x2.
+  - Função cúbica:y = 𝛽0 + 𝛽1x + 𝛽2x2 + 𝛽3x3.
+- O gráfico de uma função quadrática é uma parábola aberta para cima se 𝛽2 > 0 ou para baixo se 𝛽2 < 0.
+- Graficamente:
+```{r}
+
+```
+
+
+Figura 8. Exemplos de gráficos de funções polinômiais.
+
+Funções do tipo potência
+- Funções do tipo potência são funções da forma
+$$y = x^a$$
+em que a é um expoente constante.
+- Por definição, $x^0 = 1 $ e note que um
+número sem expoente está elevado a 1.
+- Propriedades importantes:
+$$
+
+
+$$
+1. xa(x𝑐) = xa+𝑐;
+2. (xa)𝑐 = xa𝑐;
+3. (x𝑧)a = xa(𝑧a);
+4. (x𝑧
+)𝑐 = x𝑐
+𝑧𝑐 ;
+5. 1
+xa = x-a;
+6. xa
+x𝑐 = xa-𝑐;
+7. √
+x = x1/2;
+8. a √
+x = x1/a;
+9. 𝑐 √
+xa = xa/𝑐.
+
+
+## Funções exponenciais
+
+- Funções exponenciais são funções do tipo y = ax onde a é maior que zero e diferente
+de 1 e x é o expoente.
+- Funções exponenciais naturais são funções exponenciais que tem como base
+𝑒 = lim𝑛→∞ [1 + (1/𝑛)]𝑛 = 2.718281828.
+- Propriedades importantes:
+$$
+$$
+1. 𝑒0 = 1.
+2. 𝑒1 = 𝑒 = 2.71828.
+3. 𝑒a(𝑒b) = 𝑒a+b.
+4. (𝑒a)b = 𝑒ab.
+5. 𝑒a
+𝑒b = 𝑒a-b.
+
+## Funções logarítmicas
+
+- Funções logarítmicas ou logaritmo é a potência à qual uma dada base deve ser elevada
+para se obter um particular número.
+- Logaritmos comuns utilizam a base 10 e são escritos log10.
+- Por exemplo, uma vez que 102 = 100, 2 é o log de 100.
+- Para qualquer função exponencial y = ax, onde a é a base e x o expoente, loga y = x x é
+a potência à qual a deve ser elevado, para obter-se y.
+
+
+## Relações entre funções logarítmicas e exponenciais.
+- Se log10 y = 2x, então y = 102x.
+- Se loga y = x𝑧, então y = ax𝑧.
+- Se ln y = 5𝑡, então y = 𝑒5𝑡.
+- Se y = a3x, então loga y = 3x.
+- Se y = 106x, então log10 y = 6x.
+- Se y = 𝑒𝑡+1, então ln y = 𝑡 + 1.
+
+
+## Outras funções de interesse
+- Sigmóide ou logística: y = 1
+1+𝑒-x .
+- Tangente hiperbólica: y = 𝑒x-𝑒-x
+𝑒x+𝑒-x .
+- Linear retificada (ReLU): y = max{0,x}. (maximo entre 0 e x?. Vale 0 até o 0 e depois "sobe")
+- Leaky ReLU: y = max{𝛼x, x}, onde 𝛼 é uma parâmetro conhecido.
+
+##Desenho do gráfico das funções
+
+```{r}
+
+```
+
+## Normal
+
+$$ y= (x-0)^2/\theta$$
+
+$$ exp{-(n - \theta_{1})^2/ \theta_{2}}$$
+fazer grafico
+ .....normal
+
+## Limites e continuidade
+
+Limite de uma função
+- Definição - se uma função f(x) se aproxima de um número 𝐿 conforme x tende a um
+número a vindo da direita ou da esquerda, dizemos que o limite de f(x) tende a 𝐿
+quando x tende a a.
+- Notação
+lim x→a
+f(x) = f(a) = 𝐿.
+- O limite pode não existir.
+- Se o limite de uma função existe ele é único.
+- Considere o limite
+lim
+x→1
+(x + 1) = 2.
+
+
+
+Exemplo
+- Considere o limite
+lim
+x→1
+x2 - 1
+x - 1
+= ?
+
+é 2
+- Computacionalmente
+```{r}
+fx <- function(x) {
+out <- (x^2 - 1)/(x - 1)
+return(out)
+}
+fx(x = 1)
+## [1] NaN
+```
+
+
+
+```{r}
+## Figura 11. Desenho do gráfico da função
+```
+
+Exemplo
+- Note que
+$$
+$$
+
+- Definição intuitiva: o limite de uma função é o valor que achamos natural para ela em um determinado ponto.
+- Essa função não é continua (no ponto)
+
+
+
+## Continuidade de uma função
+- Definição - dizemos que uma função é contínua em x = a se três condições forem satisfeitas:
+  - $f(a)$ existe,
+  - $\lim_{x \to a} f(x)$ existe e
+  - $\lim_{x \to a} f(x) = f(a)$.
+- Continuidade significa que pequenas variações na variável independente levam a pequenas variações na variável dependente.(mudanças suaves, ou não abruptas)
+- Teorema do valor intermediário: se a função f(x) é contínua no intervalo fechado [a,b],
+então existe pelo menos um número 𝑐 em [a,b] tal que f(𝑐) = 𝑀.
+- Implicação: se f(x) é contínua seu gráfico não contém salto vertical.
+- Em geral podemos pensar em funções contínuas como sendo funções suaves.
+
+Função não contínua
+- Considere a função não continua em 0.
+$$
+\lim_{x \to 0} \frac{|x|}{x} = \{-1   x < 0 e 1 x > 0
+$$
+
+
+
+```{r}
+## Figura 12. Função descontinua.
+```
+
+Propriedades de limites
+Se limx→𝑝 f(x) = 𝐿1 e limx→𝑝 𝑔(x) = 𝐿2, então
+- limx→𝑝[f(x) + 𝑔(x)] = limx→𝑝 f(x) + limx→𝑝 𝑔(x) = 𝐿1 + 𝐿2.
+- limx→𝑝 𝑘f(x) = 𝑘 limx→𝑝 f(x) = 𝑘𝐿1.
+- limx→𝑝 f(x)𝑔(x) = limx→𝑝 f(x) limx→𝑝 𝑔(x) = 𝐿1𝐿2.
+- limx→𝑝
+f(x)
+𝑔(x) = 𝐿1
+𝐿2
+, desde que 𝐿2 {!=} 0.
+
+
+## Derivadas
+
+- Definição - derivada ordinária, derivada primeira, ou simplesmente, derivada de uma função y = f(x) em um ponto x = a no domínio de f é representada por $ 𝑑y/𝑑x , y′, 𝑑f 𝑑x$ ou $f′(a)$ é o valor
+
+$$
+$$
+𝑑y
+𝑑x
+|x=a = f′(a) = lim
+ℎ→0
+f(a + ℎ) - f(a)
+ℎ
+
+$$
+\lim_{h \to 0}  = \frac{f(a+h)-f(a)}h
+$$
+
+- Interpretação da derivada
+- Taxa de mudança instântanea.
+- No limite quando $x \longrightarrow a$ a derivada é a reta tangente ao ponto $(a, f(a))$.
+- Equação da **reta tangente** ao ponto a: y - f(a) = f′(a)(x - a).(coenficiente angular é beta1 -> y = beta0 + beta1*x)
+
+## Exemplo
+Obtenha a derivada de $f(x) = -x^2$
+$$
+f'(x) = 
+$$
+f′(x) = lim
+ℎ→0
+f(x + ℎ) - f(x)
+ℎ
+= lim
+ℎ→0
+-(x + ℎ)2 - (-x2)
+ℎ
+= lim
+ℎ→0
+-(x2 + 2xℎ + ℎ2) + x2
+ℎ
+= lim
+ℎ→0
+-x2 - 2xℎ - ℎ2 + x2
+ℎ
+=
+-2xℎ - ℎ2
+ℎ
+= lim
+ℎ→0
+-2x - ℎ = -2x
+f′(x) = -2x. (1)
+
+
+
+Obtenha a reta tangente a f(x) nos
+pontos x = 2 e x = -2.
+- Temos f(x = 2) = -4 e
+f′(x = 2) = -4, assim
+y - f(x = 2) = f′(x = 2)(x - 2)
+y - (-4) = -4(x - 2)
+y + 4 = = -4x + 8
+y = 4 - 4x
+- Computacionalmente
+- f(x) e f′(x).
+```{r}
+fx <- function(x) {
+out <- - x^2
+return(out)
+}
+f_prime <- function(x) {
+out <- -2*x
+return(out)
+}
+```
+
+
+- Equação da reta y = a + b ∗ x.
+```{r}
+intercept = (fx(x = 2) - f_prime(x = 2)*2)
+slope <- f_prime(x = 2)
+c(intercept, slope)
+## [1] 4 -4
+```
+
+```{r}
+## Figura 14. Desenho de uma função e retas tangentes.
+```
+
+
+## Regras de derivação
+- Seja 𝑛 {!=} 0 um natural. São válidas as
+fórmulas de derivação:
+1. Se f(x) = 𝑐 então f′(x) = 0.
+2. Se f(x) = x𝑛 então f′(x) = 𝑛x𝑛-1.
+3. Se f(x) = x-𝑛 então
+f′(x) = -𝑛x-𝑛-1.
+4. Se f(x) = x1/𝑛 então f′(x) = 1
+𝑛
+x 1
+𝑛
+-1.
+- Derivada de funções especiais
+5. Se f(x) = exp(x) então
+f′(x) = exp(x).
+6. Se f(x) = ln(x) então
+f′(x) = 1
+x
+, x > 0.
+- Sendo, f(x) e 𝑔(x) deriváveis em x e 𝑐
+uma constante.
+7. (f + 𝑔)′ = f′(x) + 𝑔′(x).
+8. (𝑐f)′(x) = 𝑐f′(x).
+9. (f ⋅ 𝑔)′(x) = f′(x)𝑔(x) + f(x)𝑔′(x).
+10. ( f
+𝑔 )′(x) = f′(x)𝑔(x)-f(x)𝑔′(x)
+[𝑔(x)]2 .
+- Exemplo: obtenha a derivada de
+f(x) = 2 + 3x.
+- Solução: f′(x) = 3.
+- Computacionalmente
+```{r}
+D(expression(2 + 3*x), name = "x")
+## [1] 3
+```
+
+
+
+## Regra da cadeia
+- "Uma função dentro da outra"
+- Sejam y = f(x) e x = 𝑔(𝑡) duas funções deriváveis, com 𝐼 \in 𝐷f . A função composta
+ℎ(𝑡) = f(𝑔(𝑡)) é derivável, sendo
+ℎ′(𝑡) = f′(𝑔(𝑡))𝑔′(𝑡), 𝑡 \in 𝐷𝑔.
+- Existe uma infinidade de fórmulas de derivação.
+- Na prática é comum usar um software de matemática simbólica como o wxMaxima.
+- Em R as funções deriv() e deriv3().
+
+
+## Exemplo regra da cadeia
+- Obtenha a derivada de sin(2x3 - 4x).
+1. Note que temos uma função composta (derivada de sen e cos)
+sin(𝑔(x)), onde 𝑔(x) = 2x3 - 4x.
+2. Usando a regra da cadeia temos:
+f′(𝑔(x)) = cos(2x3 - 4x) and 𝑔′(x) = 6x2 - 4.
+3. Assim, a derivada fica dada por
+cos(2x3 - 4x) ⋅ (6x2 - 4).
+4. Computacionalmente
+```{r}
+D(expression( sin(2*x^3 - 4*x)), name = "x")
+## cos(2 * x^3 - 4 * x) * (2 * (3 * x^2) - 4)
+## ou cos(2x^3 - 4x) * (6x^2) - 4)
+
+D(D(expression( sin(2*x^3 - 4*x)), name = "x"), name = "x")
+## cos(2 * x^3 - 4 * x) * (2 * (3 * (2 * x))) - sin(2 * x^3 - 4 * x) * (2 * (3 * x^2) - 4) * (2 * (3 * x^2) - 4)
+```
+
+## Derivadas de ordem superior
+- A derivada f′(x) é também chamada de derivada de primeira ordem e mede a variação da
+função original ou primitiva.
+- A derivada de segunda ordem denotada por f′′(x) mede a taxa de variação da primeira
+derivada.
+- A derivada de terceira ordem f′′′(x) mede a taxa de variação da segunda derivada e assim
+por diante até a 𝑛-ésima derivada.
+- Notação comum: 𝑑𝑛y
+𝑑x𝑛 que é interpretada como a 𝑛-ésima derivada de y em relação a x
+- Exemplo: obtenha as derivadas até a ordem 5 da função y = 2x4 + 5x3 + 2x2.
+𝑑y
+𝑑x = 8x3 + 15x2 + 4x, 𝑑2y
+𝑑x2 = 24x2 + 30x + 4, 𝑑3y
+𝑑x3 = 48x + 30, 𝑑4y
+𝑑x4 = 48 e 𝑑5y
+𝑑x5 = 0.
+daqui em diante é zero
+
+
+## Máximos e mínimos
+- Dizemos que um ponto $c$ é um valor máximo relativo de $f(x)$ se existir um intervalo aberto contendo $c$, no qual $f(x)$4 esteja definida, tal que $f(c) >= f(x)$ para todo $x$ neste intervalo.
+- Dizemos que um ponto $c$ é um valor mínimo relativo de $f(x)$ se existir um intervalo aberto contendo $c$, no qual f(x) esteja definida, tal que f(𝑐) ≤ f(x) para todo x neste intervalo. (maximo e minimo dentro de um trecho de grafico)
+
+```{r}
+## Figura 15. Ilustração de máximo/mínimo relativos.
+```
+
+- Multiplicando a função por -1 invertemos a sua concavidade.
+
+
+## Pontos extremos (pico do morro ou fundo do vale)
+- Se f(x) existe para todos os valores de x no intervalo aberto (𝑎,𝑏), e se f(x) tem um extremo relativo em 𝑐, em que 𝑎 < 𝑐 < 𝑏, então f′(𝑐) existe e f′(𝑐) = 0.
+- Implicação - Sendo f(x) diferenciável os pontos extremos de f(x) vão ocorrer quando f′(x) = 0.
+- $f'(x)$ pode ser igual a zero mesmo não sendo um extremo relativo.
+```{r}
+## Figura 16. Ilustração de uma função onde derivada zero não é ponto extremo.
+```
+
+
+## Máximos e mínimos
+Seja $c$ um ponto extremo de uma função $f(x)$ no qual $f'(c) = 0$, e suponha que $f'(x)$ exista
+para todos os valores de x em um intervalo aberto contendo 𝑐. Se f′′(𝑐) existe, então
+- Se f′′(𝑐) < 0, então f(x) tem um máximo relativo em 𝑐.
+- Se f′′(𝑐) > 0, então f(x) tem um mínimo relativo em 𝑐.
+## Concavidade
+- Se f′′(𝑐) > 0 o gráfico de f(x) é côncavo para cima em (𝑐, f(𝑐));
+- Se f′′(𝑐) < 0 o gráfico de f(x) é côncavo para baixo em (𝑐, f(𝑐)).
+
+
+
+Por que derivadas são importantes?
+- Obtenção de máximo ou mínino (relativo).
+
+ponto extremo tem inclinação zero (a3 na figura)
+
+
+```{r}
+## Figura 17. Ilustração de uma função com a reta tangente.
+```
+
+## Redução de dados
+
+Você já trabalha com dados? Se sim,
+- Por qual razão você usa a média ou a mediana como uma medida resumo?
+- Você acha que existe algum procedimento mais geral que leva a obtenção destas medidas resumo?
+- Se sim, como este procedimento está relacionado com o que vimos em relação a funções e seu comportamento?
+
+
+- Suponha que temos um conjunto de observações $y_{i}$ para $i = 1, … , n$.
+- Objetivo: resumir a informação contida em $y_{i}$ em um único número, digamos $\mu$.
+- Problema: como encontrar $\mu$?
+- Solução: encontrar o valor $\mu$, tal que $f(\mu) = \sum_{i=1}^{n} (y_{i} - \mu)^2 $ (soma de quadrados da diferença de cada valor para media, ou seja o quanto eu perdi ao trocar os $y$ por $\mu$), seja a menor possível.
+- Uma vez que temos os números observados $y_{i}$ a única quantidade desconhecida é$\mu$.
+- Note que $\mu$ é o parâmetro da nossa função.
+- A função $f(\mu)$ mede o quanto perdemos em representar $y_{i}$ apenas usando $\mu$.
+- Funções perda muito populares são a perda quadrática, perda absoluta, minmax e a cross entropia.
+- dervar e igualar a 0.
+
+Funções em R.
+```{r}
+y <- c(8,9,14,10,10,15,11,5,4,13)
+fmu <- function(mu, y) {
+out <- sum((y - mu)^2)
+return(out)
+}
+fmu <- Vectorize(fmu, "mu")
+fmu(mu = c(10, 12, 0, 8), y = y)
+## [1] 117 161
+f_prime <- function(mu, y) {
+out <- -2*sum(y-mu)
+return(out)
+}
+```
+
+Graficamente
+```{r}
+
+```
+
+- Note que o melhor resumo dos dados de um número, corresponde ao ponto de mínimo da função
+$$
+f(y) = \sum_{i=1}^{n} (y_{i} -\mu )^2
+$$
+
+- Como o mínimo está relacionado com a derivada de $f(\mu)$?
+
+
+## Exemplo: redução de dados
+- No ponto de mínimo/máximo a inclinação da reta tangente a $f(\mu)$ é zero.
+- Denote por 𝜇̂ o ponto de mínimo/máximo de 𝑓(𝜇), então 𝑓′(𝜇)̂ = 0.
+- Assim, temos (regra da cadeia!!)
+
+$$ f(y) = \sum_{i=1}^{n} (y_{i} -\mu )^2$$
+$$\varepsilon_{i} = y_{i} -\mu$$
+$$  f'(\mu) = \sum_{i=1}^{n} (\varepsilon_{i})^2 $$
+$$  f'(\mu) = 2 \sum_{i=1}^{n} (y_{i} -\mu) \frac{d}{d \mu} (y_{i} -\mu) $$
+
+$$ f'(\mu) = 2 \sum_{i=1}^{n} (y_{i} -\mu) (-1)$$
+
+$$ f'(\mu) = -2 \sum_{i=1}^{n} (y_{i} -\mu)$$
+
+Exemplo: redução de dados
+- Agora precisamos achar o ponto 𝜇̂ tal que 𝑓′(𝜇)̂ = 0.
+
+$$ f'(\mu_{chapeu}) = 0$$
+
+$$  -2 \sum_{i=1}^{n} (y_{i} -\mu_{chapeu}) = 0$$
+$$  -\sum_{i=1}^{n} (y_{i} -n \mu_{chapeu}) = 0$$
+$$ n\mu_{chapeu} = \sum_{i=1}^{n} y_{i}$$
+
+$$ \mu_{chapeu} = \frac{\sum_{i=1}^{n} y_{i}}{n}$$
+OU SEJA MÉDIA!!!
+
+Comentários
+- Por qual razão você usa a média ou a mediana como uma medida resumo?
+  - Minimiza a perda quadrática.
+  - Medida ótima no sentido de perda quadrática.
+- Você acha que existe algum procedimento mais geral que leva a obtenção destas medidas resumo?
+  - Especificação do modelo.
+  - Escolha da função perda.
+  - Treinamento (otimização).
+- Se sim, como este procedimento está relacionado com o que vimos em relação a funções e
+seu comportamento?
+  - Estudar o comportamento de funções.
+
+## Derivadas parciais
+
+
+- Uma função pode ter mais do que uma variável independente.
+- A derivada parcial mede a taxa de variação instantânea da variável dependente (𝑦) com relação a variável independente 𝑥1, quando a outra variável independente 𝑥2 é mantida constante.
+- Como obter a derivada parcial?
+- A derivada parcial em relação a 𝑥1 é obtida derivando 𝑓(𝑥1, 𝑥2) “fingindo” que 𝑥2 é uma constante.
+- A derivada parcial de 𝑓(𝑥1, 𝑥2) em relação a 𝑥2 é obtida derivando 𝑓(𝑥1, 𝑥2) mantendo 𝑥1
+constante.
+- A diferenciação parcial segue as mesmas regras da diferenciação ordinária.
+
+
+Exemplo
+Obtenha as derivadas parciais em relação a $x_{1}$ e  $x_{2}$ de $y = 5 x_{1}^{3} + 3 x_{1} x_{2} + 4 x_{2}^{2}$
+
+$$\displaystyle \frac{\partial y}{\partial x_{1}} = 15 x_{1}^{2} + 3 x_{2}$$
+ou
+```{r}
+D(expression( 5 * x^3 + 3 * x * c + 4* c^2 ), name = "x")
+```
+
+
+$$\displaystyle \frac{\partial y}{\partial x_{2}} = 3 x_{1} + 8 x_{2}$$
+```{r}
+D(expression( 5 * x^3 + 3 * x * c + 4* c^2 ), name = "c")
+```
+
+
+
+Derivadas parciais de ordem superior
+- Derivadas parciais de segunda ordem
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥21
+e 𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥22
+indica que a função foi diferenciada parcialmente em relação a 𝑥1 ou 𝑥2 duas vezes.
+- Derivada parcial cruzada (ou mista)
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥1𝜕𝑥2
+indica que primeiro derivamos em 𝑥1 e depois em 𝑥2.
+- A ordem da derivada cruzada não importa (se ambas contínuas), ou seja
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥1𝜕𝑥2
+=
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥2𝜕𝑥1
+.
+
+
+Exemplo: derivadas parciais de segunda ordem
+- Obtenha as derivadas parciais de até segunda ordem em relação a 𝑥1 e 𝑥2 de
+𝑦 = 7𝑥31
++ 9𝑥1𝑥2 + 2𝑥52
+.
+- Derivadas parciais de primeira ordem
+𝜕𝑦
+𝜕𝑥1
+= 21𝑥21
++ 9𝑥2,
+𝜕𝑦
+𝜕𝑥2
+= 9𝑥1 + 10𝑥42
+.
+- Derivadas parciais de segunda ordem (segunda derivadas direta)
+𝜕2𝑦
+𝜕𝑥21
+= 42𝑥1,
+𝜕2𝑦
+𝜕𝑥22
+= 40𝑥32
+.
+- Derivadas parciais de segunda ordem (termos cruzados)
+𝜕2𝑦
+𝜕𝑥1𝑥2
+=
+𝜕21𝑥21
++ 9𝑥2
+𝜕𝑥2
+= 9,
+𝜕2𝑦
+𝜕𝑥2𝑥1
+=
+𝜕9𝑥1 + 10𝑥42
+𝜕𝑥1
+= 9.
+
+- As cruzadas dão sempre iguais.
+
+
+## Máximos e mínimos funções muldimensionais
+- Pontos críticos: as derivadas parciais de primeira ordem devem ser iguais a zero **simultaneamente**.
+- Derivadas parciais **principais** de segunda ordem no ponto crítico forem ambas **positivas -> ponto de mínimo**.
+- Derivadas parciais de segunda ordem no ponto crítico forem ambas **negativas -> ponto de máximo**.
+- Outras situações ver material suplementar.
+
+
+## Exemplo
+Considere a função 𝑦 = 6𝑥21
+− 9𝑥1 − 3𝑥1𝑥2 − 7𝑥2 + 5𝑥22
+. Encontre os pontos críticos e
+determine se são de máximo ou minímo.
+- Graficamente
+```{r}
+
+```
+
+- Calcular as derivadas parciais de primeira ordem da função
+𝑦 = 6𝑥21
+− 9𝑥1 − 3𝑥1𝑥2 − 7𝑥2 + 5𝑥22
+.
+- Derivando em 𝑥1, temos
+𝜕𝑦
+𝜕𝑥1
+= 12𝑥1 − 9 − 3𝑥2.
+- Derivando em 𝑥2, temos
+𝜕𝑦
+𝜕𝑥2
+= −3𝑥1 − 7 + 10𝑥2.
+
+- Resolver o sistema de equações
+12𝑥1 − 9 − 3𝑥2 = 0
+−3𝑥1 − 7 + 10𝑥2 = 0.
+- Solução: 𝑥1 = 1 e 𝑥2 = 1. ## USA NA PROXIMA
+
+- Verificar se o ponto encontrado é de mínimo calculando a segunda derivada parcial principal e avaliando o seu sinal.
+
+
+
+𝜕2𝑦
+𝜕𝑥21
+=
+𝜕
+𝜕𝑥1
+(12𝑥1 − 9 − 3𝑥2) = 12,
+𝜕2𝑦
+𝜕𝑥22
+=
+𝜕
+𝜕𝑥2
+(3𝑥1 − 7 + 10𝑥2) = 10.
+
+
+- Calcular as derivadas cruzadas e verificar se o produto das derivadas principais é maior que o produto das cruzadas
+
+𝜕2𝑦
+𝜕𝑥1𝑥2
+=
+𝜕12𝑥1 − 9 − 3𝑥2
+𝜕𝑥2
+= −3,
+𝜕2𝑦
+𝜕𝑥2𝑥1
+=
+𝜕 − 3𝑥1 − 7 + 10𝑥2
+𝜕𝑥2
+= −3.
+
+Assim, temos que
+𝜕2𝑦
+𝜕𝑥21
+𝜕2𝑦
+𝜕𝑥22
+ (
+𝜕2𝑦
+𝜕𝑥1𝑥2
+)
+2
+12 ⋅ 10 > (−3)2
+120 > 9.
+
+- A função está em um ponto de mínimo quando examinada de todas as direções.
+
+## Gradiente e Hessiano
+
+
+## Gradiente
+
+- Derivadas de primeira e segunda ordem aparecem com tanta frequência que receberam nomes especiais.
+- O vetor gradiente de uma função 𝑓(𝑥1,𝑥2) é o **vetor composto pelas derivadas primeira** de 𝑓(𝑥1,𝑥2) em relação a 𝑥1 e 𝑥2,
+∇𝑓(𝑥1,𝑥2) = (
+𝜕𝑓(𝑥1,𝑥2)
+𝜕𝑥1
+,
+𝜕𝑓(𝑥1,𝑥2)
+𝜕𝑥2
+)
+⊤
+.
+- A definição estende-se naturalmente para funções multidimensionais.
+- Sendo, 𝑓(𝑥) onde 𝑥 é um vetor 𝑝 × 1 de variáveis independentes o vetor gradiente de 𝑓(𝑥) é dado por
+∇𝑓(𝑥) = (
+𝜕𝑓(𝑥)
+𝜕𝑥1
+, … ,
+𝜕𝑓(𝑥)
+𝜕𝑥𝑝
+)
+⊤
+.
+
+
+## Hessiano
+- A matriz hessiana de uma função 𝑓(𝑥1,𝑥2) é a matriz composta pelas **derivadas de segunda ordem** de 𝑓(𝑥1,𝑥2), na seguinte estrutura
+H = (
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥21
+𝜕𝑓(𝑥1,𝑥2)
+𝜕𝑥1𝜕𝑥2
+𝜕𝑓(𝑥1,𝑥2)
+𝜕𝑥2𝜕𝑥1
+𝜕2𝑓(𝑥1,𝑥2)
+𝜕𝑥22
+) .
+- E para o caso multidimensional
+H =
+⎛⎜⎜⎜
+⎝
+𝜕2𝑓(𝑥)
+𝜕𝑥21
+⋯ 𝜕𝑓(𝑥)
+𝜕𝑥1𝜕𝑥𝑝
+⋮ ⋱ ⋮
+𝜕𝑓(𝑥)
+𝜕𝑥𝑝𝜕𝑥1
+⋯ 𝜕2𝑓(𝑥)
+𝜕𝑥2
+𝑝
+⎞⎟⎟⎟
+⎠
+
+
+## Séries de Taylor
+
+- Suponha que uma função 𝑓(𝑥) é derivável (𝑛 + 1) vezes em um intervalo contendo
+𝑥 = 𝑥0.
+- Expansão em Série de Taylor de 𝑓(𝑥) em torno de 𝑥 = 𝑥0 consiste em reescrever 𝑓(𝑥) da
+seguinte forma:
+𝑓(𝑥) = 𝑓(𝑥0) + (𝑥 − 𝑥0)
+𝑑𝑓(𝑥)
+𝑑𝑥
+|𝑥=𝑥0 +
+(𝑥 − 𝑥0)2
+2!
+𝑑2𝑓(𝑥)
+𝑑𝑥2 |𝑥=𝑥0+ (2)
+(𝑥 − 𝑥0)3
+3!
+𝑑3𝑓(𝑥)
+𝑑𝑥3 |𝑥=𝑥0 + … +
+(𝑥 − 𝑥0)𝑛
+𝑛!
+𝑑𝑛𝑓(𝑥)
+𝑑𝑥𝑛 |𝑥=𝑥0 + 𝑅𝑛(𝑥) (3)
+onde o termo 𝑅𝑛(𝑥) é chamado de resíduo ou erro, e dado por
+𝑅𝑛(𝑥) =
+(𝑥 − 𝑥0)𝑛+1
+(𝑛 + 1)!
+𝑑𝑛+1𝑓(𝑥)
+𝑑𝑥𝑛+1 |𝑥=𝜖
+sendo 𝜖 um valor entre 𝑥 e 𝑥0.
+
+
+## Exemplo
+- Seja 𝑓(𝑥) = exp(𝑥). Determine a expansão de Taylor de ordens 1 e 2, de 𝑓(𝑥) ao redor de
+𝑥0 = 0.
+- Aproximação de primeira ordem
+𝑃1(𝑥) = 𝑓(𝑥 = 0) + 𝑓′(𝑥 = 0)(𝑥 − 0)
+= exp(0) + exp(0)(𝑥 − 0)
+= 1 + 𝑥.
+- Aproximação de segunda ordem
+𝑃2(𝑥) = 𝑓(𝑥 = 0) + 𝑓′(𝑥 = 0)(𝑥 − 0) +
+𝑓′′(𝑥 = 0)
+2
+(𝑥 − 0)2
+= exp(0) + exp(0)(𝑥 − 0) + exp(0)
+2
+(𝑥 − 0)2
+= 1 + 𝑥 +
+1
+2
+𝑥2.
+
+Graficos
+
+- Quanto mais se afasta de zero pior fica a aproximação.
+- A Tailor em n+1 graus é igual a original
+
+
+## Regressão linear simples
+- Regressão linear é uma das técnicas mais populares em ciência de dados.
+- Objetivo: descrever o comportamento de uma variável dependente 𝑦 por meio do conhecimento de outra variável
+independente 𝑥.
+- Predizer 𝑦 dado um valor de 𝑥.
+- Descrever a relação entre 𝑦 e 𝑥.
+- Exemplo
+  - Como o tamanho (em metros quadrados) de um apartamento está associado ao seu preço (em reais)?
+  - Suponha que um conjunto de 20 apartamentos foi medido e avaliado.
+
+Grafico
+
+Regressão linear simples
+- Ideia simples! → O preço deve ser uma função do tamanho do apartamento.
+- Formalização matemática:
+- Denote por 𝑦𝑖 para 𝑖 = 1, … ,𝑛 o preço do apartamento 𝑖 e neste caso 𝑛 = 20.
+- Denote por 𝑥𝑖 o tamanho do apartamento 𝑖 em metros quadrados.
+- Função relacionando preço ∼ tamanho
+$$ Preço = f(metroquadrado) $$
+$$ y_{i} = f^{*}(x_{i})$$
+
+- Qual é a função 𝑓∗(𝑥𝑖)?
+- Não conhecemos e em geral nunca vamor conhecer 𝑓∗(𝑥𝑖).
+- Aproximar 𝑓∗(𝑥𝑖) por outra função 𝑓(𝑥𝑖) conhecida.
+- Problema: qual 𝑓(𝑥𝑖) e como fazer a aproximação!
+
+- Uma opção é usar a expansão em série de Taylor para obter uma aproximação.
+
+- Aproximação em série de Taylor de primeira ordem
+$$ f^{*}(x) = f^{*}(x_0) + (x - x_0)f^{*'}(x) + R_n(x)$$
+
+- Ignorando o termo residual 𝑅𝑛(𝑥)
+𝑓∗(𝑥) ≈ 𝑓∗(𝑥0) + (𝑥 − 𝑥0)𝑓∗′(𝑥0).
+
+- Rearranjando os termos obtemos
+𝑓∗(𝑥) ≈ ⏟{𝑓⏟∗(⏟𝑥0⏟)⏟− 𝑓∗⏟′(𝑥⏟0⏟)𝑥⏟0}
+𝛽0
++ 𝑓⏟∗′(𝑥0)
+𝛽1
+𝑥
+𝑓∗(𝑥) ≈ 𝛽0 + 𝛽1𝑥.
+- De forma equivalente, temos
+𝑦𝑖 = 𝛽0 + 𝛽1𝑥𝑖 + 𝑅𝑛(𝑥𝑖),
+em que o termo 𝑅𝑛(𝑥𝑖) é o erro cometido em aproximar 𝑦𝑖 por 𝛽0 + 𝛽1𝑥𝑖.
+
+- Notação usual 𝜖𝑖 = 𝑦𝑖 − (𝛽0 + 𝛽1𝑥𝑖).
+- Note que o erro é uma função dos parâmetros desconhecidos 𝛽0 e 𝛽1.
+- Objetivo: minimizar a soma de quadrados dos erros ou resíduos
+$$ 
+$$
+
+𝑆𝑄(𝛽0, 𝛽1) =
+𝑛Σ
+𝑖=1
+𝜖2(𝛽0, 𝛽1)𝑖
+𝑆𝑄(𝛽0, 𝛽1) =
+𝑛Σ
+𝑖=1
+(𝑦𝑖 − (𝛽0 + 𝛽1𝑥𝑖))2.
+
+- Obter o vetor gradiente
+∇𝑆𝑄(𝛽0,𝛽1) = (
+𝜕𝑆𝑄(𝛽0,𝛽1)
+𝜕𝛽0
+,
+𝜕𝑆𝑄(𝛽0, 𝛽1)
+𝜕𝛽1
+) .
+- Encontrar 𝛽0̂ e 𝛽1̂ tal que
+∇𝑆𝑄(𝛽0̂ ,𝛽1̂ ) = 0.
+
+
+
+1. Chame 𝑦𝑖 − (𝛽0 + 𝛽1𝑥𝑖) = 𝜖𝑖.
+2. Chame 𝛽0 + 𝛽1𝑥𝑖 = 𝜇𝑖.
+3. Assim,
+∇𝑆𝑄(𝛽0,𝛽1) = (
+𝜕𝑆𝑄(𝛽0,𝛽1)
+𝜕𝜖𝑖
+𝜕𝜖𝑖
+𝜇𝑖
+𝜕𝜇𝑖
+𝜕𝛽0
+,
+𝜕𝑆𝑄(𝛽0,𝛽1)
+𝜕𝜖𝑖
+𝜕𝜖𝑖
+𝜇𝑖
+𝜕𝜇𝑖
+𝜕𝛽1
+) ,
+em que
+𝜕𝑆𝑄(𝛽0,𝛽1)
+𝜕𝜖𝑖
+=
+𝜕
+𝜕𝜖𝑖
+𝑛Σ
+𝑖=1
+𝜖2
+𝑖
+= 2
+𝑛Σ
+𝑖=1
+𝜖𝑖.
+𝜕𝜖𝑖
+𝜕𝜇𝑖
+=
+𝜕
+𝜕𝜇𝑖
+(𝑦𝑖 − 𝜇𝑖) = −1,
+𝜕𝜇𝑖
+𝜕𝛽0
+=
+𝜕
+𝜕𝛽0
+𝛽0 + 𝛽1𝑥𝑖 = 1,
+𝜕𝜇𝑖
+𝜕𝛽1
+=
+𝜕
+𝜕𝛽1
+𝛽0 + 𝛽1𝑥𝑖 = 𝑥𝑖.
+
+
+Vetor gradiente
+- Portanto,
+∇𝑆𝑄(𝛽0,𝛽1) = (−2
+𝑛Σ
+𝑖=1
+𝜖𝑖(1); −2
+𝑛Σ
+𝑖=1
+𝜖𝑖𝑥𝑖)
+= (−2
+𝑛Σ
+𝑖=1
+(𝑦𝑖 − 𝛽0 − 𝛽1𝑥𝑖); −2
+𝑛Σ
+𝑖=1
+(𝑦𝑖 − 𝛽0 − 𝛽1𝑥𝑖)𝑥𝑖) .
+- Resolver o sistema de equações simultâneas (derivadas de beta 0 e beta 1)
+−2
+𝑛Σ
+𝑖=1
+(𝑦𝑖 − 𝛽0̂ − 𝛽1̂ 𝑥𝑖) = 0
+−2
+𝑛Σ
+𝑖=1
+(𝑦𝑖 − 𝛽0̂ − 𝛽1̂ 𝑥𝑖)𝑥𝑖 = 0.
+
+- Solução
+𝛽0̂ = 𝑦̄− 𝛽1̂ 𝑥,̄
+𝛽1̂ =
+Σ𝑛
+𝑖=1 𝑦𝑖𝑥𝑖 − 𝑦̄Σ𝑛
+𝑖=1 𝑥𝑖
+Σ𝑛
+𝑖=1 𝑥2
+𝑖
+− 𝑥̄Σ𝑛
+𝑖=1 𝑥𝑖
+
+
+
+
+```{r eval=FALSE}
+## Carregando a base de dados
+dados <- read.table("Wagner/reglinear.csv",
+                    header = TRUE)
+dados
+```
+
+```{r}
+## Obtendo beta1
+beta1 <- (sum(dados$y*dados$x) -
+            mean(dados$y)*sum(dados$x))/
+  (sum(dados$x^2) - mean(dados$x)*sum(dados$x))
+# Obtendo beta0
+beta0 <- mean(dados$y) - beta1*mean(dados$x)
+c(beta0, beta1)
+## [1] 2622.752 3608.499
+## Verificando
+```
+
+
+
+```{r}
+coef(lm(y ~ x, data = dados))
+## (Intercept) x
+## 2622.752 3608.499
+```
+Modelo:
+ychapeu = 2622.752 + 3608.499* metrosquadrados
+
+
+## Discussão
+- Derivadas são essenciais em estatística.
+- Maximizar/minimizar funções perda/objetivo.
+- O cálculo é por vezes difícil e tedioso.
+- Solução de sistemas lineares é tedioso quando possível.
+- Álgebra linear ajuda a generalizar as soluções.
+- Em situações mais gerais expressões analíticas não serão possíveis de obter.
+- Métodos numéricos para resolução de sistemas lineares.
+- Métodos numéricos para resolução de sistemas não-lineares.
+- Métodos de otimização numérica.
+
+
+# Aula 2024-04-06
+
+## Integrais
+
+Anti-derivada
+
+### Integral indefinida
+
+- Chamamos de integral indefinida o oposto ou o inverso da derivada, também chamada
+de antiderivada.
+- A integral indefinida da função $f(x)$ é expressa por
+$$
+∫ 𝑓(𝑥)𝑑𝑥 = 𝐹 (𝑥) + 𝑐.
+$$
+- Exemplo,
+$$ 
+∫ 𝑥𝑑𝑥 = 𝑥2
+$$
+2 + 𝑐,
+uma vez que se derivarmos 𝑥2
+2 encontramos 𝑥
+
+[...]
+
+### Soma de Riemann
+
+```{r}
+soma_riemann <- function(n, a, b, fx, ...) {
+  intervalos <- seq(a, b, length = n)
+  ci <- c()
+  soma <- c()
+  for(i in 1:c(n-1)) {
+    Deltai <- (intervalos[i+1] - intervalos[i]) # Tamanho do intervalo
+    ci[i] <- (intervalos[i+1] + intervalos[i])/2 # Ponto central do intervalo
+    soma[i] <- fx(ci[i])*Deltai # Cada elemento da soma
+  }
+  return(sum(soma))
+}
+soma_riemann <- Vectorize(soma_riemann, "n")
+
+soma_riemann(n = 2, a = 1, b = 2, fx = function(x) x^2)
+
+soma_riemann(n = 10, a = 1, b = 2, fx = function(x) x^2)
+
+soma_riemann(n = 50, a = 1, b = 2, fx = function(x) x^2)
+
+soma_riemann(n = 100, a = 1, b = 2, fx = function(x) x^2)
+
+soma_riemann(n = 1000, a = 1, b = 2, fx = function(x) x^2)
+
+```
+
+
+
+
+
+### Integração numérica em R
+- O R tem uma função nativa para o cálculo de integrais ?integrate.
+- Exemplo:
+
+```{r}
+fx <- function(x) x^2
+integrate(fx, lower = 1, upper = 2)
+
+## 2.333333 with absolute error < 2.6e-14
+```
+- Outros tipos de integrais
+  - Integrais multidimensionais.
+  - Integrais impróprias.
+
+### Discussão
+- Integrais são extremamente úteis para obter alguns resultados teóricos em probabilidade.
+- Permitem o cálculo de probabilidades para variáveis aleatórias contínuas.
+- Técnicas (básicas) de modelagem estatística e machine learning não usam integrais
+diretamente.
+- Em geral integrais são mais difíceis de calcular do que derivadas.
+- É possível estender a ideia de integrais para funções com duas ou mais variáveis de forma
+análoga feita para derivadas.
+- Integrais em alta dimensão são extremamente difíceis de calcular e/ou aproximar
+numéricamente.
+
+# Álgebra Matricial
+
+## Vetores e escalares
+- Um vetor é uma lista de 𝑛 números (escalares) escritos em linha ou coluna.
+- Notação (primeiro a em negrito)
+
+$$
+a = (a_{i1} ... a_{in})
+$$
+ou
+
+$$
+a = \begin{bmatrix}
+a_{i1}\\
+.\\
+.\\
+.\\
+a_{in}\\
+\end{bmatrix}
+$$
+
+- Vetor linha e vetor coluna.
+- Um elemento do vetor é chamado de 𝑎𝑖, sendo 𝑖 a sua posição.
+- O tamanho de um vetor é o seu número de elementos.
+- O módulo de um vetor é o seu comprimento
+$$
+|a| = √𝑎2
+1 + … + 𝑎2
+𝑛.
+$$
+- Vetor unitário é aquele que tem tamanho
+$$
+a = a
+|a| .
+$$
+- Dois vetores são iguais se tem o mesmo
+tamanho e os seus elementos em posições
+equivalentes são iguais.
+
+### Operações com vetores
+
+1. Soma $a + b = (𝑎𝑖 + 𝑏𝑖) = (𝑎1 + 𝑏1, … , 𝑎𝑛 + 𝑏𝑛)$.
+
+$a = (1, 2, 3)$
+$b = (3, 2, 1)$
+$a+b = (4, 4, 4)$
+$a-b = (-2, 0, 2)$
+
+2. Subtração $a − b = (𝑎𝑖 − 𝑏𝑖) = (𝑎1 − 𝑏1, … , 𝑎𝑛 − 𝑏𝑛)$.
+
+$$
+a-b = (-2, 0, 2)
+$$
+
+3. Multiplicação por escalar $𝛼a = (𝛼𝑎1, … , 𝛼𝑎𝑛)$.
+
+$$
+5 * a = (5*1, 5*2, 5*3)
+$$
+
+4. Transposta de um vetor:
+[...]
+
+5. Produto interno ou escalar entre dois vetores resulta em um escalar (mutiplica dois vetores e dá um número só como resultado)
+a ⋅ b = (𝑎1𝑏1 + 𝑎2𝑏2 + … + 𝑎𝑛𝑏𝑛).
+
+- **Condições: os vetores devem ser do mesmo tipo e tamanho.**
+
+### Vetores ortogonais
+- Dois vetores são ortogonais entre si se o ângulo 𝜃 entre eles é de 90∘.(= correlação de Pearson)
+- Implicações: 
+$$cos(𝜃) = 0 e a⊤b = 0.$$
+$$ cov (a,b) / raiz(variacia[a]) * raiz(variacia[b])$$
+
+- O co-seno do ângulo 𝜃 entre os vetores é dado por:
+$$cos(𝜃) = a⊤b / √a⊤a√b⊤b .$$
+
+### Operações com vetores em R
+- Declarando vetores
+```{r}
+a <- c(4,5,6)
+b <- c(1,2,3)
+```
+
+- Sendo a e b compatíveis
+```{r}
+#### Soma
+a + b
+## [1] 5 7 9
+#### Substração
+a - b
+## [1] 3 3 3
+```
+
+
+- Multiplicação por escalar
+```{r}
+alpha = 10
+alpha*a
+## [1] 40 50 60
+```
+- Produto de Hadamard (não é produto interno)
+
+```{r}
+a*b
+## [1] 4 10 18
+```
+- Produto vetorial (ou produto interno)
+
+```{r}
+a%*%b
+##    [,1]
+## [1,] 32
+```
+- Co-seno do ângulo entre dois vetores
+```{r}
+cos <- t(a)%*%b/(sqrt(t(a)%*%a)*sqrt(t(b)%*%b))
+```
+- Lei da reciclagem (não avalia se pode somar antes de somar)
+```{r}
+a <- c(4,5,6,5,6,7)
+b <- c(1,2,3)
+a + b
+## [1] 5 7 9 6 8 10
+```
+
+## Matrizes
+
+- Uma matriz é um arranjo retangular ou quadrado de números ou variáveis.
+- A matriz costuma ser representada por uma letra maiuscula em negrito
+
+- Uma matriz (𝑛 × 𝑚) tem 𝑛 linhas e 𝑚 colunas:
+
+$$A = \begin{pmatrix}\
+a_{11} & a_{12} & ... & a_{1m}\\
+a_{21} & a_{22} & ... & a_{2m}\\
+... & ... & ... & ... \\
+a_{n1} & a_{11} & ... & a_{nm}\\
+\end{pmatrix}$$
+
+- O primeiro subscrito representa linha e o segundo representa coluna.
+- A dimensão de uma matriz é o seu número de linhas e colunas.
+- Duas matrizes são iguais se tem a mesma dimensão e se os elementos das correspondentes
+posições são iguais.
+
+### Matriz transposta
+- A operação de transposição rearranja uma matriz de forma que suas linhas são transformadas em colunas e vice-versa.
+⎛⎜
+⎝
+1 2
+3 4
+5 6
+⎞⎟
+⎠
+⊤
+= (1 3 5
+2 4 6) .
+- Note que (A⊤)⊤ = A.
+- Computacionalmente
+- Declarando matrizes
+```{r}
+a <- c(1,2,3,4,5,6)
+A <- matrix(a, nrow = 3, ncol = 2)
+A
+## [,1] [,2]
+## [1,] 1 4
+## [2,] 2 5
+## [3,] 3 6
+```
+- O default preenche por colunas.
+- Transposta de uma matriz
+```{r}
+t(A)
+## [,1] [,2] [,3]
+## [1,] 1 2 3
+## [2,] 4 5 6
+```
+
+### Operações com matrizes
+- Multiplicação matriz por escalar.
+$$\alpha * A = \begin{pmatrix}\
+\alpha * a_{11} & \alpha * a_{12} & \alpha * ... & \alpha * a_{1m}\\
+\alpha * a_{21} & \alpha * a_{22} & \alpha * ... & \alpha * a_{2m}\\
+\alpha * ... & \alpha * ... & \alpha * ... & \alpha * ... \\
+\alpha * a_{n1} & \alpha * a_{n2} & \alpha * ... & \alpha * a_{nm}\\
+\end{pmatrix}$$
+
+- Computacionalmente
+```{r}
+A <- matrix(c(1,2,3,4,5,6),
+nrow = 3, ncol = 2)
+alpha <- 10
+alpha*A
+## [,1] [,2]
+## [1,] 10 40
+## [2,] 20 50
+
+```
+
+- Duas matrizes podem ser somadas ou
+subtraídas somente se tiverem o mesmo
+tamanho.
+1. Soma 𝑐𝑖𝑗 = 𝑎𝑖𝑗 + 𝑏𝑖𝑗.
+2. Subtração 𝑐𝑖𝑗 = 𝑎𝑖𝑗 − 𝑏𝑖𝑗.
+- Exemplo
+$$A = \begin{pmatrix}\
+1 & 2\\
+3 & 4\\
+5 & 6\\
+\end{pmatrix}$$
+
+$$B = \begin{pmatrix}\
+10 & 20\\
+30 & 40\\
+50 & 60\\
+\end{pmatrix}$$
+
+$$A + B = \begin{pmatrix}\
+11 & 22\\
+33 & 44\\
+55 & 66\\
+\end{pmatrix}$$
+
+- Soma de duas matrizes
+```{r}
+A <- matrix(c(1,2,3,4,5,6),
+nrow = 3, ncol = 2)
+B <- matrix(c(10,20,30,40,50,60),
+nrow = 3, ncol = 2)
+C = A + B
+C
+## [,1] [,2]
+## [1,] 11 44
+## [2,] 22 55
+## [3,] 33 66
+```
+
+- Condição para multiplicar matrizes
+$$
+C_{m, n} = A_{m,q} B_{q,n}
+$$
+(q tem que ser igual)
+
+C
+𝑚×𝑛 = A
+𝑚×𝑞 B
+𝑞×𝑛.
+- Cada elemento 𝑐𝑖𝑗 = ∑𝑞
+𝑘=1 𝑎𝑖𝑘𝑏𝑘𝑗.
+⎛⎜
+⎝
+2 −1
+8 3
+6 7
+⎞⎟
+⎠
+( 4 9 1 −3
+−5 2 4 6 ) =
+⎛⎜
+⎝
+((2 ⋅ 4) + (−1 ⋅ −5)) ((2 ⋅ 9) + (−1 ⋅ 2)) ((2 ⋅ 1) + (−1 ⋅ 4)) ((2 ⋅ −3) + (−1 ⋅ 6))
+((8 ⋅ 4) + (3 ⋅ −5)) ((8 ⋅ 9) + (3 ⋅ 2)) ((8 ⋅ 1) + (3 ⋅ 4)) ((8 ⋅ −3) + (3 ⋅ 6))
+((6 ⋅ 4) + (7 ⋅ −5)) ((6 ⋅ 9) + (7 ⋅ 2)) ((6 ⋅ 1) + (7 ⋅ 4)) ((6 ⋅ −3) + (7 ⋅ 6))
+⎞⎟
+⎠
+=
+⎛⎜
+⎝
+13 16 −2 −12
+17 78 20 −6
+−11 68 34 24
+⎞⎟
+⎠
+.
+
+- Computacionalmente.
+- Matrizes compatíveis
+```{r}
+A <- matrix(c(2,8,6,-1,3,7),
+nrow = 3, ncol = 2)
+B <- matrix(c(4,-5,9,2,1,4,-3,6),
+nrow = 2, ncol = 4)
+C = A%*%B
+C
+## [,1] [,2] [,3] [,4]
+## [1,] 13 16 -2 -12
+## [2,] 17 78 20 -6
+## [3,] -11 68 34 24
+```
+
+- Matrizes não compatíveis
+```{r}
+B %*% A
+## Error in B %*% A: argumentos não compatíveis
+```
+
+
+Produto de Hadamard
+- Produto simples ou de Hadamard
+
+$$A \odot B = \begin{pmatrix}\
+a_{11}*b_{11} & a_{12}*b_{12} & ... & a_{1m}*b_{1m}\\
+a_{21}*b_{21} & a_{22}*b_{22} & ... & a_{2m}*b_{2m}\\
+... & ... & ... & ... \\
+a_{n1}*b_{n1} & a_{n2}*b_{n2} & ... & a_{nm}*b_{nm}\\
+\end{pmatrix}$$
+
+
+- Computacionalmente
+```{r}
+A <- matrix(c(1,2,3,4),
+nrow = 2, ncol = 2)
+B <- matrix(c(10,20,30,40),
+nrow = 2, ncol = 2)
+A*B
+## [,1] [,2]
+## [1,] 10 90
+## [2,] 40 160
+```
+
+
+Propriedades envolvendo operações com matrizes
+- Sendo A, B, C e D compatíveis temos,
+1. $A + B = B + A$
+2. $(A + B) + C = A + (B + C)$.
+3. $𝛼(A + B) = 𝛼A + 𝛼B$.
+4. $(𝛼 + 𝛽)A = 𝛼A + 𝛽A$.
+5. $𝛼(AB) = (𝛼A)B = A(𝛼B)$.
+6. $A(B ± C) = AB ± AC$.
+7. $(A ± B)C = AC ± BC$.
+8. $(A−B)(C−D) = AC−BC−AD+BD$.
+
+- Propriedades envolvendo transposta e
+multiplicação
+1. Se A é 𝑛 × 𝑚 e B é 𝑚 × 𝑛, então (AB)⊤ = B⊤A⊤.
+2. Se A, B e C são compatíveis 
+$$
+(ABC)^{⊤}= C^{⊤}B^{⊤}A^{⊤}.
+$$
+
+### Matrizes de formas especiais
+- Matriz quadrada (m = n)
+Exemplo 4x4
+```{r}
+A <- matrix(c("a11","a21","a31","a41","a12","a22","a32","a42","a13","a23","a33","a43","a14","a24","a34","a44"), nrow = 4, ncol = 4)
+A
+```
+
+- 𝑎𝑖𝑖 são os elementos da diagonal.
+- 𝑎𝑖𝑗 para 𝑖 ≠ 𝑗 → fora da diagonal.
+- 𝑎𝑖𝑗 para 𝑗 > 𝑖 → acima da diagonal.
+- 𝑎𝑖𝑗 para 𝑖 > 𝑗 → abaixo da diagonal.
+- Matriz diagonal
+$$D = \begin{pmatrix}\
+a_{11} & 0 & 0 & 0\\
+0 & a_{22} & 0 & 0\\
+0 & 0 & a_{33} & 0 \\
+0 & 0 & 0 & a_{44}\\
+\end{pmatrix}$$
+
+
+
+- Matriz identidade
+I = ⎛⎜⎜⎜⎜
+⎝
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+⎞⎟⎟⎟⎟
+⎠
+
+### Matrizes de formas especiais
+- Triangular superior
+U = ⎛⎜⎜⎜⎜
+⎝
+𝑎11 𝑎12 𝑎13 𝑎14
+0 𝑎22 𝑎23 𝑎24
+0 0 𝑎33 𝑎34
+0 0 0 𝑎44
+⎞⎟⎟⎟⎟
+⎠
+.
+- Triangular inferior
+L = ⎛⎜⎜⎜⎜
+⎝
+𝑎11 0 0 0
+𝑎21 𝑎22 0 0
+𝑎31 𝑎32 𝑎33 0
+𝑎41 𝑎42 𝑎43 𝑎44
+⎞⎟⎟⎟⎟
+⎠
+.
+- Matriz nula
+0 = ⎛⎜⎜⎜⎜
+⎝
+0 0 0 0
+0 0 0 0
+0 0 0 0
+0 0 0 0
+⎞⎟⎟⎟⎟
+⎠
+.
+- Matriz quadrada simétrica
+A = ⎛⎜⎜⎜⎜
+⎝
+1 0.8 0.6 0.4
+0.8 1 0.2 0.4
+0.6 0.2 1 0.1
+0.4 0.4 0.1 1
+⎞⎟⎟⎟⎟
+⎠
+
+
+### Combinações lineares
+- Um conjunto de vetores a1, a2, … , a𝑛 é dito ser linearmente dependente se puderem ser
+encontrados escalares 𝑐1, 𝑐2, … , 𝑐𝑛 e estes escalares não sejam todos iguais a 0 de tal forma
+que
+$$
+𝑐1a1 + 𝑐2a2 + … + 𝑐𝑛a𝑛 = 0.
+$$
+
+Exemplo:
+```{r}
+a1 <- matrix(c(1,0), nrow = 2, ncol = 1)
+a1
+a2 <- matrix(c(0,1), nrow = 2, ncol = 1)
+a2
+
+#O unico caso que esses c1*a1 + c2*a2 = (0, 0) é se c1 = 0 E c2 =0
+#Ou seja Linearmente independente
+
+a1 <- matrix(c(1,2), nrow = 2, ncol = 1)
+a1
+a2 <- matrix(c(-1,-2), nrow = 2, ncol = 1)
+a2
+
+#Existem casos fora os cs = 0 que fazem c1*a1 + c2*a2 = (0, 0)
+#Ou seja Linearmente dependente
+
+```
+
+
+- Caso contrário é dito ser linearmente independente.
+- Notação matricial
+$$
+Ac = 0.
+$$
+- As colunas de A são linearmente independentes se Ac = 0 implicar que c = 0.
+
+### Rank ou posto de uma matriz
+- O rank ou posto de qualquer matriz quadrada ou retangular A é definido como
+rank(A) = número de colunas ou linhas linearmente independentes em A.
+- Sendo A uma matriz retangular 𝑛 × 𝑚 o maior rank possível para A é o min(𝑛,𝑚).
+- O rank da matrix nula é 0.
+- Se o rank da matriz é o min(𝑛,𝑚) dizemos que a matriz tem rank completo.
+
+### Matriz não singular e matriz inversa
+- Uma matriz quadrada de posto completo é chamada de não singular.
+- Sendo A quadrada de posto completo a matriz inversa de A é única tal que (só se a matriz for quadrada e de ranking completo)
+$$
+AA^{−1} = I.
+$$
+- Não quadrada (posto incompleto) → não terá inversa e é dita ser singular.
+- Note que 
+$$
+A^{(-1^{-1})} =A
+$$
+A^{−1}^{−1} = A
+
+## Matriz inversa
+- Computacionalmente
+```{r}
+A <- matrix(c(4, 2, 7, 6), 2, 2)
+A
+
+A_inv <- solve(A)
+A_inv
+
+I = A %*% A_inv
+I
+
+```
+
+- Verificando
+```{r}
+A%*%A_inv
+## [,1] [,2]
+## [1,] 1 0
+## [2,] 0 1
+```
+
+
+- Propriedades envolvendo inversas
+1. Se A é não singular, então A⊤ é não singular e sua inversa é dada por
+(A⊤)−1 = (A−1)⊤.
+2. Se A e B são matrizes não singulares de mesmo tamanho, então o produto AB é
+não singular e
+(AB)−1 = B−1A−1.
+
+### Inversa generalizada
+- A inversa generalizada de uma matriz A 𝑛 × 𝑝 é qualquer matriz A− que satisfaça 
+$$
+AA^{−}A = A.
+$$
+
+- Não é única exceto quando A é não-singular (inversa usual).
+- Exemplo
+
+$$
+
+$$
+
+a = ⎛⎜⎜⎜⎜
+⎝
+1
+2
+3
+4
+⎞⎟⎟⎟⎟
+⎠
+.
+
+
+- a− = (1, 0, 0, 0)
+
+- Verificando
+
+```{r}
+a <- matrix(c(1, 2, 3, 4), 4, 1)
+a_invg <- matrix(c(1,0,0,0), 1, 4)
+a%*%a_invg%*%a
+## [,1]
+## [1,] 1
+## [2,] 2
+## [3,] 3
+## [4,] 4
+```
+- Moore-Penrose generalized inverse
+```{r}
+#### Matriz singular (col 3 = col 2 + col 1)
+A <- matrix(c(2, 1, 3, 2, 0,
+2, 3, 1, 4), 3, 3)
+library(MASS)
+A_ginv <- ginv(A)
+A%*%A_ginv%*%A ## Verificando
+```
+
+## Matrizes positivas definidas
+
+### Formas quadráticas
+- Soma de quadrados são importantes em ciência de dados.
+- Considere uma matriz A simétrica e y um vetor, o produto
+$$
+y^{T}Ay = 
+\sum(a_{ij}y^{2}_{i}) + 
+\sum_{i \differ j}(a_{ij}y_{i}y_{j})
+$$
+é chamado de forma quadrática.
+
+$$
+y^{T}Iy = \sum^{n}_{i=0}(y^{2}_{i})
+$$
+
+
+- Sendo y de dimensão 𝑛 × 1, 
+$$
+y⊤Iy = 𝑦2
+1 + 𝑦2
+2 + … , 𝑦2
+n
+$$
+
+- Consequentemente, y⊤y é a soma de quadrados dos elementos do vetor y.
+- A raiz quadrada da soma de quadrados é o comprimento de y.
+----  28
+Matriz positiva definida
+- Sendo A uma matriz simétrica com a propriedade y⊤Ay > 0 para todos os possíveis y
+exceto para quando y = 0, então a forma quadrática y⊤Ay é chamada positiva definida,
+e A é dita ser uma matriz positiva definida.
+- Exemplo
+A = ( 2 −1
+−1 3 ) .
+A forma quadrática associada é dada por (ver abaixo) que é claramente positiva, desde que 𝑦1 e 𝑦2 sejam diferentes de zero.
+$$
+y⊤Ay = (𝑦1 𝑦2) ( 2 −1
+−1 3 ) (𝑦1
+𝑦2
+) = 2𝑦2
+1 − 2𝑦1𝑦2 + 3𝑦2
+2 ,
+$$
+
+### Propriedades de matrizes positivas definidas
+1. Se A é positiva definida, então todos os valores da diagonal de A são positivos.
+2. Se A é positiva semi-definida, então os elementos da diagonal de A são maiores ou iguais a zero.
+3. Sendo P uma matriz não-singular e A uma matriz positiva definida, o produto P⊤AP é positiva definida.
+4. Sendo P uma matriz não-singular e A uma matriz positiva semi-definida, o produto P⊤AP é positiva semi-definida.
+5. Uma matriz positiva definida é não-singular.
+
+### Determinante de uma matriz
+- O determinante de uma matriz A é o escalar (= numero)
+$$
+|A| = \sum((-1)^k a_{1j_{1}} a_{2j_{2}} ... a_{nj_{n}})
+$$
+onde a soma é realizada para todas as 𝑛! permutações de grau 𝑛, e 𝑘 é o número de
+mudanças necessárias para que os segundos subscritos sejam colocados na ordem
+1,2, … , 𝑛.
+- Considere a matriz
+A = ( 3 −2
+−2 4 ) .
+|A| = (−1)0𝑎11𝑎22 + (−1)1𝑎12𝑎21 = 1 ⋅ (3 ⋅ 4) − (−2 ⋅ −2) = 12 − 4 = 8.
+----  32
+Determinante de uma matriz
+- Computacionalmente.
+A <- matrix(c(3,-2,-2,4),2,2)
+determinant(A, logarithm = FALSE)$modulus
+## [1] 8
+## attr(,"logarithm")
+## [1] FALSE
+- Determinante em escala log.
+determinant(A, logarithm = TRUE)$modulus
+## [1] 2.079442
+## attr(,"logarithm")
+## [1] TRUE
+- Alguns aspectos interessantes sobre
+determinantes são:
+1. Se A é singular, |A| = 0.
+2. Se A é não singular, |A| ≠ 0.
+3. Se A é positiva definida, |A| > 0.
+4. |A⊤| = |A|.
+5. Se A é não singular, |A−1| = 1
+|A| .
+----  33
+Traço de uma matriz
+- O traço de uma matriz A 𝑛 × 𝑛 é um
+escalar definido como a soma dos
+elementos da diagonal, tr(A) = ∑𝑛
+𝑖=1 𝑎𝑖𝑖.
+- Propriedades
+1. Se A e B são 𝑛 × 𝑛, então
+tr(A + B) = tr(A) + tr(B).
+2. Se A é 𝑛 × 𝑝 e B e 𝑝 × 𝑛, então
+tr(AB) = tr(BA).
+- Computacionalmente
+```{r}
+A <- matrix(c(3,-2,-2,4),2,2)
+sum(diag(A))
+## [1] 7
+```
+
+## Cálculo vetorial e matricial
+
+### Cálculo vetorial
+- Seja $y = f(x)$ uma função das variáveis $x_{1}, x_{2}, x_{3}, ... , x_{p}$ e 𝜕𝑦 as respectivas derivadas parciais.
+
+$$
+\matrix_vertical de (a1x1, a2x2, .... apxp) 
+$$
+
+$$
+𝜕𝑥1
+, 𝜕𝑦
+𝜕𝑥2
+, … , 𝜕𝑦
+𝜕𝑥𝑝
+$$
+
+Assim,
+$$
+\deriv
+$$
+
+
+𝜕𝑦
+𝜕x =
+⎛⎜⎜⎜⎜⎜
+⎝
+𝜕𝑦
+𝜕𝑥1
+𝜕𝑦
+𝜕𝑥2
+⋮
+𝜕𝑦
+𝜕𝑥𝑝
+⎞⎟⎟⎟⎟⎟
+⎠
+.
+
+### Cálculo vetorial
+- Sendo a⊤ = (𝑎1, 𝑎2, … , 𝑎𝑝) um vetor de constantes e A uma matriz simétrica de constantes.
+1. Seja 𝑦 = a⊤x = x⊤a. Então,
+$$
+𝜕𝑦
+𝜕x = 𝜕(x⊤a)
+𝜕x = a.
+$$
+2. Seja 𝑦 = x⊤Ax. Então,
+$$
+𝜕𝑦
+𝜕x = 𝜕(x⊤Ax)
+𝜕x = 2Ax.
+$$
+
+### Cálculo Matricial
+- Se 𝑦 = 𝑓(X) onde X é uma matriz 𝑝 × 𝑝. As derivadas parciais de 𝑦 em relação a cada 𝑥𝑖𝑗
+são organizadas em uma matriz.
+$$
+𝜕𝑦
+𝜕X = ⎛⎜⎜
+⎝
+𝜕𝑦
+𝜕𝑥11
+… 𝜕𝑦
+𝜕𝑥1𝑝
+⋮ ⋱ ⋮
+𝜕𝑦
+𝜕𝑥𝑝1
+… 𝜕𝑦
+𝜕𝑥𝑝𝑝
+⎞⎟⎟
+$$
+
+
+- Algumas derivadas importantes envolvendo matrizes são apresentadas abaixo.
+1. Seja 𝑦 = tr(XA) sendo X 𝑝 × 𝑝 e definida positiva e A 𝑝 × 𝑝 constantes. Então,
+$$
+𝜕𝑦
+𝜕X = 𝜕tr(XA)
+𝜕X = A + A⊤ − diag(A).
+$$
+2. Sendo A não singular com derivadas 𝜕A
+$$
+𝜕𝑥 . Então,
+𝜕A−1
+𝜕𝑥 = −A−1 𝜕A
+𝜕𝑥 A−1.
+$$
+3. Sendo A 𝑛 × 𝑛 positiva definida. Então,
+$$
+𝜕 log |A|
+𝜕𝑥 = tr (A−1 𝜕A
+𝜕𝑥 )
+$$
+
+## Regressão linear múltipla
+
+### Regressão linear múltipla: especificação usual
+
+- Regressão linear simples
+$$
+y_{i} = \beta_{0} +\beta_{1}x_{1} + erro_{i}
+$$
+- Regressão linear múltipla
+$$
+y_{i} = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + ... + \beta_{p}x_{ip} + erro_{i}
+$$
+- Modelo para cada observação
+$$y_{1} = \beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + ... + \beta_{p}x_{1p} + erro_{1}$$
+
+$$y_{2} = \beta_{0} + \beta_{1}x_{21} + \beta_{2}x_{22} + ... + \beta_{p}x_{2p} + erro_{1}$$
+$$...$$
+$$y_{n} = \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + ... + \beta_{p}x_{np} + erro_{n}$$
+
+Regressão linear múltipla: especificação matricial
+- Notação matricial
+$$
+\begin{bmatrix}
+y_{1}\\
+y_{2}\\
+...\\
+y_{n}\\
+\end{bmatrix}
+= 
+\begin{bmatrix}
+1 & x_{1}\\
+1 & x_{2}\\
+1 & ...\\
+1 & x_{n}\\
+\end{bmatrix}
+\times
+\begin{bmatrix}
+\beta_{1}\\
+\beta_{2}\\
+...\\
+\beta_{n}\\
+\end{bmatrix}
++
+\begin{bmatrix}
+erro_{1}\\
+erro_{2}\\
+...\\
+erro_{n}\\
+\end{bmatrix}
+$$
+
+- Notação mais compacta
+$$
+y_{(n \times 1)} = X_{(n \times p)} \beta_{(p \times 1)} + erro_{(n \times 1)}
+$$
+### Regressão linear múltipla: estimação (treinamento)
+- Objetivo: encontrar o vetor̂ 𝛽, tal que $𝑆𝑄(𝛽) = (y − X𝛽)⊤(y − X𝛽) $ seja a menor possível.
+
+### Regressão linear múltipla: estimação
+1. Passo 1: encontrar o vetor gradiente. Derivando em 𝛽, temos
+$$
+𝜕𝑆𝑄(𝛽)
+𝜕𝛽 = 𝜕
+𝜕𝛽 (y − X𝛽)⊤(y − X𝛽)
+= 𝜕
+𝜕𝛽 ((y − X𝛽)⊤) (y − X𝛽) + (y − X𝛽)⊤ 𝜕
+𝜕𝛽 (y − X𝛽)
+= −X⊤(y − X𝛽) + (y − X𝛽)⊤(−X)
+= −2X⊤(y − X𝛽).
+$$
+
+### Regressão linear múltipla: estimação
+
+2. Passo 2: resolver o sistema de equações lineares (esquece o "-2" primeiro)
+$$ X^{T} (y - X\hat{\beta}) = 0$$
+$$X⊤y − X⊤X̂𝛽 = 0$$
+$$X⊤X̂𝛽 = X⊤ŷ$$
+$$(XTX)^{-1}  X⊤X̂𝛽 = X⊤y (XTX)^{-1}$$
+$$ I𝛽 = (X⊤X)−1X⊤y $$
+
+### Regressão linear múltipla: exemplo
+- Conjunto de dados Boston disponível no pacote MASS.
+- Cinco primeiras covariáveis disponíveis:
+  - crim: taxa de crimes per capita.
+  - zn: proporção de terrenos residenciais zoneados para lotes com mais de 25.000 pés quadrados.
+  - indus: proporção de acres de negócios não varejistas por cidade.
+  - chas: variável dummy de Charles River (1 se a área limita o rio; 0 caso contrário).
+  - nox: concentração de óxido de nitrogênio (parte por 10 milhões).
+- Variável resposta: medv valor mediano das casas ocupadas em $1000.
+
+### Regressão linear múltipla: implementação computacional
+- Carregando a base de dados 
+```{r}
+require(MASS)
+## Carregando pacotes exigidos: MASS
+
+data(Boston)
+head(Boston[, c(1:5,14)])
+## crim zn indus chas nox medv
+## 1 0.00632 18 2.31 0 0.538 24.0
+## 2 0.02731 0 7.07 0 0.469 21.6
+## 3 0.02729 0 7.07 0 0.469 34.7
+## 4 0.03237 0 2.18 0 0.458 33.4
+## 5 0.06905 0 2.18 0 0.458 36.2
+## 6 0.02985 0 2.18 0 0.458 28.7
+```
+
+
+- Matriz de delineamento (X).
+```{r}
+X <- model.matrix(~ crim + zn + indus +
+chas + nox, data = Boston)
+head(X)
+## (Intercept) crim zn indus chas nox
+## 1 1 0.00632 18 2.31 0 0.538
+## 2 1 0.02731 0 7.07 0 0.469
+## 3 1 0.02729 0 7.07 0 0.469
+## 4 1 0.03237 0 2.18 0 0.458
+## 5 1 0.06905 0 2.18 0 0.458
+## 6 1 0.02985 0 2.18 0 0.458
+```
+
+
+- Variável resposta
+```{r}
+y <- Boston$medv
+```
+
+- Estimadores de mínimos quadrados:
+$$
+\hat{\beta} = (X^{T}X)^{-1} X^{T}y
+$$
+- Computacionalmente: versão ingênua (calcula inversa)
+```{r}
+round(solve(t(X)%*%X)%*%t(X)%*%y, 2)
+## [,1]
+## (Intercept) 29.49
+## crim -0.22
+## zn 0.06
+## indus -0.38
+## chas 7.03
+## nox -5.42
+```
+
+- Computacionalmente: versão eficiente (escalona?)
+```{r}
+round(solve(t(X)%*%X, t(X)%*%y), 2)
+## [,1]
+## (Intercept) 29.49
+## crim -0.22
+## zn 0.06
+## indus -0.38
+## chas 7.03
+## nox -5.42
+```
+
+- Função nativa do R
+```{r}
+t(round(coef(lm(medv ~ crim + zn + indus + chas + nox, data = Boston)), 2))
+## (Intercept) crim zn indus chas nox
+## [1,] 29.49 -0.22 0.06 -0.38 7.03 -5.42
+```
+
+### Matrizes esparsas (tópico adicional)
+
+- Matrizes aparecem em todos os tipos de aplicação em ciência de dados.
+- Modelos estatísticos, machine learning, análise de texto, análise de cluster, etc.
+- Muitas vezes as matrizes usadas têm uma grande quantidade de zeros.
+- Quando uma matriz tem uma quantidade considerável de zeros, dizemos que ela é
+esparsa, caso contrário dizemos que a matriz é densa.
+- Todas as propriedades que vimos para matrizes em geral valem para matrizes esparsas.
+- O R tem um conjunto de métodos altamente eficiente por meio do pacote Matrix.
+- Saber que uma matriz é esparsa é útil pois permite:
+- Planejar formas de armazenar a matriz em memória.
+- Economizar cálculos em algoritmos numéricos (multiplicação, inversa, determinante,
+decomposições, etc).
+
+- Comparando a quantidade de memória utilizada.
+```{r}
+library('Matrix')
+
+m1 <- matrix(0, nrow = 1000, ncol = 1000)
+object.size(m1)
+## 8000216 bytes
+
+m2 <- Matrix(0, nrow = 1000, ncol = 1000, sparse = TRUE)
+object.size(m2)
+## 9240 bytes
+```
+
+
+Comparando o tempo computacional
+
+
+- Matriz densa
+```{r}
+y <- rnorm(1000)
+X <- matrix(NA, ncol = 100, nrow = 1000)
+for(i in 1:1000) {X[i,] <- rbinom(100, size = 1, p = 0.1)}
+system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))
+## usuário sistema decorrido
+## 0.819 0.004 0.823
+```
+
+
+- Matriz esparsa
+```{r}
+y <- rnorm(1000)
+X <- Matrix(NA, ncol = 100, nrow = 1000)
+for(i in 1:1000) {X[i,] <- rbinom(100, size = 1, p = 0.1)}
+X <- Matrix(X, sparse = TRUE)
+system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))
+## usuário sistema decorrido
+## 0.223 0.000 0.224
+```
+
+### Diferentes formas de implementar as operações matriciais
+
+- Criando a base de dados para a comparação
+```{r}
+library(Matrix)
+n <- 10000; p <- 500
+
+#DENSA
+x <- matrix(rbinom(n*p, 1, 0.01), nrow=n, ncol=p)
+object.size(x)
+## 20000216 bytes
+
+#ESPARCA
+X <- Matrix(x)
+object.size(X)
+## 600432 bytes
+```
+
+- Diferentes implementações
+```{r}
+y <- rnorm(n)
+
+print("Matriz densa com %*%:")
+system.time(solve(t(x)%*%x, t(x)%*%y))
+## usuário sistema decorrido
+## 2.053 0.040 2.094
+
+print("Matriz densa com crossprod")
+system.time(solve(crossprod(x), crossprod(x, y)))
+## usuário sistema decorrido
+## 1.731 0.016 1.748
+
+print("Matriz esparça com %*%")
+system.time(solve(t(X)%*%X, t(X)%*%y))
+## usuário sistema decorrido
+## 0.071 0.000 0.072
+
+print("Matriz esparça com crossprod")
+system.time(solve(crossprod(X), crossprod(X,y)))
+## usuário sistema decorrido
+## 0.029 0.000 0.050
+```
+
+- Implementação eficiente do modelo de regressão linear múltipla.
+```{r}
+library(glmnet)
+## Loaded glmnet 4.1-6
+system.time(b <- coef(lm(y~x)))
+## usuário sistema decorrido
+## 2.389 0.044 2.434
+system.time(g1 <-glmnet(x, y, nlambda=1, lambda=0, standardize=FALSE))
+## usuário sistema decorrido
+## 0.065 0.020 0.086
+system.time(g2 <- glmnet(X, y, nlambda=1, lambda=0, standardize=FALSE))
+## usuário sistema decorrido
+## 0.006 0.000 0.006
+```
+
+
+# Proxima aula
+
+### Sistemas lineares
+- Sistema com duas equações:
+𝑓1(𝑥1,𝑥2) = 0
+𝑓2(𝑥1,𝑥2) = 0.
+- Solução numérica consiste em encontrar̂ 𝑥1 ê 𝑥2 que satisfaça o sistema de equações.
+- Sistema com 𝑛 equações
+𝑓1(𝑥1, … , 𝑥𝑛) = 0
+⋮
+𝑓𝑛(𝑥1, … , 𝑥𝑛) = 0.
+- Genericamente, tem-se
+f(𝑥) = 0.
+- Equações podem ser lineares ou não-lineares.
+----  58
+Sistemas de equações lineares
+- Cada equação é linear na incógnita.
+- Solução analítica em geral é possível.
+- Exemplo:
+7𝑥1 + 3𝑥2 = 45
+4𝑥1 + 5𝑥2 = 29.
+- Solução analítica:̂ 𝑥1 = 6 ê 𝑥2 = 1.
+- Resolver (tedioso!!).
+- Três possíveis casos:
+1. Uma única solução (sistema não singular).
+2. Infinitas soluções (sistema singular).
+3. Nenhuma solução (sistema impossível).
+----  59
+Sistemas de equações lineares
+- Representação matricial do sistema de equações lineares:
+A = [7 3
+4 5] , x = [𝑥1
+𝑥2
+] e b = [45
+29] .
+- De forma geral, tem-se
+Ax = b.
+----  60
+Operações com linhas
+- Sem qualquer alteração na relação linear, é possível
+1. Trocar a posição de linhas:
+4𝑥1 + 5𝑥2 = 29
+7𝑥1 + 3𝑥2 = 45.
+2. Multiplicar qualquer linha por uma constante, aqui 4𝑥1 + 5𝑥2 por 1
+4 , obtendo
+𝑥1 + 5
+4 𝑥2 = 29
+4 (1)
+7𝑥1 + 3𝑥2 = 45. (2)
+----  61
+Operações com linhas
+3. Subtrair um múltiplo de uma linha de uma outra, aqui 7 ∗ 𝐸𝑞.(1) menos Eq. (2), obtendo
+𝑥1 + 5
+4 𝑥2 = 29
+4
+0𝑥1 + ( 35
+4 − 3)𝑥2 = 203
+4 − 45.
+- Fazendo as contas, tem-se
+0𝑥1 + 23
+4 𝑥2 = 23
+4 .
+----  62
+Solução de sistemas lineares
+- Forma geral de um sistema com 𝑛 equações lineares:
+𝑎11𝑥1 + 𝑎12𝑥2 + … + 𝑎1𝑛𝑥𝑛 = 𝑏1
+𝑎21𝑥1 + 𝑎22𝑥2 + … + 𝑎2𝑛𝑥𝑛 = 𝑏2
+⋮
+𝑎𝑛1𝑥1 + 𝑎𝑛2𝑥2 + … + 𝑎𝑛𝑛𝑥𝑛 = 𝑏𝑛
+- Matricialmente, tem-se
+⎡
+⎢
+⎢
+⎣
+𝑎11 𝑎12 … 𝑎1𝑛
+𝑎21 𝑎22 … 𝑎2𝑛
+⋮ ⋮ ⋮ …
+𝑎𝑛1 𝑎𝑛2 … 𝑎𝑛𝑛
+⎤
+⎥
+⎥
+⎦
+⎡
+⎢
+⎢
+⎣
+𝑥1
+𝑥2
+⋮
+𝑥𝑛
+⎤
+⎥
+⎥
+⎦
+= ⎡
+⎢
+⎢
+⎣
+𝑏1
+𝑏2
+⋮
+𝑏𝑛
+⎤
+⎥
+⎥
+⎦
+- Métodos diretos e métodos iterativos.
+----  63
+Métodos diretos
+----  64
+Métodos diretos
+- O sistema de equações é manipulado até se transformar em um sistema equivalente de
+fácil resolução.
+- Triangular superior:
+⎡
+⎢
+⎢
+⎣
+𝑎11 𝑎12 𝑎13 𝑎14
+0 𝑎22 𝑎23 𝑎24
+0 0 𝑎33 𝑎34
+0 0 0 𝑎44
+⎤
+⎥
+⎥
+⎦
+⎡
+⎢
+⎢
+⎣
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+⎤
+⎥
+⎥
+⎦
+= ⎡
+⎢
+⎢
+⎣
+𝑏1
+𝑏2
+𝑏3
+𝑏4
+⎤
+⎥
+⎥
+⎦
+.
+- Substituição regressiva
+𝑥𝑛 = 𝑏𝑛
+𝑎𝑛𝑛
+𝑥𝑖 = 𝑏𝑖 − ∑𝑗=𝑛
+𝑗=𝑖+1 𝑎𝑖𝑗𝑥𝑗
+𝑎𝑖𝑖
+, 𝑖 = 𝑛 − 1, 𝑛 − 2, … , 1.
+----  65
+Métodos diretos
+- Triangular inferior:
+⎡
+⎢
+⎢
+⎣
+𝑎11 0 0 0
+𝑎21 𝑎22 0 0
+𝑎31 𝑎32 𝑎33 0
+𝑎41 𝑎42 𝑎43 𝑎44
+⎤
+⎥
+⎥
+⎦
+⎡
+⎢
+⎢
+⎣
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+⎤
+⎥
+⎥
+⎦
+= ⎡
+⎢
+⎢
+⎣
+𝑏1
+𝑏2
+𝑏3
+𝑏4
+⎤
+⎥
+⎥
+⎦
+.
+- Substituição progressiva
+𝑥1 = 𝑏1
+𝑎11
+𝑥𝑖 = 𝑏𝑖 − ∑𝑗=𝑖−1
+𝑗=𝑖 𝑎𝑖𝑗𝑥𝑗
+𝑎𝑖𝑖
+, 𝑖 = 2, 3, … , 𝑛.
+----  66
+Métodos diretos
+- Diagonal:
+⎡
+⎢
+⎢
+⎣
+𝑎11 0 0 0
+0 𝑎22 0 0
+0 0 𝑎33 0
+0 0 0 𝑎44
+⎤
+⎥
+⎥
+⎦
+⎡
+⎢
+⎢
+⎣
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+⎤
+⎥
+⎥
+⎦
+= ⎡
+⎢
+⎢
+⎣
+𝑏1
+𝑏2
+𝑏3
+𝑏4
+⎤
+⎥
+⎥
+⎦
+.
+----  67
+Eliminação de Gauss
+----  68
+Métodos diretos: Eliminação de Gauss
+- Método de Eliminação de Gauss consiste em manipular o sistema original usando
+operações de linha até obter um sistema triangular superior.
+[
+𝑎11 𝑎12 𝑎13 𝑎14
+𝑎21 𝑎22 𝑎23 𝑎24
+𝑎31 𝑎23 𝑎33 𝑎34
+𝑎41 𝑎24 𝑎34 𝑎44
+] [
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+] = [
+𝑏1
+𝑏2
+𝑏3
+𝑏4
+] → [
+𝑎11 𝑎12 𝑎13 𝑎14
+0 𝑎′
+22 𝑎′
+23 𝑎′
+24
+0 0 𝑎′
+33 𝑎′
+34
+0 0 0 𝑎′
+44
+] [
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+] = [
+𝑏1
+𝑏′
+2
+𝑏′
+3
+𝑏′
+4
+]
+- Usar eliminação regressiva no novo sistema para obter a solução.
+- Resolva o seguinte sistema usando Eliminação de Gauss.
+⎡
+⎢
+⎣
+3 2 6
+2 4 3
+5 3 4
+⎤
+⎥
+⎦
+⎡
+⎢
+⎣
+𝑥1
+𝑥2
+𝑥3
+⎤
+⎥
+⎦
+= ⎡
+⎢
+⎣
+24
+23
+33
+⎤
+⎥
+⎦
+----  69
+Métodos diretos: Eliminação de Gauss
+- Passo 1: encontrar o pivô e eliminar os elementos abaixo dele usando operações de linha.
+[ [3] 2 6
+2 − 2
+3 3 4 − 2
+3 2 3 − 2
+3 6
+5 − 5
+3 3 3 − 5
+3 2 4 − 5
+3 6
+] [ 24
+23 − 2
+3 24
+33 − 5
+3 24
+] → [[3] 2 6
+0 8
+3 −1
+0 − 1
+3 −6
+] [24
+7
+−7]
+- Passo 2: encontrar o segundo pivô e eliminar os elementos abaixo dele usando operações
+de linha.
+[3 2 6
+0 [ 8
+3 ] −1
+0 − 1
+3 − (− 3
+24 ) ( 8
+3 ) −6 − (− 3
+24 )(−1)
+] [ 24
+7
+−7 − (− 3
+24 )(7)] → [3 2 6
+0 [ 8
+3 ] −1
+0 0 − 147
+24
+] [ 24
+7
+− 147
+24
+]
+- Passo 3: substituição regressiva.
+----  70
+Métodos diretos: Eliminação de Gauss
+- Usando a fórmula de substituição regressiva temos:
+- 𝑥3 = 𝑏3
+𝑎33
+= 1.
+- 𝑥2 = 𝑏2−𝑎23𝑥3
+𝑎22
+= 3.
+- 𝑥1 = (𝑏1−(𝑎12𝑥2+𝑎13𝑥3)
+𝑎11
+= 4.
+- A extensão do procedimento para um sistema com 𝑛 equações é trivial.
+1. Transforme o sistema em triangular superior usando operações linhas.
+2. Resolva o novo sistema usando substituição regressiva.
+- Potenciais problemas do método de eliminação de Gauss:
+- O elemento pivô é zero.
+- O elemento pivô é pequeno em relação aos demais termos.
+----  71
+Eliminação de Gauss com pivotação
+----  72
+Eliminação de Gauss com pivotação
+- Considere o sistema
+0𝑥1 + 2𝑥2 + 3𝑥2 = 46
+4𝑥1 − 3𝑥2 + 2𝑥3 = 16
+2𝑥1 + 4𝑥2 − 3𝑥3 = 12
+- Neste caso o pivô é zero e o procedimento não pode começar.
+- Pivotação - trocar a ordem das linhas.
+1. Evitar pivôs zero.
+2. Diminuir o número de operações necessárias para triangular o sistema.
+4𝑥1 − 3𝑥2 + 2𝑥3 = 16
+2𝑥1 + 4𝑥2 − 3𝑥3 = 12
+0𝑥1 + 2𝑥2 + 3𝑥2 = 46
+----  73
+Eliminação de Gauss com pivotação
+- Se durante o procedimento uma equação pivô tiver um elemento nulo e o sistema tiver
+solução, uma equação com um elemento pivô diferente de zero sempre existirá.
+- Cálculos numéricos são menos propensos a erros e apresentam menores erros de
+arredondamento se o elemento pivô for grande em valor absoluto.
+- É usual ordenar as linhas para que o maior valor seja o primeiro pivô.
+----  74
+Passo 1: obtendo uma matriz triangular superior.
+gauss <- function(A, b) {
+Ae <- cbind(A, b) ## Sistema aumentado
+rownames(Ae) <- paste0("x", 1:length(b))
+n_row <- nrow(Ae)
+n_col <- ncol(Ae)
+SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+SOL[1,] <- Ae[1,]
+pivo <- matrix(0, n_col, n_row)
+for(j in 1:c(n_row-1)) {
+for(i in c(j+1):c(n_row)) {
+pivo[i,j] <- Ae[i,j]/SOL[j,j]
+SOL[i,] <- Ae[i,] - pivo[i,j]*SOL[j,]
+Ae[i,] <- SOL[i,]
+}
+}
+return(SOL)
+}
+----  75
+Eliminação de Gauss sem pivotação
+- Passo 2: substituição regressiva
+sub_reg <- function(SOL) {
+n_row <- nrow(SOL)
+n_col <- ncol(SOL)
+A <- SOL[1:n_row,1:n_row]
+b <- SOL[,n_col]
+n <- length(b)
+x <- c()
+x[n] <- b[n]/A[n,n]
+for(i in (n-1):1) {
+x[i] <- (b[i] - sum(A[i,c(i+1):n]*x[c(i+1):n] ))/A[i,i]
+}
+return(x)
+}
+----  76
+Eliminação de Gauss sem pivotação
+- Resolva o sistema:
+⎡
+⎢
+⎣
+3 2 6
+2 4 3
+5 3 4
+⎤
+⎥
+⎦
+⎡
+⎢
+⎣
+𝑥1
+𝑥2
+𝑥3
+⎤
+⎥
+⎦
+= ⎡
+⎢
+⎣
+24
+23
+33
+⎤
+⎥
+⎦
+.
+A <- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
+b <- c(24,23,33)
+S <- gauss(A, b) ## Passo 1: Triangularização
+sol = sub_reg(SOL = S) ## Passo 2: Substituição regressiva
+sol
+## [1] 4 3 1
+A%*%sol ## Verificando a solução
+## [,1]
+## [1,] 24
+## [2,] 23
+## [3,] 33
+----  77
+Eliminação de Gauss com pivotação
+- Resolva o seguinte sistema usando
+Eliminação de Gauss com pivotação.
+0𝑥1 + 2𝑥2 + 3𝑥2 = 46
+4𝑥1 − 3𝑥2 + 2𝑥3 = 16
+2𝑥1 + 4𝑥2 − 3𝑥3 = 12
+## Entrando com o sistema original
+A <- matrix(c(0,4,2,2,-3,4,3,2,-3), 3,3)
+b <- c(46,16,12)
+## Pivoteamento
+A_order <- A[order(A[,1], decreasing = TRUE),]
+b_order <- b[order(A[,1], decreasing = TRUE)]
+#### Triangulação
+S <- gauss(A_order, b_order)
+S
+## [,1] [,2] [,3] [,4]
+## [1,] 4 -3.0 2.000000 16.00000
+## [2,] 0 5.5 -4.000000 4.00000
+## [3,] 0 0.0 4.454545 44.54545
+#### Substituição regressiva
+sol <- sub_reg(SOL = S)
+sol
+## [1] 5 8 10
+#### Solução
+A_order%*%sol
+## [,1]
+## [1,] 16
+## [2,] 12
+## [3,] 46
+----  78
+Eliminação de Gauss-Jordan
+----  79
+Métodos diretos: Eliminação de Gauss-Jordan
+- O sistema original é manipulado até obter um sistema equivalente na forma diagonal.
+[
+𝑎11 𝑎12 𝑎13 𝑎14
+𝑎21 𝑎22 𝑎23 𝑎24
+𝑎31 𝑎23 𝑎33 𝑎34
+𝑎41 𝑎24 𝑎34 𝑎44
+] [
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+] = [
+𝑏1
+𝑏2
+𝑏3
+𝑏4
+] → [
+1 0 0 0
+0 1 0 0
+0 0 1 0
+0 0 0 1
+] [
+𝑥1
+𝑥2
+𝑥3
+𝑥4
+] = [
+𝑏′
+1
+𝑏′
+2
+𝑏′
+3
+𝑏′
+4
+]
+- Algoritmo Gauss-Jordan
+1. Normalize a equação pivô com a divisão de todos os seus termos pelo coeficiente pivô.
+2. Elimine os elementos fora da diagonal principal em TODAS as demais equações usando
+operaçõs de linha.
+- O método de Gauss-Jordan pode ser combinado com pivotação igual ao método de
+eliminação de Gauss.
+----  80
+Métodos iterativos
+----  81
+Métodos iterativos
+- Nos métodos iterativos, as equações são colocadas em uma forma explícita onde cada
+incógnita é escrita em termos das demais, i.e.
+𝑎11𝑥1 + 𝑎12𝑥2 + 𝑎13𝑥3 = 𝑏1
+𝑎21𝑥1 + 𝑎22𝑥2 + 𝑎23𝑥3 = 𝑏2
+𝑎31𝑥1 + 𝑎32𝑥2 + 𝑎33𝑥3 = 𝑏3
+→
+𝑥1 = [𝑏1 − (𝑎12𝑥2 + 𝑎13𝑥3)]/𝑎11
+𝑥2 = [𝑏2 − (𝑎21𝑥1 + 𝑎23𝑥3)]/𝑎22
+𝑥3 = [𝑏3 − (𝑎31𝑥1 + 𝑎32𝑥2)]/𝑎33
+.
+- Dado um valor inicial para as incógnitas estas serão atualizadas até a convergência.
+- Atualização: Método de Jacobi
+𝑥𝑖 = 1
+𝑎𝑖𝑖
+[𝑏𝑖 − (
+𝑗=𝑛
+∑
+𝑗=1;𝑗≠𝑖
+𝑎𝑖𝑗𝑥𝑗)] 𝑖 = 1, … , 𝑛.
+----  82
+Métodos iterativos
+- Atualização: Método de Gauss-Seidel
+𝑥𝑘+1
+1 = 1
+𝑎11
+[𝑏1 −
+𝑗=𝑛
+∑
+𝑗=2
+𝑎1𝑗𝑥(𝑘)
+𝑗 ] ,
+𝑥(𝑘+1)
+𝑖 = 1
+𝑎𝑖𝑖
+[𝑏𝑖 − (
+𝑗=𝑖−1
+∑
+𝑗=1
+𝑎𝑖𝑗𝑥(𝑘+1)
+𝑗 +
+𝑗=𝑛
+∑
+𝑗=𝑖+1
+𝑎𝑖𝑗𝑥(𝑘)
+𝑗 )] 𝑖 = 2, 3, … , 𝑛 − 1 e
+𝑥(𝑘+1)
+𝑛 = 1
+𝑎𝑛𝑛
+[𝑏𝑛 −
+𝑗=𝑛−1
+∑
+𝑗=1
+𝑎𝑛𝑗𝑥(𝑘+1)
+𝑗 ] .
+----  83
+Método iterativo de Jacobi
+- Implementação computacional
+jacobi <- function(A, b, inicial, max_iter = 10, tol = 1e-04) {
+n <- length(b)
+x_temp <- matrix(NA, ncol = n, nrow = max_iter)
+x_temp[1,] <- inicial
+x <- x_temp[1,]
+for(j in 2:max_iter) { #### Equação de atualização
+for(i in 1:n) {
+x_temp[j,i] <- (b[i] - sum(A[i,1:n][-i]*x[-i]))/A[i,i]
+}
+x <- x_temp[j,]
+if(sum(abs(x_temp[j,] - x_temp[c(j-1),])) < tol) break #### Critério de parada
+}
+return(list("Solucao" = x, "Iteracoes" = x_temp))
+}
+----  84
+Método iterativo de Jacobi
+- Resolva o seguinte sistema de equações
+lineares usando o método de Jacobi.
+9𝑥1 − 2𝑥2 + 3𝑥3 + 2𝑥4 = 54.5
+2𝑥1 + 8𝑥2 − 2𝑥3 + 3𝑥4 = −14
+−3𝑥1 + 2𝑥2 + 11𝑥3 − 4𝑥4 = 12.5
+−2𝑥1 + 3𝑥2 + 2𝑥3 − 10𝑥4 = −21
+- Computacionalmente
+A <- matrix(c(9,2,-3,-2,-2,8,2,
+3,3,-2,11,2,2,3,-4,10),4,4)
+b <- c(54.5, -14, 12.5, -21)
+ss <- jacobi(A = A, b = b,
+inicial = c(0,0,0,0),
+max_iter = 15)
+## Solução aproximada
+ss$Solucao
+## [1] 4.999502 -1.999771 2.500056 -1.000174
+## Solução exata
+solve(A, b)
+## [1] 5.0 -2.0 2.5 -1.0
+----  85
+Métodos iterativo de Jacobi e Gauss-Seidel
+- Em R o pacote Rlinsolve fornece
+implementações eficientes dos métodos
+de Jacobi e Gauss-Seidel.
+- Rlinsolve inclui suporte para matrizes
+esparsas via Matrix.
+- Rlinsolve é implementado em C++
+usando o pacote Rcpp.
+A <- matrix(c(9,2,-3,-2,-2,8,2,3,3,-2,11,
+2,2,3,-4,10),4,4)
+b <- c(54.5, -14, 12.5, -21)
+## pacote extra
+require(Rlinsolve)
+lsolve.jacobi(A, b)$x ## Método de jacobi
+## [,1]
+## [1,] 4.9999708
+## [2,] -2.0000631
+## [3,] 2.5000163
+## [4,] -0.9999483
+lsolve.gs(A, b)$x ## Método de Gauss-Seidell
+## [,1]
+## [1,] 4.999955
+## [2,] -2.000071
+## [3,] 2.500018
+## [4,] -0.999968
+----  86
+Decomposição LU
+----  87
+Decomposição LU
+- Nos métodos de eliminação de Gauss e Gauss-Jordan resolvemos sistemas do tipo
+A𝑥 = 𝑏.
+- Sendo dois sistemas
+A𝑥 = 𝑏1, e A𝑥 = 𝑏2.
+- Cálculos do primeiro não ajudam a resolver o segundo.
+- IDEAL! - Operações realizadas em A fossem dissociadas das operações em 𝑏.
+----  88
+Decomposição LU
+- Suponha que precisamos resolver vários sistemas do tipo
+A𝑥 = 𝑏.
+para diferentes 𝑏′𝑠.
+- Opção 1 - calcular a inversa A−1, assim a solução
+𝑥 = A−1𝑏.
+- Cálculo da inversa é computacionalmente ineficiente.
+----  89
+Decomposição LU: algoritmo
+- Decomponha (fatore) a matriz A em um produto de duas matrizes
+A = LU,
+onde L é triangular inferior e U é triangular superior.
+- Baseado na decomposição o sistema tem a forma:
+LU𝑥 = 𝑏. (3)
+- Defina U𝑥 = 𝑦.
+- Substituindo em 3 tem-se
+L𝑦 = 𝑏. (4)
+- Solução é obtida em dois passos
+- Resolva Eq.(4) para obter 𝑦 usando substituição progressiva.
+- Resolva Eq.(3) para obter 𝑥 usando substituição regressiva.
+----  90
+Obtendo as matrizes L e U
+- Método de eliminação de Gauss e método de Crout.
+- Dentro do processo de eliminação de Gauss as matrizes L e U são obtidas como um
+subproduto, i.e.
+[
+𝑎11 𝑎12 𝑎13 𝑎14
+𝑎21 𝑎22 𝑎23 𝑎24
+𝑎31 𝑎32 𝑎33 𝑎34
+𝑎41 𝑎41 𝑎43 𝑎44
+] = [
+1
+𝑚21 1
+𝑚31 𝑚32 1
+𝑚41 𝑚42 𝑚43 1
+] [
+𝑎11 𝑎12 𝑎13 𝑎14
+0 𝑎′
+22 𝑎′
+23 𝑎′
+24
+0 0 𝑎′
+33 𝑎′
+34
+0 0 0 𝑎′
+44
+] .
+- Os elementos 𝑚′
+𝑖𝑗𝑠 são os multiplicadores que multiplicam a equação pivô.
+----  91
+Obtendo as matrizes L e U
+- Relembre o exemplo de eliminação de Gauss.
+[ [3] 2 6
+2 − 2
+3 3 4 − 2
+3 2 3 − 2
+3 6
+5 − 5
+3 3 3 − 5
+3 2 4 − 5
+3 6
+] [ 24
+23 − 2
+3 24
+33 − 5
+3 24
+] → [[3] 2 6
+0 8
+3 −1
+0 − 1
+3 −6
+] [24
+7
+−7]
+[3 2 6
+0 [ 8
+3 ] −1
+0 − 1
+3 − (− 3
+24 ) ( 8
+3 ) −6 − (− 3
+24 )(−1)
+] [ 24
+7
+−7 − (− 3
+24 )(7)] → [3 2 6
+0 [ 8
+3 ] −1
+0 0 − 147
+24
+] [ 24
+7
+− 147
+24
+]
+- Neste caso, tem-se
+L = ⎡
+⎢
+⎣
+1
+2
+3 1
+5
+3 − 3
+24 1
+⎤
+⎥
+⎦
+e U = ⎡
+⎢
+⎣
+3 2 6
+0 8
+3 −1
+0 0 − 147
+24
+⎤
+⎥
+⎦
+.
+----  92
+Decomposição LU com pivotação
+----  93
+Decomposição LU com pivotação
+- O método de eliminação de Gauss foi realizado sem pivotação.
+- Como discutido a pivotação pode ser necessária.
+- Quando realizada a pivotação as mudanças feitas devem ser armazenadas, tal que
+PA = LU.
+- P é uma matriz de permutação.
+- Se as matrizes LU forem usadas para resolver o sistema
+A𝑥 = 𝑏,
+então a ordem das linhas de 𝑏 deve ser alterada de forma consistente com a pivotação,
+i.e. P𝑏.
+----  94
+Implementação: Decomposição LU
+- Podemos facilmente modificar a função gauss() para obter a decomposição LU.
+my_lu <- function(A) {
+n_row <- nrow(A)
+n_col <- ncol(A)
+SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+SOL[1,] <- A[1,]
+pivo <- matrix(0, n_col, n_row)
+for(j in 1:c(n_row-1)) {
+for(i in c(j+1):c(n_row)) {
+pivo[i,j] <- A[i,j]/SOL[j,j]
+SOL[i,] <- A[i,] - pivo[i,j]*SOL[j,]
+A[i,] <- SOL[i,]
+}
+}
+diag(pivo) <- 1
+return(list("L" = pivo, "U" = SOL)) }
+----  95
+Aplicação: Decomposição LU
+- Fazendo a decomposição.
+LU <- my_lu(A) ## Decomposição
+LU
+## $L
+## [,1] [,2] [,3] [,4]
+## [1,] 1.0000000 0.0000000 0.000000 0
+## [2,] 0.2222222 1.0000000 0.000000 0
+## [3,] -0.3333333 0.1578947 1.000000 0
+## [4,] -0.2222222 0.3026316 0.279661 1
+##
+## $U
+## [,1] [,2] [,3] [,4]
+## [1,] 9 -2.000000e+00 3.000000 2.000000
+## [2,] 0 8.444444e+00 -2.666667 2.555556
+## [3,] 0 0.000000e+00 12.421053 -3.736842
+## [4,] 0 -4.440892e-16 0.000000 10.716102
+LU$L %*% LU$U ## Verificando a solução
+## [,1] [,2] [,3] [,4]
+## [1,] 9 -2 3 2
+## [2,] 2 8 -2 3
+## [3,] -3 2 11 -4
+## [4,] -2 3 2 10
+----  96
+Aplicação: Decomposição LU
+- Resolvendo o sistema de equações.
+## Passo 1: Substituição progressiva
+y = forwardsolve(LU$L, b)
+## Passo 2: Substituição regressiva
+x = backsolve(LU$U, y)
+x
+## [1] 5.0 -2.0 2.5 -1.0
+A%*%x ## Verificando a solução
+## [,1]
+## [1,] 54.5
+## [2,] -14.0
+## [3,] 12.5
+## [4,] -21.0
+- Função lu() do Matrix fornece a
+decomposição LU.
+require(Matrix)
+## Calcula mas não retorna
+LU_M <- lu(A)
+## Captura as matrizes L U e P
+LU_M <- expand(LU_M)
+## Substituição progressiva.
+y <- forwardsolve(LU_M$L, LU_M$P%*%b)
+## Substituição regressiva
+x = backsolve(LU_M$U, y)
+x
+## [1] 5.0 -2.0 2.5 -1.0
+----  97
+Obtendo a inversa
+----  98
+Obtendo a inversa via decomposição LU
+- O método LU é especialmente adequado para o cálculo da inversa.
+- Lembre-se que a inversa de A é tal que
+AA−1 = I.
+- O procedimento de cálculo da inversa é essencialmente o mesmo da solução de um
+sistema de equações lineares, porém com mais incognitas.
+⎡
+⎢
+⎣
+𝑎11 𝑎12 𝑎13
+𝑎21 𝑎22 𝑎23
+𝑎31 𝑎32 𝑎33
+⎤
+⎥
+⎦
+⎡
+⎢
+⎣
+𝑥11 𝑥12 𝑥13
+𝑥21 𝑥22 𝑥23
+𝑥31 𝑥32 𝑥33
+⎤
+⎥
+⎦
+= ⎡
+⎢
+⎣
+1 0 0
+0 1 0
+0 0 1
+⎤
+⎥
+⎦
+- Três sistemas de equações diferentes, em cada sistema, uma coluna da matriz X é a
+incognita.
+----  99
+Implementação: inversa via decomposição LU
+- Função para resolver o sistema usando
+decomposição LU.
+solve_lu <- function(LU, b) {
+y <- forwardsolve(LU_M$L, LU_M$P%*%b)
+x = backsolve(LU_M$U, y)
+return(x)
+}
+- Resolvendo vários sistemas
+my_solve <- function(LU, B) {
+n_col <- ncol(B)
+n_row <- nrow(B)
+inv <- matrix(NA, n_col, n_row)
+for(i in 1:n_col) {
+inv[,i] <- solve_lu(LU, B[,i])
+}
+return(inv)
+}
+----  100
+Aplicação: inversa via decomposição LU
+- Calcule a inversa de
+A = ⎡
+⎢
+⎣
+3 2 6
+2 4 3
+5 3 4
+⎤
+⎥
+⎦
+A <- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
+I <- Diagonal(3, 1)
+## Decomposição LU
+LU <- my_lu(A)
+## Obtendo a inversa
+inv_A <- my_solve(LU = LU, B = I)
+inv_A
+## Verificando o resultado
+A%*%inv_A
+----  101
+Cálculo da inversa via método de Gauss-Jordan
+- Procedimento Gauss-Jordan:
+⎡
+⎢
+⎣
+𝑎11 𝑎21 𝑎31 1 0 0
+𝑎21 𝑎22 𝑎32 0 1 0
+𝑎31 𝑎32 𝑎33 0 0 1
+⎤
+⎥
+⎦
+→ ⎡
+⎢
+⎣
+1 0 0 𝑎′
+11 𝑎′
+21 𝑎′
+31
+0 1 0 𝑎′
+21 𝑎′
+22 𝑎′
+32
+0 0 1 𝑎′
+31 𝑎′
+32 𝑎′
+33
+⎤
+⎥
+⎦
+.
+- Função solve() usa a decomposição LU com pivotação.
+- R básico é construído sobre a biblioteca lapack escrita em C.
+- Veja documentação em http://www.netlib.org/lapack/lug/node38.html.
+----  102
+Autovalores e autovetores
+----  103
+Autovalores e autovetores
+- Redução de dimensionalidade é fundamental em ciência de dados.
+- Análise de componentes principais (PCA)
+- Análise fatorial (AF).
+- Decompor grandes e complicados relacionamentos multivariados em simples
+componentes não relacionados.
+- Vamos discutir apenas os aspectos matemáticos.
+----  104
+Intuição
+- Podemos decompor um vetor 𝑣 em duas informações separadas: direção 𝑑 e tamanho 𝜆, i.e
+𝜆 = ||𝑣|| = √∑
+𝑗
+𝜈2
+𝑗 , e 𝑑 = 𝑣
+𝜆 .
+- É mais fácil interpretar o tamanho de um vetor enquanto ignorando a sua direção e
+vice-versa.
+- Esta ideia pode ser estendida para matrizes.
+- Uma matriz nada mais é do que um conjunto de vetores.
+- IDEIA - decompor a informação de uma matriz em outros componentes de mais fácil
+interpretação/representação matemática.
+----  105
+Autovalores e Autovetores
+- Autovalores e autovetores são definidos por uma simples igualdade
+A𝑣 = 𝜆𝑣. (5)
+- Os vetores 𝑣’s que satisfazem Eq. (5) são os autovetores.
+- Os valores 𝜆’s que satisfazem Eq. (5) são os autovalores.
+- Vamos considerar o caso em que A é simétrica.
+- A ideia pode ser estendida para matrizes não simétricas.
+----  106
+Autovalores e Autovetores
+- Se A é uma matriz simétrica 𝑛 × 𝑛, então existem exatamente 𝑛 pares (𝜆𝑗, 𝑣𝑗) que
+satisfazem a equação:
+A𝑣 = 𝜆𝑣.
+- Se A tem autovalores 𝜆1, … , 𝜆𝑛, então:
+- tr(A) = ∑𝑛
+𝑖=1 𝜆𝑖.
+- det(A) = ∏𝑛
+𝑖=1 𝜆𝑖.
+- A é positiva definida, se e somente se todos 𝜆𝑗 > 0.
+- A é semi-positiva definida, se e somente se todos 𝜆𝑗 ≥ 0.
+- A ideia do PCA é decompor/fatorar a matriz A em componentes mais simples de
+interpretar.
+----  107
+Decomposição em autovalores e autovetores
+- Teorema: qualquer matriz simétrica A pode ser fatorada em
+A = QΛQ⊤,
+onde Λ é diagonal contendo os autovalores de A e as colunas de Q contêm os autovetores
+ortonormais.
+- Vetores ortonormais: são mutuamente ortogonais e de comprimento unitário.
+- Teorema: se A tem autovetores Q e autovalores 𝜆𝑗. Então A−1 tem autovetores Q e
+autovalores 𝜆−1
+𝑗 .
+- Implicação: se A = QΛQ⊤ então A−1 = QΛ−1Q⊤.
+----  108
+Diagonalização
+- Autovalores são utéis porque eles permitem lidar com matrizes da mesma forma que
+lidamos com números.
+- Todos os cálculos são feitos na matriz diagonal Λ.
+- Este processo é chamado de diagonalização.
+- Um dos resultados mais poderosos em Álgebra Linear é que qualquer matriz pode ser
+diagonalizada.
+- O processo de diagonalização é chamado de Decomposição em valores singulares.
+----  109
+Decomposição em valores singulares
+(SVD)
+----  110
+Decomposição em valores singulares (SVD)
+- Teorema: qualquer matriz A pode ser decomposta em,
+A = UDV⊤,
+onde D é diagonal com entradas não negativas e U e V são ortogonais,
+i.e. U⊤U = V⊤V = I.
+- Matrizes não quadradas não tem autovalores.
+- Os elementos de D são chamados de valores singulares.
+- Os valores singulares são os autovalores de A⊤A.
+----  111
+Dimensão da SVD
+- Se A é 𝑛 × 𝑛, então U, D e V são 𝑛 × 𝑛.
+- Se A é 𝑛 × 𝑝, sendo 𝑛 > 𝑝, então U é 𝑛 × 𝑝, D e V são 𝑝 × 𝑝.
+- Se A é 𝑛 × 𝑝, sendo 𝑛 < 𝑝, então V⊤ é 𝑛 × 𝑝, D e U são 𝑛 × 𝑛.
+- D será sempre quadrada com dimensão igual ao mínimo entre 𝑝 e 𝑛.
+----  112
+Decomposição em autovalores e autovetores em R
+- Função eigen() fornece a decomposição
+A <- matrix(c(1,0.8, 0.3, 0.8, 1,
+0.2, 0.3, 0.2, 1),3,3)
+isSymmetric.matrix(A)
+## [1] TRUE
+out <- eigen(A)
+Q <- out$vectors ## Autovetores
+D <- diag(out$values) ## Autovalores
+Q
+## [,1] [,2] [,3]
+## [1,] -0.6712373 -0.1815663 0.71866142
+## [2,] -0.6507744 -0.3198152 -0.68862977
+## [3,] -0.3548708 0.9299204 -0.09651322
+- Verificando a solução
+D
+## [,1] [,2] [,3]
+## [1,] 1.934216 0.0000000 0.0000000
+## [2,] 0.000000 0.8726419 0.0000000
+## [3,] 0.000000 0.0000000 0.1931419
+Q%*%D%*%t(Q) ## Verificando
+## [,1] [,2] [,3]
+## [1,] 1.0 0.8 0.3
+## [2,] 0.8 1.0 0.2
+## [3,] 0.3 0.2 1.0
+----  113
+Decomposição em valores singulares em R
+- Função svd() fornece a decomposição
+svd(A)
+## $d
+## [1] 1.9342162 0.8726419 0.1931419
+##
+## $u
+## [,1] [,2] [,3]
+## [1,] -0.6712373 0.1815663 0.71866142
+## [2,] -0.6507744 0.3198152 -0.68862977
+## [3,] -0.3548708 -0.9299204 -0.09651322
+##
+## $v
+## [,1] [,2] [,3]
+## [1,] -0.6712373 0.1815663 0.71866142
+## [2,] -0.6507744 0.3198152 -0.68862977
+## [3,] -0.3548708 -0.9299204 -0.09651322
+----  114
+Regressão ridge
+----  115
+Regressão ridge
+- Relembrando: regressão linear múltipla
+⎡
+⎢
+⎢
+⎣
+𝑦1
+𝑦2
+⋮
+𝑦𝑛
+⎤
+⎥
+⎥
+⎦
+𝑛×1
+= ⎡
+⎢
+⎢
+⎣
+1 𝑥11 … 𝑥𝑝1
+1 𝑥12 … 𝑥𝑝1
+⋮ ⋮ ⋱ ⋮
+1 𝑥1𝑛 … 𝑥𝑝𝑛
+⎤
+⎥
+⎥
+⎦
+𝑛×𝑝
+⎡
+⎢
+⎢
+⎣
+𝛽0
+𝛽1
+⋮
+𝛽𝑝
+⎤
+⎥
+⎥
+⎦
+𝑝×1
+- Usando uma notação mais compacta,
+y
+𝑛×1
+= X
+𝑛×𝑝 𝛽
+𝑝×1
+.
+- Minimiza a perda quadrática:̂
+𝛽 = (X⊤X)−1X⊤y.
+----  116
+Regressão ridge
+- Se 𝑝 > 𝑛 o sistema é singular (múltiplas soluções)!
+- Como podemos ajustar o modelo?
+- Introduzir uma penalidade pela complexidade.
+- Soma de quadrados penalizada
+𝑃 𝑆𝑄(𝛽) =
+𝑛
+∑
+𝑖=1
+(𝑦𝑖 − 𝑥⊤
+𝑖 𝛽)2 + 𝜆
+𝑝
+∑
+𝑗=1
+𝛽2
+𝑗 .
+- Matricialmente, tem-se
+𝑃 𝑆𝑄(𝛽) = (𝑦 − X𝛽)⊤(𝑦 − X𝛽) + 𝜆𝛽⊤𝛽.
+- IMPORTANTE !!
+- 𝑦 centrado (média zero).
+- X padronizada por coluna (média zero e variância um).
+----  117
+Regressão ridge
+- Objetivo: minizar a soma de quadrados penalizada.
+- Derivada
+𝜕𝑃 𝑄𝑆(𝛽)
+𝜕𝛽 = 𝜕
+𝜕𝛽 [(𝑦 − X𝛽)⊤(𝑦 − X𝛽) + 𝜆𝛽⊤𝛽]
+= [ 𝜕
+𝜕𝛽 (𝑦 − X𝛽)⊤] (𝑦 − X𝛽) + (𝑦 − X𝛽)⊤ [ 𝜕
+𝜕𝛽 (𝑦 − X𝛽)] +
+𝜆 {[ 𝜕𝛽⊤
+𝜕𝛽 ] 𝛽 + 𝛽⊤ [ 𝜕𝛽
+𝜕𝛽 ]}
+= −2X⊤(𝑦 − X𝛽) + 2𝜆𝛽
+= −X⊤(𝑦 − X𝛽) + 𝜆𝛽.
+----  118
+Aplicação: regressão ridge
+- Resolvendo o sistema linear, tem-se
+−X⊤(𝑦 − X̂𝛽) + 𝜆Î 𝛽 = 0
+−X⊤𝑦 + X⊤X̂𝛽 + 𝜆Î 𝛽 = 0
+X⊤X̂𝛽 + 𝜆Î 𝛽 = X⊤𝑦
+(X⊤X + 𝜆I)̂ 𝛽 = X⊤𝑦̂
+𝛽 = (X⊤X + 𝜆I)−1 X⊤𝑦.
+- Solução depende de 𝜆.
+- A inclusão de 𝜆 faz o sistema ser não singular.
+- Na verdade quando fixamos 𝜆 selecionamos uma solução em particular.
+----  119
+Aplicação: regressão ridge
+- Calcular̂ 𝛽 envolve a inversão de uma matriz 𝑝 × 𝑝 potencialmente grande.̂
+𝛽 = (X⊤X + 𝜆I)−1 X⊤𝑦.
+- Usando a decomposição SVD, tem-se
+X = UDV⊤.
+- É possível mostrar que,̂
+𝛽 = Vdiag ( 𝑑𝑗
+𝑑2
+𝑗 + 𝜆 ) U⊤𝑦.
+----  120
+Implementação computacional:
+regressão ridge
+----  121
+Implementação: regressão ridge
+- Simulando o conjunto de dados (𝑛 = 100, 𝑝 = 200).
+set.seed(123)
+X <- matrix(NA, ncol = 200, nrow = 100)
+X[,1] <- 1 ## Intercepto
+for(i in 2:200) {
+X[,i] <- rnorm(100, mean = 0, sd = 1)
+X[,i] <- (X[,i] - mean(X[,i]))/var(X[,i])
+}
+## Parâmetros
+beta <- rbinom(200, size = 1, p = 0.1)*rnorm(200, mean = 10)
+mu <- X%*%beta
+## Observações
+y <- rnorm(100, mean = mu, sd = 10)
+----  122
+Implementando o modelo.
+- Modelo passo-a-passo
+y_c <- y - mean(y)
+X_svd <- svd(X) ## Decomposição svd
+lambda = 0.5 ## Penalização
+DD <- Diagonal(100, X_svd$d/(X_svd$d^2 + lambda))
+DD[1] <- 0 ## Não penalizar o intercepto
+beta_hat = as.numeric(X_svd$v%*%DD%*%t(X_svd$u)%*%y_c)
+----  123
+Resultados: regressão ridge
+- Ajustados versus verdadeiros.
+plot(beta ~ beta_hat, xlab = expression(hat(beta)), ylab = expression(beta))−4 −2 0 2 4 6 8
+0 2 4 6 8 10 12
+β
+^
+β
+----  124
+Resultados: regressão ridge
+- Regressão com penalização ridge, bem como, outras penalizações são eficientemente
+implementadas em R via pacote glmnet.
+- IMPORTANTE! A penalização no glmnet é ligeiramente diferente, por isso oŝ 𝛽’s não
+são idênticos a nossa implementação naive.
+- O glmnet oferece opções para selecionar 𝜆 via validação cruzada.
+require(glmnet)
+beta_glm <- cv.glmnet(X[,-1], y_c, nlambda = 100)
+----  125
+Resultados: regressão ridge
+- Validação cruzada.
+plot(beta_glm)−2 −1 0 1 2
+800 1000 1200 1400 1600 1800
+Log(λ )
+Mean−Squared Error
+103 96 94 90 88 82 80 76 74 67 60 52 43 38 32 27 22 15 9 3 0
+----  126
+Resultados: regressão ridge
+- Ajustados (glmnet) versus verdadeiros.
+plot(beta ~ as.numeric(coef(beta_glm)), xlab = expression(hat(beta)), ylab = expression(beta))−2 0 2 4 6 8
+0 2 4 6 8 10 12
+β
+^
+β
+----  127
+Comentários
+----  128
+Comentários
+- Solução de sistemas lineares:
+- Métodos diretos: Eliminação de Gauss e Gauss-Jordan.
+- Métodos iterativos: Jacobi e Gauss-Seidel.
+- Inversa de matrizes.
+- Decomposição ou fatorização
+- LU resolve sistema lineares pode ser usada para obter inversas.
+- Autovalores e autovetores.
+- Valores singulares.
+- Existem muitas outras fatorizações: QR, Cholesky, Cholesky modificadas, etc.
+----  129
+
