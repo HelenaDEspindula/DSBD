@@ -7,7 +7,7 @@ output:
       collapsed: false
       smooth_scroll: false
       number_sections: true
-date: "2024-04-05"
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}

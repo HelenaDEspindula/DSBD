@@ -1,6 +1,12 @@
 ---
 title: "Caderno_Metodologia_de_Pesquisa"
-output: pdf_document
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
 date: "`r Sys.Date()`"
 ---
 
