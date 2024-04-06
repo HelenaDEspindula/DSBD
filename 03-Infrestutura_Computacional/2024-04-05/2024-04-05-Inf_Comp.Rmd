@@ -435,19 +435,81 @@ he2@h8:~/Downloads/dados$ ls
 
 ```
 
+## Exercicios
+
+Escreva um script que recebe o nome de um arquivo como parâmetro e copia-o para o
+diretório `/tmp`
+
 ```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat ex1.sh 
+#!/bin/bash
+
+arquivo=$2
+tmpDir="./tmp"
+
+cp -R $arquivo $tmpDir
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ chmod +x ex1.sh
+
+he2@h8:~/Downloads$ ls
+ 2024-04-05-Inf_Comp.Rmd   dic_bom_conselho       figura.jpg                                Lucas.Rmd
+ aula02_2021.pdf          'dic_bom_conselho(1)'   foto.jpg                                  meuscript.sh
+ backup2.sh               'dic_bom_conselho(2)'   fotos2.sh                                 png2jpg.zip
+ backup.sh                 DSBD2024-Aula02b.pdf   fotos.sh                                  rmarkdown.pdf
+ baixaDadosTransp_v2.sh    DSBD2024-Aula02c.pdf  'historico-alg1_SIGA_ANONIMIZADO(1).csv'   tmp
+ bom_conselho              DSBD2024-Aula02.pdf    historico-alg1_SIGA_ANONIMIZADO.csv       variaveis.sh
+ dados                     DSBD-main.zip          Inf_Comp--05-04-2024.html                 vgg19_grafico.tar.gz
+ dados_del.txt             dsbd_trab1.csv         Inf_Comp--05-04-2024.Rmd
+ dados.txt                 ex1.sh                 Lucas.pdf
 
 ```
 
 ```{bash eval=FALSE}
+he2@h8:~/Downloads$ ls
+ 2024-04-05-Inf_Comp.Rmd   dados.txt              ex1.sh                                    Lucas.pdf
+ aula02_2021.pdf           dic_bom_conselho       figura.jpg                                Lucas.Rmd
+ backup2.sh               'dic_bom_conselho(1)'   foto.jpg                                  meuscript.sh
+ backup.sh                'dic_bom_conselho(2)'   fotos2.sh                                 png2jpg.zip
+ baixaDadosTransp_v2.sh    DSBD2024-Aula02b.pdf   fotos.sh                                  rmarkdown.pdf
+ bom_conselho              DSBD2024-Aula02c.pdf  'historico-alg1_SIGA_ANONIMIZADO(1).csv'   tmp
+ cria_grafico.sh           DSBD2024-Aula02.pdf    historico-alg1_SIGA_ANONIMIZADO.csv       variaveis.sh
+ dados                     DSBD-main.zip          Inf_Comp--05-04-2024.html                 vgg19
+ dados_del.txt             dsbd_trab1.csv         Inf_Comp--05-04-2024.Rmd                  vgg19_grafico.tar.gz
 
+he2@h8:~/Downloads$ cd vgg19/
+
+he2@h8:~/Downloads/vgg19$ ls
+cria_grafico.sh  grafico.csv  grafs.csv  plotar2.sh  plotar.sh  saida_14_05_2022_300.txt  treinovgg19.png
 ```
 
 ```{bash eval=FALSE}
+he2@h8:~/Downloads/vgg19$ cat cria_grafico.sh 
+#!/bin/bash
 
+arqin=$1
+arqout=$2
+
+LANG=C sed -E 's/[\d008]//g' $arqin | sed -E 's/\r/\n/g' | grep val_loss > temp.txt
+cut -d ' ' -f 11,17 < temp.txt | nl -s ' ' -n rz -w 3 | sed -E 's/ /; /g' > $arqout
+rm temp.txt
 ```
 
 ```{bash eval=FALSE}
+he2@h8:~/Downloads/vgg19$ ./cria_grafico.sh saida_14_05_2022_300.txt teste.csv
+
+he2@h8:~/Downloads/vgg19$ head teste.csv 
+001; 0.1532; 0.1667
+002; 0.1563; 0.1667
+003; 0.1604; 0.1667
+004; 0.1695; 0.1667
+005; 0.1674; 0.1667
+006; 0.1665; 0.1667
+007; 0.1609; 0.1667
+008; 0.1620; 0.1667
+009; 0.1613; 0.1667
+010; 0.1654; 0.1667
 
 ```
 
