@@ -161,6 +161,32 @@ $$\sum_{n=1}^{10} n^2$$
 
 $$\sum_{n=1}^{10} n^2$$
 
+×
+$$\times$$
+-- cross product or cartesian product.
+∗
+$$*$$
+-- convolution.
+⋅
+$$\cdot$$
+-- dot product
+∙
+$$\bullet$$
+-- dot product
+⊗
+$$\otimes$$
+-- tensor product.
+∘
+$$\circ$$
+-- function composition. Not a problem for vectors, but can be ambiguous for matrices.
+
+$$\odot$$
+-- to me the dot makes it look naturally like a multiply operation (unlike other suggestions I've seen like ⋄) so is relatively easy to visually parse, but does not have an overloaded meaning as far as I know.
+
+
+
+
+
 ### Vetores e Matrizes
 
 $$\begin{array}{ccc}
