@@ -1,11 +1,11 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2024.3.11)  12 MAR 2024 23:07
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.6)  6 APR 2024 21:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**Caderno_Inferencia_Estatistica.tex
-(./Caderno_Inferencia_Estatistica.tex
+**04-Caderno_Inferencia_Estatistica.tex
+(./04-Caderno_Inferencia_Estatistica.tex
 LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-02-20>
+L3 programming layer <2024-03-14>
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2023/05/17 v1.4n Standard LaTeX document class
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/size10.clo
@@ -204,7 +204,9 @@ Package graphics Info: Driver file: pdftex.def on input line 107.
 )
 \Gin@req@height=\dimen162
 \Gin@req@width=\dimen163
-) (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
+) (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bookmark.sty
+Package: bookmark 2023-12-10 v1.31 PDF bookmarks (HO)
+(c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
 Package: hyperref 2024-01-20 v7.01h Hypertext links for LaTeX
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/kvsetkeys/kvsetkeys.sty
 Package: kvsetkeys 2022-10-05 v1.19 Key value parser (HO)
@@ -311,16 +313,19 @@ Package: uniquecounter 2019/12/15 v1.4 Provide unlimited unique counter (HO)
 Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 285.
 )
 \Hy@SectionHShift=\skip54
-)
+) (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/bookmark/bkm-pdftex.def
+File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
+\BKM@id=\count292
+))
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2024-02-20 L3 backend support: PDF output (pdfTeX)
-\l__color_backend_stack_int=\count292
+File: l3backend-pdftex.def 2024-03-14 L3 backend support: PDF output (pdfTeX)
+\l__color_backend_stack_int=\count293
 \l__pdf_internal_box=\box54
-) (./Caderno_Inferencia_Estatistica.aux)
-\openout1 = `Caderno_Inferencia_Estatistica.aux'.
+) (./04-Caderno_Inferencia_Estatistica.aux)
+\openout1 = `04-Caderno_Inferencia_Estatistica.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
 LaTeX Font Info:    ... okay on input line 112.
@@ -381,10 +386,6 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 112.
-(./Caderno_Inferencia_Estatistica.out) (./Caderno_Inferencia_Estatistica.out)
-\@outlinefile=\write4
-\openout4 = `Caderno_Inferencia_Estatistica.out'.
-
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 114.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -415,49 +416,79 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 114.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 126.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 135.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) [1
 
 {c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 259.
+(Font)              <10> on input line 281.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 259.
+(Font)              <7> on input line 281.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 259.
+(Font)              <5> on input line 281.
 
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 259.
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 281.
 
 
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 271.
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 293.
 
 [2{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 380.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 324.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-) [3{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [4] (./Caderno_Inferencia_Estatistica.aux)
- ***********
-LaTeX2e <2023-11-01> patch level 1
-L3 programming layer <2024-02-20>
- ***********
-Package rerunfilecheck Info: File `Caderno_Inferencia_Estatistica.out' has not changed.
-(rerunfilecheck)             Checksum: D7F048C210B8D2BE754111AF83B5A7BE;854.
- ) 
-Here is how much of TeX's memory you used:
- 11221 strings out of 476075
- 175136 string characters out of 5790813
- 1939190 words of memory out of 5000000
- 33138 multiletter control sequences out of 15000+600000
- 602125 words of font info for 77 fonts, out of 8000000 for 9000
- 14 hyphenation exceptions out of 8191
- 75i,6n,79p,558b,499s stack positions out of 10000i,1000n,20000p,200000b,200000s
-<c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on Caderno_Inferencia_Estatistica.pdf (4 pages, 201648 bytes).
-PDF statistics:
- 126 PDF objects out of 1000 (max. 8388607)
- 93 compressed objects within 1 object stream
- 15 named destinations out of 1000 (max. 500000)
- 41 words of extra memory for PDF output out of 10000 (max. 10000000)
+)
+LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 325.
+<04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-2-1.pdf, id=49, 469.755pt x 325.215pt>
+File: 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-2-1.pdf Graphic file (type pdf)
+<use 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-2-1.pdf>
+Package pdftex.def Info: 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-2-1.pdf  used on input line 351.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[3 <./04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-2-1.pdf>]
+<04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-3-1.pdf, id=62, 469.755pt x 325.215pt>
+File: 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-3-1.pdf Graphic file (type pdf)
+<use 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-3-1.pdf>
+Package pdftex.def Info: 04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-3-1.pdf  used on input line 362.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[4 <./04-Caderno_Inferencia_Estatistica_files/figure-latex/chunk-3-1.pdf>] [5{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}]
 
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 553.
+
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 553.
+
+[6]
+
+LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 619.
+
+<04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-1.pdf, id=100, 469.755pt x 325.215pt>
+File: 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
+<use 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-1.pdf>
+Package pdftex.def Info: 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 628.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[7]
+<04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-2.pdf, id=109, 469.755pt x 325.215pt>
+File: 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-2.pdf Graphic file (type pdf)
+<use 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-2.pdf>
+Package pdftex.def Info: 04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-2.pdf  used on input line 638.
+(pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
+[8 <./04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-1.pdf>] [9 <./04-Caderno_Inferencia_Estatistica_files/figure-latex/unnamed-chunk-2-2.pdf>]
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 740.
+
+! Undefined control sequence.
+l.744 \[ f(x1, x2) = \sqr
+                         (25 - x21- x22)\] ,avalie a função nos pontos 
+Here is how much of TeX's memory you used:
+ 11587 strings out of 476063
+ 182763 string characters out of 5790599
+ 1940496 words of memory out of 5000000
+ 33473 multiletter control sequences out of 15000+600000
+ 605758 words of font info for 80 fonts, out of 8000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 89i,5n,93p,1029b,505s stack positions out of 10000i,1000n,20000p,200000b,200000s
+
+!  ==> Fatal error occurred, no output PDF file produced!
