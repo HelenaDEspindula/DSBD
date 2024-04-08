@@ -1,0 +1,1723 @@
+---
+title: "04_3-Caderno-InfEst-parte3"
+author: "Helena R. S. D'Espindula"
+output:
+  html_document: 
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+  pdf_document:
+date: "`r Sys.Date()`"
+---
+
+```{r setup, echo=TRUE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, warning = TRUE, error = TRUE)
+library(ggplot2)
+library(glmnet)
+library(Matrix)
+```
+
+
+
+
+# Álgebra Matricial
+
+## Vetores e escalares
+- Um vetor é uma lista de n números (escalares) escritos em linha ou coluna.
+- Notação (primeiro a em negrito)
+
+$$
+a = (a_{i1} ... a_{in})
+$$
+ou
+
+$$
+a = \begin{bmatrix}
+a_{i1}\\
+.\\
+.\\
+.\\
+a_{in}\\
+\end{bmatrix}
+$$
+
+- Vetor linha e vetor coluna.
+- Um elemento do vetor é chamado de ai , sendo i  a sua posição.
+- O tamanho de um vetor é o seu número de elementos.
+- O módulo de um vetor é o seu comprimento
+**[[ARRUMAR]]**
+
+- Vetor unitário é aquele que tem tamanho
+$$ a = a |a|$$
+
+- Dois vetores são iguais se tem o mesmo tamanho e os seus elementos em posições equivalentes são iguais.
+
+### Operações com vetores
+
+1. Soma $a + b = (ai  + b i ) = (a1 + b 1, … , an + b n)$.
+
+$a = (1, 2, 3)$
+$b = (3, 2, 1)$
+$a+b = (4, 4, 4)$
+$a-b = (-2, 0, 2)$
+
+2. Subtração $a - b = (ai  - b i ) = (a1 - b 1, … , an - b n)$.
+
+$$
+a-b = (-2, 0, 2)
+$$
+
+3. Multiplicação por escalar $\alpha a = (\alpha a1, … , \alpha an)$.
+
+$$
+5 * a = (5*1, 5*2, 5*3)
+$$
+
+4. Transposta de um vetor:
+**[[ARRUMAR]]**
+
+5. Produto interno ou escalar entre dois vetores resulta em um escalar (mutiplica dois vetores e dá um número só como resultado)
+$a * b = (a1b 1 + a2b 2 + … + anb n)$
+
+- **Condições: os vetores devem ser do mesmo tipo e tamanho.**
+
+### Vetores ortogonais
+- Dois vetores são ortogonais entre si se o ângulo $\theta$ entre eles é de 90 graus.(= correlação de Pearson)
+- Implicações: 
+$$cos(\theta) = 0 e aTb = 0.$$
+$$ cov (a,b) / raiz(variacia[a]) * raiz(variacia[b])$$
+
+- O co-seno do ângulo $\theta$ entre os vetores é dado por:
+$$cos(\theta) = aTb / \sqrt aTa\sqrt bTb .$$
+
+### Operações com vetores em R
+- Declarando vetores
+```{r}
+a <- c(4,5,6)
+b <- c(1,2,3)
+```
+
+- Sendo a e b compatíveis
+```{r}
+#### Soma
+a + b
+## [1] 5 7 9
+#### Substração
+a - b
+## [1] 3 3 3
+```
+
+
+- Multiplicação por escalar
+```{r}
+alpha = 10
+alpha*a
+## [1] 40 50 60
+```
+- Produto de Hadamard (não é produto interno)
+
+```{r}
+a*b
+## [1] 4 10 18
+```
+- Produto vetorial (ou produto interno)
+
+```{r}
+a%*%b
+##    [,1]
+## [1,] 32
+```
+- Co-seno do ângulo entre dois vetores
+```{r}
+cos <- t(a)%*%b/(sqrt(t(a)%*%a)*sqrt(t(b)%*%b))
+```
+- Lei da reciclagem (não avalia se pode somar antes de somar)
+```{r}
+a <- c(4,5,6,5,6,7)
+b <- c(1,2,3)
+a + b
+## [1] 5 7 9 6 8 10
+```
+
+## Matrizes
+
+- Uma matriz é um arranjo retangular ou quadrado de números ou variáveis.
+- A matriz costuma ser representada por uma letra maiuscula em negrito
+
+- Uma matriz ($n \times m$) tem n linhas e m  colunas:
+
+```{r latex}
+# $$A = \begin{pmatrix}\
+# a_{11} & a_{12} & ... & a_{1m}\\
+# a_{21} & a_{22} & ... & a_{2m}\\
+# ... & ... & ... & ... \\
+# a_{n1} & a_{11} & ... & a_{nm}\\
+# \end{pmatrix}$$
+```
+
+
+$$A = \begin{pmatrix}\
+a_{11} & a_{12} & ... & a_{1m}\\
+a_{21} & a_{22} & ... & a_{2m}\\
+... & ... & ... & ... \\
+a_{n1} & a_{11} & ... & a_{nm}\\
+\end{pmatrix}$$
+
+- O primeiro subscrito representa linha e o segundo representa coluna.
+- A dimensão de uma matriz é o seu número de linhas e colunas.
+- Duas matrizes são iguais se tem a mesma dimensão e se os elementos das correspondentes
+posições são iguais.
+
+### Matriz transposta
+- A operação de transposição rearranja uma matriz de forma que suas linhas são transformadas em colunas e vice-versa.
+**[[ARRUMAR]]**
+
+- Note que (AT)T = A.
+- Computacionalmente
+- Declarando matrizes
+
+```{r}
+a <- c(1,2,3,4,5,6)
+A <- matrix(a, nrow = 3, ncol = 2)
+A
+## [,1] [,2]
+## [1,] 1 4
+## [2,] 2 5
+## [3,] 3 6
+```
+
+- O default preenche por colunas
+- Transposta de uma matriz
+```{r}
+t(A)
+## [,1] [,2] [,3]
+## [1,] 1 2 3
+## [2,] 4 5 6
+```
+
+### Operações com matrizes
+
+- Multiplicação matriz por escalar.
+$$\alpha * A = \begin{pmatrix}\
+\alpha * a_{11} & \alpha * a_{12} & \alpha * ... & \alpha * a_{1m}\\
+\alpha * a_{21} & \alpha * a_{22} & \alpha * ... & \alpha * a_{2m}\\
+\alpha * ... & \alpha * ... & \alpha * ... & \alpha * ... \\
+\alpha * a_{n1} & \alpha * a_{n2} & \alpha * ... & \alpha * a_{nm}\\
+\end{pmatrix}$$
+
+- Computacionalmente
+```{r}
+A <- matrix(c(1,2,3,4,5,6),
+nrow = 3, ncol = 2)
+alpha <- 10
+alpha*A
+## [,1] [,2]
+## [1,] 10 40
+## [2,] 20 50
+
+```
+
+- Duas matrizes podem ser somadas ou
+subtraídas somente se tiverem o mesmo
+tamanho.
+1. Soma 
+**[[ARRUMAR]]**
+2. Subtração 
+**[[ARRUMAR]]**
+
+- Exemplo
+$$A = \begin{pmatrix}\
+1 & 2\\
+3 & 4\\
+5 & 6\\
+\end{pmatrix}$$
+
+$$B = \begin{pmatrix}\
+10 & 20\\
+30 & 40\\
+50 & 60\\
+\end{pmatrix}$$
+
+$$A + B = \begin{pmatrix}\
+11 & 22\\
+33 & 44\\
+55 & 66\\
+\end{pmatrix}$$
+
+- Soma de duas matrizes
+```{r}
+A <- matrix(c(1,2,3,4,5,6),
+nrow = 3, ncol = 2)
+B <- matrix(c(10,20,30,40,50,60),
+nrow = 3, ncol = 2)
+C = A + B
+C
+## [,1] [,2]
+## [1,] 11 44
+## [2,] 22 55
+## [3,] 33 66
+```
+
+- Condição para multiplicar matrizes
+$$
+C_{m, n} = A_{m,q} B_{q,n}
+$$
+(q tem que ser igual)
+
+**[[ARRUMAR]]**
+
+- Computacionalmente.
+- Matrizes compatíveis
+```{r}
+A <- matrix(c(2,8,6,-1,3,7),
+nrow = 3, ncol = 2)
+B <- matrix(c(4,-5,9,2,1,4,-3,6),
+nrow = 2, ncol = 4)
+C = A%*%B
+C
+## [,1] [,2] [,3] [,4]
+## [1,] 13 16 -2 -12
+## [2,] 17 78 20 -6
+## [3,] -11 68 34 24
+```
+
+- Matrizes não compatíveis
+```{r message=TRUE, warning=TRUE}
+B %*% A
+## Error in B %*% A: argumentos não compatíveis
+```
+
+
+Produto de Hadamard
+- Produto simples ou de Hadamard
+
+$$A \odot B = \begin{pmatrix}\
+a_{11}*b_{11} & a_{12}*b_{12} & ... & a_{1m}*b_{1m}\\
+a_{21}*b_{21} & a_{22}*b_{22} & ... & a_{2m}*b_{2m}\\
+... & ... & ... & ... \\
+a_{n1}*b_{n1} & a_{n2}*b_{n2} & ... & a_{nm}*b_{nm}\\
+\end{pmatrix}$$
+
+
+- Computacionalmente
+```{r}
+A <- matrix(c(1,2,3,4),
+nrow = 2, ncol = 2)
+B <- matrix(c(10,20,30,40),
+nrow = 2, ncol = 2)
+A*B
+## [,1] [,2]
+## [1,] 10 90
+## [2,] 40 160
+```
+
+
+Propriedades envolvendo operações com matrizes
+- Sendo A, B, C e D compatíveis temos,
+1. $A + B = B + A$
+2. $(A + B) + C = A + (B + C)$.
+3. $\alpha (A + B) = \alpha A + \alpha B$.
+4. $(\alpha  + \beta )A = \alpha A + \beta A$.
+5. $\alpha (AB) = (\alpha A)B = A(\alpha B)$.
+6. $A(B ± C) = AB ± AC$.
+7. $(A ± B)C = AC ± BC$.
+8. $(A-B)(C-D) = AC-BC-AD+BD$.
+
+- Propriedades envolvendo transposta e
+multiplicação
+1. Se $A$ é $n \times m$ e $B$ é $m \times n$, então $(AB)^T = B^T A^T$.
+2. Se $A$, $B$ e $C$ são compatíveis 
+$$
+(ABC)^{T}= C^{T}B^{T}A^{T}.
+$$
+
+### Matrizes de formas especiais
+- Matriz quadrada ($m = n$)
+
+Exemplo 4x4
+```{r}
+A <- matrix(c("a11","a21","a31","a41","a12","a22","a32","a42","a13","a23","a33","a43","a14","a24","a34","a44"), nrow = 4, ncol = 4)
+A
+```
+
+- ai i  são os elementos da diagonal.
+- ai j  para i  (diferente) j  → fora da diagonal.
+- ai j  para j  > i  → acima da diagonal.
+- ai j  para i  > j  → abaixo da diagonal.
+- Matriz diagonal
+$$D = \begin{pmatrix}\
+a_{11} & 0 & 0 & 0\\
+0 & a_{22} & 0 & 0\\
+0 & 0 & a_{33} & 0\\
+0 & 0 & 0 & a_{44}\\
+\end{pmatrix}$$
+
+
+
+- Matriz identidade
+$$I = \begin{pmatrix}\
+1 & 0 & 0 & 0\\
+0 & 1 & 0 & 0\\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1\\
+\end{pmatrix}$$
+
+
+
+### Matrizes de formas especiais
+- Triangular superior
+$$U = \begin{pmatrix}\
+a_{11} & a_{12} & a_{13} & a_{14}\\
+0 & a_{22} & a_{23} & a_{24}\\
+0 & 0 & a_{33} & a_{34} \\
+0 & 0 & 0 & a_{44}\\
+\end{pmatrix}$$
+
+- Triangular inferior
+$$L = \begin{pmatrix}\
+a_{11} & 0 & 0 & 0\\
+a_{21} & a_{22} & 0 & 0\\
+a_{31} & a_{32} & a_{33} & 0 \\
+a_{41} & a_{42} & a_{43} & a_{44}\\
+\end{pmatrix}$$
+
+```{r}
+# $$L = \begin{pmatrix}\
+# a_{11} & a_{12} & a_{13} & a_{14}\\
+# a_{22} & a_{22} & a_{23} & a_{24}\\
+# a_{22} & a_{22} & a_{33} & a_{34} \\
+# a_{22} & a_{22} & a_{22} & a_{44}\\
+# \end{pmatrix}$$
+```
+
+
+
+- Matriz nula
+$$0 = \begin{pmatrix}\
+0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0\\
+0 & 0 & 0 & 0 \\
+0 & 0 & 0 & 0\\
+\end{pmatrix}$$
+
+
+- Matriz quadrada simétrica
+$$0 = \begin{pmatrix}\
+1 & 0,8 & 0,6 & 0,4\\
+0,8 & 1 & 0,2 & 0,4\\
+0,6 & 0,2 & 1 & 0,1 \\
+0,4 & 0,4 & 0,1 & 1,0\\
+\end{pmatrix}$$
+
+
+### Combinações lineares
+- Um conjunto de vetores a1, a2, … , an é dito ser linearmente dependente se puderem ser
+encontrados escalares c 1, c 2, … , c n e estes escalares não sejam todos iguais a 0 de tal forma
+que
+$$
+c 1a1 + c 2a2 + … + c nan = 0.
+$$
+
+Exemplo:
+```{r}
+a1 <- matrix(c(1,0), nrow = 2, ncol = 1)
+a1
+a2 <- matrix(c(0,1), nrow = 2, ncol = 1)
+a2
+
+#O unico caso que esses c1*a1 + c2*a2 = (0, 0) é se c1 = 0 E c2 =0
+#Ou seja Linearmente independente
+
+a1 <- matrix(c(1,2), nrow = 2, ncol = 1)
+a1
+a2 <- matrix(c(-1,-2), nrow = 2, ncol = 1)
+a2
+
+#Existem casos fora os cs = 0 que fazem c1*a1 + c2*a2 = (0, 0)
+#Ou seja Linearmente dependente
+
+```
+
+
+- Caso contrário é dito ser linearmente independente.
+- Notação matricial
+$$
+Ac = 0.
+$$
+- As colunas de A são linearmente independentes se Ac = 0 implicar que c = 0.
+
+### Rank ou posto de uma matriz
+- O rank ou posto de qualquer matriz quadrada ou retangular A é definido como
+rank(A) = número de colunas ou linhas linearmente independentes em A.
+- Sendo A uma matriz retangular n x  m  o maior rank possível para A é o min(n,m ).
+- O rank da matrix nula é 0.
+- Se o rank da matriz é o min(n,m ) dizemos que a matriz tem rank completo.
+
+### Matriz não singular e matriz inversa
+- Uma matriz quadrada de posto completo é chamada de não singular.
+- Sendo A quadrada de posto completo a matriz inversa de A é única tal que (só se a matriz for quadrada e de ranking completo)
+$$
+AA^{-1} = I.
+$$
+- Não quadrada (posto incompleto) → não terá inversa e é dita ser singular.
+- Note que 
+$$
+A^{(-1^{-1})} =A
+$$
+A^{-1}^{-1} = A
+
+## Matriz inversa
+- Computacionalmente
+```{r}
+A <- matrix(c(4, 2, 7, 6), 2, 2)
+A
+
+A_inv <- solve(A)
+A_inv
+
+I = A %*% A_inv
+I
+
+```
+
+- Verificando
+```{r}
+A%*%A_inv
+## [,1] [,2]
+## [1,] 1 0
+## [2,] 0 1
+```
+
+
+- Propriedades envolvendo inversas
+1. Se A é não singular, então AT é não singular e sua inversa é dada por $(AT)-1 = (A-1)T$
+2. Se A e B são matrizes não singulares de mesmo tamanho, então o produto AB é
+não singular e $(AB)-1 = B-1 A-1$
+
+### Inversa generalizada
+- A inversa generalizada de uma matriz A n x  p é qualquer matriz A- que satisfaça 
+$$
+AA^{-}A = A.
+$$
+
+- Não é única exceto quando A é não-singular (inversa usual).
+- Exemplo
+
+$$
+
+$$
+**[[ARRUMAR]]**
+
+
+- a- = (1, 0, 0, 0)
+
+- Verificando
+
+```{r}
+a <- matrix(c(1, 2, 3, 4), 4, 1)
+a_invg <- matrix(c(1,0,0,0), 1, 4)
+a%*%a_invg%*%a
+## [,1]
+## [1,] 1
+## [2,] 2
+## [3,] 3
+## [4,] 4
+```
+
+- Moore-Penrose generalized inverse
+```{r}
+#### Matriz singular (col 3 = col 2 + col 1)
+A <- matrix(c(2, 1, 3, 2, 0,
+2, 3, 1, 4), 3, 3)
+library(MASS)
+A_ginv <- ginv(A)
+A%*%A_ginv%*%A ## Verificando
+```
+
+## Matrizes positivas definidas
+
+### Formas quadráticas
+- Soma de quadrados são importantes em ciência de dados.
+- Considere uma matriz A simétrica e y um vetor, o produto
+$$
+y^{T}Ay = 
+\sum(a_{ij}y^{2}_{i}) + 
+\sum_{i (diferente) j}(a_{ij}y_{i}y_{j})
+$$
+é chamado de forma quadrática.
+
+$$
+y^{T}Iy = \sum^{n}_{i=0}(y^{2}_{i})
+$$
+
+
+- Sendo y de dimensão n x  1, 
+$$
+yTIy = y 2
+1 + y 2
+2 + … , y 2
+n
+$$
+
+- Consequentemente, yTy é a soma de quadrados dos elementos do vetor y.
+- A raiz quadrada da soma de quadrados é o comprimento de y.
+
+Matriz positiva definida
+- Sendo A uma matriz simétrica com a propriedade yTAy > 0 para todos os possíveis y
+exceto para quando y = 0, então a forma quadrática yTAy é chamada positiva definida,
+e A é dita ser uma matriz positiva definida.
+- Exemplo
+**[[ARRUMAR]]**
+
+A forma quadrática associada é dada por (ver abaixo) que é claramente positiva, desde que y 1 e y 2 sejam diferentes de zero.
+$$
+yTAy = (y 1 y 2) ( 2 -1
+-1 3 ) (y 1
+y 2
+) = 2y 2
+1 - 2y 1y 2 + 3y 2
+2 ,
+$$
+
+### Propriedades de matrizes positivas definidas
+1. Se A é positiva definida, então todos os valores da diagonal de A são positivos.
+2. Se A é positiva semi-definida, então os elementos da diagonal de A são maiores ou iguais a zero.
+3. Sendo P uma matriz não-singular e A uma matriz positiva definida, o produto PTAP é positiva definida.
+4. Sendo P uma matriz não-singular e A uma matriz positiva semi-definida, o produto PTAP é positiva semi-definida.
+5. Uma matriz positiva definida é não-singular.
+
+### Determinante de uma matriz
+- O determinante de uma matriz A é o escalar (= numero)
+$$
+|A| = \sum((-1)^k a_{1j_{1}} a_{2j_{2}} ... a_{nj_{n}})
+$$
+onde a soma é realizada para todas as n! permutações de grau n, e k  é o número de
+mudanças necessárias para que os segundos subscritos sejam colocados na ordem
+$1,2, … , n$
+
+- Considere a matriz
+**[[ARRUMAR]]**
+
+Determinante de uma matriz
+- Computacionalmente.
+```{r}
+A <- matrix(c(3,-2,-2,4),2,2)
+determinant(A, logarithm = FALSE)$modulus
+## [1] 8
+## attr(,"logarithm")
+## [1] FALSE
+```
+
+- Determinante em escala log.
+```{r}
+determinant(A, logarithm = TRUE)$modulus
+## [1] 2.079442
+## attr(,"logarithm")
+## [1] TRUE
+```
+
+- Alguns aspectos interessantes sobre determinantes são:
+1. Se A é singular, |A| = 0.
+2. Se A é não singular, |A| (diferente) 0.
+3. Se A é positiva definida, |A| > 0.
+4. |AT| = |A|.
+5. Se A é não singular, |A-1| = 1
+|A| .
+
+Traço de uma matriz
+- O traço de uma matriz A n x  n é um escalar definido como a soma dos elementos da diagonal, 
+**[[ARRUMAR]]**
+
+- Propriedades
+1. Se A e B são n x  n, então tr(A + B) = tr(A) + tr(B).
+2. Se A é n x  p e B e p x  n, então tr(AB) = tr(BA).
+
+- Computacionalmente
+```{r}
+A <- matrix(c(3,-2,-2,4),2,2)
+sum(diag(A))
+## [1] 7
+```
+
+## Cálculo vetorial e matricial
+
+### Cálculo vetorial
+- Seja $y = f(x)$ uma função das variáveis $x_{1}, x_{2}, x_{3}, ... , x_{p}$ e $\partial y$  as respectivas derivadas parciais.
+**[[ARRUMAR]]**
+
+Assim,
+**[[ARRUMAR]]**
+
+### Cálculo vetorial
+- Sendo aT = (a1, a2, … , ap) um vetor de constantes e A uma matriz simétrica de constantes.
+1. Seja y  = aTx = xTa. Então,
+**[[ARRUMAR]]**
+
+2. Seja y  = xTAx. Então,
+**[[ARRUMAR]]**
+
+### Cálculo Matricial
+- Se y  = f (X) onde X é uma matriz p x  p. As derivadas parciais de y  em relação a cada x i j 
+são organizadas em uma matriz.
+**[[ARRUMAR]]**
+
+
+- Algumas derivadas importantes envolvendo matrizes são apresentadas abaixo.
+1. Seja y  = tr(XA) sendo X p x  p e definida positiva e A p x  p constantes. Então,
+**[[ARRUMAR]]**
+
+2. Sendo A não singular com derivadas $\partial A$
+**[[ARRUMAR]]**
+
+3. Sendo A n x  n positiva definida. Então,
+**[[ARRUMAR]]**
+
+## Regressão linear múltipla
+
+### Regressão linear múltipla: especificação usual
+
+- Regressão linear simples
+$$
+y_{i} = \beta_{0} +\beta_{1}x_{1} + erro_{i}
+$$
+- Regressão linear múltipla
+$$
+y_{i} = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + ... + \beta_{p}x_{ip} + erro_{i}
+$$
+- Modelo para cada observação
+$$y_{1} = \beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + ... + \beta_{p}x_{1p} + erro_{1}$$
+
+$$y_{2} = \beta_{0} + \beta_{1}x_{21} + \beta_{2}x_{22} + ... + \beta_{p}x_{2p} + erro_{1}$$
+$$...$$
+$$y_{n} = \beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + ... + \beta_{p}x_{np} + erro_{n}$$
+
+Regressão linear múltipla: especificação matricial
+- Notação matricial
+$$
+\begin{bmatrix}
+y_{1}\\
+y_{2}\\
+...\\
+y_{n}\\
+\end{bmatrix}
+= 
+\begin{bmatrix}
+1 & x_{1}\\
+1 & x_{2}\\
+1 & ...\\
+1 & x_{n}\\
+\end{bmatrix}
+x 
+\begin{bmatrix}
+\beta_{1}\\
+\beta_{2}\\
+...\\
+\beta_{n}\\
+\end{bmatrix}
++
+\begin{bmatrix}
+erro_{1}\\
+erro_{2}\\
+...\\
+erro_{n}\\
+\end{bmatrix}
+$$
+
+- Notação mais compacta
+$$
+y_{(n x  1)} = X_{(n x  p)} \beta_{(p x  1)} + erro_{(n x  1)}
+$$
+### Regressão linear múltipla: estimação (treinamento)
+- Objetivo: encontrar o vetor $\hat{\beta}$ , tal que $S Q (\beta ) = (y - X\beta )T(y - X\beta )$ seja a menor possível.
+
+### Regressão linear múltipla: estimação
+1. Passo 1: encontrar o vetor gradiente. Derivando em $\beta$ , temos
+
+**[[ARRUMAR]]**
+
+### Regressão linear múltipla: estimação
+
+2. Passo 2: resolver o sistema de equações lineares (esquece o "-2" primeiro)
+$$ X^{T} (y - X\hat{\beta}) = 0$$
+$$XTy - XTX̂\beta  = 0$$
+$$XTX̂\beta  = XTŷ$$
+$$(XTX)^{-1}  XTX̂\beta  = XTy (XTX)^{-1}$$
+$$ I\beta  = (XTX)-1XTy $$
+
+### Regressão linear múltipla: exemplo
+- Conjunto de dados Boston disponível no pacote MASS.
+- Cinco primeiras covariáveis disponíveis:
+  - crim: taxa de crimes per capita.
+  - zn: proporção de terrenos residenciais zoneados para lotes com mais de 25.000 pés quadrados.
+  - indus: proporção de acres de negócios não varejistas por cidade.
+  - chas: variável dummy de Charles River (1 se a área limita o rio; 0 caso contrário).
+  - nox: concentração de óxido de nitrogênio (parte por 10 milhões).
+- Variável resposta: medv valor mediano das casas ocupadas em $1000.
+
+### Regressão linear múltipla: implementação computacional
+- Carregando a base de dados 
+```{r}
+require(MASS)
+## Carregando pacotes exigidos: MASS
+
+data(Boston)
+head(Boston[, c(1:5,14)])
+## crim zn indus chas nox medv
+## 1 0.00632 18 2.31 0 0.538 24.0
+## 2 0.02731 0 7.07 0 0.469 21.6
+## 3 0.02729 0 7.07 0 0.469 34.7
+## 4 0.03237 0 2.18 0 0.458 33.4
+## 5 0.06905 0 2.18 0 0.458 36.2
+## 6 0.02985 0 2.18 0 0.458 28.7
+```
+
+
+- Matriz de delineamento (X).
+```{r}
+X <- model.matrix(~ crim + zn + indus +
+chas + nox, data = Boston)
+head(X)
+## (Intercept) crim zn indus chas nox
+## 1 1 0.00632 18 2.31 0 0.538
+## 2 1 0.02731 0 7.07 0 0.469
+## 3 1 0.02729 0 7.07 0 0.469
+## 4 1 0.03237 0 2.18 0 0.458
+## 5 1 0.06905 0 2.18 0 0.458
+## 6 1 0.02985 0 2.18 0 0.458
+```
+
+
+- Variável resposta
+```{r}
+y <- Boston$medv
+```
+
+- Estimadores de mínimos quadrados:
+$$
+\hat{\beta} = (X^{T}X)^{-1} X^{T}y
+$$
+- Computacionalmente: versão ingênua (calcula inversa)
+```{r}
+round(solve(t(X)%*%X)%*%t(X)%*%y, 2)
+## [,1]
+## (Intercept) 29.49
+## crim -0.22
+## zn 0.06
+## indus -0.38
+## chas 7.03
+## nox -5.42
+```
+
+- Computacionalmente: versão eficiente (escalona?)
+```{r}
+round(solve(t(X)%*%X, t(X)%*%y), 2)
+## [,1]
+## (Intercept) 29.49
+## crim -0.22
+## zn 0.06
+## indus -0.38
+## chas 7.03
+## nox -5.42
+```
+
+- Função nativa do R
+```{r}
+t(round(coef(lm(medv ~ crim + zn + indus + chas + nox, data = Boston)), 2))
+## (Intercept) crim zn indus chas nox
+## [1,] 29.49 -0.22 0.06 -0.38 7.03 -5.42
+```
+
+### Matrizes esparsas (tópico adicional)
+
+- Matrizes aparecem em todos os tipos de aplicação em ciência de dados.
+- Modelos estatísticos, machine learning, análise de texto, análise de cluster, etc.
+- Muitas vezes as matrizes usadas têm uma grande quantidade de zeros.
+- Quando uma matriz tem uma quantidade considerável de zeros, dizemos que ela é
+esparsa, caso contrário dizemos que a matriz é densa.
+- Todas as propriedades que vimos para matrizes em geral valem para matrizes esparsas.
+- O R tem um conjunto de métodos altamente eficiente por meio do pacote Matrix.
+- Saber que uma matriz é esparsa é útil pois permite:
+- Planejar formas de armazenar a matriz em memória.
+- Economizar cálculos em algoritmos numéricos (multiplicação, inversa, determinante,
+decomposições, etc).
+
+- Comparando a quantidade de memória utilizada.
+```{r}
+library('Matrix')
+
+m1 <- matrix(0, nrow = 1000, ncol = 1000)
+object.size(m1)
+## 8000216 bytes
+
+m2 <- Matrix(0, nrow = 1000, ncol = 1000, sparse = TRUE)
+object.size(m2)
+## 9240 bytes
+```
+
+
+Comparando o tempo computacional
+
+
+- Matriz densa
+```{r}
+y <- rnorm(1000)
+X <- matrix(NA, ncol = 100, nrow = 1000)
+for(i in 1:1000) {X[i,] <- rbinom(100, size = 1, p = 0.1)}
+system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))
+## usuário sistema decorrido
+## 0.819 0.004 0.823
+```
+
+
+- Matriz esparsa
+```{r}
+y <- rnorm(1000)
+X <- Matrix(NA, ncol = 100, nrow = 1000)
+for(i in 1:1000) {X[i,] <- rbinom(100, size = 1, p = 0.1)}
+X <- Matrix(X, sparse = TRUE)
+system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))
+## usuário sistema decorrido
+## 0.223 0.000 0.224
+```
+
+### Diferentes formas de implementar as operações matriciais
+
+- Criando a base de dados para a comparação
+```{r}
+library(Matrix)
+n <- 10000; p <- 500
+
+#DENSA
+x <- matrix(rbinom(n*p, 1, 0.01), nrow=n, ncol=p)
+object.size(x)
+## 20000216 bytes
+
+#ESPARCA
+X <- Matrix(x)
+object.size(X)
+## 600432 bytes
+```
+
+- Diferentes implementações
+```{r}
+y <- rnorm(n)
+
+print("Matriz densa com %*%:")
+system.time(solve(t(x)%*%x, t(x)%*%y))
+## usuário sistema decorrido
+## 2.053 0.040 2.094
+
+print("Matriz densa com crossprod")
+system.time(solve(crossprod(x), crossprod(x, y)))
+## usuário sistema decorrido
+## 1.731 0.016 1.748
+
+print("Matriz esparça com %*%")
+system.time(solve(t(X)%*%X, t(X)%*%y))
+## usuário sistema decorrido
+## 0.071 0.000 0.072
+
+print("Matriz esparça com crossprod")
+system.time(solve(crossprod(X), crossprod(X,y)))
+## usuário sistema decorrido
+## 0.029 0.000 0.050
+```
+
+- Implementação eficiente do modelo de regressão linear múltipla.
+```{r}
+library(glmnet)
+## Loaded glmnet 4.1-6
+system.time(b <- coef(lm(y~x)))
+## usuário sistema decorrido
+## 2.389 0.044 2.434
+system.time(g1 <-glmnet(x, y, nlambda=1, lambda=0, standardize=FALSE))
+## usuário sistema decorrido
+## 0.065 0.020 0.086
+system.time(g2 <- glmnet(X, y, nlambda=1, lambda=0, standardize=FALSE))
+## usuário sistema decorrido
+## 0.006 0.000 0.006
+```
+
+
+# Proxima aula
+
+### Sistemas lineares
+- Sistema com duas equações:
+$$ f 1(x 1,x 2) = 0$$
+$$f 2(x 1,x 2) = 0$$
+- Solução numérica consiste em encontrar\hat{} x 1 e\hat{} x 2 que satisfaça o sistema de equações.
+- Sistema com n equações
+$$f 1(x 1, … , x n) = 0
+⋮
+f n(x 1, … , x n) = 0.
+- Genericamente, tem-se
+f(x ) = 0.$$
+
+- Equações podem ser lineares ou não-lineares.
+
+Sistemas de equações lineares
+- Cada equação é linear na incógnita.
+- Solução analítica em geral é possível.
+- Exemplo:
+$7x 1 + 3x 2 = 45$
+$4x 1 + 5x 2 = 29$
+- Solução analítica:$\hat{} x 1 = 6 e\hat{} x 2 = 1$
+- Resolver (tedioso!!).
+
+- Três possíveis casos:
+1. Uma única solução (sistema não singular).
+2. Infinitas soluções (sistema singular).
+3. Nenhuma solução (sistema impossível).
+
+Sistemas de equações lineares
+- Representação matricial do sistema de equações lineares:
+**[[ARRUMAR]]**
+
+- De forma geral, tem-se
+$Ax = b$
+
+Operações com linhas
+- Sem qualquer alteração na relação linear, é possível
+1. Trocar a posição de linhas:
+$4x 1 + 5x 2 = 29$
+$7x 1 + 3x 2 = 45$
+2. Multiplicar qualquer linha por uma constante, aqui 4x 1 + 5x 2 por 1x4 , obtendo
+**[[ARRUMAR]]**
+
+Operações com linhas
+3. Subtrair um múltiplo de uma linha de uma outra, aqui 7 * 𝐸𝑞.(1) menos Eq. (2), obtendo
+**[[ARRUMAR]]**
+- Fazendo as contas, tem-se
+**[[ARRUMAR]]**
+
+Solução de sistemas lineares
+- Forma geral de um sistema com n equações lineares:
+**[[ARRUMAR]]**
+
+- Matricialmente, tem-se
+**[[ARRUMAR]]**
+
+- Métodos diretos e métodos iterativos.
+
+### Métodos diretos
+
+- O sistema de equações é manipulado até se transformar em um sistema equivalente de
+fácil resolução.
+- Triangular superior:
+**[[ARRUMAR]]**
+
+- Substituição regressiva
+**[[ARRUMAR]]**
+
+
+Métodos diretos
+- Triangular inferior:
+**[[ARRUMAR]]**
+
+- Substituição progressiva
+**[[ARRUMAR]]**
+
+
+
+Métodos diretos
+- Diagonal:
+**[[ARRUMAR]]**
+
+
+Eliminação de Gauss
+
+Métodos diretos: Eliminação de Gauss
+- Método de Eliminação de Gauss consiste em manipular o sistema original usando
+operações de linha até obter um sistema triangular superior.
+**[[ARRUMAR]]**
+
+- Usar eliminação regressiva no novo sistema para obter a solução.
+- Resolva o seguinte sistema usando Eliminação de Gauss.
+**[[ARRUMAR]]**
+
+
+Métodos diretos: Eliminação de Gauss
+- Passo 1: encontrar o pivô e eliminar os elementos abaixo dele usando operações de linha.
+**[[ARRUMAR]]**
+
+- Passo 2: encontrar o segundo pivô e eliminar os elementos abaixo dele usando operações
+de linha.
+**[[ARRUMAR]]**
+
+- Passo 3: substituição regressiva.
+
+Métodos diretos: Eliminação de Gauss
+- Usando a fórmula de substituição regressiva temos:
+**[[ARRUMAR]]**
+
+- A extensão do procedimento para um sistema com n equações é trivial.
+1. Transforme o sistema em triangular superior usando operações linhas.
+2. Resolva o novo sistema usando substituição regressiva.
+- Potenciais problemas do método de eliminação de Gauss:
+- O elemento pivô é zero.
+- O elemento pivô é pequeno em relação aos demais termos.
+
+Eliminação de Gauss com pivotação
+
+Eliminação de Gauss com pivotação
+- Considere o sistema
+$0x 1 + 2x 2 + 3x 2 = 46$
+$4x 1 - 3x 2 + 2x 3 = 16$
+$2x 1 + 4x 2 - 3x 3 = 12$
+- Neste caso o pivô é zero e o procedimento não pode começar.
+- Pivotação - trocar a ordem das linhas.
+1. Evitar pivôs zero.
+2. Diminuir o número de operações necessárias para triangular o sistema.
+$4x 1 - 3x 2 + 2x 3 = 16$
+$2x 1 + 4x 2 - 3x 3 = 12$
+$0x 1 + 2x 2 + 3x 2 = 46$
+
+Eliminação de Gauss com pivotação
+- Se durante o procedimento uma equação pivô tiver um elemento nulo e o sistema tiver
+solução, uma equação com um elemento pivô diferente de zero sempre existirá.
+- Cálculos numéricos são menos propensos a erros e apresentam menores erros de
+arredondamento se o elemento pivô for grande em valor absoluto.
+- É usual ordenar as linhas para que o maior valor seja o primeiro pivô.
+
+Passo 1: obtendo uma matriz triangular superior.
+```{r}
+gauss <- function(A, b) {
+Ae <- cbind(A, b) ## Sistema aumentado
+rownames(Ae) <- paste0("x", 1:length(b))
+n_row <- nrow(Ae)
+n_col <- ncol(Ae)
+SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+SOL[1,] <- Ae[1,]
+pivo <- matrix(0, n_col, n_row)
+for(j in 1:c(n_row-1)) {
+for(i in c(j+1):c(n_row)) {
+pivo[i,j] <- Ae[i,j]/SOL[j,j]
+SOL[i,] <- Ae[i,] - pivo[i,j]*SOL[j,]
+Ae[i,] <- SOL[i,]
+}
+}
+return(SOL)
+}
+```
+
+
+
+Eliminação de Gauss sem pivotação
+- Passo 2: substituição regressiva
+```{r}
+sub_reg <- function(SOL) {
+n_row <- nrow(SOL)
+n_col <- ncol(SOL)
+A <- SOL[1:n_row,1:n_row]
+b <- SOL[,n_col]
+n <- length(b)
+x <- c()
+x[n] <- b[n]/A[n,n]
+for(i in (n-1):1) {
+x[i] <- (b[i] - sum(A[i,c(i+1):n]*x[c(i+1):n] ))/A[i,i]
+}
+return(x)
+}
+```
+
+Eliminação de Gauss sem pivotação
+- Resolva o sistema:
+**[[ARRUMAR]]**
+
+```{r}
+A <- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
+b <- c(24,23,33)
+S <- gauss(A, b) ## Passo 1: Triangularização
+sol = sub_reg(SOL = S) ## Passo 2: Substituição regressiva
+sol
+## [1] 4 3 1
+A%*%sol ## Verificando a solução
+## [,1]
+## [1,] 24
+## [2,] 23
+## [3,] 33
+
+```
+
+
+Eliminação de Gauss com pivotação
+- Resolva o seguinte sistema usando
+Eliminação de Gauss com pivotação.
+$0x 1 + 2x 2 + 3x 2 = 46$
+$4x 1 - 3x 2 + 2x 3 = 16$
+$2x 1 + 4x 2 - 3x 3 = 12$
+
+```{r}
+## Entrando com o sistema original
+A <- matrix(c(0,4,2,2,-3,4,3,2,-3), 3,3)
+b <- c(46,16,12)
+## Pivoteamento
+A_order <- A[order(A[,1], decreasing = TRUE),]
+b_order <- b[order(A[,1], decreasing = TRUE)]
+#### Triangulação
+S <- gauss(A_order, b_order)
+S
+## [,1] [,2] [,3] [,4]
+## [1,] 4 -3.0 2.000000 16.00000
+## [2,] 0 5.5 -4.000000 4.00000
+## [3,] 0 0.0 4.454545 44.54545
+#### Substituição regressiva
+sol <- sub_reg(SOL = S)
+sol
+## [1] 5 8 10
+#### Solução
+A_order%*%sol
+## [,1]
+## [1,] 16
+## [2,] 12
+## [3,] 46
+```
+
+
+Eliminação de Gauss-Jordan
+
+Métodos diretos: Eliminação de Gauss-Jordan
+- O sistema original é manipulado até obter um sistema equivalente na forma diagonal.
+**[[ARRUMAR]]**
+
+- Algoritmo Gauss-Jordan
+1. Normalize a equação pivô com a divisão de todos os seus termos pelo coeficiente pivô.
+2. Elimine os elementos fora da diagonal principal em TODAS as demais equações usando
+operaçõs de linha.
+- O método de Gauss-Jordan pode ser combinado com pivotação igual ao método de
+eliminação de Gauss.
+
+
+Métodos iterativos
+- Nos métodos iterativos, as equações são colocadas em uma forma explícita onde cada
+incógnita é escrita em termos das demais, i.e.
+**[[ARRUMAR]]**
+
+- Dado um valor inicial para as incógnitas estas serão atualizadas até a convergência.
+- Atualização: Método de Jacobi
+**[[ARRUMAR]]**
+
+
+- Atualização: Método de Gauss-Seidel
+**[[ARRUMAR]]**
+
+Método iterativo de Jacobi
+- Implementação computacional
+```{r}
+jacobi <- function(A, b, inicial, max_iter = 10, tol = 1e-04) {
+n <- length(b)
+x_temp <- matrix(NA, ncol = n, nrow = max_iter)
+x_temp[1,] <- inicial
+x <- x_temp[1,]
+for(j in 2:max_iter) { #### Equação de atualização
+for(i in 1:n) {
+x_temp[j,i] <- (b[i] - sum(A[i,1:n][-i]*x[-i]))/A[i,i]
+}
+x <- x_temp[j,]
+if(sum(abs(x_temp[j,] - x_temp[c(j-1),])) < tol) break #### Critério de parada
+}
+return(list("Solucao" = x, "Iteracoes" = x_temp))
+}
+
+```
+
+
+Método iterativo de Jacobi
+- Resolva o seguinte sistema de equações lineares usando o método de Jacobi.
+$9x 1 - 2x 2 + 3x 3 + 2x 4 = 54.5$
+$2x 1 + 8x 2 - 2x 3 + 3x 4 = -14$
+$-3x 1 + 2x 2 + 11x 3 - 4x 4 = 12.5$
+$-2x 1 + 3x 2 + 2x 3 - 10x 4 = -21$
+
+- Computacionalmente
+```{r}
+A <- matrix(c(9,2,-3,-2,-2,8,2,
+3,3,-2,11,2,2,3,-4,10),4,4)
+b <- c(54.5, -14, 12.5, -21)
+ss <- jacobi(A = A, b = b,
+inicial = c(0,0,0,0),
+max_iter = 15)
+
+## Solução aproximada
+
+ss$Solucao
+## [1] 4.999502 -1.999771 2.500056 -1.000174
+## Solução exata
+solve(A, b)
+## [1] 5.0 -2.0 2.5 -1.0
+```
+
+Métodos iterativo de Jacobi e Gauss-Seidel
+- Em R o pacote Rlinsolve fornece implementações eficientes dos métodos de Jacobi e Gauss-Seidel.
+- Rlinsolve inclui suporte para matrizes esparsas via Matrix.
+- Rlinsolve é implementado em C++ usando o pacote Rcpp.
+```{r}
+A <- matrix(c(9,2,-3,-2,-2,8,2,3,3,-2,11,
+2,2,3,-4,10),4,4)
+b <- c(54.5, -14, 12.5, -21)
+## pacote extra
+require(Rlinsolve)
+lsolve.jacobi(A, b)$x ## Método de jacobi
+## [,1]
+## [1,] 4.9999708
+## [2,] -2.0000631
+## [3,] 2.5000163
+## [4,] -0.9999483
+lsolve.gs(A, b)$x ## Método de Gauss-Seidell
+## [,1]
+## [1,] 4.999955
+## [2,] -2.000071
+## [3,] 2.500018
+## [4,] -0.999968
+```
+
+### Decomposição LU
+- Nos métodos de eliminação de Gauss e Gauss-Jordan resolvemos sistemas do tipo
+$$ Ax  = b .$$
+- Sendo dois sistemas
+$$Ax  = b_1, e \space Ax  = b_2$$
+- Cálculos do primeiro não ajudam a resolver o segundo.
+- IDEAL! - Operações realizadas em A fossem dissociadas das operações em $b$ .
+
+Decomposição LU
+- Suponha que precisamos resolver vários sistemas do tipo $Ax  = b$
+para diferentes $b$s.
+- Opção 1 - calcular a inversa $A_{-1}$, assim a solução $x  = A-1b$
+- Cálculo da inversa é computacionalmente ineficiente.
+
+Decomposição LU: algoritmo
+- Decomponha (fatore) a matriz A em um produto de duas matrizes $A = LU$ onde L é triangular inferior e U é triangular superior.
+- Baseado na decomposição o sistema tem a forma: $LUx  = b$ . (3)
+- Defina $Ux  = y$ .
+- Substituindo em 3 tem-se $Ly  = b$ . (4)
+- Solução é obtida em dois passos
+- Resolva Eq.(4) para obter y  usando substituição progressiva.
+- Resolva Eq.(3) para obter x  usando substituição regressiva.
+
+Obtendo as matrizes L e U
+- Método de eliminação de Gauss e método de Crout.
+- Dentro do processo de eliminação de Gauss as matrizes L e U são obtidas como um subproduto, i.e.
+**[[ARRUMAR]]**
+
+
+- Os elementos m 'i j s são os multiplicadores que multiplicam a equação pivô.
+
+Obtendo as matrizes L e U
+- Relembre o exemplo de eliminação de Gauss.
+**[[ARRUMAR]]**
+
+
+- Neste caso, tem-se
+**[[ARRUMAR]]**
+
+
+
+Decomposição LU com pivotação
+- O método de eliminação de Gauss foi realizado sem pivotação.
+- Como discutido a pivotação pode ser necessária.
+- Quando realizada a pivotação as mudanças feitas devem ser armazenadas, tal que
+PA = LU.
+- P é uma matriz de permutação.
+- Se as matrizes LU forem usadas para resolver o sistema
+Ax  = b ,
+então a ordem das linhas de b  deve ser alterada de forma consistente com a pivotação,
+i.e. Pb .
+
+Implementação: Decomposição LU
+- Podemos facilmente modificar a função gauss() para obter a decomposição LU.
+```{r}
+my_lu <- function(A) {
+n_row <- nrow(A)
+n_col <- ncol(A)
+SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+SOL[1,] <- A[1,]
+pivo <- matrix(0, n_col, n_row)
+for(j in 1:c(n_row-1)) {
+for(i in c(j+1):c(n_row)) {
+pivo[i,j] <- A[i,j]/SOL[j,j]
+SOL[i,] <- A[i,] - pivo[i,j]*SOL[j,]
+A[i,] <- SOL[i,]
+}
+}
+diag(pivo) <- 1
+return(list("L" = pivo, "U" = SOL)) }
+```
+
+Aplicação: Decomposição LU
+- Fazendo a decomposição.
+```{r}
+LU <- my_lu(A) ## Decomposição
+LU
+## $L
+## [,1] [,2] [,3] [,4]
+## [1,] 1.0000000 0.0000000 0.000000 0
+## [2,] 0.2222222 1.0000000 0.000000 0
+## [3,] -0.3333333 0.1578947 1.000000 0
+## [4,] -0.2222222 0.3026316 0.279661 1
+##
+## $U
+## [,1] [,2] [,3] [,4]
+## [1,] 9 -2.000000e+00 3.000000 2.000000
+## [2,] 0 8.444444e+00 -2.666667 2.555556
+## [3,] 0 0.000000e+00 12.421053 -3.736842
+## [4,] 0 -4.440892e-16 0.000000 10.716102
+LU$L %*% LU$U ## Verificando a solução
+## [,1] [,2] [,3] [,4]
+## [1,] 9 -2 3 2
+## [2,] 2 8 -2 3
+## [3,] -3 2 11 -4
+## [4,] -2 3 2 10
+
+```
+
+
+Aplicação: Decomposição LU
+- Resolvendo o sistema de equações.
+```{r}
+## Passo 1: Substituição progressiva
+y = forwardsolve(LU$L, b)
+## Passo 2: Substituição regressiva
+x = backsolve(LU$U, y)
+x
+## [1] 5.0 -2.0 2.5 -1.0
+A%*%x ## Verificando a solução
+## [,1]
+## [1,] 54.5
+## [2,] -14.0
+## [3,] 12.5
+## [4,] -21.0
+```
+
+- Função lu() do Matrix fornece a decomposição LU.
+```{r}
+require(Matrix)
+## Calcula mas não retorna
+LU_M <- lu(A)
+## Captura as matrizes L U e P
+LU_M <- expand(LU_M)
+## Substituição progressiva.
+y <- forwardsolve(LU_M$L, LU_M$P%*%b)
+## Substituição regressiva
+x = backsolve(LU_M$U, y)
+x
+## [1] 5.0 -2.0 2.5 -1.0
+```
+
+## Obtendo a inversa
+
+### Obtendo a inversa via decomposição LU
+- O método LU é especialmente adequado para o cálculo da inversa.
+- Lembre-se que a inversa de A é tal que AA-1 = I.
+- O procedimento de cálculo da inversa é essencialmente o mesmo da solução de um
+sistema de equações lineares, porém com mais incognitas.
+**[[ARRUMAR]]**
+
+
+- Três sistemas de equações diferentes, em cada sistema, uma coluna da matriz X é a incognita.
+
+Implementação: inversa via decomposição LU
+- Função para resolver o sistema usando decomposição LU.
+```{r}
+solve_lu <- function(LU, b) {
+  y <- forwardsolve(LU_M$L, LU_M$P%*%b)
+  x = backsolve(LU_M$U, y)
+  return(x)
+}
+```
+
+
+- Resolvendo vários sistemas
+```{r}
+my_solve <- function(LU, B) {
+  n_col <- ncol(B)
+  n_row <- nrow(B)
+  inv <- matrix(NA, n_col, n_row)
+  for(i in 1:n_col) {
+    inv[,i] <- solve_lu(LU, B[,i])
+  }
+  return(inv)
+}
+```
+
+
+Aplicação: inversa via decomposição LU
+- Calcule a inversa de
+**[[ARRUMAR]]**
+
+```{r}
+A <- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
+I <- Diagonal(3, 1)
+## Decomposição LU
+LU <- my_lu(A)
+## Obtendo a inversa
+inv_A <- my_solve(LU = LU, B = I)
+inv_A
+## Verificando o resultado
+A%*%inv_A
+
+```
+
+
+Cálculo da inversa via método de Gauss-Jordan
+- Procedimento Gauss-Jordan:
+**[[ARRUMAR]]**
+
+- Função `solve()` usa a decomposição LU com pivotação.
+- R básico é construído sobre a biblioteca lapack escrita em C.
+- Veja documentação em http://www.netlib.org/lapack/lug/node38.html.
+
+Autovalores e autovetores
+- Redução de dimensionalidade é fundamental em ciência de dados.
+- Análise de componentes principais (PCA)
+- Análise fatorial (AF).
+- Decompor grandes e complicados relacionamentos multivariados em simples
+componentes não relacionados.
+- Vamos discutir apenas os aspectos matemáticos.
+
+Intuição
+- Podemos decompor um vetor $\upsilon$  em duas informações separadas: direção $d$ e tamanho $\lambda $, i.e
+
+$$\lambda  = ||\upsilon || = \sqrt \sum{}j 𝜈2j  , e d = \upsilon \lambda $$
+- É mais fácil interpretar o tamanho de um vetor enquanto ignorando a sua direção e
+vice-versa.
+- Esta ideia pode ser estendida para matrizes.
+- Uma matriz nada mais é do que um conjunto de vetores.
+- IDEIA - decompor a informação de uma matriz em outros componentes de mais fácil
+interpretação/representação matemática.
+
+Autovalores e Autovetores
+- Autovalores e autovetores são definidos por uma simples igualdade $A\upsilon  = \lambda \upsilon $. (5)
+- Os vetores $\upsilon$ ’s que satisfazem Eq. (5) são os autovetores.
+- Os valores $\lambda$ ’s que satisfazem Eq. (5) são os autovalores.
+- Vamos considerar o caso em que $A$ é simétrica.
+- A ideia pode ser estendida para matrizes não simétricas.
+
+
+- Se A é uma matriz simétrica $n \times n$, então existem exatamente $n$ pares ($\lambda j , \upsilon j $) que
+satisfazem a equação:
+A$\upsilon  = \lambda \upsilon$ .
+- Se A tem autovalores $\lambda_1, … , \lambda_n$, então:
+**[[ARRUMAR]]**
+
+- A é positiva definida, se e somente se todos $\lambda j  > 0$
+- A é semi-positiva definida, se e somente se todos $\lambda j  ≥ 0$
+- A ideia do PCA é decompor/fatorar a matriz A em componentes mais simples de
+interpretar.
+
+Decomposição em autovalores e autovetores
+- Teorema: qualquer matriz simétrica A pode ser fatorada em $A = Q\lambda QT$
+onde $\lambda$ é diagonal contendo os autovalores de A e as colunas de Q contêm os autovetores
+ortonormais.
+- Vetores ortonormais: são mutuamente ortogonais e de comprimento unitário.
+- Teorema: se A tem autovetores Q e autovalores $\lambda j$ . Então A-1 tem autovetores Q e
+autovalores $\lambda -1 j$  .
+- Implicação: se $A = Q\lambda QT$ então $A-1 = Q\lambda -1QT$
+
+Diagonalização
+- Autovalores são utéis porque eles permitem lidar com matrizes da mesma forma que lidamos com números.
+- Todos os cálculos são feitos na matriz diagonal \lambda .
+- Este processo é chamado de diagonalização.
+- Um dos resultados mais poderosos em Álgebra Linear é que qualquer matriz pode ser diagonalizada.
+- O processo de diagonalização é chamado de Decomposição em valores singulares.
+
+Decomposição em valores singulares (SVD)
+- Teorema: qualquer matriz A pode ser decomposta em $A = UDVT$ onde D é diagonal com entradas não negativas e U e V são ortogonais, i.e. UTU = VTV = I.
+- Matrizes não quadradas não tem autovalores.
+- Os elementos de D são chamados de valores singulares.
+- Os valores singulares são os autovalores de ATA.
+
+### Dimensão da SVD
+- Se A é n x  n, então U, D e V são n x  n.
+- Se A é n x  p, sendo n > p, então U é n x  p, D e V são p x  p.
+- Se A é n x  p, sendo n < p, então VT é n x  p, D e U são n x  n.
+- D será sempre quadrada com dimensão igual ao mínimo entre p e n.
+
+### Decomposição em autovalores e autovetores em R
+- Função eigen() fornece a decomposição
+```{r}
+A <- matrix(c(1,0.8, 0.3, 0.8, 1,
+0.2, 0.3, 0.2, 1),3,3)
+isSymmetric.matrix(A)
+## [1] TRUE
+out <- eigen(A)
+Q <- out$vectors ## Autovetores
+D <- diag(out$values) ## Autovalores
+Q
+## [,1] [,2] [,3]
+## [1,] -0.6712373 -0.1815663 0.71866142
+## [2,] -0.6507744 -0.3198152 -0.68862977
+## [3,] -0.3548708 0.9299204 -0.09651322
+```
+
+- Verificando a solução
+```{r}
+D
+## [,1] [,2] [,3]
+## [1,] 1.934216 0.0000000 0.0000000
+## [2,] 0.000000 0.8726419 0.0000000
+## [3,] 0.000000 0.0000000 0.1931419
+Q%*%D%*%t(Q) ## Verificando
+## [,1] [,2] [,3]
+## [1,] 1.0 0.8 0.3
+## [2,] 0.8 1.0 0.2
+## [3,] 0.3 0.2 1.0
+```
+
+
+Decomposição em valores singulares em R
+- Função svd() fornece a decomposição
+```{r}
+svd(A)
+## $d
+## [1] 1.9342162 0.8726419 0.1931419
+##
+## $u
+## [,1] [,2] [,3]
+## [1,] -0.6712373 0.1815663 0.71866142
+## [2,] -0.6507744 0.3198152 -0.68862977
+## [3,] -0.3548708 -0.9299204 -0.09651322
+##
+## $v
+## [,1] [,2] [,3]
+## [1,] -0.6712373 0.1815663 0.71866142
+## [2,] -0.6507744 0.3198152 -0.68862977
+## [3,] -0.3548708 -0.9299204 -0.09651322
+```
+
+
+### Regressão ridge
+- Relembrando: regressão linear múltipla
+**[[ARRUMAR]]**
+
+- Usando uma notação mais compacta,
+**[[ARRUMAR]]**
+
+- Minimiza a perda quadrática:̂
+**[[ARRUMAR]]**
+
+
+### Regressão ridge
+- Se p > n o sistema é singular (múltiplas soluções)!
+- Como podemos ajustar o modelo?
+- Introduzir uma penalidade pela complexidade.
+- Soma de quadrados penalizada
+**[[ARRUMAR]]**
+
+- Matricialmente, tem-se
+**[[ARRUMAR]]**
+
+- IMPORTANTE !!
+- y  centrado (média zero).
+- X padronizada por coluna (média zero e variância um).
+
+Regressão ridge
+- Objetivo: minizar a soma de quadrados penalizada.
+- Derivada
+**[[ARRUMAR]]**
+
+
+Aplicação: regressão ridge
+- Resolvendo o sistema linear, tem-se
+**[[ARRUMAR]]**
+
+- Solução depende de $\lambda$ .
+- A inclusão de $\lambda$  faz o sistema ser não singular.
+- Na verdade quando fixamos $\lambda$  selecionamos uma solução em particular.
+
+Aplicação: regressão ridge
+- Calcular $\hat{\beta}$  envolve a inversão de uma matriz p x  p potencialmente grande.
+$$\hat{\beta}  = (XTX + \lambda I)-1 XTy$$
+- Usando a decomposição SVD, tem-se
+$$ X = UDVT$$
+- É possível mostrar que,
+
+$$ \hat{\beta} = Vdiag ( dj d2 j  + \lambda  ) UTy .$$
+
+Implementação: regressão ridge
+- Simulando o conjunto de dados (n = 100, p = 200).
+
+```{r}
+set.seed(123)
+X <- matrix(NA, ncol = 200, nrow = 100)
+X[,1] <- 1 ## Intercepto
+for(i in 2:200) {
+X[,i] <- rnorm(100, mean = 0, sd = 1)
+X[,i] <- (X[,i] - mean(X[,i]))/var(X[,i])
+}
+## Parâmetros
+beta <- rbinom(200, size = 1, p = 0.1)*rnorm(200, mean = 10)
+mu <- X%*%beta
+## Observações
+y <- rnorm(100, mean = mu, sd = 10)
+```
+
+
+Implementando o modelo.
+- Modelo passo-a-passo
+```{r}
+y_c <- y - mean(y)
+X_svd <- svd(X) ## Decomposição svd
+lambda = 0.5 ## Penalização
+DD <- Diagonal(100, X_svd$d/(X_svd$d^2 + lambda))
+DD[1] <- 0 ## Não penalizar o intercepto
+beta_hat = as.numeric(X_svd$v%*%DD%*%t(X_svd$u)%*%y_c)
+```
+
+Resultados: regressão ridge
+- Ajustados versus verdadeiros.
+```{r}
+plot(beta ~ beta_hat, xlab = expression(hat(beta)), ylab = expression(beta))
+```
+
+**[[ARRUMAR]]**
+
+Resultados: regressão ridge
+- Regressão com penalização ridge, bem como, outras penalizações são eficientemente
+implementadas em R via pacote glmnet.
+
+**IMPORTANTE!** A penalização no glmnet é ligeiramente diferente, por isso os $\hat{\beta}$’s não
+são idênticos a nossa implementação naive.
+- O glmnet oferece opções para selecionar $\lambda$ via validação cruzada.
+
+```{r}
+require(glmnet)
+beta_glm <- cv.glmnet(X[,-1], y_c, nlambda = 100)
+```
+
+Resultados: regressão ridge
+- Validação cruzada.
+```{r}
+plot(beta_glm)
+```
+
+
+**[[ARRUMAR]]**
+
+
+Resultados: regressão ridge
+- Ajustados (glmnet) versus verdadeiros.
+```{r}
+plot(beta ~ as.numeric(coef(beta_glm)), xlab = expression(hat(beta)), ylab = expression(beta)
+```
+**[[ARRUMAR]]**
+
+Comentários
+- Solução de sistemas lineares:
+- Métodos diretos: Eliminação de Gauss e Gauss-Jordan.
+- Métodos iterativos: Jacobi e Gauss-Seidel.
+- Inversa de matrizes.
+- Decomposição ou fatorização
+- LU resolve sistema lineares pode ser usada para obter inversas.
+- Autovalores e autovetores.
+- Valores singulares.
+- Existem muitas outras fatorizações: QR, Cholesky, Cholesky modificadas, etc.
+
+
+
+
+```{r}
+
+```
+
