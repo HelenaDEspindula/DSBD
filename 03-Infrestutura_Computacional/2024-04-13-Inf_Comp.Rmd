@@ -1,0 +1,200 @@
+---
+title: "2024-04-13-Inf_Comp-2"
+author: "Helena R S D'Espindula"
+date: "2024-04-13"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Apresentação
+
+Prof Paulo Ricardo Lisboa de Almeida
+- dsbd.inf.ufpr.br
+- prlalmeida.com.br
+
+Cronograma:
+- 13/04/2024 - Sábado (08h00 - 12h00) - LAB 1-2 DInf
+- 04/05/2024 - Sexta (19h00 - 23h00) - LAB 1-2 DInf
+- 10/05/2024 - Sábado (08h00 - 12h00) - LAB 1-2 DInf
+
+Objetivos:
+- Compreender os conceitos de redes de computadores, Internet, Web e nuvem.
+- Utilizar ferramentas básicas de gestão e manipulação de redes.
+- Identificar as configurações de rede de máquinas locais.
+- Acessar recursos em computadores remotos.
+- Desenvolver serviços baseados na Web e na nuvem.
+
+Notas:
+- 3 quizzes: 6% cada
+- 1 Projeto: 12%
+- Presença nas aulas: 70%
+
+
+## Sides
+
+### Camadas
+- Aplicação - HTTP, HTTPS
+- Transporte - TCP, UDP
+- Rede - IP
+- Camada de enlace - Pacote(envelope), Payload(carta), Header(cabeçalho, checksums, ip saida, ip destino) - ex: Formato (protocolo / lingua)
+- Camada Física - Conexão - Meio fisico (cabo, radio etc)
+
+Cada pacote tem um tamanho maximo -> MTU
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ifconfig
+enp0s31f6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+        inet 10.254.223.36  netmask 255.255.255.0  broadcast 10.254.223.255
+        inet6 fe80::661c:67ff:fe8c:2ae8  prefixlen 64  scopeid 0x20<link>
+        ether 64:1c:67:8c:2a:e8  txqueuelen 1000  (Ethernet)
+        RX packets 2352581  bytes 2636790777 (2.4 GiB)
+        RX errors 0  dropped 867  overruns 0  frame 0
+        TX packets 3329266  bytes 3985772280 (3.7 GiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+        device interrupt 16  memory 0xf7000000-f7020000  
+
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+        loop  txqueuelen 1000  (Loopback Local)
+        RX packets 18477  bytes 6922901 (6.6 MiB)
+        RX errors 0  dropped 0  overruns 0  frame 0
+        TX packets 18477  bytes 6922901 (6.6 MiB)
+        TX errors 0  dropped 0 overruns 0  carrier 0  collisions 0
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ifconfig | grep -i mtu
+enp0s31f6: flags=4163<UP,BROADCAST,RUNNING,MULTICAST>  mtu 1500
+lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
+```
+
+Cabeamento todos com todos:
+n dois-a-dois $ = \binom{n}{2} = \frac{n(n-1)}{2}$
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ifconfig | grep -i ether
+        ether 64:1c:67:8c:2a:e8  txqueuelen 1000  (Ethernet)
+```
+
+### Links
+
+- <a href="https://regauth.standards.ieee.org/standards-ra-web/pub/view.html#registries">https://regauth.standards.ieee.org/standards-ra-web/pub/view.html#registries</a>
+- <a href="https://www.submarinecablemap.com/">https://www.submarinecablemap.com/</a>
+- <a href="https://www.youtube.com/watch?v=bkgvqC3M1Tw">https://www.youtube.com/watch?v=bkgvqC3M1Tw</a>
+- <a href="www.google.com/intl/en/ipv6/statistics.html">www.google.com/intl/en/ipv6/statistics.html</a>
+- <a href="https://whatismyipaddress.com/">linkhttps://whatismyipaddress.com/</a>
+- <a href="https://www.iana.org/domains/root/servers">https://www.iana.org/domains/root/servers</a>
+- <a href="check-host.net"> check-host.net</a>
+
+MAC é só para rede local
+
+Endereço IP (Internet Protocol), é um endereço independente de hardware
+
+ISP = Provedor de internet ou Roteador?
+
+IPv4 -> $2^{32} = 4.294.967.296$
+(tem bem mais aparelhos conectados na internet no mundo)
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ifconfig | grep -i inet
+        inet 10.254.223.36  netmask 255.255.255.0  broadcast 10.254.223.255
+        inet6 fe80::661c:67ff:fe8c:2ae8  prefixlen 64  scopeid 0x20<link>
+        inet 127.0.0.1  netmask 255.0.0.0
+        inet6 ::1  prefixlen 128  scopeid 0x10<host>
+```
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ dig www.google.com
+
+; <<>> DiG 9.16.48-Debian <<>> www.google.com
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 24488
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 65494
+;; QUESTION SECTION:
+;www.google.com.			IN	A
+
+;; ANSWER SECTION:
+www.google.com.		114	IN	A	172.217.29.196
+
+;; Query time: 0 msec
+;; SERVER: 127.0.0.53#53(127.0.0.53)
+;; WHEN: Sat Apr 13 11:14:37 -03 2024
+;; MSG SIZE  rcvd: 59
+
+```
+
+## DNS
+
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ traceroute www.google.com
+traceroute to www.google.com (172.217.29.196), 30 hops max, 60 byte packets
+ 1  _gateway (10.254.223.3)  0.167 ms  0.155 ms  0.147 ms
+ 2  200.17.202.62 (200.17.202.62)  0.315 ms  0.308 ms  0.301 ms
+ 3  * * *
+ 4  e1-5-v103-lapa-araucaria.pop-pr.rnp.br (200.238.139.9)  0.587 ms  0.579 ms  0.572 ms
+ 5  cpr1-bpr1.bkb.rnp.br (170.79.214.60)  0.686 ms  0.746 ms  0.671 ms
+ 6  170.79.213.235 (170.79.213.235)  1.807 ms 170.79.213.237 (170.79.213.237)  1.248 ms  1.237 ms
+ 7  csp2-cpr2-100g-brdigital.bkb.rnp.br (170.79.213.231)  6.179 ms  6.429 ms  6.410 ms
+ 8  72.14.220.240 (72.14.220.240)  7.335 ms  7.818 ms  7.807 ms
+ 9  * * *
+10  216.239.51.198 (216.239.51.198)  6.096 ms 192.178.110.200 (192.178.110.200)  6.063 ms 172.253.73.190 (172.253.73.190)  6.338 ms
+11  209.85.253.0 (209.85.253.0)  6.598 ms * eze04s11-in-f4.1e100.net (172.217.29.196)  6.223 ms
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ping www.google.com
+PING www.google.com (172.217.29.196) 56(84) bytes of data.
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=1 ttl=56 time=6.05 ms
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=2 ttl=56 time=6.17 ms
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=3 ttl=56 time=6.02 ms
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=4 ttl=56 time=6.16 ms
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=5 ttl=56 time=6.19 ms
+64 bytes from gru10s03-in-f196.1e100.net (172.217.29.196): icmp_seq=6 ttl=56 time=6.22 ms
+^C
+--- www.google.com ping statistics ---
+6 packets transmitted, 6 received, 0% packet loss, time 5008ms
+rtt min/avg/max/mdev = 6.024/6.135/6.220/0.073 ms
+
+
+
+he2@h8:~$ ping faroldaciencia.com
+PING faroldaciencia.com (192.0.78.221) 56(84) bytes of data.
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=1 ttl=57 time=7.07 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=2 ttl=57 time=7.10 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=3 ttl=57 time=7.18 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=4 ttl=57 time=7.40 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=5 ttl=57 time=7.28 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=6 ttl=57 time=7.37 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=7 ttl=57 time=7.33 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=8 ttl=57 time=7.26 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=9 ttl=57 time=7.31 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=10 ttl=57 time=7.46 ms
+64 bytes from 192.0.78.221 (192.0.78.221): icmp_seq=11 ttl=57 time=7.37 ms
+^C64 bytes from 192.0.78.221: icmp_seq=12 ttl=57 time=7.31 ms
+
+--- faroldaciencia.com ping statistics ---
+12 packets transmitted, 12 received, 0% packet loss, time 60155ms
+rtt min/avg/max/mdev = 7.065/7.285/7.456/0.112 ms
+
+```
+
