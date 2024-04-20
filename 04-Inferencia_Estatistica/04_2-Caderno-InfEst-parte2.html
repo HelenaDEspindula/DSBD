@@ -13,7 +13,7 @@
 
 <meta name="date" content="2024-04-19" />
 
-<title>04_3-Caderno-InfEst-parte3</title>
+<title>04_2-Caderno-InfEst-parte2</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -1485,2039 +1485,1109 @@ font-size: 0.95em;
 
 
 
-<h1 class="title toc-ignore">04_3-Caderno-InfEst-parte3</h1>
+<h1 class="title toc-ignore">04_2-Caderno-InfEst-parte2</h1>
 <h4 class="author">Helena R. S. D’Espindula</h4>
 <h4 class="date">2024-04-19</h4>
 
 </div>
 
 
-<div id="álgebra-matricial" class="section level1">
-<h1>Álgebra Matricial</h1>
-<div id="vetores-e-escalares" class="section level2">
-<h2>Vetores e escalares</h2>
+<div id="cálculo-diferencial-e-integral" class="section level1">
+<h1>Cálculo Diferencial e Integral</h1>
+<div id="problemas-convencionais-em-ciência-de-dados" class="section level2">
+<h2>Problemas convencionais em ciência de dados</h2>
 <ul>
-<li>Um vetor é uma lista de n números (escalares) escritos em linha ou
-coluna.</li>
-<li>Notação (primeiro a em negrito)</li>
-</ul>
-<p><span class="math display">\[
-a = (a_{i1} ... a_{in})
-\]</span> ou</p>
-<p><span class="math display">\[
-a = \begin{bmatrix}
-a_{i1}\\
-.\\
-.\\
-.\\
-a_{in}\\
-\end{bmatrix}
-\]</span></p>
-<ul>
-<li><p>Vetor linha e vetor coluna.</p></li>
-<li><p>Um elemento do vetor é chamado de ai , sendo i a sua
-posição.</p></li>
-<li><p>O tamanho de um vetor é o seu número de elementos.</p></li>
-<li><p>O módulo de um vetor é o seu comprimento
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Vetor unitário é aquele que tem tamanho <span class="math display">\[ a = a |a|\]</span></p></li>
-<li><p>Dois vetores são iguais se tem o mesmo tamanho e os seus
-elementos em posições equivalentes são iguais.</p></li>
-</ul>
-<div id="operações-com-vetores" class="section level3">
-<h3>Operações com vetores</h3>
-<ol style="list-style-type: decimal">
-<li>Soma <span class="math inline">\(a + b = (ai + b i ) = (a1 + b 1, …
-, an + b n)\)</span>.</li>
-</ol>
-<p><span class="math inline">\(a = (1, 2, 3)\)</span> <span class="math inline">\(b = (3, 2, 1)\)</span> <span class="math inline">\(a+b = (4, 4, 4)\)</span> <span class="math inline">\(a-b = (-2, 0, 2)\)</span></p>
-<ol start="2" style="list-style-type: decimal">
-<li>Subtração <span class="math inline">\(a - b = (ai - b i ) = (a1 - b
-1, … , an - b n)\)</span>.</li>
-</ol>
-<p><span class="math display">\[
-a-b = (-2, 0, 2)
-\]</span></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Multiplicação por escalar <span class="math inline">\(\alpha a =
-(\alpha a1, … , \alpha an)\)</span>.</li>
-</ol>
-<p><span class="math display">\[
-5 * a = (5*1, 5*2, 5*3)
-\]</span></p>
-<ol start="4" style="list-style-type: decimal">
-<li><p>Transposta de um vetor: <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Produto interno ou escalar entre dois vetores resulta em um
-escalar (mutiplica dois vetores e dá um número só como resultado) <span class="math inline">\(a * b = (a1b 1 + a2b 2 + … + anb
-n)\)</span></p></li>
-</ol>
-<ul>
-<li><strong>Condições: os vetores devem ser do mesmo tipo e
-tamanho.</strong></li>
+<li>Problemas convencionais em ciência de dados</li>
+<li>Previsão ou predição → O que vai acontecer?</li>
+<li>Classificação → Qual o tipo de um determinado objeto?</li>
+<li>Agrupamento → Qual a melhor forma de agregar objetos?</li>
+<li>Prescrição → O que devo fazer?</li>
+<li>Como resolvê-los?</li>
+<li>Em geral usamos algum tipo de modelo.</li>
+<li>O que é um modelo?</li>
+<li>Representação simplificada da realidade.</li>
+<li>Qual o objetivo de um modelo?</li>
+<li>Representar como o cientista imagina ou supõe que a realidade está
+sendo gerada e refletida por meio dos dados.</li>
+<li>Características de um bom modelo</li>
+<li>Deve representar os principais aspectos do fenômeno sendo
+avaliado.</li>
+<li>Pode conter uma ou mais quantidades desconhecidas (parâmetros).</li>
+<li>Deve permitir generalizações.</li>
+<li>Deve fornecer um resumo rápido e interpretável do fenômeno em
+estudo.</li>
+<li>Deve ser matematicamente preciso e coerente.</li>
 </ul>
 </div>
-<div id="vetores-ortogonais" class="section level3">
-<h3>Vetores ortogonais</h3>
+<div id="funções" class="section level2">
+<h2>Funções</h2>
 <ul>
-<li><p>Dois vetores são ortogonais entre si se o ângulo <span class="math inline">\(\theta\)</span> entre eles é de 90 graus.(=
-correlação de Pearson)</p></li>
-<li><p>Implicações: <span class="math display">\[cos(\theta) = 0 e aTb =
-0.\]</span> <span class="math display">\[ cov (a,b) / raiz(variacia[a])
-* raiz(variacia[b])\]</span></p></li>
-<li><p>O co-seno do ângulo <span class="math inline">\(\theta\)</span>
-entre os vetores é dado por: <span class="math display">\[cos(\theta) =
-aTb / \sqrt aTa\sqrt bTb .\]</span></p></li>
+<li>Definição: uma função escrita como <span class="math inline">\(y =
+f(x)\)</span> associa um número <span class="math inline">\(y\)</span> a
+cada valor de <span class="math inline">\(x\)</span>.</li>
+<li><span class="math inline">\(x\)</span> é chamada de variável
+independente.</li>
+<li>Domínio de <span class="math inline">\(f(x)\)</span> é a faixa de
+valores que <span class="math inline">\(x\)</span> pode assumir.</li>
+<li><span class="math inline">\(y\)</span> é chamada de variável
+dependente.</li>
+<li>Imagem de <span class="math inline">\(f(x)\)</span> é a faixa de
+valores que <span class="math inline">\(y\)</span> pode assumir.</li>
+<li>Resumindo temos,</li>
 </ul>
-</div>
-<div id="operações-com-vetores-em-r" class="section level3">
-<h3>Operações com vetores em R</h3>
+<p><span class="math display">\[ \frac{x \in Dominio}{Independente}
+\longrightarrow f(x) \longrightarrow \frac{x \in
+Imagem}{Dependente}\]</span></p>
 <ul>
-<li>Declarando vetores</li>
-</ul>
-<pre class="r"><code>a &lt;- c(4,5,6)
-b &lt;- c(1,2,3)</code></pre>
+<li><p>O domínio e imagem de uma função são intervalos.</p></li>
+<li><p>Tipos de intervalos:</p>
 <ul>
-<li>Sendo a e b compatíveis</li>
-</ul>
-<pre class="r"><code>#### Soma
-a + b</code></pre>
-<pre><code>## [1] 5 7 9</code></pre>
-<pre class="r"><code>## [1] 5 7 9
-#### Substração
-a - b</code></pre>
-<pre><code>## [1] 3 3 3</code></pre>
-<pre class="r"><code>## [1] 3 3 3</code></pre>
-<ul>
-<li>Multiplicação por escalar</li>
-</ul>
-<pre class="r"><code>alpha = 10
-alpha*a</code></pre>
-<pre><code>## [1] 40 50 60</code></pre>
-<pre class="r"><code>## [1] 40 50 60</code></pre>
-<ul>
-<li>Produto de Hadamard (não é produto interno)</li>
-</ul>
-<pre class="r"><code>a*b</code></pre>
-<pre><code>## [1]  4 10 18</code></pre>
-<pre class="r"><code>## [1] 4 10 18</code></pre>
-<ul>
-<li>Produto vetorial (ou produto interno)</li>
-</ul>
-<pre class="r"><code>a%*%b</code></pre>
-<pre><code>##      [,1]
-## [1,]   32</code></pre>
-<pre class="r"><code>##    [,1]
-## [1,] 32</code></pre>
-<ul>
-<li>Co-seno do ângulo entre dois vetores</li>
-</ul>
-<pre class="r"><code>cos &lt;- t(a)%*%b/(sqrt(t(a)%*%a)*sqrt(t(b)%*%b))</code></pre>
-<ul>
-<li>Lei da reciclagem (não avalia se pode somar antes de somar)</li>
-</ul>
-<pre class="r"><code>a &lt;- c(4,5,6,5,6,7)
-b &lt;- c(1,2,3)
-a + b</code></pre>
-<pre><code>## [1]  5  7  9  6  8 10</code></pre>
-<pre class="r"><code>## [1] 5 7 9 6 8 10</code></pre>
-</div>
-</div>
-<div id="matrizes" class="section level2">
-<h2>Matrizes</h2>
-<ul>
-<li><p>Uma matriz é um arranjo retangular ou quadrado de números ou
-variáveis.</p></li>
-<li><p>A matriz costuma ser representada por uma letra maiuscula em
-negrito</p></li>
-<li><p>Uma matriz (<span class="math inline">\(n \times m\)</span>) tem
-n linhas e m colunas:</p></li>
-</ul>
-<pre class="r"><code># $$A = \begin{pmatrix}\
-# a_{11} &amp; a_{12} &amp; ... &amp; a_{1m}\\
-# a_{21} &amp; a_{22} &amp; ... &amp; a_{2m}\\
-# ... &amp; ... &amp; ... &amp; ... \\
-# a_{n1} &amp; a_{11} &amp; ... &amp; a_{nm}\\
-# \end{pmatrix}$$</code></pre>
-<p><span class="math display">\[A = \begin{pmatrix}\
-a_{11} &amp; a_{12} &amp; ... &amp; a_{1m}\\
-a_{21} &amp; a_{22} &amp; ... &amp; a_{2m}\\
-... &amp; ... &amp; ... &amp; ... \\
-a_{n1} &amp; a_{11} &amp; ... &amp; a_{nm}\\
-\end{pmatrix}\]</span></p>
-<ul>
-<li>O primeiro subscrito representa linha e o segundo representa
-coluna.</li>
-<li>A dimensão de uma matriz é o seu número de linhas e colunas.</li>
-<li>Duas matrizes são iguais se tem a mesma dimensão e se os elementos
-das correspondentes posições são iguais.</li>
-</ul>
-<div id="matriz-transposta" class="section level3">
-<h3>Matriz transposta</h3>
-<ul>
-<li><p>A operação de transposição rearranja uma matriz de forma que suas
-linhas são transformadas em colunas e vice-versa.
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Note que (AT)T = A.</p></li>
-<li><p>Computacionalmente</p></li>
-<li><p>Declarando matrizes</p></li>
-</ul>
-<pre class="r"><code>a &lt;- c(1,2,3,4,5,6)
-A &lt;- matrix(a, nrow = 3, ncol = 2)
-A</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    4
-## [2,]    2    5
-## [3,]    3    6</code></pre>
-<pre class="r"><code>## [,1] [,2]
-## [1,] 1 4
-## [2,] 2 5
-## [3,] 3 6</code></pre>
-<ul>
-<li>O default preenche por colunas</li>
-<li>Transposta de uma matriz</li>
-</ul>
-<pre class="r"><code>t(A)</code></pre>
-<pre><code>##      [,1] [,2] [,3]
-## [1,]    1    2    3
-## [2,]    4    5    6</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3]
-## [1,] 1 2 3
-## [2,] 4 5 6</code></pre>
-</div>
-<div id="operações-com-matrizes" class="section level3">
-<h3>Operações com matrizes</h3>
-<ul>
-<li><p>Multiplicação matriz por escalar. <span class="math display">\[\alpha * A = \begin{pmatrix}\
-\alpha * a_{11} &amp; \alpha * a_{12} &amp; \alpha * ... &amp; \alpha *
-a_{1m}\\
-\alpha * a_{21} &amp; \alpha * a_{22} &amp; \alpha * ... &amp; \alpha *
-a_{2m}\\
-\alpha * ... &amp; \alpha * ... &amp; \alpha * ... &amp; \alpha * ... \\
-\alpha * a_{n1} &amp; \alpha * a_{n2} &amp; \alpha * ... &amp; \alpha *
-a_{nm}\\
-\end{pmatrix}\]</span></p></li>
-<li><p>Computacionalmente</p></li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(1,2,3,4,5,6),
-nrow = 3, ncol = 2)
-alpha &lt;- 10
-alpha*A</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   10   40
-## [2,]   20   50
-## [3,]   30   60</code></pre>
-<pre class="r"><code>## [,1] [,2]
-## [1,] 10 40
-## [2,] 20 50</code></pre>
-<ul>
-<li>Duas matrizes podem ser somadas ou subtraídas somente se tiverem o
-mesmo tamanho.</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Soma <strong>[[ARRUMAR]]</strong></li>
-<li>Subtração <strong>[[ARRUMAR]]</strong></li>
-</ol>
-<ul>
-<li>Exemplo <span class="math display">\[A = \begin{pmatrix}\
-1 &amp; 2\\
-3 &amp; 4\\
-5 &amp; 6\\
-\end{pmatrix}\]</span></li>
-</ul>
-<p><span class="math display">\[B = \begin{pmatrix}\
-10 &amp; 20\\
-30 &amp; 40\\
-50 &amp; 60\\
-\end{pmatrix}\]</span></p>
-<p><span class="math display">\[A + B = \begin{pmatrix}\
-11 &amp; 22\\
-33 &amp; 44\\
-55 &amp; 66\\
-\end{pmatrix}\]</span></p>
-<ul>
-<li>Soma de duas matrizes</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(1,2,3,4,5,6),
-nrow = 3, ncol = 2)
-B &lt;- matrix(c(10,20,30,40,50,60),
-nrow = 3, ncol = 2)
-C = A + B
-C</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   11   44
-## [2,]   22   55
-## [3,]   33   66</code></pre>
-<pre class="r"><code>## [,1] [,2]
-## [1,] 11 44
-## [2,] 22 55
-## [3,] 33 66</code></pre>
-<ul>
-<li>Condição para multiplicar matrizes <span class="math display">\[
-C_{m, n} = A_{m,q} B_{q,n}
-\]</span> (q tem que ser igual)</li>
-</ul>
-<p><strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Computacionalmente.</li>
-<li>Matrizes compatíveis</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(2,8,6,-1,3,7),
-nrow = 3, ncol = 2)
-B &lt;- matrix(c(4,-5,9,2,1,4,-3,6),
-nrow = 2, ncol = 4)
-C = A%*%B
-C</code></pre>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## [1,]   13   16   -2  -12
-## [2,]   17   78   20   -6
-## [3,]  -11   68   34   24</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3] [,4]
-## [1,] 13 16 -2 -12
-## [2,] 17 78 20 -6
-## [3,] -11 68 34 24</code></pre>
-<ul>
-<li>Matrizes não compatíveis</li>
-</ul>
-<pre class="r"><code>B %*% A</code></pre>
-<pre><code>## Error in B %*% A: argumentos não compatíveis</code></pre>
-<pre class="r"><code>## Error in B %*% A: argumentos não compatíveis</code></pre>
-<p>Produto de Hadamard - Produto simples ou de Hadamard</p>
-<p><span class="math display">\[A \odot B = \begin{pmatrix}\
-a_{11}*b_{11} &amp; a_{12}*b_{12} &amp; ... &amp; a_{1m}*b_{1m}\\
-a_{21}*b_{21} &amp; a_{22}*b_{22} &amp; ... &amp; a_{2m}*b_{2m}\\
-... &amp; ... &amp; ... &amp; ... \\
-a_{n1}*b_{n1} &amp; a_{n2}*b_{n2} &amp; ... &amp; a_{nm}*b_{nm}\\
-\end{pmatrix}\]</span></p>
-<ul>
-<li>Computacionalmente</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(1,2,3,4),
-nrow = 2, ncol = 2)
-B &lt;- matrix(c(10,20,30,40),
-nrow = 2, ncol = 2)
-A*B</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]   10   90
-## [2,]   40  160</code></pre>
-<pre class="r"><code>## [,1] [,2]
-## [1,] 10 90
-## [2,] 40 160</code></pre>
-<p>Propriedades envolvendo operações com matrizes - Sendo A, B, C e D
-compatíveis temos, 1. <span class="math inline">\(A + B = B + A\)</span>
-2. <span class="math inline">\((A + B) + C = A + (B + C)\)</span>. 3.
-<span class="math inline">\(\alpha (A + B) = \alpha A + \alpha
-B\)</span>. 4. <span class="math inline">\((\alpha + \beta )A = \alpha A
-+ \beta A\)</span>. 5. <span class="math inline">\(\alpha (AB) = (\alpha
-A)B = A(\alpha B)\)</span>. 6. <span class="math inline">\(A(B ± C) = AB
-± AC\)</span>. 7. <span class="math inline">\((A ± B)C = AC ±
-BC\)</span>. 8. <span class="math inline">\((A-B)(C-D) =
-AC-BC-AD+BD\)</span>.</p>
-<ul>
-<li>Propriedades envolvendo transposta e multiplicação</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Se <span class="math inline">\(A\)</span> é <span class="math inline">\(n \times m\)</span> e <span class="math inline">\(B\)</span> é <span class="math inline">\(m \times
-n\)</span>, então <span class="math inline">\((AB)^T = B^T
-A^T\)</span>.</li>
-<li>Se <span class="math inline">\(A\)</span>, <span class="math inline">\(B\)</span> e <span class="math inline">\(C\)</span> são compatíveis <span class="math display">\[
-(ABC)^{T}= C^{T}B^{T}A^{T}.
-\]</span></li>
-</ol>
-</div>
-<div id="matrizes-de-formas-especiais" class="section level3">
-<h3>Matrizes de formas especiais</h3>
-<ul>
-<li>Matriz quadrada (<span class="math inline">\(m = n\)</span>)</li>
-</ul>
-<p>Exemplo 4x4</p>
-<pre class="r"><code>A &lt;- matrix(c(&quot;a11&quot;,&quot;a21&quot;,&quot;a31&quot;,&quot;a41&quot;,&quot;a12&quot;,&quot;a22&quot;,&quot;a32&quot;,&quot;a42&quot;,&quot;a13&quot;,&quot;a23&quot;,&quot;a33&quot;,&quot;a43&quot;,&quot;a14&quot;,&quot;a24&quot;,&quot;a34&quot;,&quot;a44&quot;), nrow = 4, ncol = 4)
-A</code></pre>
-<pre><code>##      [,1]  [,2]  [,3]  [,4] 
-## [1,] &quot;a11&quot; &quot;a12&quot; &quot;a13&quot; &quot;a14&quot;
-## [2,] &quot;a21&quot; &quot;a22&quot; &quot;a23&quot; &quot;a24&quot;
-## [3,] &quot;a31&quot; &quot;a32&quot; &quot;a33&quot; &quot;a34&quot;
-## [4,] &quot;a41&quot; &quot;a42&quot; &quot;a43&quot; &quot;a44&quot;</code></pre>
-<ul>
-<li><p>ai i são os elementos da diagonal.</p></li>
-<li><p>ai j para i (diferente) j → fora da diagonal.</p></li>
-<li><p>ai j para j &gt; i → acima da diagonal.</p></li>
-<li><p>ai j para i &gt; j → abaixo da diagonal.</p></li>
-<li><p>Matriz diagonal <span class="math display">\[D = \begin{pmatrix}\
-a_{11} &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; a_{22} &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; a_{33} &amp; 0\\
-0 &amp; 0 &amp; 0 &amp; a_{44}\\
-\end{pmatrix}\]</span></p></li>
-<li><p>Matriz identidade <span class="math display">\[I =
-\begin{pmatrix}\
-1 &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; 1 &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; 1 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 1\\
-\end{pmatrix}\]</span></p></li>
-</ul>
-</div>
-<div id="matrizes-de-formas-especiais-1" class="section level3">
-<h3>Matrizes de formas especiais</h3>
-<ul>
-<li><p>Triangular superior <span class="math display">\[U =
-\begin{pmatrix}\
-a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14}\\
-0 &amp; a_{22} &amp; a_{23} &amp; a_{24}\\
-0 &amp; 0 &amp; a_{33} &amp; a_{34} \\
-0 &amp; 0 &amp; 0 &amp; a_{44}\\
-\end{pmatrix}\]</span></p></li>
-<li><p>Triangular inferior <span class="math display">\[L =
-\begin{pmatrix}\
-a_{11} &amp; 0 &amp; 0 &amp; 0\\
-a_{21} &amp; a_{22} &amp; 0 &amp; 0\\
-a_{31} &amp; a_{32} &amp; a_{33} &amp; 0 \\
-a_{41} &amp; a_{42} &amp; a_{43} &amp; a_{44}\\
-\end{pmatrix}\]</span></p></li>
-</ul>
-<pre class="r"><code># $$L = \begin{pmatrix}\
-# a_{11} &amp; a_{12} &amp; a_{13} &amp; a_{14}\\
-# a_{22} &amp; a_{22} &amp; a_{23} &amp; a_{24}\\
-# a_{22} &amp; a_{22} &amp; a_{33} &amp; a_{34} \\
-# a_{22} &amp; a_{22} &amp; a_{22} &amp; a_{44}\\
-# \end{pmatrix}$$</code></pre>
-<ul>
-<li><p>Matriz nula <span class="math display">\[0 = \begin{pmatrix}\
-0 &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; 0 &amp; 0\\
-0 &amp; 0 &amp; 0 &amp; 0 \\
-0 &amp; 0 &amp; 0 &amp; 0\\
-\end{pmatrix}\]</span></p></li>
-<li><p>Matriz quadrada simétrica <span class="math display">\[0 =
-\begin{pmatrix}\
-1 &amp; 0,8 &amp; 0,6 &amp; 0,4\\
-0,8 &amp; 1 &amp; 0,2 &amp; 0,4\\
-0,6 &amp; 0,2 &amp; 1 &amp; 0,1 \\
-0,4 &amp; 0,4 &amp; 0,1 &amp; 1,0\\
-\end{pmatrix}\]</span></p></li>
-</ul>
-</div>
-<div id="combinações-lineares" class="section level3">
-<h3>Combinações lineares</h3>
-<ul>
-<li>Um conjunto de vetores a1, a2, … , an é dito ser linearmente
-dependente se puderem ser encontrados escalares c 1, c 2, … , c n e
-estes escalares não sejam todos iguais a 0 de tal forma que <span class="math display">\[
-c 1a1 + c 2a2 + … + c nan = 0.
-\]</span></li>
-</ul>
-<p>Exemplo:</p>
-<pre class="r"><code>a1 &lt;- matrix(c(1,0), nrow = 2, ncol = 1)
-a1</code></pre>
-<pre><code>##      [,1]
-## [1,]    1
-## [2,]    0</code></pre>
-<pre class="r"><code>a2 &lt;- matrix(c(0,1), nrow = 2, ncol = 1)
-a2</code></pre>
-<pre><code>##      [,1]
-## [1,]    0
-## [2,]    1</code></pre>
-<pre class="r"><code>#O unico caso que esses c1*a1 + c2*a2 = (0, 0) é se c1 = 0 E c2 =0
-#Ou seja Linearmente independente
-
-a1 &lt;- matrix(c(1,2), nrow = 2, ncol = 1)
-a1</code></pre>
-<pre><code>##      [,1]
-## [1,]    1
-## [2,]    2</code></pre>
-<pre class="r"><code>a2 &lt;- matrix(c(-1,-2), nrow = 2, ncol = 1)
-a2</code></pre>
-<pre><code>##      [,1]
-## [1,]   -1
-## [2,]   -2</code></pre>
-<pre class="r"><code>#Existem casos fora os cs = 0 que fazem c1*a1 + c2*a2 = (0, 0)
-#Ou seja Linearmente dependente</code></pre>
-<ul>
-<li>Caso contrário é dito ser linearmente independente.</li>
-<li>Notação matricial <span class="math display">\[
-Ac = 0.
-\]</span></li>
-<li>As colunas de A são linearmente independentes se Ac = 0 implicar que
-c = 0.</li>
-</ul>
-</div>
-<div id="rank-ou-posto-de-uma-matriz" class="section level3">
-<h3>Rank ou posto de uma matriz</h3>
-<ul>
-<li>O rank ou posto de qualquer matriz quadrada ou retangular A é
-definido como rank(A) = número de colunas ou linhas linearmente
-independentes em A.</li>
-<li>Sendo A uma matriz retangular n x m o maior rank possível para A é o
-min(n,m ).</li>
-<li>O rank da matrix nula é 0.</li>
-<li>Se o rank da matriz é o min(n,m ) dizemos que a matriz tem rank
-completo.</li>
-</ul>
-</div>
-<div id="matriz-não-singular-e-matriz-inversa" class="section level3">
-<h3>Matriz não singular e matriz inversa</h3>
-<ul>
-<li>Uma matriz quadrada de posto completo é chamada de não
-singular.</li>
-<li>Sendo A quadrada de posto completo a matriz inversa de A é única tal
-que (só se a matriz for quadrada e de ranking completo) <span class="math display">\[
-AA^{-1} = I.
-\]</span></li>
-<li>Não quadrada (posto incompleto) → não terá inversa e é dita ser
-singular.</li>
-<li>Note que <span class="math display">\[
-A^{(-1^{-1})} =A
-\]</span> A<sup>{-1}</sup>{-1} = A</li>
-</ul>
-</div>
-</div>
-<div id="matriz-inversa" class="section level2">
-<h2>Matriz inversa</h2>
-<ul>
-<li>Computacionalmente</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(4, 2, 7, 6), 2, 2)
-A</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    4    7
-## [2,]    2    6</code></pre>
-<pre class="r"><code>A_inv &lt;- solve(A)
-A_inv</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]  0.6 -0.7
-## [2,] -0.2  0.4</code></pre>
-<pre class="r"><code>I = A %*% A_inv
-I</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    0
-## [2,]    0    1</code></pre>
-<ul>
-<li>Verificando</li>
-</ul>
-<pre class="r"><code>A%*%A_inv</code></pre>
-<pre><code>##      [,1] [,2]
-## [1,]    1    0
-## [2,]    0    1</code></pre>
-<pre class="r"><code>## [,1] [,2]
-## [1,] 1 0
-## [2,] 0 1</code></pre>
-<ul>
-<li>Propriedades envolvendo inversas</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Se A é não singular, então AT é não singular e sua inversa é dada
-por <span class="math inline">\((AT)-1 = (A-1)T\)</span></li>
-<li>Se A e B são matrizes não singulares de mesmo tamanho, então o
-produto AB é não singular e <span class="math inline">\((AB)-1 = B-1
-A-1\)</span></li>
-</ol>
-<div id="inversa-generalizada" class="section level3">
-<h3>Inversa generalizada</h3>
-<ul>
-<li><p>A inversa generalizada de uma matriz A n x p é qualquer matriz A-
-que satisfaça <span class="math display">\[
-AA^{-}A = A.
-\]</span></p></li>
-<li><p>Não é única exceto quando A é não-singular (inversa
-usual).</p></li>
-<li><p>Exemplo</p></li>
-</ul>
-<p>$$</p>
-<p>$$ <strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li><p>a- = (1, 0, 0, 0)</p></li>
-<li><p>Verificando</p></li>
-</ul>
-<pre class="r"><code>a &lt;- matrix(c(1, 2, 3, 4), 4, 1)
-a_invg &lt;- matrix(c(1,0,0,0), 1, 4)
-a%*%a_invg%*%a</code></pre>
-<pre><code>##      [,1]
-## [1,]    1
-## [2,]    2
-## [3,]    3
-## [4,]    4</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 1
-## [2,] 2
-## [3,] 3
-## [4,] 4</code></pre>
-<ul>
-<li>Moore-Penrose generalized inverse</li>
-</ul>
-<pre class="r"><code>#### Matriz singular (col 3 = col 2 + col 1)
-A &lt;- matrix(c(2, 1, 3, 2, 0,
-2, 3, 1, 4), 3, 3)
-library(MASS)
-A_ginv &lt;- ginv(A)
-A%*%A_ginv%*%A ## Verificando</code></pre>
-<pre><code>##      [,1]         [,2] [,3]
-## [1,]    2 2.000000e+00    3
-## [2,]    1 2.220446e-16    1
-## [3,]    3 2.000000e+00    4</code></pre>
-</div>
-</div>
-<div id="matrizes-positivas-definidas" class="section level2">
-<h2>Matrizes positivas definidas</h2>
-<div id="formas-quadráticas" class="section level3">
-<h3>Formas quadráticas</h3>
-<ul>
-<li>Soma de quadrados são importantes em ciência de dados.</li>
-<li>Considere uma matriz A simétrica e y um vetor, o produto <span class="math display">\[
-y^{T}Ay =
-\sum(a_{ij}y^{2}_{i}) +
-\sum_{i (diferente) j}(a_{ij}y_{i}y_{j})
-\]</span> é chamado de forma quadrática.</li>
-</ul>
-<p><span class="math display">\[
-y^{T}Iy = \sum^{n}_{i=0}(y^{2}_{i})
-\]</span></p>
-<ul>
-<li><p>Sendo y de dimensão n x 1, <span class="math display">\[
-yTIy = y 2
-1 + y 2
-2 + … , y 2
-n
-\]</span></p></li>
-<li><p>Consequentemente, yTy é a soma de quadrados dos elementos do
-vetor y.</p></li>
-<li><p>A raiz quadrada da soma de quadrados é o comprimento de
-y.</p></li>
-</ul>
-<p>Matriz positiva definida - Sendo A uma matriz simétrica com a
-propriedade yTAy &gt; 0 para todos os possíveis y exceto para quando y =
-0, então a forma quadrática yTAy é chamada positiva definida, e A é dita
-ser uma matriz positiva definida. - Exemplo
-<strong>[[ARRUMAR]]</strong></p>
-<p>A forma quadrática associada é dada por (ver abaixo) que é claramente
-positiva, desde que y 1 e y 2 sejam diferentes de zero. <span class="math display">\[
-yTAy = (y 1 y 2) ( 2 -1
--1 3 ) (y 1
-y 2
-) = 2y 2
-1 - 2y 1y 2 + 3y 2
-2 ,
-\]</span></p>
-</div>
-<div id="propriedades-de-matrizes-positivas-definidas" class="section level3">
-<h3>Propriedades de matrizes positivas definidas</h3>
-<ol style="list-style-type: decimal">
-<li>Se A é positiva definida, então todos os valores da diagonal de A
-são positivos.</li>
-<li>Se A é positiva semi-definida, então os elementos da diagonal de A
-são maiores ou iguais a zero.</li>
-<li>Sendo P uma matriz não-singular e A uma matriz positiva definida, o
-produto PTAP é positiva definida.</li>
-<li>Sendo P uma matriz não-singular e A uma matriz positiva
-semi-definida, o produto PTAP é positiva semi-definida.</li>
-<li>Uma matriz positiva definida é não-singular.</li>
-</ol>
-</div>
-<div id="determinante-de-uma-matriz" class="section level3">
-<h3>Determinante de uma matriz</h3>
-<ul>
-<li><p>O determinante de uma matriz A é o escalar (= numero) <span class="math display">\[
-|A| = \sum((-1)^k a_{1j_{1}} a_{2j_{2}} ... a_{nj_{n}})
-\]</span> onde a soma é realizada para todas as n! permutações de grau
-n, e k é o número de mudanças necessárias para que os segundos
-subscritos sejam colocados na ordem <span class="math inline">\(1,2, … ,
-n\)</span></p></li>
-<li><p>Considere a matriz <strong>[[ARRUMAR]]</strong></p></li>
-</ul>
-<p>Determinante de uma matriz - Computacionalmente.</p>
-<pre class="r"><code>A &lt;- matrix(c(3,-2,-2,4),2,2)
-determinant(A, logarithm = FALSE)$modulus</code></pre>
-<pre><code>## [1] 8
-## attr(,&quot;logarithm&quot;)
-## [1] FALSE</code></pre>
-<pre class="r"><code>## [1] 8
-## attr(,&quot;logarithm&quot;)
-## [1] FALSE</code></pre>
-<ul>
-<li>Determinante em escala log.</li>
-</ul>
-<pre class="r"><code>determinant(A, logarithm = TRUE)$modulus</code></pre>
-<pre><code>## [1] 2.079442
-## attr(,&quot;logarithm&quot;)
-## [1] TRUE</code></pre>
-<pre class="r"><code>## [1] 2.079442
-## attr(,&quot;logarithm&quot;)
-## [1] TRUE</code></pre>
-<ul>
-<li>Alguns aspectos interessantes sobre determinantes são:</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Se A é singular, |A| = 0.</li>
-<li>Se A é não singular, |A| (diferente) 0.</li>
-<li>Se A é positiva definida, |A| &gt; 0.</li>
-<li>|AT| = |A|.</li>
-<li>Se A é não singular, |A-1| = 1 |A| .</li>
-</ol>
-<p>Traço de uma matriz - O traço de uma matriz A n x n é um escalar
-definido como a soma dos elementos da diagonal,
-<strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Propriedades</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Se A e B são n x n, então tr(A + B) = tr(A) + tr(B).</li>
-<li>Se A é n x p e B e p x n, então tr(AB) = tr(BA).</li>
-</ol>
-<ul>
-<li>Computacionalmente</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(3,-2,-2,4),2,2)
-sum(diag(A))</code></pre>
-<pre><code>## [1] 7</code></pre>
-<pre class="r"><code>## [1] 7</code></pre>
-</div>
-</div>
-<div id="cálculo-vetorial-e-matricial" class="section level2">
-<h2>Cálculo vetorial e matricial</h2>
-<div id="cálculo-vetorial" class="section level3">
-<h3>Cálculo vetorial</h3>
-<ul>
-<li>Seja <span class="math inline">\(y = f(x)\)</span> uma função das
-variáveis <span class="math inline">\(x_{1}, x_{2}, x_{3}, ... ,
-x_{p}\)</span> e <span class="math inline">\(\partial y\)</span> as
-respectivas derivadas parciais. <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>Assim, <strong>[[ARRUMAR]]</strong></p>
-</div>
-<div id="cálculo-vetorial-1" class="section level3">
-<h3>Cálculo vetorial</h3>
-<ul>
-<li>Sendo aT = (a1, a2, … , ap) um vetor de constantes e A uma matriz
-simétrica de constantes.</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li><p>Seja y = aTx = xTa. Então, <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Seja y = xTAx. Então, <strong>[[ARRUMAR]]</strong></p></li>
-</ol>
-</div>
-<div id="cálculo-matricial" class="section level3">
-<h3>Cálculo Matricial</h3>
-<ul>
-<li><p>Se y = f (X) onde X é uma matriz p x p. As derivadas parciais de
-y em relação a cada x i j são organizadas em uma matriz.
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Algumas derivadas importantes envolvendo matrizes são
-apresentadas abaixo.</p></li>
-</ul>
-<ol style="list-style-type: decimal">
-<li><p>Seja y = tr(XA) sendo X p x p e definida positiva e A p x p
-constantes. Então, <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Sendo A não singular com derivadas <span class="math inline">\(\partial A\)</span>
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Sendo A n x n positiva definida. Então,
-<strong>[[ARRUMAR]]</strong></p></li>
-</ol>
-</div>
-</div>
-<div id="regressão-linear-múltipla" class="section level2">
-<h2>Regressão linear múltipla</h2>
-<div id="regressão-linear-múltipla-especificação-usual" class="section level3">
-<h3>Regressão linear múltipla: especificação usual</h3>
-<ul>
-<li>Regressão linear simples <span class="math display">\[
-y_{i} = \beta_{0} +\beta_{1}x_{1} + erro_{i}
-\]</span></li>
-<li>Regressão linear múltipla <span class="math display">\[
-y_{i} = \beta_{0} + \beta_{1}x_{1} + \beta_{2}x_{2} + ... +
-\beta_{p}x_{ip} + erro_{i}
-\]</span></li>
-<li>Modelo para cada observação <span class="math display">\[y_{1} =
-\beta_{0} + \beta_{1}x_{11} + \beta_{2}x_{12} + ... + \beta_{p}x_{1p} +
-erro_{1}\]</span></li>
-</ul>
-<p><span class="math display">\[y_{2} = \beta_{0} + \beta_{1}x_{21} +
-\beta_{2}x_{22} + ... + \beta_{p}x_{2p} + erro_{1}\]</span> <span class="math display">\[...\]</span> <span class="math display">\[y_{n} =
-\beta_{0} + \beta_{1}x_{n1} + \beta_{2}x_{n2} + ... + \beta_{p}x_{np} +
-erro_{n}\]</span></p>
-<p>Regressão linear múltipla: especificação matricial - Notação
-matricial <span class="math display">\[
-\begin{bmatrix}
-y_{1}\\
-y_{2}\\
-...\\
-y_{n}\\
-\end{bmatrix}
-=
-\begin{bmatrix}
-1 &amp; x_{1}\\
-1 &amp; x_{2}\\
-1 &amp; ...\\
-1 &amp; x_{n}\\
-\end{bmatrix}
-x
-\begin{bmatrix}
-\beta_{1}\\
-\beta_{2}\\
-...\\
-\beta_{n}\\
-\end{bmatrix}
-+
-\begin{bmatrix}
-erro_{1}\\
-erro_{2}\\
-...\\
-erro_{n}\\
-\end{bmatrix}
-\]</span></p>
-<ul>
-<li>Notação mais compacta <span class="math display">\[
-y_{(n x  1)} = X_{(n x  p)} \beta_{(p x  1)} + erro_{(n x  1)}
-\]</span> ### Regressão linear múltipla: estimação (treinamento)</li>
-<li>Objetivo: encontrar o vetor <span class="math inline">\(\hat{\beta}\)</span> , tal que <span class="math inline">\(S Q (\beta ) = (y - X\beta )T(y - X\beta
-)\)</span> seja a menor possível.</li>
-</ul>
-</div>
-<div id="regressão-linear-múltipla-estimação" class="section level3">
-<h3>Regressão linear múltipla: estimação</h3>
-<ol style="list-style-type: decimal">
-<li>Passo 1: encontrar o vetor gradiente. Derivando em <span class="math inline">\(\beta\)</span> , temos</li>
-</ol>
-<p><strong>[[ARRUMAR]]</strong></p>
-</div>
-<div id="regressão-linear-múltipla-estimação-1" class="section level3">
-<h3>Regressão linear múltipla: estimação</h3>
-<ol start="2" style="list-style-type: decimal">
-<li>Passo 2: resolver o sistema de equações lineares (esquece o “-2”
-primeiro) <span class="math display">\[ X^{T} (y - X\hat{\beta}) =
-0\]</span> <span class="math display">\[XTy - XTX̂\beta  = 0\]</span>
-<span class="math display">\[XTX̂\beta  = XTŷ\]</span> <span class="math display">\[(XTX)^{-1}  XTX̂\beta  = XTy (XTX)^{-1}\]</span>
-<span class="math display">\[ I\beta  = (XTX)-1XTy \]</span></li>
-</ol>
-</div>
-<div id="regressão-linear-múltipla-exemplo" class="section level3">
-<h3>Regressão linear múltipla: exemplo</h3>
-<ul>
-<li>Conjunto de dados Boston disponível no pacote MASS.</li>
-<li>Cinco primeiras covariáveis disponíveis:
-<ul>
-<li>crim: taxa de crimes per capita.</li>
-<li>zn: proporção de terrenos residenciais zoneados para lotes com mais
-de 25.000 pés quadrados.</li>
-<li>indus: proporção de acres de negócios não varejistas por
-cidade.</li>
-<li>chas: variável dummy de Charles River (1 se a área limita o rio; 0
-caso contrário).</li>
-<li>nox: concentração de óxido de nitrogênio (parte por 10
-milhões).</li>
+<li>Intervalo aberto não contém as extremidades: Notação (a,b).</li>
+<li>Intervalo fechado contém as extremidades: Notação [a,b].</li>
 </ul></li>
-<li>Variável resposta: medv valor mediano das casas ocupadas em
-$1000.</li>
+<li><p>O que entra e o que sai de uma função?</p>
+<ul>
+<li>Naturais: $ {N} = {0, 1, 2, 3…} $ {N} = {0,1,2,3, … }$.</li>
+<li>Inteiros: <span class="math inline">\({Z} = {… , -3, -2, -1, 0,
+1,2,3, …}\)</span></li>
+<li>Racionais <span class="math inline">\({Q} = {ab |a, b \in {Z}, b
+{!=} 0}\)</span></li>
+<li>Irracionais: Conjunto de números que não são racionais.</li>
+<li>Reais: União de todos os números mencionados acima, notação
+{R}.</li>
+</ul></li>
+<li><p>Distinção importante <span class="math inline">\({R}\)</span>
+(double) e <span class="math inline">\({Z}\)</span> (integer).</p></li>
+<li><p>Considere a função <span class="math inline">\(y =
+x^2\)</span>.</p></li>
+<li><p>Em R temos</p></li>
 </ul>
+<pre class="r"><code>minha_funcao &lt;- function(x) {
+  y &lt;- x^2
+  return(y)
+}</code></pre>
+<ul>
+<li>Avaliando a função em alguns pontos.</li>
+</ul>
+<pre class="r"><code>x_vec &lt;- c(-5, -4, -3, -2, -1,
+0, 1, 2, 3, 4, 5) #concatenação
+minha_funcao(x = x_vec) #automaticamente vetorizado</code></pre>
+<pre><code>##  [1] 25 16  9  4  1  0  1  4  9 16 25</code></pre>
 </div>
-<div id="regressão-linear-múltipla-implementação-computacional" class="section level3">
-<h3>Regressão linear múltipla: implementação computacional</h3>
+<div id="funções-unidimensionais" class="section level2">
+<h2>Funções unidimensionais</h2>
 <ul>
-<li>Carregando a base de dados</li>
+<li>Uma função <span class="math inline">\(y = f(x)\)</span> é dita ser
+de apenas uma variável (unidimensional). Ou seja, só uma entrada</li>
+<li>Pode ser desenhada em um espaço bidimensional, o chamado <span class="math inline">\(R_{2}\)</span>. Gafico de <span class="math inline">\(x\)</span> e <span class="math inline">\(y\)</span></li>
+<li>O espaço <span class="math inline">\(R_{2}\)</span> é formado por
+todas as duplas ordenadas de valores reais.</li>
+<li>A variável dependente <span class="math inline">\(y\)</span> é
+representada no eixo vertical.</li>
+<li>A variável dependente <span class="math inline">\(x\)</span> é
+representada no eixo horizontal.</li>
 </ul>
-<pre class="r"><code>require(MASS)
-## Carregando pacotes exigidos: MASS
+<pre class="r"><code>## Avaliando a função
+y &lt;- minha_funcao(x = x_vec)
+## Gráfico da função
+plot(y ~ x_vec, xlab = &quot;x&quot;, type = &quot;l&quot;, 
+ylab = expression(y = f(x)))
+points(x_vec,y)</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /></p>
+<pre class="r"><code>## ou com GGPLOT
 
-data(Boston)
-head(Boston[, c(1:5,14)])</code></pre>
-<pre><code>##      crim zn indus chas   nox medv
-## 1 0.00632 18  2.31    0 0.538 24.0
-## 2 0.02731  0  7.07    0 0.469 21.6
-## 3 0.02729  0  7.07    0 0.469 34.7
-## 4 0.03237  0  2.18    0 0.458 33.4
-## 5 0.06905  0  2.18    0 0.458 36.2
-## 6 0.02985  0  2.18    0 0.458 28.7</code></pre>
-<pre class="r"><code>## crim zn indus chas nox medv
-## 1 0.00632 18 2.31 0 0.538 24.0
-## 2 0.02731 0 7.07 0 0.469 21.6
-## 3 0.02729 0 7.07 0 0.469 34.7
-## 4 0.03237 0 2.18 0 0.458 33.4
-## 5 0.06905 0 2.18 0 0.458 36.2
-## 6 0.02985 0 2.18 0 0.458 28.7</code></pre>
+ggplot(mapping = aes(x_vec,y))</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /></p>
+</div>
+<div id="funções-parametrizadas" class="section level2">
+<h2>Funções parametrizadas</h2>
 <ul>
-<li>Matriz de delineamento (X).</li>
-</ul>
-<pre class="r"><code>X &lt;- model.matrix(~ crim + zn + indus +
-chas + nox, data = Boston)
-head(X)</code></pre>
-<pre><code>##   (Intercept)    crim zn indus chas   nox
-## 1           1 0.00632 18  2.31    0 0.538
-## 2           1 0.02731  0  7.07    0 0.469
-## 3           1 0.02729  0  7.07    0 0.469
-## 4           1 0.03237  0  2.18    0 0.458
-## 5           1 0.06905  0  2.18    0 0.458
-## 6           1 0.02985  0  2.18    0 0.458</code></pre>
-<pre class="r"><code>## (Intercept) crim zn indus chas nox
-## 1 1 0.00632 18 2.31 0 0.538
-## 2 1 0.02731 0 7.07 0 0.469
-## 3 1 0.02729 0 7.07 0 0.469
-## 4 1 0.03237 0 2.18 0 0.458
-## 5 1 0.06905 0 2.18 0 0.458
-## 6 1 0.02985 0 2.18 0 0.458</code></pre>
-<ul>
-<li>Variável resposta</li>
-</ul>
-<pre class="r"><code>y &lt;- Boston$medv</code></pre>
-<ul>
-<li>Estimadores de mínimos quadrados: <span class="math display">\[
-\hat{\beta} = (X^{T}X)^{-1} X^{T}y
+<li>Definição - parâmetro é uma quantidade conhecida que indexa ou
+parametriza uma determinada função.</li>
+<li>Os parâmetros mudam o comportamento da função e descrevem
+quantidades/características de interesse.</li>
+<li>Notação: <span class="math inline">\(y = f(x - \theta)\)</span>,
+onde <span class="math inline">\(\theta\)</span> denota o
+parâmetro.</li>
+<li>O conjunto de valores que <span class="math inline">\(\theta\)</span> (theta minusculo) pode assumir é
+chamado de espaço paramétrico (theta maiusculo).</li>
+<li>Notação <span class="math display">\[\theta \in \Theta
 \]</span></li>
-<li>Computacionalmente: versão ingênua (calcula inversa)</li>
+<li>Exemplo: <span class="math inline">\(y = (x - \theta)^2\)</span>.
+Theta joga o grafico mais para direita ou esquerda</li>
+<li>Computacionalmente:</li>
 </ul>
-<pre class="r"><code>round(solve(t(X)%*%X)%*%t(X)%*%y, 2)</code></pre>
-<pre><code>##              [,1]
-## (Intercept) 29.49
-## crim        -0.22
-## zn           0.06
-## indus       -0.38
-## chas         7.03
-## nox         -5.42</code></pre>
-<pre class="r"><code>## [,1]
-## (Intercept) 29.49
-## crim -0.22
-## zn 0.06
-## indus -0.38
-## chas 7.03
-## nox -5.42</code></pre>
-<ul>
-<li>Computacionalmente: versão eficiente (escalona?)</li>
-</ul>
-<pre class="r"><code>round(solve(t(X)%*%X, t(X)%*%y), 2)</code></pre>
-<pre><code>##              [,1]
-## (Intercept) 29.49
-## crim        -0.22
-## zn           0.06
-## indus       -0.38
-## chas         7.03
-## nox         -5.42</code></pre>
-<pre class="r"><code>## [,1]
-## (Intercept) 29.49
-## crim -0.22
-## zn 0.06
-## indus -0.38
-## chas 7.03
-## nox -5.42</code></pre>
-<ul>
-<li>Função nativa do R</li>
-</ul>
-<pre class="r"><code>t(round(coef(lm(medv ~ crim + zn + indus + chas + nox, data = Boston)), 2))</code></pre>
-<pre><code>##      (Intercept)  crim   zn indus chas   nox
-## [1,]       29.49 -0.22 0.06 -0.38 7.03 -5.42</code></pre>
-<pre class="r"><code>## (Intercept) crim zn indus chas nox
-## [1,] 29.49 -0.22 0.06 -0.38 7.03 -5.42</code></pre>
-</div>
-<div id="matrizes-esparsas-tópico-adicional" class="section level3">
-<h3>Matrizes esparsas (tópico adicional)</h3>
-<ul>
-<li><p>Matrizes aparecem em todos os tipos de aplicação em ciência de
-dados.</p></li>
-<li><p>Modelos estatísticos, machine learning, análise de texto, análise
-de cluster, etc.</p></li>
-<li><p>Muitas vezes as matrizes usadas têm uma grande quantidade de
-zeros.</p></li>
-<li><p>Quando uma matriz tem uma quantidade considerável de zeros,
-dizemos que ela é esparsa, caso contrário dizemos que a matriz é
-densa.</p></li>
-<li><p>Todas as propriedades que vimos para matrizes em geral valem para
-matrizes esparsas.</p></li>
-<li><p>O R tem um conjunto de métodos altamente eficiente por meio do
-pacote Matrix.</p></li>
-<li><p>Saber que uma matriz é esparsa é útil pois permite:</p></li>
-<li><p>Planejar formas de armazenar a matriz em memória.</p></li>
-<li><p>Economizar cálculos em algoritmos numéricos (multiplicação,
-inversa, determinante, decomposições, etc).</p></li>
-<li><p>Comparando a quantidade de memória utilizada.</p></li>
-</ul>
-<pre class="r"><code>library(&#39;Matrix&#39;)
-
-m1 &lt;- matrix(0, nrow = 1000, ncol = 1000)
-object.size(m1)</code></pre>
-<pre><code>## 8000216 bytes</code></pre>
-<pre class="r"><code>## 8000216 bytes
-
-m2 &lt;- Matrix(0, nrow = 1000, ncol = 1000, sparse = TRUE)
-object.size(m2)</code></pre>
-<pre><code>## 9240 bytes</code></pre>
-<pre class="r"><code>## 9240 bytes</code></pre>
-<p>Comparando o tempo computacional</p>
-<ul>
-<li>Matriz densa</li>
-</ul>
-<pre class="r"><code>y &lt;- rnorm(1000)
-X &lt;- matrix(NA, ncol = 100, nrow = 1000)
-for(i in 1:1000) {X[i,] &lt;- rbinom(100, size = 1, p = 0.1)}
-system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      1.14      0.17      1.50</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.819 0.004 0.823</code></pre>
-<ul>
-<li>Matriz esparsa</li>
-</ul>
-<pre class="r"><code>y &lt;- rnorm(1000)
-X &lt;- Matrix(NA, ncol = 100, nrow = 1000)
-for(i in 1:1000) {X[i,] &lt;- rbinom(100, size = 1, p = 0.1)}
-X &lt;- Matrix(X, sparse = TRUE)
-system.time(replicate(100, solve(t(X)%*%X, t(X)%*%y)))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      0.28      0.01      0.34</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.223 0.000 0.224</code></pre>
-</div>
-<div id="diferentes-formas-de-implementar-as-operações-matriciais" class="section level3">
-<h3>Diferentes formas de implementar as operações matriciais</h3>
-<ul>
-<li>Criando a base de dados para a comparação</li>
-</ul>
-<pre class="r"><code>library(Matrix)
-n &lt;- 10000; p &lt;- 500
-
-#DENSA
-x &lt;- matrix(rbinom(n*p, 1, 0.01), nrow=n, ncol=p)
-object.size(x)</code></pre>
-<pre><code>## 20000216 bytes</code></pre>
-<pre class="r"><code>## 20000216 bytes
-
-#ESPARCA
-X &lt;- Matrix(x)
-object.size(X)</code></pre>
-<pre><code>## 608152 bytes</code></pre>
-<pre class="r"><code>## 600432 bytes</code></pre>
-<ul>
-<li>Diferentes implementações</li>
-</ul>
-<pre class="r"><code>y &lt;- rnorm(n)
-
-print(&quot;Matriz densa com %*%:&quot;)</code></pre>
-<pre><code>## [1] &quot;Matriz densa com %*%:&quot;</code></pre>
-<pre class="r"><code>system.time(solve(t(x)%*%x, t(x)%*%y))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      3.07      0.04      3.64</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 2.053 0.040 2.094
-
-print(&quot;Matriz densa com crossprod&quot;)</code></pre>
-<pre><code>## [1] &quot;Matriz densa com crossprod&quot;</code></pre>
-<pre class="r"><code>system.time(solve(crossprod(x), crossprod(x, y)))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      2.08      0.02      2.35</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 1.731 0.016 1.748
-
-print(&quot;Matriz esparça com %*%&quot;)</code></pre>
-<pre><code>## [1] &quot;Matriz esparça com %*%&quot;</code></pre>
-<pre class="r"><code>system.time(solve(t(X)%*%X, t(X)%*%y))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      0.13      0.00      0.14</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.071 0.000 0.072
-
-print(&quot;Matriz esparça com crossprod&quot;)</code></pre>
-<pre><code>## [1] &quot;Matriz esparça com crossprod&quot;</code></pre>
-<pre class="r"><code>system.time(solve(crossprod(X), crossprod(X,y)))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      0.03      0.00      0.07</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.029 0.000 0.050</code></pre>
-<ul>
-<li>Implementação eficiente do modelo de regressão linear múltipla.</li>
-</ul>
-<pre class="r"><code>library(glmnet)
-## Loaded glmnet 4.1-6
-system.time(b &lt;- coef(lm(y~x)))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      2.97      0.05      3.32</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 2.389 0.044 2.434
-system.time(g1 &lt;-glmnet(x, y, nlambda=1, lambda=0, standardize=FALSE))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##      0.13      0.01      0.15</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.065 0.020 0.086
-system.time(g2 &lt;- glmnet(X, y, nlambda=1, lambda=0, standardize=FALSE))</code></pre>
-<pre><code>##   usuário   sistema decorrido 
-##         0         0         0</code></pre>
-<pre class="r"><code>## usuário sistema decorrido
-## 0.006 0.000 0.006</code></pre>
-</div>
-</div>
-</div>
-<div id="section" class="section level1">
-<h1>19.04.2024</h1>
-<div id="sistemas-lineares" class="section level3">
-<h3>Sistemas lineares</h3>
-<ul>
-<li><p>Sistema com duas equações: <span class="math display">\[ f 1(x
-1,x 2) = 0\]</span> <span class="math display">\[f 2(x 1,x 2) =
-0\]</span></p></li>
-<li><p>Solução numérica consiste em encontrar <span class="math inline">\(\hat{x}_1\)</span> e <span class="math inline">\(\hat{x}_2\)</span> que satisfaça o sistema de
-equações.</p></li>
-<li><p>Sistema com n equações <span class="math display">\[f 1(x 1, … ,
-x n) = 0\]</span> ⋮ <span class="math display">\[f n(x 1, … , x n) =
-0\]</span></p></li>
-<li><p>Genericamente, tem-se <span class="math display">\[f(x ) =
-0\]</span></p></li>
-<li><p>Equações podem ser lineares ou não-lineares.</p></li>
-</ul>
-<p>Sistemas de equações lineares - Cada equação é linear na incógnita. -
-Solução analítica em geral é possível. - Exemplo: <span class="math display">\[7x 1 + 3x 2 = 45\]</span> <span class="math display">\[4x 1 + 5x 2 = 29\]</span> - Solução
-analítica:<span class="math inline">\(\hat{} x 1 = 6 e\hat{} x 2 =
-1\)</span> - Resolver (tedioso!!).</p>
-<ul>
-<li>Três possíveis casos:</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Uma única solução (sistema não singular).</li>
-<li>Infinitas soluções (sistema singular).</li>
-<li>Nenhuma solução (sistema impossível).</li>
-</ol>
-<div id="sistemas-de-equações-lineares" class="section level4">
-<h4>Sistemas de equações lineares</h4>
-<ul>
-<li><p>Representação matricial do sistema de equações lineares:
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>De forma geral, tem-se <span class="math display">\[Ax =
-b\]</span> ou <span class="math display">\[Ax -b = 0\]</span></p></li>
-</ul>
-</div>
-<div id="operações-com-linhas" class="section level4">
-<h4>Operações com linhas</h4>
-<ul>
-<li>Sem qualquer alteração na relação linear, é possível</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li><p>Trocar a posição de linhas: <span class="math display">\[4x 1 +
-5x 2 = 29\]</span> <span class="math display">\[7x 1 + 3x 2 =
-45\]</span></p></li>
-<li><p>Multiplicar qualquer linha por uma constante, aqui 4x 1 + 5x 2
-por 1x4 , obtendo <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Subtrair um múltiplo de uma linha de uma outra, aqui 7 * 𝐸𝑞.(1)
-menos Eq. (2), obtendo <strong>[[ARRUMAR]]</strong></p></li>
-</ol>
-<ul>
-<li>Fazendo as contas, tem-se <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>Solução de sistemas lineares - Forma geral de um sistema com n
-equações lineares: <strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li><p>Matricialmente, tem-se <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Métodos diretos e métodos iterativos.</p></li>
-</ul>
-</div>
-</div>
-<div id="métodos-diretos" class="section level3">
-<h3>Métodos diretos</h3>
-<ul>
-<li>O sistema de equações é manipulado até se transformar em um sistema
-equivalente de fácil resolução.</li>
-<li>Triangular superior: <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>resolve x4, com ele resolve o x3 e por ai vai… (vai subindo)</p>
-<ul>
-<li>Substituição regressiva <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>Métodos diretos - Triangular inferior:
-<strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Substituição progressiva <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>Métodos diretos - Diagonal: (mais caro em numero de operações,
-portanto pouco usado) <strong>[[ARRUMAR]]</strong></p>
-</div>
-<div id="eliminação-de-gauss" class="section level3">
-<h3>Eliminação de Gauss</h3>
-<div id="métodos-diretos-eliminação-de-gauss" class="section level4">
-<h4>Métodos diretos: Eliminação de Gauss</h4>
-<ul>
-<li><p>Método de Eliminação de Gauss consiste em manipular o sistema
-original usando operações de linha até obter um sistema triangular
-superior. <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Usar eliminação regressiva no novo sistema para obter a
-solução.</p></li>
-<li><p>Resolva o seguinte sistema usando Eliminação de Gauss. <span class="math display">\[\begin{bmatrix}
-3 &amp; 2 &amp; 6\\
-2 &amp; 4 &amp; 3\\
-5 &amp; 3 &amp; 4\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_1\\
-x_2\\
-x_3\\
-\end{bmatrix} =
-\begin{bmatrix}
-24\\
-23\\
-33\\
-\end{bmatrix}\]</span></p></li>
-</ul>
-<p>Métodos diretos: Eliminação de Gauss - Passo 1: encontrar o pivô e
-eliminar os elementos abaixo dele usando operações de linha. (pivo é o
-cara que eu quero que odos abaixo dele sejam zero) <span class="math display">\[\begin{bmatrix}
-[3] &amp; 2 &amp; 6\\
-2-\frac{2}{3}3 &amp; 4-\frac{5}{3}2 &amp; 3 -\frac{2}{3}6\\
-5-\frac{5}{3}3 &amp; 3-\frac{5}{3}2 &amp; 4-\frac{5}{3}6\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_1\\
-x_2\\
-x_3\\
-\end{bmatrix} =
-\begin{bmatrix}
-24\\
-23-\frac{2}{3}24\\
-33-\frac{5}{3}24\\
-\end{bmatrix}\]</span></p>
-<p><span class="math display">\[\begin{bmatrix}
-[3] &amp; 2 &amp; 6\\
-0 &amp; \frac{8}{3} &amp; -1\\
-0 &amp; -\frac{1}{3} &amp; -6\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_1\\
-x_2\\
-x_3\\
-\end{bmatrix} =
-\begin{bmatrix}
-24\\
-7\\
--7\\
-\end{bmatrix}\]</span></p>
-<ul>
-<li>Passo 2: encontrar o segundo pivô e eliminar os elementos abaixo
-dele usando operações de linha.</li>
-</ul>
-<p><span class="math display">\[\begin{bmatrix}
-3 &amp; 2 &amp; 6\\
-0 &amp; [\frac{8}{3}] &amp; -1\\
-0 &amp; -\frac{1}{3} -(-\frac{3}{24})(\frac{8}{3}) &amp;
--6-(-\frac{3}{24})(-1)\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_1\\
-x_2\\
-x_3\\
-\end{bmatrix} =
-\begin{bmatrix}
-24\\
-7\\
--7-(-\frac{3}{24})(7)\\
-\end{bmatrix}\]</span></p>
-<p><span class="math display">\[\begin{bmatrix}
-[3] &amp; 2 &amp; 6\\
-0 &amp; [\frac{8}{3}] &amp; -1\\
-0 &amp; 0 &amp; -\frac{147}{24}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_1\\
-x_2\\
-x_3\\
-\end{bmatrix} =
-\begin{bmatrix}
-24\\
-7\\
--\frac{147}{24}\\
-\end{bmatrix}\]</span></p>
-<ul>
-<li>Passo 3: substituição regressiva.</li>
-</ul>
-<p>Métodos diretos: Eliminação de Gauss - Usando a fórmula de
-substituição regressiva temos:</p>
-<p><span class="math display">\[x_3 = \frac{b_3}{a_{33}} =
-1\]</span></p>
-<p><span class="math display">\[x_2 = \frac{b_2 - a_{23}x_3}{a_{22}} =
-3\]</span></p>
-<p><span class="math display">\[x_1 = \frac{(b_1 - a_{12}x_2 +
-a_{13}x_3)}{a_{11}} = 4\]</span></p>
-<ul>
-<li>A extensão do procedimento para um sistema com n equações é
-trivial.</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li><p>Transforme o sistema em triangular superior usando operações
-linhas.</p></li>
-<li><p>Resolva o novo sistema usando substituição regressiva.</p></li>
-</ol>
-<ul>
-<li>Potenciais problemas do método de eliminação de Gauss:</li>
-<li>O elemento pivô é zero (muda ordem das linhas)</li>
-<li>O elemento pivô é pequeno em relação aos demais termos.</li>
-</ul>
-</div>
-<div id="eliminação-de-gauss-com-pivotação" class="section level4">
-<h4>Eliminação de Gauss com pivotação</h4>
-<ul>
-<li>Considere o sistema <span class="math display">\[0x 1 + 2x 2 + 3x 2
-= 46\]</span> <span class="math display">\[4x 1 - 3x 2 + 2x 3 =
-16\]</span> <span class="math display">\[2x 1 + 4x 2 - 3x 3 =
-12\]</span></li>
-<li>Neste caso o pivô é zero e o procedimento não pode começar.</li>
-<li>Pivotação - trocar a ordem das linhas.</li>
-</ul>
-<ol style="list-style-type: decimal">
-<li>Evitar pivôs zero.</li>
-<li>Diminuir o número de operações necessárias para triangular o
-sistema. <span class="math display">\[4x 1 - 3x 2 + 2x 3 = 16\]</span>
-<span class="math display">\[2x 1 + 4x 2 - 3x 3 = 12\]</span> <span class="math display">\[0x 1 + 2x 2 + 3x 2 = 46\]</span></li>
-</ol>
-<p>Eliminação de Gauss com pivotação - Se durante o procedimento uma
-equação pivô tiver um elemento nulo e o sistema tiver solução, uma
-equação com um elemento pivô diferente de zero sempre existirá. -
-Cálculos numéricos são menos propensos a erros e apresentam menores
-erros de arredondamento se o elemento pivô for grande em valor absoluto.
-- É usual ordenar as linhas para que o maior valor seja o primeiro
-pivô.</p>
-<p>Passo 1: obtendo uma matriz triangular superior.</p>
-<pre class="r"><code>gauss &lt;- function(A, b) {
-Ae &lt;- cbind(A, b) ## Sistema aumentado
-rownames(Ae) &lt;- paste0(&quot;x&quot;, 1:length(b))
-n_row &lt;- nrow(Ae)
-n_col &lt;- ncol(Ae)
-SOL &lt;- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
-SOL[1,] &lt;- Ae[1,]
-pivo &lt;- matrix(0, n_col, n_row)
-for(j in 1:c(n_row-1)) {
-for(i in c(j+1):c(n_row)) {
-pivo[i,j] &lt;- Ae[i,j]/SOL[j,j]
-SOL[i,] &lt;- Ae[i,] - pivo[i,j]*SOL[j,]
-Ae[i,] &lt;- SOL[i,]
-}
-}
-return(SOL)
+<pre class="r"><code>fx &lt;- function(x, theta) {
+out &lt;- (x - theta)^2
+return(out)
 }</code></pre>
-<p>Eliminação de Gauss sem pivotação - Passo 2: substituição
-regressiva</p>
-<pre class="r"><code>sub_reg &lt;- function(SOL) {
-n_row &lt;- nrow(SOL)
-n_col &lt;- ncol(SOL)
-A &lt;- SOL[1:n_row,1:n_row]
-b &lt;- SOL[,n_col]
-n &lt;- length(b)
-x &lt;- c()
-x[n] &lt;- b[n]/A[n,n]
-for(i in (n-1):1) {
-x[i] &lt;- (b[i] - sum(A[i,c(i+1):n]*x[c(i+1):n] ))/A[i,i]
-}
-return(x)
-}</code></pre>
-<p>Eliminação de Gauss sem pivotação - Resolva o sistema:
-<strong>[[ARRUMAR]]</strong></p>
-<pre class="r"><code>A &lt;- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
-b &lt;- c(24,23,33)
-S &lt;- gauss(A, b) ## Passo 1: Triangularização
-sol = sub_reg(SOL = S) ## Passo 2: Substituição regressiva
-sol</code></pre>
-<pre><code>## [1] 4 3 1</code></pre>
-<pre class="r"><code>## [1] 4 3 1
-A%*%sol ## Verificando a solução</code></pre>
-<pre><code>##      [,1]
-## [1,]   24
-## [2,]   23
-## [3,]   33</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 24
-## [2,] 23
-## [3,] 33</code></pre>
-<p>Eliminação de Gauss com pivotação - Resolva o seguinte sistema usando
-Eliminação de Gauss com pivotação. <span class="math display">\[0x 1 +
-2x 2 + 3x 2 = 46\]</span> <span class="math display">\[4x 1 - 3x 2 + 2x
-3 = 16\]</span> <span class="math display">\[2x 1 + 4x 2 - 3x 3 =
-12\]</span></p>
-<pre class="r"><code>## Entrando com o sistema original
-A &lt;- matrix(c(0,4,2,2,-3,4,3,2,-3), 3,3)
-b &lt;- c(46,16,12)
-## Pivoteamento
-A_order &lt;- A[order(A[,1], decreasing = TRUE),]
-b_order &lt;- b[order(A[,1], decreasing = TRUE)]
-#### Triangulação
-S &lt;- gauss(A_order, b_order)
-S</code></pre>
-<pre><code>##      [,1] [,2]      [,3]     [,4]
-## [1,]    4 -3.0  2.000000 16.00000
-## [2,]    0  5.5 -4.000000  4.00000
-## [3,]    0  0.0  4.454545 44.54545</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3] [,4]
-## [1,] 4 -3.0 2.000000 16.00000
-## [2,] 0 5.5 -4.000000 4.00000
-## [3,] 0 0.0 4.454545 44.54545
-#### Substituição regressiva
-sol &lt;- sub_reg(SOL = S)
-sol</code></pre>
-<pre><code>## [1]  5  8 10</code></pre>
-<pre class="r"><code>## [1] 5 8 10
-#### Solução
-A_order%*%sol</code></pre>
-<pre><code>##      [,1]
-## [1,]   16
-## [2,]   12
-## [3,]   46</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 16
-## [2,] 12
-## [3,] 46</code></pre>
+<pre class="r"><code>## Criar grafico</code></pre>
 </div>
-<div id="eliminação-de-gauss-jordan" class="section level4">
-<h4>Eliminação de Gauss-Jordan</h4>
-<p>Métodos diretos: Eliminação de Gauss-Jordan - O sistema original é
-manipulado até obter um sistema equivalente na forma diagonal.
-<strong>[[ARRUMAR]]</strong></p>
+<div id="funções-com-vários-parâmetros" class="section level2">
+<h2>Funções com vários parâmetros</h2>
 <ul>
-<li>Algoritmo Gauss-Jordan</li>
+<li>Em geral uma função pode ter vários parâmetros.</li>
+<li>O ideal é que cada parâmetro controle um aspecto da função.</li>
+<li>Exemplo: <span class="math inline">\(y = f(x; \theta)\)</span>, onde
+<span class="math inline">\(\theta\)</span> é um vetor de
+parâmetros.</li>
+<li>Função com dois parâmetros: <span class="math display">\[ y =
+\frac{(x - \theta_{1})^2}{\theta_{2}}\]</span></li>
+</ul>
+<pre class="r"><code>## Criar grafico</code></pre>
+</div>
+<div id="declividade" class="section level2">
+<h2>Declividade</h2>
+<ul>
+<li>A declividade mede a variação “delta maiusculo” no valor de y
+dividido pela variação no valor de x, ou seja, declividade é <span class="math display">\[ \frac{\Delta y}{\Delta x}\]</span> (quanto varia
+y quando mudamos x).</li>
+<li>A declividade do desenho de uma função pode ser constante (A),
+positiva (B) ou negativa (C).</li>
+</ul>
+<pre class="r"><code>## Criar grafico</code></pre>
+<p>Figura 4. Exemplos de declividade.</p>
+<ul>
+<li>O intercepto vertical é o ponto no qual o gráfico cruza o eixo
+vertical e é obtido quando <span class="math inline">\(x =
+0\)</span>.</li>
+</ul>
+</div>
+<div id="funções-com-duas-ou-mais-variáveis-independentes" class="section level2">
+<h2>Funções com duas ou mais variáveis independentes</h2>
+<p>Funções com duas ou mais variáveis independentes - Definição - uma
+função escrita como <span class="math inline">\(y = f(x)\)</span>
+associa um número <span class="math inline">\(y\)</span> a cada vetor de
+entrada <span class="math inline">\(x\)</span>.
+(<strong>Atenção</strong>: <span class="math inline">\(x\)</span> é um
+vetor nesse caso!) - <span class="math inline">\(x = (x_1, … ,
+x_p)^T\)</span> denota um vetor linha transposto (vetor coluna). -
+Exemplo: considere a função de duas variáveis <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span> definida por</p>
+<p><span class="math display">\[ f(x_1, x_2) = \sqrt{25 - x^2_1-
+x^2_2}\]</span> ,avalie a função nos pontos <span class="math inline">\(x = (0, 0)^T\)</span>, <span class="math inline">\(x = (3, 0)^T\)</span> e desenhe seu gráfico. -
+Avaliando nos pontos</p>
+<p><strong>[[ARRUMAR]]</strong> <span class="math inline">\(y = \sqrt{25
+- 02 - 02} = 5\)</span> e <span class="math inline">\(y = \sqrt{25 - 32
+- 02} = 4\)</span></p>
+<p>Computacionalmente - Implementação computacional</p>
+<pre class="r"><code>fx1x2 &lt;- function(x) {
+y = sqrt(25 - x[1]^2 - x[2]^2)
+return(y)
+}
+entrada1 &lt;- c(0, 0)
+entrada2 &lt;- c(3, 0)
+fx1x2(x = entrada1)</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>## [1] 5
+fx1x2(x = entrada2)</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>## [1] 4</code></pre>
+<ul>
+<li>Avaliando uma função bidimensional.</li>
+</ul>
+<pre class="r"><code>entrada &lt;- matrix(c(entrada1, entrada2),
+                  ncol = 2, nrow = 2,
+                  byrow = TRUE)
+entrada</code></pre>
+<pre><code>##      [,1] [,2]
+## [1,]    0    0
+## [2,]    3    0</code></pre>
+<pre class="r"><code>## [,1] [,2]
+## [1,] 0 0
+## [2,] 3 0
+
+saida &lt;- c()
+for(i in 1:2) {
+  saida[i] &lt;- fx1x2(entrada[i,])
+}
+saida</code></pre>
+<pre><code>## [1] 5 4</code></pre>
+<pre class="r"><code>## [1] 5 4</code></pre>
+<ul>
+<li>O gráfico da função é o conjunto das triplas ordenadas (y, x1, x2)
+que satisfazem a função.</li>
+</ul>
+</div>
+<div id="passo-a-passo-para-desenhar-funções-bidimensionais" class="section level2">
+<h2>Passo-a-passo para desenhar funções bidimensionais</h2>
+<ul>
+<li>Neste caso estamos no espaço <span class="math inline">\(R_3\)</span>.</li>
+<li><ol style="list-style-type: upper-alpha">
+<li>Montar uma grade de valores combinando valores para x1 com valores
+para x2.</li>
+</ol></li>
+<li><ol start="2" style="list-style-type: upper-alpha">
+<li>Avaliar a função em cada um dos pontos criados.</li>
+</ol></li>
+<li><ol start="3" style="list-style-type: upper-alpha">
+<li>Representar o valor da função no gráfico. Neste caso usando uma
+paleta de cores. (poderia ser uma topografia, seria uma
+hemi-esfera)</li>
+</ol></li>
+</ul>
+<pre class="r"><code>## Fazer grafico</code></pre>
+<p>Figura 5. Passo-a-passo para desenhar uma função de duas variáveis
+independentes.</p>
+<p>Gráficos bidimensionais - Em geral usamos uma grade mais precisa.</p>
+<pre class="r"><code># Fazer grafico</code></pre>
+<p>Figura 6. Ilustração do gráfico de uma função de duas variáveis de
+entrada.(curva de nivel ou iso-linha)</p>
+</div>
+<div id="funções-multidimensionais" class="section level2">
+<h2>Funções multidimensionais</h2>
+<ul>
+<li>Definição - uma função escrita como <span class="math inline">\(y =
+f(x; \theta)\)</span> associa um número <span class="math inline">\(y\)</span> a cada vetor de entrada <span class="math inline">\(x\)</span> e <span class="math inline">\(\theta\)</span> denota um vetor de parâmetros
+conhecidos.</li>
+<li>Para funções com mais de duas variáveis de entrada não temos uma
+forma simples de representação gráfica.</li>
+<li>Em termos práticos as funções vão representar ou modelar situações
+reais.</li>
+<li>Precisamos de funções flexíveis para representar fenômenos
+complexos.</li>
+</ul>
+<div id="funções-polinômiais" class="section level3">
+<h3>Funções polinômiais</h3>
+<ul>
+<li><p>Funções polinômiais são funções do tipo <span class="math display">\[ y = \beta_{0} + \beta_{1}x + \beta_{2}\]</span>
+<span class="math display">\[x^2 + … \beta_{p} x^p\]</span></p></li>
+<li><p>Exemplo: funções polinômiais de grau até três.</p>
+<ul>
+<li>Função linear: <span class="math display">\[y = \beta_0 +
+\beta_1x\]</span></li>
+<li>Função quadrática: <span class="math display">\[y = \beta_0 +
+\beta_1x + \beta_2x^2\]</span></li>
+<li>Função cúbica: <span class="math display">\[y = \beta_0 + \beta_1x +
+\beta_2x^2 + \beta_3x^3\]</span></li>
+</ul></li>
+<li><p>O gráfico de uma função quadrática é uma parábola aberta para
+cima se <span class="math inline">\(\beta_2 &gt; 0\)</span> ou para
+baixo se <span class="math inline">\(\beta_2 &lt; 0\)</span></p></li>
+<li><p>Graficamente:</p></li>
+</ul>
+<pre class="r"><code># Fazer grafico</code></pre>
+<p>Figura 8. Exemplos de gráficos de funções polinômiais.</p>
+<p>Funções do tipo potência - Funções do tipo potência são funções da
+forma <span class="math display">\[y = x^a\]</span> em que a é um
+expoente constante. - Por definição, $x^0 = 1 $ e note que um número sem
+expoente está elevado a 1. 1. <span class="math display">\[xa(xc) = xa+c
+;\]</span> 2. <span class="math display">\[(xa)c  = xac ;\]</span> 3.
+<span class="math display">\[3. (xz )a = xa(z a);\]</span> 4. <span class="math display">\[4. (xz  )c  = xc  z c  ;\]</span> 5. <span class="math display">\[5. 1 xa = x-a;\]</span> 6. <span class="math display">\[6. xa xc  = xa-c ;\]</span> 7. <span class="math display">\[7. \sqrt{x} = \frac{x^1}{2};\]</span> 8. <span class="math display">\[8. a \sqrt x = x1/a;\]</span> 9. <span class="math display">\[9. c  \sqrt{xa} = \frac{xa}{c} .\]</span></p>
+</div>
+</div>
+<div id="funções-exponenciais" class="section level2">
+<h2>Funções exponenciais</h2>
+<ul>
+<li><p>Funções exponenciais são funções do tipo <span class="math inline">\(y = a^x\)</span> onde a é maior que zero e
+diferente de 1 e <span class="math inline">\(x\)</span> é o
+expoente.</p></li>
+<li><p>Funções exponenciais naturais são funções exponenciais que tem
+como base <span class="math display">\[\lim_{n \to \infty} (1 +
+\frac{1}{n})n = 2.718281828\]</span></p></li>
+<li><p>Propriedades importantes:</p></li>
 </ul>
 <ol style="list-style-type: decimal">
-<li>Normalize a equação pivô com a divisão de todos os seus termos pelo
-coeficiente pivô.</li>
-<li>Elimine os elementos fora da diagonal principal em TODAS as demais
-equações usando operaçõs de linha.</li>
+<li><span class="math display">\[e0 = 1.\]</span></li>
+<li><span class="math display">\[e1 = e  = 2.71828\]</span></li>
+<li><span class="math display">\[e(e b) = e a+b.\]</span></li>
+<li><span class="math display">\[(e a)b = e ab\]</span></li>
+<li><span class="math display">\[e ae b = e a-b.\]</span></li>
 </ol>
+</div>
+<div id="funções-logarítmicas" class="section level2">
+<h2>Funções logarítmicas</h2>
 <ul>
-<li>O método de Gauss-Jordan pode ser combinado com pivotação igual ao
-método de eliminação de Gauss.</li>
+<li>Funções logarítmicas ou logaritmo é a potência à qual uma dada base
+deve ser elevada para se obter um particular número.</li>
+<li>Logaritmos comuns utilizam a base 10 e são escritos log10.</li>
+<li>Por exemplo, uma vez que <span class="math inline">\(10^2 =
+100\)</span>, 2 é o log de 100.</li>
+<li>Para qualquer função exponencial <span class="math inline">\(y =
+a^x\)</span>, onde a é a base e <span class="math inline">\(x\)</span> o
+expoente, <span class="math inline">\(a\)</span> potência à qual a deve
+ser elevado, para obter-se <span class="math inline">\(y\)</span>.</li>
 </ul>
-<p>Métodos iterativos</p>
-<p><strong>ATENÇÃO:</strong> Metodos interativos tem que tem criterio de
-parada ou vai até o infinito.</p>
+<p><strong>[[ARRUMAR]]</strong> log a $y = x x é</p>
+</div>
+<div id="relações-entre-funções-logarítmicas-e-exponenciais." class="section level2">
+<h2>Relações entre funções logarítmicas e exponenciais.</h2>
 <ul>
-<li><p>Nos métodos iterativos, as equações são colocadas em uma forma
-explícita onde cada incógnita é escrita em termos das demais, i.e.
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Dado um valor inicial para as incógnitas estas serão atualizadas
-até a convergência.</p></li>
-<li><p>Atualização: Método de Jacobi
-<strong>[[ARRUMAR]]</strong></p></li>
-<li><p>Atualização: Método de Gauss-Seidel
-<strong>[[ARRUMAR]]</strong></p></li>
+<li>Se <span class="math inline">\(\log_{10}(y) = 2x\)</span>, então
+<span class="math inline">\(y = 10^{2x}\)</span>.</li>
+<li>Se <span class="math inline">\(\log_{a}(y) = xz\)</span>, então
+<span class="math inline">\(y = a^{xz}\)</span>.</li>
+<li>Se <span class="math inline">\(\ln(y) = 5t\)</span>, então <span class="math inline">\(y = e^{5t}\)</span>.</li>
+<li>Se <span class="math inline">\(y = a^{3x}\)</span>, então <span class="math inline">\(\log_a(y) = 3x\)</span>.</li>
+<li>Se <span class="math inline">\(y = 10^{6x}\)</span>, então <span class="math inline">\(\log_{10}(y) = 6x\)</span>.</li>
+<li>Se <span class="math inline">\(y = e^{t+1}\)</span>, então <span class="math inline">\(\ln(y) = t+1\)</span> <strong>Observação</strong>:
+<span class="math inline">\(e = 2.718281828459045\)</span> = número de
+Euler.</li>
 </ul>
-<p>Método iterativo de Jacobi - Implementação computacional</p>
-<pre class="r"><code>jacobi &lt;- function(A, b, inicial, max_iter = 10, tol = 1e-04) {
-n &lt;- length(b)
-x_temp &lt;- matrix(NA, ncol = n, nrow = max_iter)
-x_temp[1,] &lt;- inicial
-x &lt;- x_temp[1,]
-for(j in 2:max_iter) { #### Equação de atualização
-for(i in 1:n) {
-x_temp[j,i] &lt;- (b[i] - sum(A[i,1:n][-i]*x[-i]))/A[i,i]
-}
-x &lt;- x_temp[j,]
-if(sum(abs(x_temp[j,] - x_temp[c(j-1),])) &lt; tol) break #### Critério de parada
-}
-return(list(&quot;Solucao&quot; = x, &quot;Iteracoes&quot; = x_temp))
-}</code></pre>
-<p>Método iterativo de Jacobi - Resolva o seguinte sistema de equações
-lineares usando o método de Jacobi. <span class="math display">\[9x 1 -
-2x 2 + 3x 3 + 2x 4 = 54.5\]</span> <span class="math display">\[2x 1 +
-8x 2 - 2x 3 + 3x 4 = -14\]</span> <span class="math display">\[-3x 1 +
-2x 2 + 11x 3 - 4x 4 = 12.5\]</span> <span class="math display">\[-2x 1 +
-3x 2 + 2x 3 - 10x 4 = -21\]</span></p>
+</div>
+<div id="outras-funções-de-interesse" class="section level2">
+<h2>Outras funções de interesse</h2>
+<ul>
+<li>Sigmóide ou logística: <span class="math inline">\(y = 1 1+e
+-x\)</span></li>
+<li>Tangente hiperbólica: <span class="math inline">\(y = e x-e -x e x+e
+-x\)</span> .</li>
+<li>Linear retificada (ReLU): <span class="math inline">\(y =
+max{0,x}\)</span>. (maximo entre 0 e <span class="math inline">\(x\)</span>?. Vale <span class="math inline">\(0\)</span> até o <span class="math inline">\(0\)</span> e depois “sobe”)</li>
+<li>Leaky ReLU: <span class="math inline">\(y = max{\alpha x,
+x}\)</span>, onde <span class="math inline">\(\alpha\)</span> é uma
+parâmetro conhecido.</li>
+</ul>
+<p>##Desenho do gráfico das funções</p>
+<pre class="r"><code>#desenho aqui</code></pre>
+</div>
+<div id="normal" class="section level2">
+<h2>Normal</h2>
+<p><span class="math display">\[ y= (x-0)^2/\theta\]</span></p>
+<p><span class="math display">\[ exp{-(n - \theta_{1})^2/
+\theta_{2}}\]</span></p>
+<pre class="r"><code>## fazer grafico</code></pre>
+<p><strong>[[ARRUMAR]]</strong> …..normal</p>
+</div>
+<div id="limites-e-continuidade" class="section level2">
+<h2>Limites e continuidade</h2>
+<p>Limite de uma função - Definição - se uma função <span class="math inline">\(f(x)\)</span> se aproxima de um número <span class="math inline">\(L\)</span> conforme <span class="math inline">\(x\)</span> tende a um número a vindo da direita ou
+da esquerda, dizemos que o limite de <span class="math inline">\(f(x)\)</span> tende a <span class="math inline">\(L\)</span> quando <span class="math inline">\(x\)</span> tende a <span class="math inline">\(a\)</span>. - Notação <span class="math display">\[\lim_{x \to a} f(x) = f(a) = L\]</span></p>
+<ul>
+<li><p>O limite pode não existir.</p></li>
+<li><p>Se o limite de uma função existe ele é único.</p></li>
+<li><p>Considere o limite <span class="math display">\[\lim_{x \to 1}
+x+1 = 2\]</span></p></li>
+<li><p>Exemplo:</p>
+<ul>
+<li>Considere o limite</li>
+</ul></li>
+</ul>
+<p><span class="math display">\[\lim_{x \to 1} x^2\]</span></p>
+<p><strong>[[ARRUMAR]]</strong></p>
 <ul>
 <li>Computacionalmente</li>
 </ul>
-<pre class="r"><code>A &lt;- matrix(c(9,2,-3,-2,-2,8,2,
-3,3,-2,11,2,2,3,-4,10),4,4)
-b &lt;- c(54.5, -14, 12.5, -21)
-ss &lt;- jacobi(A = A, b = b,
-inicial = c(0,0,0,0),
-max_iter = 15)
-
-## Solução aproximada
-
-ss$Solucao</code></pre>
-<pre><code>## [1]  4.999502 -1.999771  2.500056 -1.000174</code></pre>
-<pre class="r"><code>## [1] 4.999502 -1.999771 2.500056 -1.000174
-## Solução exata
-solve(A, b)</code></pre>
-<pre><code>## [1]  5.0 -2.0  2.5 -1.0</code></pre>
-<pre class="r"><code>## [1] 5.0 -2.0 2.5 -1.0</code></pre>
-<p>Métodos iterativo de Jacobi e Gauss-Seidel - Em R o pacote Rlinsolve
-fornece implementações eficientes dos métodos de Jacobi e Gauss-Seidel.
-- Rlinsolve inclui suporte para matrizes esparsas via Matrix. -
-Rlinsolve é implementado em C++ usando o pacote Rcpp.</p>
-<pre class="r"><code>A &lt;- matrix(c(9,2,-3,-2,-2,8,2,3,3,-2,11,
-2,2,3,-4,10),4,4)
-b &lt;- c(54.5, -14, 12.5, -21)
-## pacote extra
-require(Rlinsolve)</code></pre>
-<pre><code>## Carregando pacotes exigidos: Rlinsolve</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called &#39;Rlinsolve&#39;</code></pre>
-<pre class="r"><code>lsolve.jacobi(A, b)$x ## Método de jacobi</code></pre>
-<pre><code>## Error in lsolve.jacobi(A, b): não foi possível encontrar a função &quot;lsolve.jacobi&quot;</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 4.9999708
-## [2,] -2.0000631
-## [3,] 2.5000163
-## [4,] -0.9999483
-lsolve.gs(A, b)$x ## Método de Gauss-Seidell</code></pre>
-<pre><code>## Error in lsolve.gs(A, b): não foi possível encontrar a função &quot;lsolve.gs&quot;</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 4.999955
-## [2,] -2.000071
-## [3,] 2.500018
-## [4,] -0.999968</code></pre>
-</div>
-</div>
-<div id="decomposição-lu" class="section level3">
-<h3>Decomposição LU</h3>
-<ul>
-<li>Nos métodos de eliminação de Gauss e Gauss-Jordan resolvemos
-sistemas do tipo <span class="math display">\[ Ax  = b .\]</span></li>
-<li>Sendo dois sistemas <span class="math display">\[Ax  = b_1, e \space
-Ax  = b_2\]</span></li>
-<li>Cálculos do primeiro não ajudam a resolver o segundo.</li>
-<li>IDEAL! - Operações realizadas em A fossem dissociadas das operações
-em <span class="math inline">\(b\)</span> .</li>
-</ul>
-<p>Decomposição LU - Suponha que precisamos resolver vários sistemas do
-tipo <span class="math display">\[Ax  = b\]</span> para diferentes <span class="math inline">\(b\)</span>s. - Opção 1 - calcular a inversa <span class="math inline">\(A_{-1}\)</span>, assim a solução <span class="math display">\[x  = A^{-1}b\]</span> - Cálculo da inversa é
-computacionalmente ineficiente.</p>
-<p>Decomposição LU: algoritmo - Decomponha (fatore) a matriz A em um
-produto de duas matrizes <span class="math display">\[A = LU\]</span>
-onde <span class="math inline">\(L\)</span> é triangular inferior e
-<span class="math inline">\(U\)</span> é triangular superior.</p>
-<ul>
-<li>Baseado na decomposição o sistema tem a forma: <span class="math display">\[LUx  = b\]</span> (3)</li>
-<li>Defina <span class="math display">\[Ux  = y\]</span></li>
-<li>Substituindo em 3 tem-se <span class="math display">\[Ly  =
-b\]</span></li>
-<li>Solução é obtida em dois passos</li>
-<li>Resolva Eq.(4) para obter <span class="math inline">\(y\)</span>
-usando substituição progressiva.</li>
-<li>Resolva Eq.(3) para obter <span class="math inline">\(x\)</span>
-usando substituição regressiva.</li>
-</ul>
-<p><span class="math display">\[\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; a_{13}\\
-a_{21} &amp; a_{22} &amp; a_{23}\\
-a_{31} &amp; a_{32} &amp; a_{33}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_{11} &amp; x_{12} &amp; x_{13}\\
-x_{21} &amp; x_{22} &amp; x_{23}\\
-x_{31} &amp; x_{32} &amp; x_{33}\\
-\end{bmatrix} =
-\begin{bmatrix}
-1 &amp; 0 &amp; 0\\
-0 &amp; 1 &amp; 0\\
-0 &amp; 0 &amp; 1\\
-\end{bmatrix}\]</span></p>
-<p>,ou seja,</p>
-<p><span class="math display">\[\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; a_{13}\\
-a_{21} &amp; a_{22} &amp; a_{23}\\
-a_{31} &amp; a_{32} &amp; a_{33}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_{11} \\
-x_{21} \\
-x_{31} \\
-\end{bmatrix} =
-\begin{bmatrix}
-1 \\
-0 \\
-0 \\
-\end{bmatrix}\]</span></p>
-<p><span class="math display">\[\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; a_{13}\\
-a_{21} &amp; a_{22} &amp; a_{23}\\
-a_{31} &amp; a_{32} &amp; a_{33}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_{12}\\
-x_{22}\\
-x_{32}\\
-\end{bmatrix} =
-\begin{bmatrix}
-0\\
-1\\
-0\\
-\end{bmatrix}\]</span> <span class="math display">\[\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; a_{13}\\
-a_{21} &amp; a_{22} &amp; a_{23}\\
-a_{31} &amp; a_{32} &amp; a_{33}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_{13}\\
-x_{23}\\
-x_{33}\\
-\end{bmatrix} =
-\begin{bmatrix}
-0\\
-0\\
-1\\
-\end{bmatrix}\]</span></p>
-<p>Obtendo as matrizes L e U - Método de eliminação de Gauss e método de
-Crout. - Dentro do processo de eliminação de Gauss as matrizes L e U são
-obtidas como um subproduto, i.e. <strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Os elementos m ’i j s são os multiplicadores que multiplicam a
-equação pivô.</li>
-</ul>
-<p>Obtendo as matrizes L e U - Relembre o exemplo de eliminação de
-Gauss. <strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Neste caso, tem-se <strong>[[ARRUMAR]]</strong></li>
-</ul>
-<p>Decomposição LU com pivotação - O método de eliminação de Gauss foi
-realizado sem pivotação. - Como discutido a pivotação pode ser
-necessária. - Quando realizada a pivotação as mudanças feitas devem ser
-armazenadas, tal que PA = LU. - P é uma matriz de permutação. - Se as
-matrizes LU forem usadas para resolver o sistema Ax = b , então a ordem
-das linhas de b deve ser alterada de forma consistente com a pivotação,
-i.e. Pb .</p>
-<p>Implementação: Decomposição LU - Podemos facilmente modificar a
-função gauss() para obter a decomposição LU.</p>
-<pre class="r"><code>my_lu &lt;- function(A) {
-n_row &lt;- nrow(A)
-n_col &lt;- ncol(A)
-SOL &lt;- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
-SOL[1,] &lt;- A[1,]
-pivo &lt;- matrix(0, n_col, n_row)
-for(j in 1:c(n_row-1)) {
-for(i in c(j+1):c(n_row)) {
-pivo[i,j] &lt;- A[i,j]/SOL[j,j]
-SOL[i,] &lt;- A[i,] - pivo[i,j]*SOL[j,]
-A[i,] &lt;- SOL[i,]
+<pre class="r"><code>fx &lt;- function(x) {
+out &lt;- (x^2 - 1)/(x - 1)
+return(out)
 }
-}
-diag(pivo) &lt;- 1
-return(list(&quot;L&quot; = pivo, &quot;U&quot; = SOL)) }</code></pre>
-<p>Aplicação: Decomposição LU - Fazendo a decomposição.</p>
-<pre class="r"><code>LU &lt;- my_lu(A) ## Decomposição
-LU</code></pre>
-<pre><code>## $L
-##            [,1]      [,2]     [,3] [,4]
-## [1,]  1.0000000 0.0000000 0.000000    0
-## [2,]  0.2222222 1.0000000 0.000000    0
-## [3,] -0.3333333 0.1578947 1.000000    0
-## [4,] -0.2222222 0.3026316 0.279661    1
-## 
-## $U
-##      [,1]          [,2]      [,3]      [,4]
-## [1,]    9 -2.000000e+00  3.000000  2.000000
-## [2,]    0  8.444444e+00 -2.666667  2.555556
-## [3,]    0  0.000000e+00 12.421053 -3.736842
-## [4,]    0 -4.440892e-16  0.000000 10.716102</code></pre>
-<pre class="r"><code>## $L
-## [,1] [,2] [,3] [,4]
-## [1,] 1.0000000 0.0000000 0.000000 0
-## [2,] 0.2222222 1.0000000 0.000000 0
-## [3,] -0.3333333 0.1578947 1.000000 0
-## [4,] -0.2222222 0.3026316 0.279661 1
-##
-## $U
-## [,1] [,2] [,3] [,4]
-## [1,] 9 -2.000000e+00 3.000000 2.000000
-## [2,] 0 8.444444e+00 -2.666667 2.555556
-## [3,] 0 0.000000e+00 12.421053 -3.736842
-## [4,] 0 -4.440892e-16 0.000000 10.716102
-LU$L %*% LU$U ## Verificando a solução</code></pre>
-<pre><code>##      [,1] [,2] [,3] [,4]
-## [1,]    9   -2    3    2
-## [2,]    2    8   -2    3
-## [3,]   -3    2   11   -4
-## [4,]   -2    3    2   10</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3] [,4]
-## [1,] 9 -2 3 2
-## [2,] 2 8 -2 3
-## [3,] -3 2 11 -4
-## [4,] -2 3 2 10</code></pre>
-<p>Aplicação: Decomposição LU - Resolvendo o sistema de equações.</p>
-<pre class="r"><code>## Passo 1: Substituição progressiva
-y = forwardsolve(LU$L, b)
-## Passo 2: Substituição regressiva
-x = backsolve(LU$U, y)
-x</code></pre>
-<pre><code>## [1]  5.0 -2.0  2.5 -1.0</code></pre>
-<pre class="r"><code>## [1] 5.0 -2.0 2.5 -1.0
-A%*%x ## Verificando a solução</code></pre>
-<pre><code>##       [,1]
-## [1,]  54.5
-## [2,] -14.0
-## [3,]  12.5
-## [4,] -21.0</code></pre>
-<pre class="r"><code>## [,1]
-## [1,] 54.5
-## [2,] -14.0
-## [3,] 12.5
-## [4,] -21.0</code></pre>
+fx(x = 1)</code></pre>
+<pre><code>## [1] NaN</code></pre>
+<pre class="r"><code>## [1] NaN</code></pre>
+<pre class="r"><code>## Figura 11. Desenho do gráfico da função</code></pre>
+<p>Exemplo - Note que <span class="math display">\[
+\]</span> <strong>[[ARRUMAR]]</strong></p>
 <ul>
-<li>Função lu() do Matrix fornece a decomposição LU.</li>
-</ul>
-<pre class="r"><code>require(Matrix)
-## Calcula mas não retorna
-LU_M &lt;- lu(A)
-## Captura as matrizes L U e P
-LU_M &lt;- expand(LU_M)
-## Substituição progressiva.
-y &lt;- forwardsolve(LU_M$L, LU_M$P%*%b)
-## Substituição regressiva
-x = backsolve(LU_M$U, y)
-x</code></pre>
-<pre><code>## [1]  5.0 -2.0  2.5 -1.0</code></pre>
-<pre class="r"><code>## [1] 5.0 -2.0 2.5 -1.0</code></pre>
-</div>
-<div id="obtendo-a-inversa" class="section level2">
-<h2>Obtendo a inversa</h2>
-<div id="obtendo-a-inversa-via-decomposição-lu" class="section level3">
-<h3>Obtendo a inversa via decomposição LU</h3>
-<ul>
-<li><p>O método LU é especialmente adequado para o cálculo da
-inversa.</p></li>
-<li><p>Lembre-se que a inversa de A é tal que <span class="math display">\[AA^{-1} = I\]</span></p></li>
-<li><p>O procedimento de cálculo da inversa é essencialmente o mesmo da
-solução de um sistema de equações lineares, porém com mais incognitas.
-<span class="math display">\[\begin{bmatrix}
-a_{11} &amp; a_{12} &amp; a_{13}\\
-a_{21} &amp; a_{22} &amp; a_{23}\\
-a_{31} &amp; a_{32} &amp; a_{33}\\
-\end{bmatrix} *  
-\begin{bmatrix}
-x_{11} &amp; x_{12} &amp; x_{13}\\
-x_{21} &amp; x_{22} &amp; x_{23}\\
-x_{31} &amp; x_{32} &amp; x_{33}\\
-\end{bmatrix} =
-\begin{bmatrix}
-1 &amp; 0 &amp; 0\\
-0 &amp; 1 &amp; 0\\
-0 &amp; 0 &amp; 1\\
-\end{bmatrix}\]</span></p></li>
-<li><p>Três sistemas de equações diferentes, em cada sistema, uma coluna
-da matriz X é a incognita.</p></li>
-</ul>
-<p>Implementação: inversa via decomposição LU - Função para resolver o
-sistema usando decomposição LU.</p>
-<pre class="r"><code>solve_lu &lt;- function(LU, b) {
-  y &lt;- forwardsolve(LU_M$L, LU_M$P%*%b)
-  x = backsolve(LU_M$U, y)
-  return(x)
-}</code></pre>
-<ul>
-<li>Resolvendo vários sistemas</li>
-</ul>
-<pre class="r"><code>my_solve &lt;- function(LU, B) {
-  n_col &lt;- ncol(B)
-  n_row &lt;- nrow(B)
-  inv &lt;- matrix(NA, n_col, n_row)
-  for(i in 1:n_col) {
-    inv[,i] &lt;- solve_lu(LU, B[,i])
-  }
-  return(inv)
-}</code></pre>
-<p>Aplicação: inversa via decomposição LU - Calcule a inversa de <span class="math display">\[A =
-\begin{bmatrix}
-3 &amp; 2 &amp; 6\\
-2 &amp; 4 &amp; 3\\
-5 &amp; 3 &amp; 4\\
-\end{bmatrix}\]</span></p>
-<pre class="r"><code>A &lt;- matrix(c(3,2,5,2,4,3,6,3,4),3,3)
-I &lt;- Diagonal(3, 1)
-## Decomposição LU
-LU &lt;- my_lu(A)
-## Obtendo a inversa
-inv_A &lt;- my_solve(LU = LU, B = I)</code></pre>
-<pre><code>## Error in LU_M$P %*% b: non-conformable arguments</code></pre>
-<pre class="r"><code>inv_A</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): objeto &#39;inv_A&#39; não encontrado</code></pre>
-<pre class="r"><code>## Verificando o resultado
-A%*%inv_A</code></pre>
-<pre><code>## Error in eval(expr, envir, enclos): objeto &#39;inv_A&#39; não encontrado</code></pre>
-<p>Cálculo da inversa via método de Gauss-Jordan - Procedimento
-Gauss-Jordan: <strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Função <code>solve()</code> usa a decomposição LU com
-pivotação.</li>
-<li>R básico é construído sobre a biblioteca lapack escrita em C.</li>
-<li>Veja documentação em
-<a href="http://www.netlib.org/lapack/lug/node38.html">
-http://www.netlib.org/lapack/lug/node38.html</a>.</li>
-</ul>
-<div id="autovalores-e-autovetores" class="section level4">
-<h4>Autovalores e autovetores</h4>
-<ul>
-<li>Redução de dimensionalidade é fundamental em ciência de dados.</li>
-<li>Análise de componentes principais (PCA)</li>
-<li>Análise fatorial (AF).</li>
-<li>Decompor grandes e complicados relacionamentos multivariados em
-simples componentes não relacionados.</li>
-<li>Vamos discutir apenas os aspectos matemáticos.</li>
-</ul>
-<p>Intuição - Podemos decompor um vetor <span class="math inline">\(\upsilon\)</span> em duas informações separadas:
-direção <span class="math inline">\(d\)</span> e tamanho $$, i.e</p>
-<p><span class="math display">\[\lambda  = ||\upsilon || = \sqrt{
-\sum_j{v^2_j}} ,
-\space \space \space  e  \space \space \space
-d = \frac{\upsilon}{\lambda} \]</span></p>
-<ul>
-<li>É mais fácil interpretar o tamanho de um vetor enquanto ignorando a
-sua direção e vice-versa.</li>
-<li>Esta ideia pode ser estendida para matrizes.</li>
-<li>Uma matriz nada mais é do que um conjunto de vetores.</li>
-<li>IDEIA - decompor a informação de uma matriz em outros componentes de
-mais fácil interpretação/representação matemática.</li>
-</ul>
-<p>Autovalores e Autovetores - Autovalores e autovetores são definidos
-por uma simples igualdade $A= $. (5) - Os vetores <span class="math inline">\(\upsilon\)</span> ’s que satisfazem Eq. (5) são os
-autovetores. - Os valores <span class="math inline">\(\lambda\)</span>
-’s que satisfazem Eq. (5) são os autovalores. - Vamos considerar o caso
-em que <span class="math inline">\(A\)</span> é simétrica. - A ideia
-pode ser estendida para matrizes não simétricas.</p>
-<ul>
-<li><p>Se A é uma matriz simétrica <span class="math inline">\(n \times
-n\)</span>, então existem exatamente <span class="math inline">\(n\)</span> pares ($j , j <span class="math inline">\() que satisfazem a equação: A\)</span>= $
-.</p></li>
-<li><p>Se A tem autovalores <span class="math inline">\(\lambda_1, … ,
-\lambda_n\)</span>, então: <strong>[[ARRUMAR]]</strong></p></li>
-<li><p>A é positiva definida, se e somente se todos <span class="math inline">\(\lambda j &gt; 0\)</span></p></li>
-<li><p>A é semi-positiva definida, se e somente se todos <span class="math inline">\(\lambda j ≥ 0\)</span></p></li>
-<li><p>A ideia do PCA é decompor/fatorar a matriz A em componentes mais
-simples de interpretar.</p></li>
-</ul>
-<p>Decomposição em autovalores e autovetores - Teorema: qualquer matriz
-simétrica A pode ser fatorada em <span class="math display">\[A = Q
-\Lambda Q^T\]</span> onde <span class="math inline">\(\lambda\)</span> é
-diagonal contendo os autovalores de A e as colunas de Q contêm os
-autovetores ortonormais. - Vetores ortonormais: são mutuamente
-ortogonais e de comprimento unitário. - Teorema: se <span class="math inline">\(A\)</span> tem autovetores <span class="math inline">\(Q\)</span> e autovalores <span class="math inline">\(\lambda j\)</span> . Então <span class="math inline">\(A^{-1}\)</span> tem autovetores <span class="math inline">\(Q\)</span> e autovalores <span class="math inline">\(\lambda^{-1}_j\)</span> . - Implicação: se <span class="math inline">\(A = Q\Lambda Q^T\)</span> então <span class="math inline">\(A-1 = Q\Lambda^{-1} Q^T\)</span></p>
-<p><strong>ATENÇÃO:</strong> Lambda é uma matriz diagonal que você pode
-usar para fazer contas de números (escalares) em matrizes.</p>
-</div>
-<div id="diagonalização" class="section level4">
-<h4>Diagonalização</h4>
-<ul>
-<li>Autovalores são utéis porque eles permitem lidar com matrizes da
-mesma forma que lidamos com números.</li>
-<li>Todos os cálculos são feitos na matriz diagonal .</li>
-<li>Este processo é chamado de diagonalização.</li>
-<li>Um dos resultados mais poderosos em Álgebra Linear é que qualquer
-matriz pode ser diagonalizada.</li>
-<li>O processo de diagonalização é chamado de Decomposição em valores
-singulares.</li>
+<li>Definição intuitiva: o limite de uma função é o valor que achamos
+natural para ela em um determinado ponto.</li>
+<li>Essa função não é continua (no ponto)</li>
 </ul>
 </div>
-<div id="decomposição-em-valores-singulares-svd" class="section level4">
-<h4>Decomposição em valores singulares (SVD)</h4>
+<div id="continuidade-de-uma-função" class="section level2">
+<h2>Continuidade de uma função</h2>
 <ul>
-<li>Teorema: qualquer matriz A pode ser decomposta em <span class="math display">\[A = UDV^T\]</span> onde <span class="math inline">\(D\)</span> é diagonal com entradas não negativas e
-<span class="math inline">\(U\)</span> e <span class="math inline">\(V\)</span> são ortogonais, i.e. <span class="math inline">\(U^TU = V^TV = I\)</span>.</li>
-<li>Matrizes não quadradas não tem autovalores.</li>
-<li>Os elementos de D são chamados de valores singulares.</li>
-<li>Os valores singulares são os autovalores de <span class="math inline">\(A^TA\)</span>.</li>
+<li>Definição - dizemos que uma função é contínua em <span class="math inline">\(x = a\)</span> se três condições forem
+satisfeitas:
+<ul>
+<li><span class="math inline">\(f(a)\)</span> existe,</li>
+<li><span class="math inline">\(\lim_{x \to a} f(x)\)</span> existe
+e</li>
+<li><span class="math inline">\(\lim_{x \to a} f(x) =
+f(a)\)</span>.</li>
+</ul></li>
+<li>Continuidade significa que pequenas variações na variável
+independente levam a pequenas variações na variável dependente.(mudanças
+suaves, ou não abruptas)</li>
+<li>Teorema do valor intermediário: se a função <span class="math inline">\(f(x)\)</span> é contínua no intervalo fechado
+<span class="math inline">\([a,b]\)</span>, então existe pelo menos um
+número <span class="math inline">\(c\)</span> em <span class="math inline">\([a,b]\)</span> tal que <span class="math inline">\(f(c) = M\)</span></li>
+<li>Implicação: se <span class="math inline">\(f(x)\)</span> é contínua
+seu gráfico não contém salto vertical.</li>
+<li>Em geral podemos pensar em funções contínuas como sendo funções
+suaves.</li>
 </ul>
+<div id="função-não-contínua" class="section level3">
+<h3>Função não contínua</h3>
+<ul>
+<li>Considere a função não continua em 0. <span class="math display">\[
+\lim_{x \to 0} \frac{|x|}{x} = \{-1   x &lt; 0 e 1 x &gt; 0
+\]</span></li>
+</ul>
+<pre class="r"><code>## Figura 12. Função descontinua.</code></pre>
+<p>Propriedades de limites - Se</p>
+<p><span class="math display">\[\lim_{x \to p} f(x) = L_1\]</span> e</p>
+<p><span class="math display">\[\lim_{x \to p} g(x) = L_2\]</span>
+então</p>
+<p><span class="math display">\[\lim_{x \to p} [f(x) + g(x)] = L_1 +
+L_2\]</span> <span class="math display">\[\lim_{x \to p} k f(x) =
+k\]</span> <span class="math display">\[\lim_{x \to p} f(x) = k
+L_1\]</span></p>
+<p><span class="math display">\[\lim_{x \to p} f(x) g(x) = \lim_{x \to
+p} f(x) * \lim_{x \to p} g(x) = L_1 * L_2\]</span> <span class="math display">\[\lim_{x \to p} f(x) g(x) = L_1 * L_2\]</span> ,
+desde que <span class="math inline">\(L_2 \neq 0\)</span>.</p>
 </div>
 </div>
-<div id="dimensão-da-svd" class="section level3">
-<h3>Dimensão da SVD</h3>
+<div id="derivadas" class="section level2">
+<h2>Derivadas</h2>
 <ul>
-<li>Se <span class="math inline">\(A\)</span> é <span class="math inline">\(n \times n\)</span>, então <span class="math inline">\(U\)</span>, <span class="math inline">\(D\)</span>
-e <span class="math inline">\(V\)</span> são <span class="math inline">\(n \times n\)</span>.</li>
-<li>Se <span class="math inline">\(A\)</span> é <span class="math inline">\(n \times p\)</span>, sendo <span class="math inline">\(n &gt; p\)</span>, então <span class="math inline">\(U\)</span> é <span class="math inline">\(n \times
-p\)</span>, <span class="math inline">\(D\)</span> e <span class="math inline">\(V\)</span> são <span class="math inline">\(p
-\times p\)</span>.</li>
-<li>Se <span class="math inline">\(A\)</span> é <span class="math inline">\(n \times p\)</span>, sendo <span class="math inline">\(n &lt; p\)</span>, então <span class="math inline">\(V^T\)</span> é <span class="math inline">\(n
-\times p\)</span>, <span class="math inline">\(D\)</span> e <span class="math inline">\(U\)</span> são <span class="math inline">\(n
-\times n\)</span>.</li>
-<li><span class="math inline">\(D\)</span> será sempre quadrada com
-dimensão igual ao mínimo entre $ $ e <span class="math inline">\(n\)</span>.</li>
+<li>Definição - derivada ordinária, derivada primeira, ou simplesmente,
+derivada de uma função <span class="math inline">\(y = f(x)\)</span> em
+um ponto <span class="math inline">\(x = a\)</span> no domínio de <span class="math inline">\(f\)</span> é representada por <span class="math display">\[\frac{dy}{dx}\]</span> ou <span class="math display">\[y&#39;\]</span> ou <span class="math display">\[\frac{df}{dx}\]</span> ou <span class="math display">\[f&#39;(a)\]</span> é o valor</li>
 </ul>
-</div>
-<div id="decomposição-em-autovalores-e-autovetores-em-r" class="section level3">
-<h3>Decomposição em autovalores e autovetores em R</h3>
-<ul>
-<li>Função eigen() fornece a decomposição</li>
-</ul>
-<pre class="r"><code>A &lt;- matrix(c(1,0.8, 0.3, 0.8, 1,
-0.2, 0.3, 0.2, 1),3,3)
-isSymmetric.matrix(A)</code></pre>
-<pre><code>## [1] TRUE</code></pre>
-<pre class="r"><code>## [1] TRUE
-out &lt;- eigen(A)
-Q &lt;- out$vectors ## Autovetores
-D &lt;- diag(out$values) ## Autovalores
-Q</code></pre>
-<pre><code>##            [,1]       [,2]        [,3]
-## [1,] -0.6712373 -0.1815663  0.71866142
-## [2,] -0.6507744 -0.3198152 -0.68862977
-## [3,] -0.3548708  0.9299204 -0.09651322</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3]
-## [1,] -0.6712373 -0.1815663 0.71866142
-## [2,] -0.6507744 -0.3198152 -0.68862977
-## [3,] -0.3548708 0.9299204 -0.09651322</code></pre>
-<ul>
-<li>Verificando a solução</li>
-</ul>
-<pre class="r"><code>D</code></pre>
-<pre><code>##          [,1]      [,2]      [,3]
-## [1,] 1.934216 0.0000000 0.0000000
-## [2,] 0.000000 0.8726419 0.0000000
-## [3,] 0.000000 0.0000000 0.1931419</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3]
-## [1,] 1.934216 0.0000000 0.0000000
-## [2,] 0.000000 0.8726419 0.0000000
-## [3,] 0.000000 0.0000000 0.1931419
-Q%*%D%*%t(Q) ## Verificando</code></pre>
-<pre><code>##      [,1] [,2] [,3]
-## [1,]  1.0  0.8  0.3
-## [2,]  0.8  1.0  0.2
-## [3,]  0.3  0.2  1.0</code></pre>
-<pre class="r"><code>## [,1] [,2] [,3]
-## [1,] 1.0 0.8 0.3
-## [2,] 0.8 1.0 0.2
-## [3,] 0.3 0.2 1.0</code></pre>
-<p>Decomposição em valores singulares em R - Função svd() fornece a
-decomposição</p>
-<pre class="r"><code>svd(A)</code></pre>
-<pre><code>## $d
-## [1] 1.9342162 0.8726419 0.1931419
-## 
-## $u
-##            [,1]       [,2]        [,3]
-## [1,] -0.6712373  0.1815663  0.71866142
-## [2,] -0.6507744  0.3198152 -0.68862977
-## [3,] -0.3548708 -0.9299204 -0.09651322
-## 
-## $v
-##            [,1]       [,2]        [,3]
-## [1,] -0.6712373  0.1815663  0.71866142
-## [2,] -0.6507744  0.3198152 -0.68862977
-## [3,] -0.3548708 -0.9299204 -0.09651322</code></pre>
-<pre class="r"><code>## $d
-## [1] 1.9342162 0.8726419 0.1931419
-##
-## $u
-## [,1] [,2] [,3]
-## [1,] -0.6712373 0.1815663 0.71866142
-## [2,] -0.6507744 0.3198152 -0.68862977
-## [3,] -0.3548708 -0.9299204 -0.09651322
-##
-## $v
-## [,1] [,2] [,3]
-## [1,] -0.6712373 0.1815663 0.71866142
-## [2,] -0.6507744 0.3198152 -0.68862977
-## [3,] -0.3548708 -0.9299204 -0.09651322</code></pre>
-</div>
-<div id="regressão-ridge" class="section level3">
-<h3>Regressão ridge</h3>
-<ul>
-<li>Relembrando: regressão linear múltipla</li>
-</ul>
-<p><span class="math display">\[\begin{bmatrix}
-y_1 \\
-y_2 \\
-... \\
-y_n \\
-\end{bmatrix}_{n \times 1}=
-\begin{bmatrix}
-1 &amp; x_{11} &amp; ... &amp; x_{p1} \\
-1 &amp; x_{12} &amp; ... &amp; x_{p2} \\
-... &amp; ... &amp; ... &amp; ... \\
-1 &amp; x_{1n} &amp; ... &amp; x_{pn} \\
-\end{bmatrix}_{n \times p} *
-\begin{bmatrix}
-\beta_0 \\
-\beta_1 \\
-... \\
-\beta_p \\
-\end{bmatrix}_{p \times 1}+
-\begin{bmatrix}
-erro _0 \\
-erro _1 \\
-... \\
-erro _p \\
-\end{bmatrix}_{p \times 1}\]</span></p>
-<ul>
-<li><p>Usando uma notação mais compacta, <span class="math display">\[y_{n \times 1} = X_{n \times p} * \beta_{p \times
-1} + erro_{p \times 1}\]</span></p></li>
-<li><p>Minimiza a perda quadrática: <span class="math display">\[
-\hat{\beta} = (X^T X)^{-1} X^T y \]</span></p></li>
-</ul>
-</div>
-<div id="regressão-ridge-1" class="section level3">
-<h3>Regressão ridge</h3>
-<ul>
-<li>Se p &gt; n o sistema é singular (múltiplas soluções)!</li>
-<li>Como podemos ajustar o modelo?</li>
-<li>Introduzir uma penalidade pela complexidade.</li>
-<li>Soma de quadrados penalizada</li>
-</ul>
+<p><span class="math display">\[ \frac{dy}{dx} | x=a =
+f&#39;(a)\]</span> <strong>[[ARRUMAR]]</strong></p>
 <p><span class="math display">\[
-PSQ(\beta) = \sum_{i=1}^n{(y_i - x_i^T \beta)^2} +
-\sum_{j=1}^{p}{\beta^2_j}
+\lim_{h \to 0}  = \frac{f(a+h)-f(a)}h
 \]</span></p>
 <ul>
-<li>Matricialmente, tem-se <span class="math display">\[ PSQ(\beta) = (y
-- X \beta)^T (y - X \beta) + \lambda \beta^T \beta\]</span></li>
+<li>Interpretação da derivada</li>
+<li>Taxa de mudança instântanea.</li>
+<li>No limite quando <span class="math inline">\(x \longrightarrow
+a\)</span> a derivada é a reta tangente ao ponto <span class="math inline">\((a, f(a))\)</span>.</li>
+<li>Equação da <strong>reta tangente</strong> ao ponto a: <span class="math inline">\(y - f(a) = f&#39;(a)(x - a)\)</span>.(coenficiente
+angular é <span class="math inline">\(\beta_1 -&gt; y = \beta_0 +
+\beta_1*x)\)</span> <strong>[[ARRUMAR]]</strong></li>
 </ul>
-<p><strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>IMPORTANTE !!</li>
-<li>y centrado (média zero).</li>
-<li>X padronizada por coluna (média zero e variância um).</li>
-</ul>
-<p>Regressão ridge - Objetivo: minizar a soma de quadrados penalizada. -
-Derivada <strong>[[ARRUMAR]]</strong></p>
-<p>Aplicação: regressão ridge - Resolvendo o sistema linear, tem-se
-<strong>[[ARRUMAR]]</strong></p>
-<ul>
-<li>Solução depende de <span class="math inline">\(\lambda\)</span>
-.</li>
-<li>A inclusão de <span class="math inline">\(\lambda\)</span> faz o
-sistema ser não singular.</li>
-<li>Na verdade quando fixamos <span class="math inline">\(\lambda\)</span> selecionamos uma solução em
-particular.</li>
-</ul>
-<p>Aplicação: regressão ridge - Calcular <span class="math inline">\(\hat{\beta}\)</span> envolve a inversão de uma
-matriz p x p potencialmente grande. <span class="math display">\[\hat{\beta}  = (XTX + \lambda I)-1 XTy\]</span> -
-Usando a decomposição SVD, tem-se <span class="math display">\[ X =
-UDVT\]</span> - É possível mostrar que,</p>
-<p><span class="math display">\[ \hat{\beta} = Vdiag ( dj d2 j  +
-\lambda  ) UTy .\]</span></p>
-<p>Implementação: regressão ridge - Simulando o conjunto de dados (n =
-100, p = 200).</p>
-<pre class="r"><code>set.seed(123)
-X &lt;- matrix(NA, ncol = 200, nrow = 100)
-X[,1] &lt;- 1 ## Intercepto
-for(i in 2:200) {
-X[,i] &lt;- rnorm(100, mean = 0, sd = 1)
-X[,i] &lt;- (X[,i] - mean(X[,i]))/var(X[,i])
+</div>
+<div id="exemplo" class="section level2">
+<h2>Exemplo</h2>
+<p>Obtenha a derivada de <span class="math inline">\(f(x) =
+-x^2\)</span> <span class="math display">\[
+f&#39;(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}
+\]</span> <span class="math display">\[
+= \lim_{h \to 0} \frac{-(x + h)^2 - (-x2)}{h}
+\]</span> <span class="math display">\[
+= \lim_{h \to 0} \frac{-(x^2 + 2xh + h^2) + x^2}{h}
+\]</span> <span class="math display">\[
+= \lim_{h \to 0} \frac{-x^2 - 2xh - h^2 + x^2}{h}
+\]</span> <span class="math display">\[
+= \lim_{h \to 0} \frac{- 2xh - h^2}{h}
+\]</span></p>
+<p><span class="math display">\[
+= \lim_{h \to 0} - 2x - h = -2x
+\]</span> <span class="math display">\[
+= f&#39;(x) = -2x
+\]</span></p>
+<p>[[CONFERIR]]</p>
+<p>Obtenha a reta tangente a <span class="math inline">\(f(x)\)</span>
+nos pontos <span class="math inline">\(x = 2\)</span> e <span class="math inline">\(x = -2\)</span>. - Temos: <span class="math display">\[f(x = 2) = -4\]</span> <span class="math display">\[f&#39;(x = 2) = -4\]</span> assim <span class="math display">\[y - f(x = 2) = f&#39;(x = 2)(x - 2)\]</span>
+<span class="math display">\[y - (-4) = -4(x - 2)\]</span> <span class="math display">\[y + 4 = = -4x + 8\]</span> <span class="math display">\[y = 4 - 4x\]</span> - Computacionalmente - f(x) e
+f’(x).</p>
+<pre class="r"><code>fx &lt;- function(x) {
+out &lt;- - x^2
+return(out)
 }
-## Parâmetros
-beta &lt;- rbinom(200, size = 1, p = 0.1)*rnorm(200, mean = 10)
-mu &lt;- X%*%beta
-## Observações
-y &lt;- rnorm(100, mean = mu, sd = 10)</code></pre>
-<p>Implementando o modelo. - Modelo passo-a-passo</p>
-<pre class="r"><code>y_c &lt;- y - mean(y)
-X_svd &lt;- svd(X) ## Decomposição svd
-lambda = 0.5 ## Penalização
-DD &lt;- Diagonal(100, X_svd$d/(X_svd$d^2 + lambda))
-DD[1] &lt;- 0 ## Não penalizar o intercepto
-beta_hat = as.numeric(X_svd$v%*%DD%*%t(X_svd$u)%*%y_c)</code></pre>
-<p>Resultados: regressão ridge - Ajustados versus verdadeiros.</p>
-<pre class="r"><code>plot(beta ~ beta_hat, xlab = expression(hat(beta)), ylab = expression(beta))</code></pre>
-<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAABUAAAAPACAMAAADDuCPrAAAA1VBMVEUAAAAAADoAAGYAOjoAOmYAOpAAZmYAZrY6AAA6ADo6AGY6OgA6Ojo6OmY6OpA6ZmY6ZpA6ZrY6kLY6kNtmAABmADpmAGZmOgBmOjpmZjpmZmZmZpBmkLZmkNtmtttmtv+QOgCQZjqQZmaQZpCQkDqQkGaQkLaQtraQttuQtv+Q2/+2ZgC2Zjq2kDq2kGa2tpC2tra2ttu227a229u22/+2///bkDrbkGbbtmbbtpDbtrbb25Db27bb29vb2//b////tmb/25D/27b/29v//7b//9v////Rglc7AAAACXBIWXMAAB2HAAAdhwGP5fFlAAAgAElEQVR4nO3dDXvTdrrgYYXCkj1Dd+jCbjspU+icl/Y0TJs5pSnTAyVQ7O//kY7lxLYcK8Z6LFl65Pu+ehXnxco/svSz3uwUUwBCir4HAJCVgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIEdRrQyY9fPfrzf7xbfvzxaXHvly5/IMABdRnQX0+L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IAEFCBJQgCABBQgSUIAgAQUIElCAIAEFCBJQgCABBQgSUIAgAQUIElCAoLwBnfx28Y93Te8koEB78gb049Pi3i9N7ySgQHsEFCAoU0D/eFv1ZhbQn2f//t5kEgIKtCdRQGebnHUabYYKKNAeAQUIShTQ6evTojg5W/jLaXHy59m/Xzc5FS+gQHsyBXT64UVR3H9188EOJ5HqNli7Gx1wbFIFdDr9dbbZ+dfrmwIK9CxZQKcfviyKB/ONUJcxAT3LFtDp5O9FcfLNVECB3qUL6HT6frYR+vidgAJ9SxjQ6eTlbCP0ewEFepYxoNcXNP35VECBXuUM6PyCpobX0M8JKNCepAGdX9AkoECv0gZ0+uFvzV6ENCegQHvyBjREQIH2CChAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBAkoQJCAAgQJKECQgAIECShAkIACBCUL6OTHrx79+T/eLT/++LS490uD+wso0J5cAf31tCidPFskVECB/qQK6GWx8OCmoAIK9CdTQN/Ptj/vf//27cvy3+tsCijQn0wBvVxseX74clFQAQX6kyigkxdF8Xx1c95SAQX6kyig1ViWBX04/VRAixpdjQ44PkkDWn5QPBFQoE9ZA1qeUTr5wS480KNEAa0cAy1dFcW9VwIK9CdRQMuz8A/XP7z3XwIK9CZTQMvrQB//vvr4fH5QU0CBnmQK6PyVSNVevhRQoEepAjp9fbrey9nHAgr0JVdAp5N/fv1u7eOXpwIK9CRZQPcloEB7BBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQUIEhAAYIEFCBIQAGCBBQgSEABggQU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" width="672" /></p>
+f_prime &lt;- function(x) {
+out &lt;- -2*x
+return(out)
+}</code></pre>
+<ul>
+<li>Equação da reta y = a + b * x.</li>
+</ul>
+<pre class="r"><code>intercept = (fx(x = 2) - f_prime(x = 2)*2)
+slope &lt;- f_prime(x = 2)
+c(intercept, slope)</code></pre>
+<pre><code>## [1]  4 -4</code></pre>
+<pre class="r"><code>## [1] 4 -4</code></pre>
+<pre class="r"><code>## Figura 14. Desenho de uma função e retas tangentes.</code></pre>
+</div>
+<div id="regras-de-derivação" class="section level2">
+<h2>Regras de derivação</h2>
+<ul>
+<li>Seja <span class="math inline">\(n \neq 0\)</span> um natural. São
+válidas as fórmulas de derivação:</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Se <span class="math inline">\(f(x) = c\)</span> então <span class="math inline">\(f&#39;(x) = 0\)</span>.</li>
+<li>Se <span class="math inline">\(f(x) = xn\)</span> então <span class="math inline">\(f&#39;(x) = n * n^-1\)</span></li>
+<li>Se <span class="math inline">\(f(x) = x-n\)</span> então <span class="math inline">\(f&#39;(x) = -n * -n^{-1}\)</span></li>
+<li>Se <span class="math inline">\(f(x) = \frac{x_1}{n}\)</span> então
+<span class="math inline">\(f&#39;(x) = \frac{1}{n} * \frac{x_1}{n}
+-1\)</span></li>
+</ol>
+<ul>
+<li>Derivada de funções especiais</li>
+</ul>
+<ol start="5" style="list-style-type: decimal">
+<li>Se <span class="math inline">\(f(x) = exp(x)\)</span> então <span class="math inline">\(f&#39;(x) = exp(x)\)</span>.</li>
+</ol>
+<p>Exemplo: <span class="math display">\[f(x) = exp(2 x^2 + 3y)\]</span>
+<span class="math display">\[\frac{\partial}{\partial x}exp(2 x^2 +
+3y)\]</span> onde $ u = 2 x^2 + 3y$ e <span class="math display">\[
+\frac{\partial exp(u)}{\partial u} = exp(u)\]</span></p>
+<p><span class="math display">\[\frac{\partial}{\partial x}exp(2 x^2 +
+3y) = exp(2 x^2 + 3y) * (\frac{\partial}{\partial x} (2 x^2 +
+3y)\]</span></p>
+<p>= * $$</p>
+<ol start="6" style="list-style-type: decimal">
+<li>Se <span class="math inline">\(f(x) = ln(x^a)\)</span> então <span class="math inline">\(f&#39;(x) = \frac{a}{x}, \space x &gt;
+0\)</span></li>
+</ol>
+<ul>
+<li>Sendo, <span class="math inline">\(f(x)\)</span> e <span class="math inline">\(g(x)\)</span> deriváveis em <span class="math inline">\(x\)</span> e <span class="math inline">\(c\)</span> uma constante.</li>
+</ul>
+<ol start="7" style="list-style-type: decimal">
+<li>$ (f + g )’ = f’(x) + g ’(x).$</li>
+<li><span class="math inline">\((c f)&#39;(x) = c
+f&#39;(x).\)</span></li>
+<li><span class="math inline">\((f * g )&#39;(x) = f&#39;(x)g (x) +
+f(x)g &#39;(x).\)</span></li>
+<li><span class="math inline">\(( f g )&#39;(x) = f&#39;(x)g (x)-f(x)g
+&#39;(x) [g (x)]2 .\)</span></li>
+</ol>
+<ul>
+<li>Exemplo: obtenha a derivada de <span class="math inline">\(f(x) = 2
++ 3x\)</span></li>
+<li>Solução: <span class="math inline">\(f&#39;(x) = 3\)</span></li>
+<li>Computacionalmente</li>
+</ul>
+<pre class="r"><code>D(expression(2 + 3*x), name = &quot;x&quot;)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>## [1] 3</code></pre>
+</div>
+<div id="regra-da-cadeia" class="section level2">
+<h2>Regra da cadeia</h2>
+<ul>
+<li>“Uma função dentro da outra”</li>
+<li>Sejam <span class="math inline">\(y = f(x)\)</span> e $x = g (t ) $
+duas funções deriváveis, com <span class="math inline">\(I \in D
+f\)</span> . A função composta <span class="math inline">\(h (t ) = f(g
+(t ))\)</span> é derivável, sendo <span class="math inline">\(h &#39;(t
+) = f&#39;(g (t ))g &#39;(t ), t \in D g\)</span> .</li>
+<li>Existe uma infinidade de fórmulas de derivação.</li>
+<li>Na prática é comum usar um software de matemática simbólica como o
+wxMaxima.</li>
+<li>Em R as funções <code>deriv()</code> e <code>deriv3()</code></li>
+</ul>
+</div>
+<div id="exemplo-regra-da-cadeia" class="section level2">
+<h2>Exemplo regra da cadeia</h2>
+<ul>
+<li>Obtenha a derivada de <span class="math inline">\(sin(2x^3 -
+4x)\)</span>.</li>
+</ul>
+<ol style="list-style-type: decimal">
+<li>Note que temos uma função composta (derivada de <span class="math inline">\(sen\)</span> e <span class="math inline">\(cos\)</span>) <span class="math display">\[in(g
+(x))\]</span> , onde <span class="math display">\[g (x) = 2x^3 -
+4x\]</span></li>
+<li>Usando a regra da cadeia temos: <span class="math display">\[f&#39;(g (x)) = cos(2x^3 - 4x)\]</span> and <span class="math display">\[g &#39;(x) = 6x^2 - 4.\]</span></li>
+<li>Assim, a derivada fica dada por <span class="math display">\[
+cos(2x^3 - 4x) * (6x^2 - 4).\]</span></li>
+<li>Computacionalmente</li>
+</ol>
+<pre class="r"><code>D(expression( sin(2*x^3 - 4*x)), name = &quot;x&quot;)</code></pre>
+<pre><code>## cos(2 * x^3 - 4 * x) * (2 * (3 * x^2) - 4)</code></pre>
+<pre class="r"><code>## cos(2 * x^3 - 4 * x) * (2 * (3 * x^2) - 4)
+## ou cos(2x^3 - 4x) * (6x^2) - 4)
+
+D(D(expression( sin(2*x^3 - 4*x)), name = &quot;x&quot;), name = &quot;x&quot;)</code></pre>
+<pre><code>## cos(2 * x^3 - 4 * x) * (2 * (3 * (2 * x))) - sin(2 * x^3 - 4 * 
+##     x) * (2 * (3 * x^2) - 4) * (2 * (3 * x^2) - 4)</code></pre>
+<pre class="r"><code>## cos(2 * x^3 - 4 * x) * (2 * (3 * (2 * x))) - sin(2 * x^3 - 4 * x) * (2 * (3 * x^2) - 4) * (2 * (3 * x^2) - 4)</code></pre>
+</div>
+<div id="derivadas-de-ordem-superior" class="section level2">
+<h2>Derivadas de ordem superior</h2>
+<ul>
+<li>A derivada <span class="math inline">\(f&#39;(x)\)</span> é também
+chamada de derivada de primeira ordem e mede a variação da função
+original ou primitiva.</li>
+<li>A derivada de segunda ordem denotada por <span class="math inline">\(f&#39;&#39;(x)\)</span> mede a taxa de variação da
+primeira derivada.</li>
+<li>A derivada de terceira ordem <span class="math inline">\(f&#39;&#39;&#39;(x)\)</span> mede a taxa de
+variação da segunda derivada e assim por diante até a n-ésima
+derivada.</li>
+<li>Notação comum: <span class="math inline">\(frac{dny}{dxn}\)</span>
+que é interpretada como a n-ésima derivada de <span class="math inline">\(y\)</span> em relação a <span class="math inline">\(x\)</span></li>
+<li>Exemplo: obtenha as derivadas até a ordem 5 da função <span class="math inline">\(y = 2x^4 + 5x^3 + 2x^2\)</span> <span class="math inline">\(dy= 2x^4 + 5x^3 + 2x^2\)</span> <span class="math inline">\(dx = 8x^3 + 15x^2 + 4x\)</span> d2y <span class="math inline">\(dx2 = 24x^2 + 30x + 4\)</span> d3y <span class="math inline">\(dx3 = 48x + 30\)</span> d4y <span class="math inline">\(dx4 = 48\)</span> e d5y <span class="math inline">\(dx5 = 0\)</span> daqui em diante é zero</li>
+</ul>
+</div>
+<div id="máximos-e-mínimos" class="section level2">
+<h2>Máximos e mínimos</h2>
+<ul>
+<li>Dizemos que um ponto <span class="math inline">\(c\)</span> é um
+valor máximo relativo de <span class="math inline">\(f(x)\)</span> se
+existir um intervalo aberto contendo <span class="math inline">\(c\)</span>, no qual $f(x)$4 esteja definida, tal
+que <span class="math inline">\(f(c) &gt;= f(x)\)</span> para todo <span class="math inline">\(x\)</span> neste intervalo.</li>
+<li>Dizemos que um ponto <span class="math inline">\(c\)</span> é um
+valor mínimo relativo de <span class="math inline">\(f(x)\)</span> se
+existir um intervalo aberto contendo <span class="math inline">\(c\)</span>, no qual f(x) esteja definida, tal que
+<span class="math inline">\(f(c ) \le f(x)\)</span> para todo x neste
+intervalo. (maximo e minimo dentro de um trecho de grafico)</li>
+</ul>
+<pre class="r"><code>## Figura 15. Ilustração de máximo/mínimo relativos.</code></pre>
+<ul>
+<li>Multiplicando a função por -1 invertemos a sua concavidade.</li>
+</ul>
+</div>
+<div id="pontos-extremos-pico-do-morro-ou-fundo-do-vale" class="section level2">
+<h2>Pontos extremos (pico do morro ou fundo do vale)</h2>
+<ul>
+<li>Se <span class="math inline">\(f(x)\)</span> existe para todos os
+valores de <span class="math inline">\(x\)</span> no intervalo aberto
+<span class="math inline">\((a,b)\)</span>, e se <span class="math inline">\(f(x)\)</span> tem um extremo relativo em <span class="math inline">\(c\)</span> , em que <span class="math inline">\(a
+&lt; c &lt; b\)</span> , então <span class="math inline">\(f&#39;(c
+)\)</span> existe e <span class="math inline">\(f&#39;(c ) =
+0\)</span></li>
+<li>Implicação - Sendo <span class="math inline">\(f(x)\)</span>
+diferenciável os pontos extremos de <span class="math inline">\(f(x)\)</span> vão ocorrer quando <span class="math inline">\(f&#39;(x) = 0\)</span></li>
+<li><span class="math inline">\(f&#39;(x)\)</span> pode ser igual a zero
+mesmo não sendo um extremo relativo.</li>
+</ul>
+<pre class="r"><code>## Figura 16. Ilustração de uma função onde derivada zero não é ponto extremo.</code></pre>
+</div>
+<div id="máximos-e-mínimos-1" class="section level2">
+<h2>Máximos e mínimos</h2>
+<p>Seja <span class="math inline">\(c\)</span> um ponto extremo de uma
+função <span class="math inline">\(f(x)\)</span> no qual <span class="math inline">\(f&#39;(c) = 0\)</span>, e suponha que <span class="math inline">\(f&#39;(x)\)</span> exista para todos os valores de
+<span class="math inline">\(x\)</span> em um intervalo aberto contendo
+<span class="math inline">\(c\)</span> . Se <span class="math inline">\(f&#39;&#39;(c )\)</span> existe, então - Se <span class="math inline">\(f&#39;&#39;(c ) &lt; 0\)</span>, então <span class="math inline">\(f(x)\)</span> tem um máximo relativo em <span class="math inline">\(c\)</span> . - Se <span class="math inline">\(f&#39;&#39;(c ) &gt; 0\)</span>, então <span class="math inline">\(f(x)\)</span> tem um mínimo relativo em <span class="math inline">\(c\)</span> . ## Concavidade - Se <span class="math inline">\(f&#39;&#39;(c ) &gt; 0\)</span> o gráfico de <span class="math inline">\(f(x)\)</span> é côncavo para cima em <span class="math inline">\((c , f(c ))\)</span>; - Se <span class="math inline">\(f&#39;&#39;(c ) &lt; 0\)</span> o gráfico de <span class="math inline">\(f(x)\)</span> é côncavo para baixo em <span class="math inline">\((c , f(c ))\)</span>.</p>
+<p>Por que derivadas são importantes? - Obtenção de máximo ou mínino
+(relativo).</p>
+<pre class="r"><code>## Fazer figura</code></pre>
+<p>Figura 17. Ilustração de uma função com a reta tangente.ponto extremo
+tem inclinação zero (a3 na figura)</p>
+</div>
+<div id="redução-de-dados" class="section level2">
+<h2>Redução de dados</h2>
+<p>Você já trabalha com dados? Se sim, - Por qual razão você usa a média
+ou a mediana como uma medida resumo? - Você acha que existe algum
+procedimento mais geral que leva a obtenção destas medidas resumo? - Se
+sim, como este procedimento está relacionado com o que vimos em relação
+a funções e seu comportamento?</p>
+<ul>
+<li>Suponha que temos um conjunto de observações <span class="math inline">\(y_{i}\)</span> para <span class="math inline">\(i
+= 1, … , n\)</span>.</li>
+<li>Objetivo: resumir a informação contida em <span class="math inline">\(y_{i}\)</span> em um único número, digamos <span class="math inline">\(\mu\)</span>.</li>
+<li>Problema: como encontrar <span class="math inline">\(\mu\)</span>?</li>
+<li>Solução: encontrar o valor <span class="math inline">\(\mu\)</span>,
+tal que <span class="math inline">\(f(\mu) = \sum_{i=1}^{n} (y_{i} -
+\mu)^2\)</span> (soma de quadrados da diferença de cada valor para
+media, ou seja o quanto eu perdi ao trocar os <span class="math inline">\(y\)</span> por <span class="math inline">\(\mu\)</span>), seja a menor possível.</li>
+<li>Uma vez que temos os números observados <span class="math inline">\(y_{i}\)</span> a única quantidade desconhecida
+é<span class="math inline">\(\mu\)</span>.</li>
+<li>Note que <span class="math inline">\(\mu\)</span> é o parâmetro da
+nossa função.</li>
+<li>A função <span class="math inline">\(f(\mu)\)</span> mede o quanto
+perdemos em representar <span class="math inline">\(y_{i}\)</span>
+apenas usando <span class="math inline">\(\mu\)</span>.</li>
+<li>Funções perda muito populares são a perda quadrática, perda
+absoluta, minmax e a cross entropia.</li>
+<li>dervar e igualar a <span class="math inline">\(0\)</span>.</li>
+</ul>
+<p>Funções em R.</p>
+<pre class="r"><code>y &lt;- c(8,9,14,10,10,15,11,5,4,13)
+fmu &lt;- function(mu, y) {
+out &lt;- sum((y - mu)^2)
+return(out)
+}
+fmu &lt;- Vectorize(fmu, &quot;mu&quot;)
+fmu(mu = c(10, 12, 0, 8), y = y)</code></pre>
+<pre><code>## [1]  117  161 1097  153</code></pre>
+<pre class="r"><code>## [1] 117 161
+f_prime &lt;- function(mu, y) {
+out &lt;- -2*sum(y-mu)
+return(out)
+}</code></pre>
+<p>Graficamente</p>
+<ul>
+<li><p>Note que o melhor resumo dos dados de um número, corresponde ao
+ponto de mínimo da função <span class="math display">\[
+f(y) = \sum_{i=1}^{n} (y_{i} -\mu )^2
+\]</span></p></li>
+<li><p>Como o mínimo está relacionado com a derivada de <span class="math inline">\(f(\mu)\)</span>?</p></li>
+</ul>
+</div>
+<div id="exemplo-redução-de-dados" class="section level2">
+<h2>Exemplo: redução de dados</h2>
+<ul>
+<li>No ponto de mínimo/máximo a inclinação da reta tangente a <span class="math inline">\(f(\mu)\)</span> é zero.</li>
+<li>Denote por <span class="math inline">\(hat{\mu}\)</span> o ponto de
+mínimo/máximo de <span class="math inline">\(f (\mu )\)</span>, então
+<span class="math inline">\(f &#39;(\mu )\hat{} = 0\)</span></li>
+<li>Assim, temos (regra da cadeia!!)</li>
+</ul>
+<p><span class="math display">\[ f(y) = \sum_{i=1}^{n} (y_{i} -\mu
+)^2\]</span> <span class="math display">\[\varepsilon_{i} = y_{i}
+-\mu\]</span> <span class="math display">\[  f&#39;(\mu) =
+\sum_{i=1}^{n} (\varepsilon_{i})^2 \]</span> <span class="math display">\[  f&#39;(\mu) = 2 \sum_{i=1}^{n} (y_{i} -\mu)
+\frac{d}{d \mu} (y_{i} -\mu) \]</span></p>
+<p><span class="math display">\[ f&#39;(\mu) = 2 \sum_{i=1}^{n} (y_{i}
+-\mu) (-1)\]</span></p>
+<p><span class="math display">\[ f&#39;(\mu) = -2 \sum_{i=1}^{n} (y_{i}
+-\mu)\]</span></p>
+<p>Exemplo: redução de dados - Agora precisamos achar o ponto <span class="math inline">\(\hat{\mu}\)</span> tal que <span class="math inline">\(f&#39;(\hat{\mu}) = 0\)</span>.</p>
+<p><span class="math display">\[ f&#39;(\hat{\mu}) = 0\]</span></p>
+<p><span class="math display">\[  -2 \sum_{i=1}^{n} (y_{i} -\hat{\mu}) =
+0\]</span> <span class="math display">\[  -\sum_{i=1}^{n} (y_{i} -n
+\hat{\mu}) = 0\]</span> <span class="math display">\[ n\hat{\mu} =
+\sum_{i=1}^{n} y_{i}\]</span></p>
+<p><span class="math display">\[ \hat{\mu} = \frac{\sum_{i=1}^{n}
+y_{i}}{n}\]</span> OU SEJA MÉDIA!!!</p>
+<p>Comentários - Por qual razão você usa a média ou a mediana como uma
+medida resumo? - Minimiza a perda quadrática. - Medida ótima no sentido
+de perda quadrática. - Você acha que existe algum procedimento mais
+geral que leva a obtenção destas medidas resumo? - Especificação do
+modelo. - Escolha da função perda. - Treinamento (otimização). - Se sim,
+como este procedimento está relacionado com o que vimos em relação a
+funções e seu comportamento? - Estudar o comportamento de funções.</p>
+</div>
+<div id="derivadas-parciais" class="section level2">
+<h2>Derivadas parciais</h2>
+<ul>
+<li>Uma função pode ter mais do que uma variável independente.</li>
+<li>A derivada parcial mede a taxa de variação instantânea da variável
+dependente (y ) com relação a variável independente <span class="math inline">\(x 1\)</span>, quando a outra variável independente
+<span class="math inline">\(x 2\)</span> é mantida constante.</li>
+<li>Como obter a derivada parcial?</li>
+<li>A derivada parcial em relação a <span class="math inline">\(x
+1\)</span> é obtida derivando <span class="math inline">\(f (x 1, x
+2)\)</span> “fingindo” que <span class="math inline">\(x 2\)</span> é
+uma constante.</li>
+<li>A derivada parcial de <span class="math inline">\(f (x 1, x
+2)\)</span> em relação a <span class="math inline">\(x 2\)</span> é
+obtida derivando <span class="math inline">\(f (x 1, x 2)\)</span>
+mantendo <span class="math inline">\(x 1\)</span> constante.</li>
+<li>A diferenciação parcial segue as mesmas regras da diferenciação
+ordinária.</li>
+</ul>
+<p>Exemplo: Obtenha as derivadas parciais em relação a <span class="math inline">\(x_{1}\)</span> e <span class="math inline">\(x_{2}\)</span> de <span class="math inline">\(y =
+5 x_{1}^{3} + 3 x_{1} x_{2} + 4 x_{2}^{2}\)</span></p>
+<p><span class="math display">\[\displaystyle \frac{\partial y}{\partial
+x_{1}} = 15 x_{1}^{2} + 3 x_{2}\]</span> ou</p>
+<pre class="r"><code>D(expression( 5 * x^3 + 3 * x * c + 4* c^2 ), name = &quot;x&quot;)</code></pre>
+<pre><code>## 5 * (3 * x^2) + 3 * c</code></pre>
+<p><span class="math display">\[\displaystyle \frac{\partial y}{\partial
+x_{2}} = 3 x_{1} + 8 x_{2}\]</span></p>
+<pre class="r"><code>D(expression( 5 * x^3 + 3 * x * c + 4* c^2 ), name = &quot;c&quot;)</code></pre>
+<pre><code>## 3 * x + 4 * (2 * c)</code></pre>
+<p>Derivadas parciais de ordem superior - Derivadas parciais de segunda
+ordem <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 21\]</span> e <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 22\]</span> indica que a função foi
+diferenciada parcialmente em relação a <span class="math inline">\(x
+1\)</span> ou <span class="math inline">\(x 2\)</span> duas vezes. -
+Derivada parcial cruzada (ou mista) <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 1\partial x 2\]</span> indica que
+primeiro derivamos em <span class="math inline">\(x 1\)</span> e depois
+em <span class="math inline">\(x 2\)</span>. - A ordem da derivada
+cruzada não importa (se ambas contínuas), ou seja <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 1\partial x 2\]</span> <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 2\partial x 1\]</span></p>
+<p>Exemplo: derivadas parciais de segunda ordem - Obtenha as derivadas
+parciais de até segunda ordem em relação a <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span> de <span class="math inline">\(y = 7x
+31 + 9x 1x 2 + 2x 52\)</span></p>
+<ul>
+<li><p>Derivadas parciais de primeira ordem <span class="math display">\[\frac{\partial y }{\partial x_1} = 21x 21 + 9x 2,
+\partial y
+\partial x 2
+= 9x 1 + 10x 42\]</span></p></li>
+<li><p>Derivadas parciais de segunda ordem (segunda derivadas direta)
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Derivadas parciais de segunda ordem (termos cruzados)
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>As cruzadas dão sempre iguais.</p></li>
+</ul>
+</div>
+<div id="máximos-e-mínimos-funções-muldimensionais" class="section level2">
+<h2>Máximos e mínimos funções muldimensionais</h2>
+<ul>
+<li>Pontos críticos: as derivadas parciais de primeira ordem devem ser
+iguais a zero <strong>simultaneamente</strong>.</li>
+<li>Derivadas parciais <strong>principais</strong> de segunda ordem no
+ponto crítico forem ambas <strong>positivas -&gt; ponto de
+mínimo</strong>.</li>
+<li>Derivadas parciais de segunda ordem no ponto crítico forem ambas
+<strong>negativas -&gt; ponto de máximo</strong>.</li>
+<li>Outras situações ver material suplementar.</li>
+</ul>
+</div>
+<div id="exemplo-1" class="section level2">
+<h2>Exemplo</h2>
+<p>Considere a função <span class="math inline">\(y = 6x 21\)</span>
+<span class="math inline">\(- 9x 1 - 3x 1x 2 - 7x 2 + 5x 22\)</span></p>
+<p>Encontre os pontos críticos e determine se são de máximo ou minímo. -
+Graficamente</p>
+<ul>
+<li><p>Calcular as derivadas parciais de primeira ordem da função
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Derivando em x 1, temos <strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Derivando em x 2, temos <strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Resolver o sistema de equações <span class="math inline">\(12x 1
+- 9 - 3x 2 = 0\)</span> <span class="math inline">\(-3x 1 - 7 + 10x 2 =
+0\)</span></p></li>
+<li><p>Solução: <span class="math inline">\(x_1 = 1\)</span> e <span class="math inline">\(x_2 = 1\)</span>. ## USA NA PROXIMA</p></li>
+<li><p>Verificar se o ponto encontrado é de mínimo calculando a segunda
+derivada parcial principal e avaliando o seu sinal.</p></li>
+</ul>
 <p><strong>[[ARRUMAR]]</strong></p>
-<p>Resultados: regressão ridge - Regressão com penalização ridge, bem
-como, outras penalizações são eficientemente implementadas em R via
-pacote glmnet.</p>
-<p><strong>IMPORTANTE!</strong> A penalização no glmnet é ligeiramente
-diferente, por isso os <span class="math inline">\(\hat{\beta}\)</span>’s não são idênticos a nossa
-implementação naive. - O glmnet oferece opções para selecionar <span class="math inline">\(\lambda\)</span> via validação cruzada.</p>
-<pre class="r"><code>require(glmnet)
-beta_glm &lt;- cv.glmnet(X[,-1], y_c, nlambda = 100)</code></pre>
-<p>Resultados: regressão ridge - Validação cruzada.</p>
-<pre class="r"><code>plot(beta_glm)</code></pre>
-<p><img src="data:image/png;base64,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" width="672" /></p>
+<ul>
+<li>Calcular as derivadas cruzadas e verificar se o produto das
+derivadas principais é maior que o produto das cruzadas</li>
+</ul>
 <p><strong>[[ARRUMAR]]</strong></p>
-<p>Resultados: regressão ridge - Ajustados (glmnet) versus
-verdadeiros.</p>
-<pre class="r"><code>plot(beta ~ as.numeric(coef(beta_glm)), xlab = expression(hat(beta)), ylab = expression(beta)</code></pre>
-<pre><code>## Error: &lt;text&gt;:2:0: unexpected end of input
-## 1: plot(beta ~ as.numeric(coef(beta_glm)), xlab = expression(hat(beta)), ylab = expression(beta)
-##    ^</code></pre>
-<p><strong>[[ARRUMAR]]</strong></p>
-<p>Comentários - Solução de sistemas lineares: - Métodos diretos:
-Eliminação de Gauss e Gauss-Jordan. - Métodos iterativos: Jacobi e
-Gauss-Seidel. - Inversa de matrizes. - Decomposição ou fatorização - LU
-resolve sistema lineares pode ser usada para obter inversas. -
-Autovalores e autovetores. - Valores singulares. - Existem muitas outras
-fatorizações: QR, Cholesky, Cholesky modificadas, etc.</p>
+<p>Assim, temos que <strong>[[ARRUMAR]]</strong></p>
+<ul>
+<li>A função está em um ponto de mínimo quando examinada de todas as
+direções.</li>
+</ul>
+</div>
+<div id="gradiente-e-hessiano" class="section level2">
+<h2>Gradiente e Hessiano</h2>
+</div>
+<div id="gradiente" class="section level2">
+<h2>Gradiente</h2>
+<ul>
+<li><p>Derivadas de primeira e segunda ordem aparecem com tanta
+frequência que receberam nomes especiais.</p></li>
+<li><p>O vetor gradiente de uma função f (x 1,x 2) é o <strong>vetor
+composto pelas derivadas primeira</strong> de f (x 1,x 2) em relação a
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>A definição estende-se naturalmente para funções
+multidimensionais.</p></li>
+<li><p>Sendo, f (x ) onde x é um vetor p x 1 de variáveis independentes
+o vetor gradiente de f (x ) é dado por
+<strong>[[ARRUMAR]]</strong></p></li>
+</ul>
+</div>
+<div id="hessiano" class="section level2">
+<h2>Hessiano</h2>
+<ul>
+<li><p>A matriz hessiana de uma função f (x 1,x 2) é a matriz composta
+pelas <strong>derivadas de segunda ordem</strong> de f (x 1,x 2), na
+seguinte estrutura <strong>[[ARRUMAR]]</strong></p></li>
+<li><p>E para o caso multidimensional
+<strong>[[ARRUMAR]]</strong></p></li>
+</ul>
+</div>
+<div id="séries-de-taylor" class="section level2">
+<h2>Séries de Taylor</h2>
+<ul>
+<li>Suponha que uma função f (x ) é derivável (n + 1) vezes em um
+intervalo contendo x = x 0.</li>
+<li>Expansão em Série de Taylor de f (x ) em torno de x = x 0 consiste
+em reescrever f (x ) da seguinte forma:
+<strong>[[ARRUMAR]]</strong></li>
+</ul>
+<p>onde o termo R n(x ) é chamado de resíduo ou erro, e dado por
+<strong>[[ARRUMAR]]</strong></p>
+<p>sendo E um valor entre x e x 0.</p>
+</div>
+<div id="exemplo-2" class="section level2">
+<h2>Exemplo</h2>
+<ul>
+<li><p>Seja f (x ) = exp(x ). Determine a expansão de Taylor de ordens 1
+e 2, de f (x ) ao redor de x 0 = 0.</p></li>
+<li><p>Aproximação de primeira ordem
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Aproximação de segunda ordem
+<strong>[[ARRUMAR]]</strong></p></li>
+</ul>
+<p>Graficos</p>
+<ul>
+<li>Quanto mais se afasta de zero pior fica a aproximação.</li>
+<li>A Tailor em n+1 graus é igual a original</li>
+</ul>
+</div>
+<div id="regressão-linear-simples" class="section level2">
+<h2>Regressão linear simples</h2>
+<ul>
+<li>Regressão linear é uma das técnicas mais populares em ciência de
+dados.</li>
+<li>Objetivo: descrever o comportamento de uma variável dependente y por
+meio do conhecimento de outra variável independente x .</li>
+<li>Predizer y dado um valor de x .</li>
+<li>Descrever a relação entre y e x .</li>
+<li>Exemplo
+<ul>
+<li>Como o tamanho (em metros quadrados) de um apartamento está
+associado ao seu preço (em reais)?</li>
+<li>Suponha que um conjunto de 20 apartamentos foi medido e
+avaliado.</li>
+</ul></li>
+</ul>
+<p>Grafico</p>
+<p>Regressão linear simples - Ideia simples! → O preço deve ser uma
+função do tamanho do apartamento. - Formalização matemática: - Denote
+por y i para i = 1, … ,n o preço do apartamento i e neste caso n = 20. -
+Denote por x i o tamanho do apartamento i em metros quadrados. - Função
+relacionando preço ~ tamanho <span class="math display">\[ Preço =
+f(metroquadrado) \]</span> <span class="math display">\[ y_{i} =
+f^{*}(x_{i})\]</span></p>
+<ul>
+<li><p>Qual é a função f *(x i )?</p></li>
+<li><p>Não conhecemos e em geral nunca vamor conhecer f *(x i
+).</p></li>
+<li><p>Aproximar f *(x i ) por outra função f (x i ) conhecida.</p></li>
+<li><p>Problema: qual f (x i ) e como fazer a aproximação!</p></li>
+<li><p>Uma opção é usar a expansão em série de Taylor para obter uma
+aproximação.</p></li>
+<li><p>Aproximação em série de Taylor de primeira ordem <span class="math display">\[ f^{*}(x) = f^{*}(x_0) + (x - x_0)f^{*&#39;}(x) +
+R_n(x)\]</span></p></li>
+<li><p>Ignorando o termo residual R n(x )
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Rearranjando os termos obtemos
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>De forma equivalente, temos <span class="math display">\[y i  =
+\beta_0 + \beta_1x i  + R n(x i ),\]</span> em que o termo R n(x i ) é o
+erro cometido em aproximar y i por <span class="math inline">\(\beta_0 +
+\beta_1x i\)</span></p></li>
+<li><p>Notação usual <span class="math inline">\(Ei = y i - (\beta_0 +
+\beta_1x i ).\)</span></p></li>
+<li><p>Note que o erro é uma função dos parâmetros desconhecidos <span class="math inline">\(\beta_0\)</span> e <span class="math inline">\(\beta_1\)</span></p></li>
+<li><p>Objetivo: minimizar a soma de quadrados dos erros ou resíduos
+<strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Obter o vetor gradiente <strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Encontrar <span class="math inline">\(\hat{\beta_0}\)</span> e
+<span class="math inline">\(\hat{\beta_1}\)</span> tal que
+<strong>[[ARRUMAR]]</strong></p></li>
+</ul>
+<ol style="list-style-type: decimal">
+<li><p>Chame <span class="math inline">\(y_i - (\beta_0 + \beta_1x i ) =
+erro_i\)</span> .</p></li>
+<li><p>Chame <span class="math inline">\(\beta_0 + \beta_1x i = \mu
+i\)</span></p></li>
+<li><p>Assim, <strong>[[ARRUMAR]]</strong></p></li>
+</ol>
+<p>Vetor gradiente - Portanto, <strong>[[ARRUMAR]]</strong></p>
+<ul>
+<li><p>Resolver o sistema de equações simultâneas (derivadas de beta 0 e
+beta 1) <strong>[[ARRUMAR]]</strong></p></li>
+<li><p>Solução <strong>[[ARRUMAR]]</strong></p></li>
+</ul>
+<pre class="r"><code>## Carregando a base de dados
+dados &lt;- read.table(&quot;Data_files/reglinear.csv&quot;,
+                    header = TRUE)
+dados</code></pre>
+<pre><code>##           y  x
+## 1  207317.7 55
+## 2  250845.7 69
+## 3  165755.0 46
+## 4  219816.7 61
+## 5  268582.2 73
+## 6  229059.7 63
+## 7  179098.1 50
+## 8  168301.8 46
+## 9  250917.7 69
+## 10 230990.3 62
+## 11 229818.7 63
+## 12 221484.1 60
+## 13 187977.0 55
+## 14 251526.9 70
+## 15 242289.5 66
+## 16 211007.7 59
+## 17 197455.5 53
+## 18 192100.8 51
+## 19 208762.3 57
+## 20 204593.1 54</code></pre>
+<pre class="r"><code>## Obtendo beta1
+beta1 &lt;- (sum(dados$y*dados$x) -
+            mean(dados$y)*sum(dados$x))/
+  (sum(dados$x^2) - mean(dados$x)*sum(dados$x))
+# Obtendo beta0
+beta0 &lt;- mean(dados$y) - beta1*mean(dados$x)
+c(beta0, beta1)</code></pre>
+<pre><code>## [1] 2622.752 3608.499</code></pre>
+<pre class="r"><code>## [1] 2622.752 3608.499
+## Verificando</code></pre>
+<pre class="r"><code>coef(lm(y ~ x, data = dados))</code></pre>
+<pre><code>## (Intercept)           x 
+##    2622.752    3608.499</code></pre>
+<pre class="r"><code>## (Intercept) x
+## 2622.752 3608.499</code></pre>
+<p>Modelo: <span class="math inline">\(\hat{y} = 2622.752 +
+3608.499\)</span>* metrosquadrados</p>
+</div>
+<div id="discussão" class="section level2">
+<h2>Discussão</h2>
+<ul>
+<li>Derivadas são essenciais em estatística.</li>
+<li>Maximizar/minimizar funções perda/objetivo.</li>
+<li>O cálculo é por vezes difícil e tedioso.</li>
+<li>Solução de sistemas lineares é tedioso quando possível.</li>
+<li>Álgebra linear ajuda a generalizar as soluções.</li>
+<li>Em situações mais gerais expressões analíticas não serão possíveis
+de obter.</li>
+<li>Métodos numéricos para resolução de sistemas lineares.</li>
+<li>Métodos numéricos para resolução de sistemas não-lineares.</li>
+<li>Métodos de otimização numérica.</li>
+</ul>
+</div>
+</div>
+<div id="aula-2024-04-06" class="section level1">
+<h1>Aula 2024-04-06</h1>
+<div id="integrais" class="section level2">
+<h2>Integrais</h2>
+<p>Anti-derivada</p>
+<div id="integral-indefinida" class="section level3">
+<h3>Integral indefinida</h3>
+<ul>
+<li>Chamamos de integral indefinida o oposto ou o inverso da derivada,
+também chamada de antiderivada.</li>
+<li>A integral indefinida da função <span class="math inline">\(f(x)\)</span> é expressa por <span class="math display">\[
+\int  f (x )dx  = F  (x ) + c .
+\]</span></li>
+<li>Exemplo, <span class="math display">\[
+\int  x dx  = x 2
+\]</span> 2 + c , uma vez que se derivarmos x 2 2 encontramos x</li>
+</ul>
+<p><strong>[[COMPLETAR]]</strong></p>
+</div>
+<div id="soma-de-riemann" class="section level3">
+<h3>Soma de Riemann</h3>
+<pre class="r"><code>soma_riemann &lt;- function(n, a, b, fx, ...) {
+  intervalos &lt;- seq(a, b, length = n)
+  ci &lt;- c()
+  soma &lt;- c()
+  for(i in 1:c(n-1)) {
+    Deltai &lt;- (intervalos[i+1] - intervalos[i]) # Tamanho do intervalo
+    ci[i] &lt;- (intervalos[i+1] + intervalos[i])/2 # Ponto central do intervalo
+    soma[i] &lt;- fx(ci[i])*Deltai # Cada elemento da soma
+  }
+  return(sum(soma))
+}
+soma_riemann &lt;- Vectorize(soma_riemann, &quot;n&quot;)
+
+soma_riemann(n = 2, a = 1, b = 2, fx = function(x) x^2)</code></pre>
+<pre><code>## [1] 2.25</code></pre>
+<pre class="r"><code>soma_riemann(n = 10, a = 1, b = 2, fx = function(x) x^2)</code></pre>
+<pre><code>## [1] 2.332305</code></pre>
+<pre class="r"><code>soma_riemann(n = 50, a = 1, b = 2, fx = function(x) x^2)</code></pre>
+<pre><code>## [1] 2.333299</code></pre>
+<pre class="r"><code>soma_riemann(n = 100, a = 1, b = 2, fx = function(x) x^2)</code></pre>
+<pre><code>## [1] 2.333325</code></pre>
+<pre class="r"><code>soma_riemann(n = 1000, a = 1, b = 2, fx = function(x) x^2)</code></pre>
+<pre><code>## [1] 2.333333</code></pre>
+</div>
+<div id="integração-numérica-em-r" class="section level3">
+<h3>Integração numérica em R</h3>
+<ul>
+<li>O R tem uma função nativa para o cálculo de integrais
+?integrate.</li>
+<li>Exemplo:</li>
+</ul>
+<pre class="r"><code>fx &lt;- function(x) x^2
+integrate(fx, lower = 1, upper = 2)</code></pre>
+<pre><code>## 2.333333 with absolute error &lt; 2.6e-14</code></pre>
+<pre class="r"><code>## 2.333333 with absolute error &lt; 2.6e-14</code></pre>
+<ul>
+<li>Outros tipos de integrais
+<ul>
+<li>Integrais multidimensionais.</li>
+<li>Integrais impróprias.</li>
+</ul></li>
+</ul>
+</div>
+<div id="discussão-1" class="section level3">
+<h3>Discussão</h3>
+<ul>
+<li>Integrais são extremamente úteis para obter alguns resultados
+teóricos em probabilidade.</li>
+<li>Permitem o cálculo de probabilidades para variáveis aleatórias
+contínuas.</li>
+<li>Técnicas (básicas) de modelagem estatística e machine learning não
+usam integrais diretamente.</li>
+<li>Em geral integrais são mais difíceis de calcular do que
+derivadas.</li>
+<li>É possível estender a ideia de integrais para funções com duas ou
+mais variáveis de forma análoga feita para derivadas.</li>
+<li>Integrais em alta dimensão são extremamente difíceis de calcular
+e/ou aproximar numéricamente.</li>
+</ul>
 </div>
 </div>
 </div>

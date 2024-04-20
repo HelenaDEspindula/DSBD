@@ -1,0 +1,57 @@
+---
+title: "Exercicios1"
+author: "Helena R. S. D'Espindula"
+output:
+  html_document: 
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+  pdf_document:
+date: "`r Sys.Date()`"
+---
+
+```{r setup, echo=TRUE, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, warning = TRUE, error = TRUE)
+library(ggplot2)
+library(glmnet)
+library(Matrix)
+library(bookdown)
+```
+
+## Tentativa 1
+
+### 1
+
+Calcule a derivada de 
+$$ f(x) = 13x^5  + 4x^4 +3x^2 + 78$$
+```{r}
+f = expression(13*x^5  + 4*x^4 +3*x^2 + 78)
+D( f, name = "x")
+```
+
+$$13 * (5 * x^4) + 4 * (4 * x^3) + 3 * (2 * x)$$
+
+$$= 65x^4 + 16 x^3 + 6x $$
+$$ = x(65x^3 + 16 x^2 + 6) $$
+
+### 2
+Calcule a derivada primeira e segunda da seguinte equação $ y = ln(2x^5) $ e avalie no ponto $x =2$. A resposta são dois valores numericos usando três casa decimais.
+
+
+```{r}
+f <- expression(log(2*x^5))
+
+D( f, name = "x")
+```
+
+### 3
+
+```{r}
+f <- expression(exp(2*x^2 + 3*y))
+
+D( f, name = "x")
+```
+
+

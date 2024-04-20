@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.7)  7 APR 2024 22:25
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.4.7)  19 APR 2024 22:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -317,7 +317,7 @@ Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 28
 File: bkm-pdftex.def 2023-12-10 v1.31 bookmark driver for pdfTeX and luaTeX (HO)
 \BKM@id=\count292
 ))
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 112.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 113.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ) (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
@@ -327,24 +327,24 @@ File: l3backend-pdftex.def 2024-03-14 L3 backend support: PDF output (pdfTeX)
 ) (./04_2-Caderno-InfEst-parte2.aux)
 \openout1 = `04_2-Caderno-InfEst-parte2.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 112.
-LaTeX Font Info:    ... okay on input line 112.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 485.
@@ -385,92 +385,92 @@ File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 112.
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 114.
+Package hyperref Info: Link coloring OFF on input line 113.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 114.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 114.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 114.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 114.
+(Font)              <12> on input line 115.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 114.
+(Font)              <8> on input line 115.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 114.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 114.
+(Font)              <6> on input line 115.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 114.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 115.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 126.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 127.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 168.
+(Font)              <10> on input line 169.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 168.
+(Font)              <7> on input line 169.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 168.
-
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 206.
-
-
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 206.
-
+(Font)              <5> on input line 169.
 [1
 
 {c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}]
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 223.
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 207.
+
+
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 207.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 224.
 (c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 224.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 225.
 
 LaTeX Font Warning: Font shape `T1/lmtt/bx/it' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 272.
+(Font)              Font shape `T1/lmtt/b/sl' tried instead on input line 273.
 
 <04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf, id=24, 469.755pt x 325.215pt>
 File: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf Graphic file (type pdf)
 <use 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf>
-Package pdftex.def Info: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 281.
+Package pdftex.def Info: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf  used on input line 282.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [2]
 <04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf, id=36, 469.755pt x 325.215pt>
 File: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf Graphic file (type pdf)
 <use 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf>
-Package pdftex.def Info: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf  used on input line 291.
+Package pdftex.def Info: 04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf  used on input line 292.
 (pdftex.def)             Requested size: 469.75386pt x 325.2142pt.
 [3 <./04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-1.pdf>] [4 <./04_2-Caderno-InfEst-parte2_files/figure-latex/unnamed-chunk-2-2.pdf>]
 
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 393.
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 394.
 
 [5{c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [6]
 
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 571.
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 572.
 
 [7] [8] [9] [10] [11] [12] [13] [14]
 
-LaTeX Warning: Command \textellipsis invalid in math mode on input line 1234.
+LaTeX Warning: Command \textellipsis invalid in math mode on input line 1235.
 
 [15] [16] [17] [18] [19]
 
-LaTeX Warning: Command \c invalid in math mode on input line 1604.
+LaTeX Warning: Command \c invalid in math mode on input line 1605.
 
 [20] [21] [22] [23] (./04_2-Caderno-InfEst-parte2.aux)
  ***********
@@ -485,9 +485,9 @@ Here is how much of TeX's memory you used:
  33507 multiletter control sequences out of 15000+600000
  605758 words of font info for 80 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 89i,6n,93p,715b,564s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 89i,6n,93p,715b,553s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx12.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr17.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy5.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtko10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/Prof_Helena/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb>
-Output written on 04_2-Caderno-InfEst-parte2.pdf (23 pages, 397149 bytes).
+Output written on 04_2-Caderno-InfEst-parte2.pdf (23 pages, 401323 bytes).
 PDF statistics:
  503 PDF objects out of 1000 (max. 8388607)
  433 compressed objects within 5 object streams

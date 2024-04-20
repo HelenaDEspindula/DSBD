@@ -2,13 +2,13 @@
 title: "04_2-Caderno-InfEst-parte2"
 author: "Helena R. S. D'Espindula"
 output:
-  pdf_document:
   html_document: 
     toc: true
     toc_float:
       collapsed: false
       smooth_scroll: false
       number_sections: true
+  pdf_document:
 date: "`r Sys.Date()`"
 ---
 
@@ -525,7 +525,20 @@ c(intercept, slope)
 
 - Derivada de funções especiais
 5. Se $f(x) = exp(x)$ então $f'(x) = exp(x)$.
-6. Se $f(x) = ln(x)$ então $f'(x) = 1x, x > 0$
+
+Exemplo:
+$$f(x) = exp(2 x^2 + 3y)$$
+$$\frac{\partial}{\partial x}e^{(2 x^2 + 3y)}$$
+onde $u = 2 x^2 + 3y$ e 
+
+$$ \frac{\partial (e^u)}{\partial u} = exp(u)$$
+
+$$\frac{\partial}{\partial x}exp(2 x^2 + 3y) = exp(2 x^2 + 3y) * (\frac{\partial}{\partial x} (2 x^2 + 3y)$$
+
+= \frac{\partial exp(x)}{\partial x} * \frac{\partial x}{}$$
+
+
+6. Se $f(x) = ln(x^a)$ então $f'(x) = \frac{a}{x}, \space x > 0$
 - Sendo, $f(x)$ e $g(x)$ deriváveis em $x$ e $c$ uma constante.
 7. $ (f + g )' = f'(x) + g '(x).$
 8. $(c f)'(x) = c f'(x).$
