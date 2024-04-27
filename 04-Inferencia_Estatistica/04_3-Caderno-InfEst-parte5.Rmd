@@ -1,0 +1,1378 @@
+---
+title: "04_3-Caderno-InfEst-parte5"
+author: "Helena R. S. D'Espindula"
+output:
+  html_document: 
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+  pdf_document:
+date: "`r Sys.Date()`"
+---
+
+```{r setup, echo=TRUE, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, warning = TRUE, error = TRUE)
+library(ggplot2)
+library(glmnet)
+library(Matrix)
+library(bookdown)
+library(numDeriv)
+library(pracma)
+```
+\usepackage{amsmath}
+
+- Até agora resolvemos problemas lineares assim:
+$$
+(X^TX)^{-1} X^TX \hat{\beta} = (X^TX)^{-1}X^Ty
+$$
+- Função linear
+$$
+y = \beta_0 + \beta_1 x_1 + \beta_p x_p +erro
+$$
+- Aqui tem um exp então não dá pra resolver assim:
+$$
+y = \frac{exp (\beta_0 + \beta_1 x_1 )}{coisas}
+$$
+
+
+# Métodos Numéricos
+
+## Sistemas de equações não-lineares
+
+### Equações não-lineares
+- Equações precisam ser resolvidas frequentemente em todas as áreas da ciência.
+- Equação de uma variável:$f(x) = 0$.
+- A solução ou raiz é um valor numérico de $x$ que satisfaz a equação.−1.0 −0.5 0.0 0.5 1.0
+- Solução de uma equação do tipo $f(x) = 0$ é o ponto onde $f(x)$ cruza ou toca o eixo $x$.
+
+### Solução de equações não lineares
+- Em muitas situações é impossível determinar a raiz analiticamente.
+- Exemplo trivial $3x + 8 = 0 \rigtharrow x = -\frac{8}{3}$
+- Exemplo não-trivial $8 − 4.5(x − sin(x)) = 0 → x = ?$
+- Solução numérica de $f(x) = 0$ é um valor de $x$ que satisfaz à equação de forma aproximada.
+- Métodos numéricos para resolver equações são divididos em dois grupos:
+  1. Métodos de confinamento;
+  2. Métodos abertos
+
+
+### Métodos de confinamento
+- Identifica-se um intervalo que possui a solução.
+- Usando um esquema numérico, o tamanho do intervalo é reduzido sucessivamente até uma precisão desejada
+
+
+### Métodos abertos
+- Assume-se uma estimativa inicial.
+- Tentativa inicial deve ser próxima a solução.
+- Usando um esquema numérico a solução é melhorada.
+- O processo para quando a precisão desejada é atingida.
+
+
+### Erros em soluções numéricas
+- Critério para determinar se uma solução é suficientemente precisa.
+- Seja $x_{ts}$ a solução verdadeira e $x_{ns}$ uma solução numérica.
+- Quatro medidas podem ser consideradas para avaliar o erro:
+1. Erro real $x_{ts} - x_{ns}$.
+
+2. Tolerância em $f(x)$
+$$
+|f(x_{ts}) - f(x_{ns})| = |0 - e| = |e|
+$$
+
+3. Tolerância no tamanho do intervalo de busca:
+$$
+|\frac{b-a}{2}|
+$$
+4. Erro relativo estimado:
+$$
+|\frac{x^n_{ns}-x^{n-1}_{ns}}{x^{n-1}_{ns}}|
+$$
+
+  - Tolerancia que o prof usa normalmente:
+$$
+1e^{-4}
+$$
+
+
+## Métodos de confinamento
+
+### Método da bisseção
+- Método de confinamento.
+- Sabe-se que dentro de um intervalo  $[a,b], f(x)$ é contínua e possui uma solução.
+- Neste caso $f(x)$ tem sinais opostos nos pontos finais do intervalo.
+
+### Algoritmo: método da bisseção
+- Encontre $[a,b]$, tal que $f(a) f(b) < 0$.
+- Calcule a primeira estimativa $x^{(1)}_{ns}$ usando $x^{(1)}_{ns} = \frac{a+b}{2}$
+- Determine se a solução exata está entre $a$ e $x^{(1)}_{ns}$ ou entre $x^{(1)}_{ns}$ e $b$. Isso é feito verificando o sinal do produto $f(a)f(x^{(1)}_{ns}) $
+  1. Se $f(a) f(x^{(1)}_{ns}) < 0$, a solução está entre $a$ e $x^{(1)}_{ns}$
+  2. Se  $f(a) f(x^{(1)}_{ns}) > 0$, a solução está entre $x^{(1)}_{ns}$ $b$.
+
+- Selecione o subintervalo que contém a solução e volte ao passo 2.
+- Repita os passos 2 a 4 até que a tolerância especificada seja satisfeita
+
+### Implementação R: método da bisseção
+
+```{r}
+bissecao <- function(fx,
+                     a,
+                     b,
+                     tol = 1e-04,
+                     max_iter = 100) {
+  fa <-
+    fx(a)
+  fb <- fx(b)
+  if (fa * fb > 0)
+    stop("Solução não está no intervalo")
+  solucao <- c()
+  sol <- (a + b) / 2
+  solucao[1] <- sol
+  
+  limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for (i in 1:max_iter) {
+    ## max_inter para não ir até infinito se não atingir a tolerancia
+    test <- fx(a) * fx(sol)
+    if (test < 0) {
+      solucao[i + 1] <- (a + sol) / 2
+      b = sol
+    }
+    if (test > 0) {
+      solucao[i + 1] <- (b + sol) / 2
+      a = sol
+    }
+    if (abs((b - a) / 2) < tol)
+      break
+    sol = solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <-
+    list("Tentativas" = solucao,
+         "Limites" = limites,
+         "Raiz" = solucao[i + 1])
+  return(out)
+}
+```
+
+
+### Exemplo
+- Encontre as raízes de
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] <= 3.84
+$$
+
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] - 3.84 <= 0
+$$
+
+é uma parabola de boca para cima, tem duas raizes em zero
+
+
+```{r}
+ftheta <- function(theta) {
+  ## Implementando a função
+  dd <-
+    2 * length(y) * (log(theta.hat / theta) + mean(y) * (theta - theta.hat))
+  return(dd - 3.84)
+}
+set.seed(123) ## Resolvendo numericamente
+y <- rexp(20, rate = 1)
+theta.hat <- 1 / mean(y)
+Ic_min <- bissecao(fx = ftheta, a = 0, b = theta.hat)
+Ic_max <- bissecao(fx = ftheta, a = theta.hat, b = 3)
+c(Ic_min$Raiz, Ic_max$Raiz) ## Solução aproximada
+```
+
+
+### Método regula falsi
+- Sabe-se que dentro de um intervalo $[a,b], f(x)$ é contínua e possui uma solução.
+
+### Algoritmo: método regula falsi
+- Escolha os pontos $a$ e $b$ entre os quais existe uma solução.
+- Calcule a primeira estimativa: $x^{(i)} = \frac{a f(b) - f f(a)}{f(b)-f(a)}$
+- Determine se a solução está entre 𝑎 e 𝑥𝑖, ou entre 𝑥(𝑖) e 𝑏.
+  1. Se $f(a)f(x(i)) < 0$, a solução está entre $a$ e $x(i)$.
+  2. Se $f(a)f(x(i)) > 0$, a solução está entre $x(i)$ e $b$.
+- Selecione o subintervalo que contém a solução como o novo intervalo [𝑎,𝑏] e volte ao passo 2.
+- Repita passos 2 a 4 até convergência
+
+
+### Implementação R: método regula falsi
+
+```{r}
+
+regula_falsi <- function(fx,
+                         a,
+                         b,
+                         tol = 1e-04,
+                         max_iter = 100) {
+  fa <-
+    fx(a)
+  fb <- fx(b)
+  if (fa * fb > 0)
+    stop("Solução não está no intervalo")
+  solucao <- c()
+  sol <- (a * fx(b) - b * fx(a)) / (fx(b) - fx(a))
+  solucao[1] <- sol
+  limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for (i in 1:max_iter) { 
+    ## max_inter para não ir até infinito se não atingir a tolerancia
+    test <- fx(a) * fx(sol)
+    if (test < 0) {
+      b = sol
+      solucao[i + 1] <- (a * fx(b) - b * fx(a)) / (fx(b) - fx(a))
+    }
+    if (test > 0) {
+      a = sol
+      solucao[i + 1] <- sol <- (a * fx(b) - b * fx(a)) / (fx(b) - fx(a))
+    }
+    if (abs(solucao[i + 1] - solucao[i]) < tol)
+      break
+    sol = solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <-
+    list("Tentativas" = solucao,
+         "Limites" = limites,
+         "Raiz" = sol)
+  return(out)
+}
+```
+
+### Aplicação: regula-falsi
+- Encontre as raízes de
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] <= 3.84
+$$
+
+```{r}
+## Resolvendo numericamente
+Ic_min <- regula_falsi(fx = ftheta, a = 0.1, b = theta.hat)
+Ic_max <- regula_falsi(fx = ftheta, a = theta.hat, b = 3)
+## Solução aproximada
+c(Ic_min$Raiz, Ic_max$Raiz)
+```
+
+
+
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] <= 3.84
+$$
+é igual a:
+$$ f(\theta) - 3,84 = 0 $$
+$$ f(\theta = 0,1)$$
+$$x^{(2)} = 0,1 - \alpha f(\theta = 0,1) = 0,9$$
+$$x^{(3)} = 0,9 - \alpha f(\theta = 0,9) = 1,8$$
+$$x^{(4)} = 1,8 - \alpha f(\theta = 1,8)$$
+
+
+
+### Comentários: métodos de confinamento
+
+- Sempre convergem para uma resposta, desde que uma raiz esteja no intervalo.
+- Podem falhar quando a função é tangente ao eixo $x$, não cruzando em $f(x) = 0$.
+- Convergência é lenta em comparação com outros métodos.
+- São difíceis de generalizar para sistemas de equações não-lineares.
+
+
+## Métodos abertos
+
+### Método de Newton
+
+- Função deve ser contínua e diferenciável.
+- Função deve possuir uma solução perto do ponto inicial
+
+### Algoritmo: método de Newton
+- Escolha um ponto $x_1$ como inicial.
+- Para $i = 1,2, ...$ até que o erro seja menor que um valor especificado, calcule
+$$
+x^{(i+1)} = x^{(i)} - \frac{f(x^{(i)})}{f'(x^{(i)})}
+$$
+
+- Implementação computacional
+
+```{r}
+newton <- function(fx, f_prime, x1, tol = 1e-04, max_iter = 10) {
+  solucao <- c()
+  solucao[1] <- x1
+  for(i in 1:max_iter) {
+    solucao[i+1] = solucao[i] - fx(solucao[i])/f_prime(solucao[i])
+    if( abs(solucao[i+1] - solucao[i]) < tol) break
+  }
+  return(solucao)
+}
+```
+
+### Aplicação: método de Newton
+- Encontre as raízes de
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] <= 3.84
+$$
+
+- Derivada
+$$
+D'(\theta) = 2n(y - 1/ \theta)
+$$
+
+
+```{r}
+## Derivada da função a ser resolvida
+fprime <- function(theta){2*length(y)*(mean(y) - 1/theta)}
+## Solução numerica
+Ic_min <- newton(fx = ftheta, f_prime = fprime, x1 = 0.1)
+Ic_max <- newton(fx = ftheta, f_prime = fprime, x1 = 2)
+c(Ic_min[length(Ic_min)], Ic_max[length(Ic_max)])
+```
+
+### Método gradiente descendente
+
+Obs: na matematica é mais comum procurar o minimo do que o máximo.
+
+- Método do gradiente descendente em geral é usado para otimizar uma função.
+- Suponha que desejamos minimizar $F(x)$ cuja derivada é $f(x)$.
+- Sabemos que um ponto critico será obtido em $f(x) = 0$
+- Note que $f(x)$ é o gradiente de $F(x)$, assim aponta na direção de máximo.
+- Assim, podemos caminhar na direção contrária seguindo o gradiente, i.e.
+$$
+x^{(i+1)} = x^{(i)} - \alpha f (x^{(i)})
+$$
+- $\alpha$ é um parâmetro de tuning usado para controlar o tamanho do passo.
+- A escolha do $\alpha$ é fundamental para atingir convergência.
+- Busca em gride pode ser uma opção razoável.
+
+Obs: $\alpha$ = parametro de tuning ou taxa de aprendizagem. Idealmente valor pequeno para ir em passos pequenos.
+
+### Algoritmo: método gradiente descendente
+- Escolha um ponto $x_1$ como inicial.
+- Para $i - 1,2, ....$ até que o erro seja menor que um valor especificado, calcule:
+$$
+x^{(i+1)} = x^{(i)} - \alpha f (x^{(i)})
+$$
+
+- Implementação computacional
+
+```{r}
+grad_des <- function(fx,
+                     x1,
+                     alpha,
+                     max_iter = 100,
+                     tol = 1e-04) {
+  sol <- c()
+  sol[1] <- x1
+  for (i in 1:max_iter) {
+    sol[i + 1] <- sol[i] - alpha * fx(sol[i])
+    if (abs(fx(sol[i + 1])) < tol)
+      break
+  }
+  return(sol)
+}
+```
+
+### Aplicação: método gradiente descendente
+
+- Encontre as raízes de
+$$
+D(\theta) = 2n[ log(\frac{\hat{\theta}}{\theta} + y_{linha} (\theta - \hat{\theta})] <= 3.84
+$$
+
+
+```{r}
+## Solução numerica
+Ic_min <- grad_des(fx = ftheta, alpha = -0.02, x1 = 0.1)
+Ic_max <- grad_des(fx = ftheta, alpha = 0.01, x1 = 4)
+c(Ic_min[length(Ic_min)], Ic_max[length(Ic_max)])
+```
+
+
+
+## Sistemas de equações não-lineares
+
+### Sistemas de equações
+
+- Sistema com duas equações:
+$$
+f_1(x_1,x_2) = 0
+$$
+
+$$
+f_2(x_1,x_2) = 0
+$$
+
+- A solução numérica consiste em encontrar $\hat{x_1}$ e $\hat{x_2}$ que satisfaça o sistema de equações.
+
+- A ideia é facilmente estendida para um sistema com 𝑛 equações
+$$
+f_1(x_1,x_n) = 0
+$$
+...
+$$
+f_n(x_1,x_n) = 0
+$$
+
+- Genericamente, tem-se
+$$
+f(x) = 0
+$$
+
+## Método de Newton
+
+
+### Algoritmo: método de Newton
+- Escolha um vetor $x1$ como inicial.
+- Para $i = 1,2 ....$ até que o erro seja menor que um valor especificado, calcule
+$$
+x^{(i+1)} = x^{(i)} - J(x^{(i)})^{-1} f(x^{(i)})
+$$
+onde
+
+$$
+$$
+
+é chamado Jacobiano de $f(x).
+
+- Implementação computacional
+
+```{r}
+newton <- function(fx, jacobian, x1, tol = 1e-04, max_iter = 10) {
+  solucao <- matrix(NA, ncol = length(x1), nrow = max_iter)
+  solucao[1,] <- x1
+  for(i in 1:max_iter) {
+    J <- jacobian(solucao[i,])
+    grad <- fx(solucao[i,])
+    solucao[i+1,] = solucao[i,] - solve(J, grad)
+    if( sum(abs(solucao[i+1,] - solucao[i,])) < tol) break
+  }
+  return(solucao)
+}
+```
+
+
+### Aplicação: método de Newton
+- Resolva
+𝑓1(𝑥1, 𝑥2) = 𝑥2 − 1
+2 (exp𝑥1/2 + exp−𝑥/2) = 0
+𝑓2(𝑥1, 𝑥2) = 9𝑥2
+1 + 25𝑥2
+2 − 225 = 0.
+- Precisamos obter o Jacobiano, assim tem-se
+J(𝑥) = [− 1
+2 ( exp𝑥1/2
+2 − exp−𝑥1/2
+2 ) 1
+18𝑥1 50𝑥
+
+```{r}
+## Sistema a ser resolvido
+fx <- function(x) {
+  c(x[2] - 0.5 * (exp(x[1] / 2) + exp(-x[1] / 2)),
+    9 * x[1] ^ 2 + 25 * x[2] ^ 2 - 225)
+}
+## Jacobiano
+Jacobian <- function(x) {
+  jac <- matrix(NA, 2, 2)
+  jac[1, 1] <- -0.5 * (exp(x[1] / 2) / 2 - exp(-x[1] / 2) / 2)
+  jac[1, 2] <- 1
+  jac[2, 1] <- 18 * x[1]
+  jac[2, 2] <- 50 * x[2]
+  return(jac)
+}
+```
+
+```{r}
+## Resolvendo
+sol <- newton(fx = fx, jacobian = Jacobian, x1 = c(1,1))
+tail(sol,4) ## Solução
+```
+
+```{r}
+fx(sol[8,]) ## OK
+```
+
+### Comentários: método de Newton
+- Método de Newton irá convergir tipicamente se três condições forem satisfeitas:
+1. As funções 𝑓1, 𝑓2, … , 𝑓𝑛 e suas derivadas forem contínuas e limitadas na vizinhança da
+solução.
+2. O Jacobiano deve ser diferente de zero na vizinhança da solução.
+3. A estimativa inicial de solução deve estar suficientemente próxima da solução exata.
+- Derivadas parciais (elementos da matriz Jacobiana) devem ser determinados. Isso pode ser
+feito analitica ou numericamente.
+- Cada passo do algoritmo envolve a inversão de uma matriz.
+
+
+### Método gradiente descendente
+
+
+- Escolha um vetor 𝑥1 como inicial.
+- Para 𝑖 = 1,2, … até que o erro seja menor que um valor especificado, calcule
+𝑥(𝑖+1) = 𝑥(𝑖) − 𝛼f(𝑥(𝑖)).
+- Implementação computacional
+
+
+```{r}
+grad_des <- function(fx,
+                     x1,
+                     alpha,
+                     max_iter = 100,
+                     tol = 1e-04) {
+  solucao <- matrix(NA, ncol = length(x1), nrow = max_iter)
+  solucao[1, ] <- x1
+  for (i in 1:c(max_iter - 1)) {
+    solucao[i + 1, ] <- solucao[i, ] - alpha * fx(solucao[i, ])
+    #print(c(i, solucao[i+1,]))
+    if (sum(abs(solucao[i + 1, ] - solucao[i, ])) <= tol)
+      break
+  }
+  return(solucao)
+}
+```
+
+### Aplicação: método gradiente descendente
+- Resolva
+$$
+$$
+
+$$
+$$
+
+onde $y_i = (5.15; 6.40; 2.77; 5.72; 6.25; 3.45; 5.00; 6.86; 4.86; 3.72)$ e
+$z_i = (0.28; 0.78; 0.40; 0.88; 0.94; 0.04; 0.52; 0.89; 0.55; 0.45).$
+
+- Implementação computacional
+
+```{r}
+fx <- function(x) {
+  y <- c(5.15, 6.40, 2.77, 5.72, 6.25, 3.45, 5.00, 6.86, 4.86, 3.72)
+  z <- c(0.28, 0.78, 0.40, 0.88, 0.94, 0.04, 0.52, 0.89, 0.55, 0.45)
+  term1 <- -2 * sum(y - x[1] - x[2] * z)
+  term2 <- -2 * sum((y - x[1] - x[2] * z) * z)
+  out <- c(term1, term2)
+  return(out)
+}
+sol_grad <-
+  grad_des(
+    fx = fx,
+    x1 = c(5, 0),
+    alpha = 0.05,
+    max_iter = 140
+  )
+fx(x = sol_grad[137, ])
+```
+
+### Comentários: método gradiente descendente
+
+- Vantagem: não precisa calcular o Jacobiano!!
+- Desvantagem: precisa de tuning.
+- Em geral precisa de mais iterações que o método de Newton.
+- Cada iteração é mais barata computacionalmente.
+- Uma variação do método é conhecido como steepest descent.
+- Avalia a mudança em 𝑓(𝑥) para um gride de 𝛼 e da o passo usando o 𝛼 que torna 𝐹 (𝑥)
+maior/menor.
+- O tamanho do passo pode ser adaptativo.
+- Cuidado! Supõe que a função subjacente está sendo minimizada!
+
+
+## Diferenciação numérica
+
+- Derivada dá uma medida da taxa na qual a variável $y$ muda devido a uma mudança na variável $x$.
+- A função a ser diferenciada pode ser dada por uma função $f(x)$, ou apenas por um conjunto de pontos $(y_i, x_i)$.
+- Quando devemos usar derivadas numéricas?
+  1. $f'(x)$ é dificil de obter analiticamente.
+  2. $f'(x)$ é caro para calcular computacionalmente.
+  3. Quando a função é especificada apenas por um conjunto de pontos.
+- Abordagens para a diferenciação numérica
+  1. Aproximação por diferenças finitas.
+  2. Aproximar a função por uma outra função de fácil derivação.
+  3. Diferenciação automática (fora do nosso escopo)
+
+### Aproximação da derivada por diferenças finitas
+- Derivada $f'(x)$ de uma função $f'(x)$ no ponto $x =a$ é definida como:
+$$
+f'(a) = \lim_{x \to a}{\frac{f(x)-f(a)}{x-a}}
+$$
+
+- Derivada é a inclinação da reta tangente à função em $x=a$
+- Escolhe-se um ponto $x$ próximo a $a$ e calcula-se a inclinação da reta que conecta os dois pontos.
+- A precisão do cálculo aumenta quando $x$ aproxima de $a$
+- Aproximação numérica: a função será avaliada em diferentes pontos próximos a $a$ para aproximar $f'(a)$.
+
+- Fórmulas para diferenciação numérica:
+1. Diferença progressiva: inclinação da reta que conecta os pontos $(x_i,f(x_i))$ e $(x_{i+1},f(x_{i+1}))$ 
+$$
+f'(x_i) = \frac{f(x_{i+1}) - f(x_{i})}{x_{i+1} - x_i}
+$$
+2. Diferença regressiva: inclinação da reta que conecta os pontos $(x_{i-1},f(x_{i-1}))$ e $(x_{i},f(x_{i}))$ 
+$$
+f'(x_i) = \frac{f(x_{i}) - f(x_{i-1})}{x_{i} - x_{i-1}}
+$$
+3. Diferença central: inclinação da reta que conecta os pontos $(x_{i-1},f(x_{i-1}))$ e $(x_{i+1},f(x_{i+1}))$ 
+$$
+f'(x_i) = \frac{f(x_{i+1}) - f(x_{i-1})}{x_{i+1} - x_{i-1}}
+$$
+
+Obs: nessas formulas o 1 não precisa ser litelmente 1, é só um valor pequeno.
+
+
+- Diferença progressiva
+```{r}
+dif_prog <- function(fx, x, h) {
+df <- (fx(x + h) - fx(x))/( (x + h) - x)
+return(df)
+}
+```
+
+- Diferença regressiva
+```{r}
+dif_reg <- function(fx, x, h) {
+df <- (fx(x) - fx(x - h))/( x - (x - h))
+return(df)
+}
+```
+
+
+- Diferença central
+```{r}
+dif_cen <- function(fx, x, h) {
+df <- (fx(x + h) - fx(x - h))/( (x + h) - (x - h))
+return(df)}
+```
+
+
+Exemplo: aproximação da derivada por diferenças finitas
+- Considere $f(x) = x^3$, assim $f'(x) = 3x^2$
+```{r}
+fx <- function(x) x^3
+dif_prog(fx, x = 2, h = 0.001) ## Diferença progressiva
+## [1] 12.006
+dif_reg(fx, x = 2, h = 0.001) ## Diferença regressiva
+## [1] 11.994
+dif_cen(fx, x = 2, h = 0.001) ## Diferença central
+## [1] 12
+3*2^2 ## Exata
+## [1] 12
+```
+
+## Diferenças finitas usando expansão em Séries de Taylor
+
+- As fórmulas anteriores podem ser deduzidas usando expansão em série de Taylor.
+- O número de pontos para aproximar a derivada pode mudar.
+- Vantagem da dedução por série de Taylor é que ela fornece uma estimativa do erro de truncamento.
+
+
+### Diferença finita progressiva com dois pontos
+- Aproximação de Taylor para o ponto $x_{i+1}$ **+1**
+$$
+f(x_{i+1}) = f(x_i) + f'(x_i)h + \frac{f''(x_i)}{2!}h^2 +  \frac{f'''(x_i)}{3!}h^3 + ....
+$$
+onde $h = x_{i+1} - x_{i}$
+- Fixando dois termos e deixando os outros termos como um **resíduo**, temos
+$$
+f(x_{i+1}) = f(x_i) + f'(x_i)h + \frac{f''(\xi)}{2!}h^2
+$$
+- Resolvendo para $f'(x_i)$, temos
+$$
+f(x_{i}) = \frac{f(x_{i+1}) + f'(x_i)}{h} - \frac{f''(\xi)}{2!}h^2
+$$
+- Erro de truncamento,
+$$
+- \frac{f''(\xi)}{2!}h^2 = O(h)
+$$
+
+### Diferença finita regressiva com dois pontos
+- Aproximação de Taylor para o ponto $x_{i-1}$ **-1**
+$$
+f(x_{i-1}) = f(x_i) - f'(x_i)h + \frac{f''(x_i)}{2!}h^2 +  \frac{f'''(x_i)}{3!}h^3 + ....
+$$
+onde $h = x_{i} - x_{i-1}$
+- Fixando dois termos e deixando os outros termos como um resíduo, temos
+$$
+f(x_{i-1}) = f(x_i) + f'(x_i)h + \frac{f''(\xi)}{2!}h^2
+$$
+- Resolvendo para 𝑓′(𝑥𝑖), temos
+$$
+f(x_{i}) = \frac{f(x_{i}) - f'(x_{i-1})}{h} - \frac{f''(\xi)}{2!}h^2
+$$
+- Erro de truncamento, 𝑓″(𝜉)
+$$
+\frac{f''(\xi)}{2!}h^2 = O(h)
+$$
+
+
+
+### Diferença finita central com dois pontos
+- Aproximação de Taylor para o ponto $x_{i+1}$
+$$
+f(x_{i+1}) = f(x_i) + f'(x_i)h + \frac{f''(x_i)}{2!}h^2 +  \frac{f'''(x_i)}{3!}h^3 + ....
+$$
+onde $erro_1$ está entre $x_1$ e $x_{i-1}$.
+- Aproximação de Taylor para o ponto 𝑥𝑖−1
+$$
+f(x_{i-1}) = f(x_i) - f'(x_i)h + \frac{f''(x_i)}{2!}h^2 +  \frac{f'''(x_i)}{3!}h^3 + ....
+$$
+onde $erro_2$ está entre $x_{i-1}$ e $x_{i}$.
+
+### Diferença finita central com dois pontos
+- Subtraindo as equações, temos
+$$
+$$
+- Resolvendo para 𝑓′(𝑥𝑖), temos
+$$
+$$
+
+### Diferença finita progressiva com três pontos
+- Aproxima 𝑓′(𝑥𝑖) avaliando a função no ponto e nos dois pontos seguintes 𝑥𝑖+1 e 𝑥𝑖+2.
+- Aproximação de Taylor em 𝑥𝑖+1 e 𝑥𝑖+2,
+$$
+$$
+
+$$
+$$
+- Equações 1 e 2 são combinadas de forma que os termos com derivada segunda
+desapareçam.
+- Multiplicando Eq. 1 por 4 e subtraindo Eq. 2, temos
+$$
+$$
+
+Diferença finita com três pontos
+- Resolvendo em 𝑓′(𝑥𝑖), temos
+$$
+$$
+- Diferença finita regressiva com três pontos
+$$
+$$
+
+
+## Derivadas de segunda ordem
+
+### Fórmulas de diferenças finitas para a segunda derivada
+- Usando as mesmas ideias podemos aproximar a derivada segunda de uma função qualquer
+por diferenças finitas.
+- A derivação das fórmulas são idênticas, porém mais tediosas.
+- Fórmula da diferença central com três pontos para a derivada segunda
+$$
+$$
+- Diferença central com quatro pontos
+$$
+$$
+
+### Fórmulas de diferenças finitas para a segunda derivada
+- Diferença progressiva com três pontos
+$$
+$$
+- Diferença regressiva com três pontos
+$$
+$$
+- Uma infinidade de fórmulas de várias ordens estão disponíveis.
+- Fórmulas de diferenciação podem ser obtidas usando polinômios de Lagrange
+
+
+### Erros na diferenciação numérica
+- Em todas as fórmulas o erro de truncamento é função de ℎ.
+- ℎ é o espaçamento entre os pontos, i.e. ℎ = 𝑥𝑖+1 − 𝑥𝑖.
+- Com ℎ pequeno o erro de truncamento será pequeno.
+- Em geral usa-se a precisão da máquina, algo como 1𝑒−16.
+- O erro de arredondamento depende da precisão finita de cada computador.
+- Mesmo que ℎ possa ser tão pequeno quanto desejado o erro de arredondamento pode crescer quando se diminue ℎ.
+
+
+## Extrapolação de Richardson
+
+
+- Extrapolação de Richardson é usada para obter uma aproximação mais precisa da derivada
+a partir de duas aproximações menos precisas.
+- Considere o valor 𝐷 de uma derivada (desconhecida) calculada pela fórmula
+$$
+$$
+onde 𝐷(ℎ) aproxima 𝐷 e 𝑘2 e 𝑘4 são termos de erro.
+- O uso da mesma fórmula, porém com espaçamento ℎ/2 resulta
+$$
+$$
+
+
+- A Eq. (4) pode ser rescrita (após multiplicar por 4):
+$$
+$$
+- Subtraindo (3) de (5) elimina os termos com ℎ2 e fornece
+$$
+$$
+- Resolvendo (6), temos
+$$
+$$
+
+- O erro na Eq. (7) é agora 𝑂(ℎ4). O valor de 𝐷 é aproximado por
+$$
+$$
+- A partir de duas aproximações de ordem inferiores, obtemos uma aproximação de 𝑂(ℎ4) mais precisa.
+- Procedimento a partir de duas aproximações com erro 𝑂(ℎ4) mostra que
+$$
+$$
+- Aproximação ainda mais precisa.
+
+
+### Exemplo: extrapolação de Richardson
+- Calcule a derivada de 𝑓(𝑥) = 2𝑥 𝑥 no ponto 𝑥 = 2.
+- Solução exata: $ $
+- Solução numérica usando diferença central
+
+```{r}
+fx <- function(x) (2^x)/x
+fpx <- function(x)(log(2)*(2^x))/
+x - (2^x)/x^2
+erro <- fpx(x = 2)/
+dif_cen(fx = fx, x = 2, h = 0.2)
+(erro-1)*100
+## [1] 0.345544
+```
+
+- Extrapolação de Richardson
+
+```{r}
+D2 <- dif_cen(fx = fx, x = 2, h = 0.2/2)
+D <- dif_cen(fx = fx, x = 2, h = 0.2)
+der <- (1/3)*( 4*D2 - D)
+erro2 <- fpx(x = 2)/der
+(erro2-1)*100
+## [1] -0.001585268
+```
+
+
+```{r}
+c("Exata" = fpx(x = 2), "Richardson" = der,
+"Central" = dif_cen(fx = fx, x = 2, h = 0.2))
+## Exata Richardson Central
+## 0.3862944 0.3863005 0.3849641
+```
+
+
+## Derivadas parciais
+
+- Para funções com muitas variáveis, a derivada parcial da função em relação a uma das
+variáveis representa a taxa de variação da função em relação a essa variável, mantendo as
+demais constantes.
+- Assim, as fórmulas de diferenças finitas podem ser usadas no cálculo das derivadas parciais.
+- As fórmulas são aplicadas em cada uma das variáveis, mantendo as outras fixas.
+- A mesma ideia se aplica para derivadas de mais alta ordem
+
+
+### Implementação: derivadas parciais
+- Derive 
+$$
+f(\beta_0, \beta_1) = \sum^n_{i=1}{|y_i - (\beta_0 + \beta_1 x_i)|}
+$$
+
+- Para fazer vai calcular derivada de cada beta (o outro fica como contante):
+$$
+\frac{\partial( \beta_0, \beta_1) }{\partial \beta_0} = ....
+$$
+
+$$
+\frac{\partial( \beta_0, \beta_1) }{\partial \beta_1} = ....
+$$
+- Fórmula dois pontos central
+```{r}
+dif_cen <- function(fx, pt, h, ...) {
+  df <- (fx(pt + h, ...) - fx(pt - h, ...))/( (pt + h) - (pt - h))
+  return(df)
+}
+```
+
+- Função a ser diferenciada
+```{r}
+fx <- function(par, y, x1) {sum ( abs( y - (par[1] + par[2]*x1)) )}
+```
+
+- Gradiente usando diferenças finita.
+```{r}
+grad_fx <- function(fx, par, h, ...) {
+  fbeta0 <-
+    function(beta0, beta1, y, x)
+      fx(par = c(beta0, beta1),
+         y = y,
+         x = x) #beta1 constante
+  fbeta1 <-
+    function(beta1, beta0, y, x)
+      fx(par = c(beta0, beta1),
+         y = y,
+         x = x) #beta0 constante
+  db0 <-
+    dif_cen(
+      fx = fbeta0,
+      pt = par[1],
+      h = h,
+      beta1 = par[2],
+      y = y,
+      x = x
+    )
+  db1 <-
+    dif_cen(
+      fx = fbeta1,
+      pt = par[2],
+      h = h,
+      beta0 = par[1],
+      y = y,
+      x = x
+    )
+  return(c(db0, db1))
+}
+```
+
+
+Exemplo: derivadas parciais
+
+- Simulando $y_i$'s e $x_i$'s.
+```{r}
+set.seed(123)
+x <- runif(100)
+y <- rnorm(100, mean = 2 + 3*x, sd = 1)
+```
+
+- Gradiente numérico
+```{r}
+grad_fx(fx = fx, par = c(2, 3), h = 0.001, y = y, x1 = x)
+## [1] 6.000000 2.272805
+```
+
+- Gradiente analítico
+```{r}
+c(sum(((y - 2 - 3*x)/abs(y - 2 -3*x))*(-1)),
+sum(((y - 2 - 3*x)/abs(y - 2 -3*x))*(-x)))
+## abs = modulo
+## [1] 6.000000 2.272805
+```
+
+
+## Uso de funções residentes do R para diferenciação numérica
+
+- Pacote numDeriv implementa derivadas por diferença finita.
+- Gradiente
+```{r}
+require(numDeriv)
+args(grad)
+## function (func, x, method = "Richardson", side = NULL, method.args = list(),
+## ...)
+## NULL
+```
+
+- Hessiano
+```{r}
+args(hessian)
+## function (func, x, method = "Richardson", method.args = list(),
+## ...)
+## NULL
+```
+
+
+- Aplicação
+```{r}
+## Função a ser diferenciada:
+fx <- function(par, y, x1) {sum ( abs( y - (par[1] + par[2]*x1)) )}
+
+## Calculando:
+grad(func = fx, x = c(2, 3), y = y, x1 = x)
+## [1] 6.000000 2.272805
+```
+
+```{r}
+hessian(func = fx, x = c(2, 3), y = y, x1 = x)
+## [,1] [,2]
+## [1,] 58.91271 29.53710
+## [2,] 29.53710 48.86648
+```
+
+
+## Integração numérica
+
+- Integrais aparecem com frequência em cálculo de probabilidades.
+- A probabilidade de um evento é a área abaixo de uma curva.
+- Em modelos complicados a integral pode não ter solução analítica.
+- Os métodos de integração numérica, podem ser dividos em três grupos:
+  1. Métodos baseados em soma finita.
+  2. Aproximar a função por uma outra de fácil integração.
+  3. Estimar o valor da integral.
+
+- Considere a distribuição Gaussiana (ou Normal) com função densidade probabilidade dada por
+$$
+f(x; \mu, \sigma^2 ) = \frac{1}{\sq(2 \pi \sigma)} exp (- \frac{1}{2 \sigma^2}(x - \mu)^2)
+$$
+- Gráfico da função
+
+Integração numérica
+- O cálculo de uma probabilidade qualquer baseado nesta distribuição é dado pela seguinte
+integral
+$$
+$$
+
+## Método Trapezoidal
+
+- Usa uma função linear para aproximar o integrando.
+- O integrando pode ser aproximado por Série de Taylor
+$$
+$$
+- Integrando analiticamente essa aproximação, tem-se
+$$
+$$
+- Simplificando, obtem-se
+$$
+$$
+
+## Método de Simpson 1/3
+
+- Aproxima o integrando por um polinômio de segunda ordem.
+- Pontos finais 𝑥1 = 𝑎, 𝑥3 = 𝑏, e o ponto central, 𝑥2 = (𝑎 + 𝑏)/2.
+- O polinômio pode ser escrito na forma:
+𝑝(𝑥) = 𝛼 + 𝛽(𝑥 − 𝑥1) + 𝜆(𝑥 − 𝑥1)(𝑥 − 𝑥2) (8)
+onde 𝛼, 𝛽 e 𝜆 são constantes desconhecidas.
+- Impomos a condição que o polinômio deve passar por todos os pontos, 𝑝(𝑥1) = 𝑓(𝑥1), 𝑝(𝑥2) = 𝑓(𝑥2) e 𝑝(𝑥3) = 𝑓(𝑥3).
+
+
+- Isso resulta em:
+$$
+$$
+- Substituindo em 8 e integrando 𝑝(𝑥), obtém-se
+$$
+$$
+
+- A integral é facilmente calculada com apenas três avaliações da função.
+```{r}
+simpson <- function(integrando, a, b, ...){
+h <- (b-a)/2
+x2 <-(a+b)/2
+integral <- (h/3)*(integrando(a,...) +
+4*integrando(x2, ...) + integrando(b, ...))
+return(integral)
+}
+```
+
+
+- Exemplo: calcule ∫3
+```{r}
+fx <- function(x) x^2
+simpson(integrando = fx, a = 2, b = 3)
+## [1] 6.333333
+```
+
+
+- Solução exata:
+$$
+$$
+
+## Quadratura Gaussiana
+
+
+- Os métodos trapezoidal e Simpson são muito simples.
+- Aproximam o integrando por um polinômio de fácil integração.
+- Resolvem a integral aproximada.
+- Os pontos são igualmente espaçados.
+- São simples e intuitivos, porém de difícil generalização.
+- A Quadratura Gaussiana é um dos métodos mais populares de integração numérica.
+- Aplicações: modelos mistos não-lineares, análise de dados longitudinais, medidas
+repetidas, modelos lineares generalizados mistos, etc.
+
+
+- Forma geral da quadratura de Gauss:
+
+\begin{equation}
+  \tag{9}
+  \int_{a}^{b} f(x)dx === \sum^n_{i=1}{C_i f(x_i)}
+\end{equation}
+
+onde $C_i$ são pesos e $x_i$ são os pontos de Gauss em $[a, b]$.
+- Exemplo 1: para 𝑛 = 2 a Eq. 9 tem a forma:
+$$
+$$
+- Exemplo 2: para 𝑛 = 3 a Eq. 9 tem a forma:
+$$
+$$
+
+- Coeficientes 𝐶𝑖 e a localização dos pontos 𝑥𝑖 depende dos valores de 𝑛, 𝑎 e 𝑏.
+- 𝐶𝑖 e 𝑥𝑖 são determinados de forma que o lado direito da Eq. 9 seja igual ao lado esquerdo
+para funções 𝑓(𝑥) especificadas.
+- A especificação de 𝑓(𝑥) vai depender do domínio de integração.
+- Diferentes domínios levam a diferentes variações do método
+
+
+
+- Domínios comuns:
+1. Gauss-Legendre, Gauss-Jacobi e Gauss-Chebyshev
+$$
+$$
+2. Gauss-Laguerre
+$$
+$$
+3. Gauss-Hermite
+$$
+$$
+
+No domínio [−1,1] a forma da quadratura de Gauss é
+$$
+$$
+- 𝐶𝑖 e 𝑥𝑖 são determinados fazendo com que a Eq. 9 seja exata quando
+𝑓(𝑥) = 1, 𝑥, 𝑥2, 𝑥3 ….
+- O número de casos depende do valor de 𝑛.
+- Para 𝑛 = 2, tem-se
+$$
+$$
+
+
+## Quadratura de Gauss-Legendre
+
+Quadratura de Gauss-Legendre
+- As quatro constantes 𝐶1, 𝐶2, 𝑥1 e 𝑥2 são determinadas fazendo Eq. 10 exata quando
+aplicada aos quatro casos:
+Caso 1 𝑓(𝑥) = 1 ∫1
+−1 1𝑑𝑥 = 2 = 𝐶1 + 𝐶2
+Caso 2 𝑓(𝑥) = 𝑥 ∫1
+−1 𝑥𝑑𝑥 = 0 = 𝐶1𝑥1 + 𝐶2𝑥2
+Caso 3 𝑓(𝑥) = 𝑥2 ∫1
+−1 𝑥2𝑑𝑥 = 2
+3 = 𝐶1𝑥2
+1 + 𝐶2𝑥2
+2
+Caso 4 𝑓(𝑥) = 𝑥3 ∫1
+−1 𝑥3𝑑𝑥 = 0 = 𝐶1𝑥3
+1 + 𝐶2𝑥3
+2
+- Sistema não-linear de quatro equações e quatro incógnitas.
+- Podem existir múltiplas soluções.
+- Uma solução particular é obtido por impor que 𝑥1 = −𝑥2.
+- Pela equação 2, implica que 𝐶1 = 𝐶2 e a solução é
+$$
+$$
+
+Exemplo: quadratura de Gauss-Legendre
+- Calcule ∫1
+−1 𝑥2𝑑𝑥.
+- Usando Gauss-Legendre com dois pontos, tem-se
+$$
+$$
+
+
+- Quando 𝑓(𝑥) é uma função do tipo 𝑓(𝑥) = 1, 𝑓(𝑥) = 𝑥, 𝑓(𝑥) = 𝑥2 ou 𝑓(𝑥) = 𝑥3 ou
+qualquer combinação linear destas a aproximação é exata.
+- Caso contrário o procedimento fornece uma aproximação.
+- Exemplo: 𝑓(𝑥) = 𝑐𝑜𝑠(𝑥) valor exato é
+$$
+$$
+- Usando Quadratura de Gauss-Legendre com 𝑛 = 2, tem-se
+$$
+$$
+
+
+- O número de pontos de integração controla a precisão da aproximação.
+- Em R o pacote pracma fornece os pesos e pontos de integração.
+- Exemplo
+```{r}
+require(pracma)
+gaussLegendre(n = 2, a = -1, b = 1)
+## $x
+## [1] -0.5773503 0.5773503
+##
+## $w
+## [1] 1 1
+```
+
+- Baseado nos pontos e pesos de integração é fácil construir funções genéricas para integração numérica
+
+
+- Função genérica
+```{r}
+gauss_legendre <- function(integrando, n.pontos, a, b, ...){
+pontos <- gaussLegendre(n.pontos, a = a, b = b)
+integral <- sum(pontos$w*integrando(pontos$x,...))
+return(integral)
+}
+```
+
+
+- Exemplo: $ $
+
+```{r}
+## n = 2
+gauss_legendre(integrando = cos, n.pontos = 2, a = -1, b = 1)
+## [1] 1.675824
+## n = 10
+gauss_legendre(integrando = cos, n.pontos = 10, a = -1, b = 1)
+## [1] 1.682942
+```
+
+## Quadratura de Gauss-Laguerre
+
+- Gauss-Laguerre resolve integrais do tipo:
+$$
+$$
+- Integral é aproximada por uma soma ponderada.
+$$
+$$
+- A função é avaliada nos pontos de Gauss e pesos de integração.
+- Os pesos e pontos de integração são obtidos de forma similar ao caso de Gauss-Legendre, porém baseado no polinômio de Laguerre.
+
+- Função genérica para integração de Gauss-Laguerre
+
+```{r}
+gauss_laguerre <- function(integrando, n.pontos, ...) {
+  pontos <- gaussLaguerre(n.pontos)
+  integral <- sum(pontos$w * integrando(pontos$x, ...)
+                  / exp(-pontos$x))
+  return(integral)
+}
+```
+
+- Exemplo: $ $
+
+```{r}
+fx <- function(x, lambda) lambda*exp(-lambda*x)
+## n = 2
+gauss_laguerre(integrando = fx, n.pontos = 2, lambda = 10)
+## [1] 0.04381233
+## n = 10
+gauss_laguerre(integrando = fx, n.pontos = 10, lambda = 10)
+## [1] 0.8981046
+## n = 100
+gauss_laguerre(integrando = fx, n.pontos = 100, lambda = 10)
+## [1] 1
+```
+
+
+## Quadratura de Gauss-Hermite
+
+- Gauss-Hermite resolve integrais do tipo:
+$$
+$$
+- Integral é aproximada por uma soma ponderada.
+$$
+$$
+- A função é avaliada nos pontos de Gauss e pesos de integração.
+- Os pesos e pontos de integração são obtidos de forma similar ao caso de Gauss-Legendre, porém baseado no polinômio de Hermite.
+
+- Função genérica para integração de Gauss-Hermite
+
+```{r}
+gauss_hermite <- function(integrando, n.pontos, ...) {
+  pontos <- gaussHermite(n.pontos)
+  integral <- sum(pontos$w * integrando(pontos$x, ...)
+                  / exp(-pontos$x ^ 2))
+  return(integral)
+}
+```
+
+
+Implementação: quadratura de Gauss-Hermite
+- Exemplo: $ $
+```{r}
+## n = 2
+gauss_hermite(integrando = dnorm, n.pontos = 2)
+## [1] 0.9079431
+## n = 10
+gauss_hermite(integrando = dnorm, n.pontos = 10)
+## [1] 0.9999876
+## n = 100
+gauss_hermite(integrando = dnorm, n.pontos = 100)
+## [1] 1
+```
+
+Limitações: quadratura de Gauss
+- Quadratura de Gauss apresenta duas grandes limitações:
+1. Os pontos são escolhidos ignorando a função a ser integrada.
+2. O número de pontos necessários para a integração cresce como uma potência da dimensão da
+integral.
+3. 20 pontos em uma dimensão demanda 202 = 400 pontos em duas dimensões.
+- Espalhar os pontos de forma inteligente diminui o número de pontos necessários.
+
+
+Quadratura de Gauss-Hermite Adaptativa
+- Os pontos de integração são centrados e escalonados como se 𝑓(𝑥)𝑒−𝑥2
+fosse a
+distribuição Gaussiana.
+- A média da aproximação Gaussiana será a modâ 𝑥 de 𝑙𝑛[𝑓(𝑥)𝑒−𝑥2
+].
+- A variância da aproximação Gaussiana será
+$$
+$$
+- Novos pontos de integração adaptados serão dados por
+$$
+$$
+com correspondentes pesos,
+$$
+$$
+
+Silde 105
+
+- Como antes, a integral é aproximada por
+$$
+$$
+- Problema: como encontrar a moda e o hessiano de 
+$$
+$$
+- Analiticamente ou numericamente.
+- Caso especial Gauss-Hermite Adaptativa com 𝑛 = 1 → Aproximação de Laplace
+
+## Aproximação de Laplace
+
+[[ARRUMAR]]
+
+## Integração Monte Carlo
+
+Integração Monte Carlo
+- Método simples e geral para resolver integrais.
+- Objetivo: estimar o valor da integral de uma função 𝑓(𝑥) em algum domínio 𝐷 qualquer,
+ou seja,
+$$
+$$
+- Seja 𝑝(𝑥) uma fdp cujo domínio coincide com 𝐷.
+- Então, a integral em Eq. 11 é equivalente a
+$$
+$$
+- A integral corresponde a 
+$$
+$$
+
+- Algoritmo: integração Monte Carlo
+  1. Gere números aleatórios de 𝑝(𝑥);
+  2. Calcule 𝑚𝑖 = 𝑓(𝑥𝑖)/𝑝(𝑥𝑖) para cada amostra,𝑖 = 1, … , 𝑛.
+  3. Calcule a média ∑𝑛
+$$
+$$
+- Implementação para funções com 𝐷 = ℜ.
+```{r}
+monte.carlo <- function(funcao, n.pontos, ...) {
+  pontos <- rnorm(n.pontos)
+  norma <- dnorm(pontos)
+  integral <- mean(funcao(pontos,...)/norma)
+  return(integral)
+}
+```
+
+
+- Exemplo: 
+$$
+$$
+
+```{r}
+## Integrando a Normal padrão
+monte.carlo(funcao = dnorm, n.pontos = 1000)
+## [1] 1
+## Integrando distribuição t com df = 30
+monte.carlo(funcao = dt, n.pontos = 1000, df = 30)
+## [1] 0.9982789
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

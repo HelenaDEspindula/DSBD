@@ -97,7 +97,7 @@ $$\int_{a}^{b}$$
 
 $$\left(\int_{a}^{b} f(x) \; dx\right)$$
 
-$$\left[\int_{\-infty}^{\infty} f(x) \; dx\right]$$
+$$\left[\int_{-\infty}^{\infty} f(x) \; dx\right]$$
 
 $$\left. F(x) \right|_{a}^{b}$$
 
@@ -126,7 +126,7 @@ $$\pi \Pi$$
 $$\epsilon \varepsilon E$$
 
 $$\rho\varrho P$$
-$$\zeta Z \sigma \,\!$$
+$$\zeta \sigma \,\!$$
 $$\sigma \Sigma$$
 
 $$\eta H$$
