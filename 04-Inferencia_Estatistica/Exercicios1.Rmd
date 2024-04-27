@@ -55,3 +55,21 @@ D( f, name = "x")
 ```
 
 
+```{r}
+set.seed(123)
+y <- rpois(1000, lambda = 3)
+y
+## gerou 1000 obs de uma poison
+```
+
+```{r}
+plot(y)
+```
+
+
+
+```{r}
+geom_histogram
+grafico <- ggplot(y, aes(count)) + geom_histogram()
+grafico
+```

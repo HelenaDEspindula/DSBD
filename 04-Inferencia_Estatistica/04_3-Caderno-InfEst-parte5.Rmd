@@ -9,7 +9,7 @@ output:
       smooth_scroll: false
       number_sections: true
   pdf_document:
-date: "`r Sys.Date()`"
+date: "2024-04-26"
 ---
 
 ```{r setup, echo=TRUE, include=TRUE}
@@ -20,6 +20,11 @@ library(Matrix)
 library(bookdown)
 library(numDeriv)
 library(pracma)
+library(lpSolve)
+library(quadprog)
+library(mvtnorm)
+#library(optimize)
+#library(optimx)
 ```
 \usepackage{amsmath}
 
@@ -56,11 +61,9 @@ $$
   1. Métodos de confinamento;
   2. Métodos abertos
 
-
 ### Métodos de confinamento
 - Identifica-se um intervalo que possui a solução.
 - Usando um esquema numérico, o tamanho do intervalo é reduzido sucessivamente até uma precisão desejada
-
 
 ### Métodos abertos
 - Assume-se uma estimativa inicial.
@@ -991,7 +994,7 @@ hessian(func = fx, x = c(2, 3), y = y, x1 = x)
 
 - Considere a distribuição Gaussiana (ou Normal) com função densidade probabilidade dada por
 $$
-f(x; \mu, \sigma^2 ) = \frac{1}{\sq(2 \pi \sigma)} exp (- \frac{1}{2 \sigma^2}(x - \mu)^2)
+f(x; \mu, \sigma^2 ) = \frac{1}{\sqrt{(2 \pi \sigma)}} exp (- \frac{1}{2 \sigma^2}(x - \mu)^2)
 $$
 - Gráfico da função
 
@@ -1354,18 +1357,571 @@ monte.carlo(funcao = dnorm, n.pontos = 1000)
 monte.carlo(funcao = dt, n.pontos = 1000, df = 30)
 ## [1] 0.9982789
 ```
+[[ARRUMAR]]
+
+## Otimização
+
+
+### Motivação
+- Otimização usa um modelo matemático rigoroso para determinar a solução mais eficiente
+para um dado problema.
+- Precisamos identificar um objetivo.
+- Criar uma medida que mensure a performance. Ex. rendimento, tempo, custo, etc.
+- Em geral, qualquer quantidade ou combinação de quantidades representada por um
+simples número.
+- Funções perda usuais.
+- Perda quadrática: Σ𝑛
+𝑖=1(𝑦𝑖 − 𝜇)2.
+- Perda absoluta: Σ𝑛
+𝑖=1 |𝑦𝑖 − 𝜇|.
+- Perda minimax: minimize 𝑚𝑎𝑥(|𝑦𝑖 − 𝜇|).
+
+
+Otimização: funções perda
+- Graficamente, tem-se
+[[ARRUMAR]]
+- Objetivo: encontrar o ponto de mínimo da função perda.
+
+
+### Classificação dos problemas de otimização
+- Programação linear (LP)
+  - Função objetivo e as restrições são lineares.
+  - min 𝑥 𝑐⊤𝑥, sujeito a 𝐴𝑥 ≤ 𝑏 e 𝑥 ≥ 0.
+- Programação quadrática (QP)
+  - Função objetivo é quadrática e as restrições são lineares.
+  - min 𝑥𝑥⊤𝑄𝑥 + 𝑐⊤𝑥, sujeito a 𝐴𝑥 ≤ 𝑏 e 𝑥 ≥ 0.
+- Programação não-linear (NLP): função objetivo ou ao menos uma restrição é não linear.
+- Cada classe de problemas tem seus próprios métodos de solução.
+- Em R temos pacotes específicos para cada tipo de problema.
+- Frequentemente, também distinguimos se o problema tem ou não restrições.
+  - Otimização restrita refere-se a problemas com restrições de igualdade ou desigualdades.
+
+### Otimização em R
+- Pacotes populares para otimização em R.
+[[ARRUMAR]]
+Tipo de problema Pacote Função
+Propósito geral (1 dim) Built in `optimize(...)`
+Propósito geral (n dim) Built in `optim(...)`
+Programação Linear lpSolve `lp(...)`
+Programação quadrática quadprog `solve.QP(...)`
+Programação não-linear optimize `optimize()`
+optimx `optimx(...)`
+- Existe uma infinidade de pacotes com os mais diversos algoritmos implementados em R.
+- Todos estão listados no Task View - Optimization and Mathematical programming
+
+
+### Otimização em R
+- A estrutura básica de um otimizador é sempre a mesma.
+```{r eval=FALSE, include=TRUE}
+optimizer(objective, constraints, bounds = NULL, types = NULL, maximum = FALSE)
+```
+- As funções em geral apresentam algum argumento que permite trocar o algoritmo de otimização.
+- Funções nativas do R:
+- `optimize()` restrita a problemas unidimensionais.
+- Baseado no esquema "Golden section search".
+- `optim()` problemas n-dimensionais.
+- Restrita a funções com argumentos contínuous.
+
+
+### Otimizando funções perda: redução de dados
+- Considere as funções perda:
+- Perda quadrática: Σ𝑛𝑖=1(𝑦𝑖 − 𝜇)2.
+(media)
+- Perda absoluta: Σ𝑛𝑖=1 |𝑦𝑖 − 𝜇|.
+(mediana)
+- Perda minimax: Minimize 𝑚𝑎𝑥(|𝑦𝑖 − 𝜇|).
+- Seja um conjunto de observações 𝑦𝑖.
+- Encontre o melhor resumo de um número baseado em cada uma das funções perda
+anteriores.
+
+
+- Passo 1: implementar as funções objetivo.
+  - Perda quadrática
+```{r}
+perda_quad <- function(mu, dd) { sum((dd-mu)^2) }
+```
+  
+  - Perda absoluta
+```{r}
+perda_abs <- function(mu, dd) { sum(abs(dd-mu)) }
+```
+
+  - Perda minimax
+```{r}
+perda_minimax <- function(mu, dd) { max(abs(dd-mu)) }
+```
+  
+- Passo 2: obter o conjunto de observações.
+```{r}
+set.seed(123)
+y <- rpois(100, lambda = 3)
+## gerou 100 obs de uma poison
+
+##plot(dados_reg_log$Anos, dados_reg_log$Renda, main = "Anos de Exp vs Renda")
+
+##grafico <- ggplot(dados_reg_log,aes(x = Anos, y = Renda, colour = Premium)) + geom_point()
+##grafico
+```
+
+- Passo 3: otimizando a função perda.
+
+```{r}
+# Perda quadrática
+fit_quad <- optimize(f = perda_quad, interval = c(0, 20), dd = y)
+# Perda absoluta
+fit_abs <- optimize(f = perda_abs, interval = c(0, 20), dd = y)
+# Perda minimax
+fit_minimax <- optimize(f = perda_minimax, interval = c(0, 20), dd = y)
+```
+
+- Perda quadrática
+```{r}
+fit_quad
+## $minimum
+## [1] 2.94
+
+## $objective
+## [1] 259.64
+```
+
+- Perda absoluta
+```{r}
+fit_abs
+## $minimum
+## [1] 2.999952
+
+## $objective
+## [1] 128.0007
+```
+
+- Perda minimax
+```{r}
+fit_minimax
+## $minimum
+## [1] 4.000013
+
+## $objective
+## [1] 4.000013
+```
+[[ARRUMAR]]
+
+
+### Otimização numérica
+- Muito fácil usar o otimizador numérico.
+- Não precisamos calcular nada.
+- Solução para quem não gosta de matemática?
+- Como isso é possível?
+- O que vocês acham?
+- Vamos investigar caso a caso.
+
+### Programação linear
+- Especificação matemática
+- Notação matricial.
+
+- Notação mais compacta.
+$$
+$$
+
+
+### Exemplo: programação linear
+- Função objetivo
+- Objetivo: maximimizar o lucro total.
+- Produtos A e B são vendidos por R$ 25 e R$ 20.
+- Restrição de recursos
+- Produto A precisa de 20 u.p e produto B precisa 12 u.p.
+- Apenas 1800 u.p estão disponíveis por dia.
+- Restrição de tempo
+- Produtos A e B demoram 1/15 hrs para produzir.
+- Um dia de trabalho tem 8 hrs.
+- Formulação do problema
+- Denote $x_1$ e $x_2$ como número de itens A e B produzidos.
+- Função objetivo: maximizar o total de vendas
+$$
+max_{x_1, x_2} 25x_1 + 20x_2
+$$
+- Sujeito a restrições de recursos e tempo.
+$$
+20x_1 + 12x_2 \le 1800
+$$
+$$
+\frac{1}{15}x_1 + \frac{1}{15}x_2 \le 8
+$$
+
+- Restrições escritas de forma matricial.
+$$
+$$
+
+### Exemplo: programação linear
+- Solução força bruta !!
+```{r}
+x1 <- 0:140
+x2 <- 0:140
+grid <- expand.grid(x1,x2)
+lucro <- function(x) 25*x[1] + 20*x[2]
+```
+
+- Restrição de recursos.
+```{r}
+recurso <- function(x) {
+out <- 20*x[1] + 12*x[2]
+if(out > 1800) out = 0
+return(out)
+}
+```
+
+- Restrição de tempo.
+```{r}
+tempo <- function(x) {
+out <- (1/15)*x[1] + (1/15)*x[2]
+if(out > 8) out = 0
+return(out)
+}
+```
+
+
+Exemplo: programação linear
+- Graficamente, tem-se
+  - Sem restrições
+  - Restrição de recursos
+  - Restrição de tempo
+- A ideia pode ser generalizada para 𝑛 restrições.
+- Algoritmo Simplex.
+- Pacote `lpSolve` em R.
+
+### Função lp(...) do pacote lpSolve.
+- Sintaxe geral
+```{r}
+require(lpSolve)
+# lp(direction = "min", objective.in, const.mat, const.dir, const.rhs)
+```
+
+### Para o nosso exemplo, tem-se
+```{r}
+require(lpSolve)
+## Carregando pacotes exigidos: lpSolve
+objective.in <- c(25, 20) # c's
+const.mat <- matrix(c(20, 12, 1/15, 1/15), nrow=2, byrow=TRUE)
+const.rhs <- c(1800, 8)
+const.dir <- c("<=", "<=")
+optimum <- lp(direction = "max", objective.in, const.mat,
+              const.dir, const.rhs)
+```
+- Solução
+```{r}
+optimum$solution # Solução
+## [1] 45 75
+optimum$objval # Lucro
+## [1] 2625
+```
+
+Obs: MMM = "Marketing Mix Model"
+
+## Programação quadrática
+
+- Especificação matemática
+$$
+$$
+- Coeficientes quadráticos D → Dmat.
+- Coeficientes lineares 𝑑 → dvec.
+- Matriz de constantes A → Amat.
+- Restrições de igualdade ou desigualdade 𝑏 → bvec.
+
+
+Programação quadrática: implementação
+- Função solve.QP(...) pacote quadprog.
+- Argumento meq = n fixa as primeiras 𝑛 restrições como lineares.
+```{r}
+require(quadprog)
+## Carregando pacotes exigidos: quadprog
+args(solve.QP)
+## function (Dmat, dvec, Amat, bvec, meq = 0, factorized = FALSE)
+## NULL
+```
+
+- Popular na literatura de Machine Learning.
+- Caso particular das máquinas de vetores de suporte.
+- O problema de regressão é resolvido por minimizar a perda quadrática sob uma restrição.
+- Por exemplo, tem-se
+min
+𝛽
+(𝑦 − X𝛽)⊤(𝑦 − X𝛽), sujeito a Σ𝑓(𝛽) ≤ 𝑠.
+- A parte da regressão pode ser escrita como
+min
+𝛽
+𝑦⊤𝑦 − 2𝑦⊤X𝛽 + 𝛽⊤X⊤X𝛽.
+
+
+- Neste caso, tem-se
+D = X⊤X e 𝑑 = 𝑦⊤X.
+```{r}
+n <- 100
+x1 <- runif(n)
+x2 <- runif(n)
+y <- 0 + x1 + x2 + rnorm(n)
+X <- cbind( rep(1,n), x1, x2 )
+# Regression
+r <- lm(y ~ x1 + x2)
+```
+
+- Exemplo sem restrições.
+```{r}
+# Optimization
+library(quadprog)
+# Sem restrição apenas como exemplo
+Amat = matrix(nr=3,nc=0)
+b = numeric()
+s <- solve.QP(t(X) %*% X, t(y) %*% X,
+Amat = Amat, bvec = b, meq = 0)
+# Comparison
+coef(r)
+## (Intercept) x1 x2
+## -0.4138375 1.6987259 1.1433559
+s$solution
+## [1] -0.4138375 1.6987259 1.1433559
+```
 
 
 
+- Exemplo com restrições (soma igual a 1);
+```{r}
+# Optimization
+# Soma dos betas = 1
+Amat <- matrix(c(1,1,1),ncol = 1, nrow = 3)
+b = c(1)
+s <- solve.QP(t(X) %*% X, t(y) %*% X,
+Amat = Amat, bvec = b, meq = 1)
+# Comparison
+s$solution
+## [1] 0.67483269 0.34432273 -0.01915542
+sum(s$solution)
+## [1] 1
+```
+
+- Exemplo com restrições (soma ponderada).
+```{r}
+# Optimization
+# Soma dos betas = 1
+Amat <- matrix(c(0.4,0.3,0.2),
+ncol = 1, nrow = 3)
+b = c(1)
+s <- solve.QP( t(X) %*% X, t(y) %*% X,
+Amat = Amat, bvec = b, meq = 1)
+# Comparison
+s$solution
+## [1] -1.014036 3.732834 1.428822
+sum(s$solution*c(0.4,0.3,0.2))
+## [1] 1
+```
+
+
+## Programação não-linear
+
+### Métodos de programação não-linear
+
+- Os métodos são em geral categorizados baseado na dimensionalidade
+  1. Unidimensional: Golden Section search.
+  2. Multidimensional.
+- Caso multidimensional, tem-se pelo menos quatro tipos de algoritmos:
+  1. Não baseados em gradiente: Nelder-Mead;(sem derivada)
+  2. Baseados em gradiente: gradiente descendente e variações;(derivação 1a)
+  3. Baseados em hessiano: Newton e quasi-Newton (BFGS); (mais de uma derivada)
+  4. Algoritmos baseados em simulação e ideias genéticas: Simulating Annealing (SANN).
+- A função genérica `optim()` em R fornece interface aos principais algoritmos de otimização.
+- Vamos discutir as principais ideias por trás de cada tipo de algoritmo.
+- Existe uma infinidade de variações e implementações.
+
+
+## Método Golden Section Search
+
+### Programação não-linear: problemas unidimensionais
+- O Golden Section Search é o mais popular e muito eficiente.
+- Algoritmo
+1. Defina a razão de ouro $ \psi = \frac{\sqrt{5} - 1}{2} = 0,618 $
+2. Escolha um intervalo $[a,b]$ que contenha a solução;
+3. Avalie $f(x_1)$ onde $x_1 = a + (1 - \psi) (b-a)$ e compare com $f(x_2)$ onde $x_2 = a + \psi (b-a)$;
+4. Se $f(x_1) < f(x_2)$ continue a procura em $[a, x_1]$ caso contrário em $[x_2, b]$.
+- Em R a função optimize() implementa este método.
+```{r}
+args(optimize)
+## function (f, interval, ..., lower = min(interval), upper = max(interval),
+## maximum = FALSE, tol = .Machine$double.eps^0.25)
+## NULL
+```
+- Na função `optim()` esse método é chamado de Brent.
+
+### Exemplo: otimização **unidimensional**
+- Minize a função 𝑓(𝑥) = |𝑥 − 2| + 2|𝑥 − 1|.
+- Implementando e otimizando.
+```{r}
+start_time <- Sys.time()
+xx <- c()
+fx <- function(x) {
+  out <- abs(x-2) + 2*abs(x-1)
+  xx <<- c(xx, x) 
+  ## duplo assignment no global env. Valor vai para fora da função. Usado para fazer o grafico.
+  return(out)
+}
+out <- optimize(f = fx, interval = c(-3,3))
+out
+## $minimum
+## [1] 1.000021
+##
+## $objective
+## [1] 1.000021
+
+
+end_time <- Sys.time()
+time_taken <- end.time - start.time
+time_taken
+```
+
+## Método de Nelder-Mead (gradient free) - multidimencional
+
+### Método de Nelder-Mead (gradient free)
+- Algoritmo de Nelder-Mead
+1. Escolha um simplex com $n + 1$ pontos $p_1(x_1, y_1), ... p_{n+1} (x_{n+1}, y_{n+1})$, sendo $n$ o número de parâmetros.
+2. Calcule $f(p_i)$ e ordene por tamanho $ f(p_1) \le f(p_n)$
+3. Avalie se o melhor valor é bom o suficiente, se for, pare.
+4. Delete o ponto com maior/menor $f(p_i)$ do simplex.
+5. Escolha um novo ponto pro simplex.
+6. Volte ao passo 2.
+
+### Algoritmo de Nelder-Mead: escolhendo o novo ponto
+  - Ponto central do lado melhor (B):
+$$
+$$
+  - Refletir o simplex para o lado BG.
+$$
+$$
+- Se a função em R é menor que em W movemos na direção correta.
+1. Opção 1: faça W = R e repita.
+2. Opção 2: expandir usando o ponto 𝐸 = 2𝑅 − 𝑀 e 𝑊 = 𝐸, repita.
+- Se a função em R e W são iguais contraia W para próximo a B, repita.
+- A cada passo uma decisão lógica precisa ser tomada.
+
+## Métodos baseado em gradiente
+
+- Use o gradiente de 𝑓(𝑥), ou seja, 𝑓′(𝑥) para obter a direção de procura.
+  1. 𝑓′(𝑥) pode ser obtido analiticamente;
+  2. 𝑓′(𝑥) qualquer aproximação númerica.
+- A direção de procura 𝑠𝑛 é o negativo do gradiente no último ponto.
+- Passos básicos
+  1. Calcule a direção de busca −𝑓′(𝑥).
+  2. Obtenha o próximo passo 𝑥(𝑛+1) movendo com passo 𝛼𝑛 na direção de −𝑓′(𝑥).
+  3. Tamanho do passo 𝛼𝑛 pode ser fixo ou variável.
+  4. Repita até $ f'(x_i) \thickapprox x$ seja satisfeito.
+
+## Métodos baseado em hessiano
+
+- Algoritmo de Newton-Raphson.
+- Maximizar/minimizar uma função 𝑓(𝑥) é o mesmo que resolver a equação não-linear
+𝑓′(𝑥) = 0.
+- Equação de iteração
+𝑥(𝑖+1) = 𝑥(𝑖) − J(x(i))−1𝑓′(𝑥(𝑖)),
+onde J é a segunda derivada (hessiano) de 𝑓(𝑥).
+- J(x(i)) pode ser obtida analitica ou numericamente.
+- J(x(i)) pode ser aproximada por uma função mais simples de calcular.
+- Métodos Quasi-Newton (mais famoso BFGS).
+
+
+Métodos Quasi-Newton
+- Métodos quasi-Newton tentam imitar o método de Newton.
+- A equação de iteração é dada por
+𝑥(𝑖+1) = 𝑥(𝑖) − 𝛼𝑖H𝑖𝑓′(𝑥(𝑖)),
+onde H𝑖 é alguma aproximação para o inverso do Hessiano.
+- 𝛼𝑖 é o tamanho do passo.
+- Denote 𝛿𝑖 = 𝑥(𝑖+1) − 𝑥(𝑖) e 𝛾𝑖 = 𝑓′(𝑥(𝑖+1)) − 𝑓′(𝑥(𝑖)).
+- Para obter H𝑖+1 o algoritmo impõe que
+H𝑖+1𝛾𝑖 = 𝛿𝑖.
+- Algoritmo DFP
+$$
+$$
+
+- Versão melhorada do DFP devido a Broyden, Fletcher, Goldfarb e Shanno (BFGS).
+- Aproxima o hessiano por
+H𝑖+1 = H𝑖 −
+$$
+$$
+- Implementações modernas do BFGS usando wolfe line search para encontrar 𝛼𝑖.
+- Considere 𝜓(𝛼) = 𝑓(𝑥(𝑖) − 𝛼H𝑖𝑓′(𝑥(𝑖))), encontre 𝛼𝑖 tal que
+$$
+$$
+onde 𝜇 e 𝜂 são constantes com 0 < 𝜇 ≤ 𝜂 < 1.
+
+## Métodos baseados em simulação
+
+- Algoritmo genérico (maximização):
+  1. Gere uma solução aleatória (𝑥1);
+  2. Calcule a função objetivo no ponto simulado 𝑓(𝑥1);
+  3. Gere uma solução na vizinhança (𝑥2) do ponto em (1);
+  4. Calcule a função objetivo no novo ponto 𝑓(𝑥2):
+  - Se 𝑓(𝑥2) > 𝑓(𝑥1) mova para 𝑥2.
+  - Se 𝑓(𝑥2) < 𝑓(𝑥1) TALVEZ mova para 𝑥2.
+  5. Repita passos 3-4 até atingir algum critério de convergência ou número máximo de iterações.
+
+- Para decidir se um ponto 𝑥2 quando 𝑓(𝑥2) < 𝑓(𝑥1) será aceito, usa-se uma probabilidade
+de aceitação
+𝑎 = exp (𝑓(𝑥2) − 𝑓(𝑥1))/𝑇 ,
+onde 𝑇 é a temperatura}* (pense como um tuning).
+- Se 𝑓(𝑥2) > 𝑓(𝑥1) então 𝑎 > 1, assim o 𝑥2 será aceito com probabilidade 1.
+- Se 𝑓(𝑥2) < 𝑓(𝑥1) então 0 < 𝑎 < 1.
+- Assim, 𝑥2 será aceito se 𝑎 > 𝑈 (0,1).
+- Amostrador de Metropolis no contexto de MCMC (Markov Chain Monte Carlo).
+
+## Escolhendo o melhor método
+
+- Método de Newton é o mais eficiente (menos iterações).
+- Porém, cada iteração pode ser cara computacionalmente.
+- Cada iteração envolve a solução de um sistema 𝑝 × 𝑝.
+- Métodos quasi-Newton são eficientes, principalmente se o gradiente for obtido
+analiticamente.
+- Quando a função é suave os métodos de Newton e quasi-Newton geralmente convergem.
+- Métodos baseados apenas em gradiente são simples computacionalmente.
+- Em geral precisam de tuning o que pode ser dificil na prática.
+- Método de Nelder-Mead é simples e uma escolha razoável.
+- Métodos baseados em simulação são ideal para funções com máximos/minimos locais.
+- Em geral são caros computacionalmente e portanto lentos.
+
+- Em R o pacote optimx() fornece funções para avaliar e comparar o desempenho de
+métodos de otimização.
+- Exemplo: minimizando a Normal bivariada.
+- Escrevendo a função objetivo
+```{r}
+require(mvtnorm)
+fx <- function(xx){-dmvnorm(xx)}
+```
+
+
+- Comparando os diversos algoritmos descritos.
+```{r}
+require(optimx)
+## Carregando pacotes exigidos: optimx
+res <- optimx(par = c(-1,1), fn = fx,
+method = c("BFGS","Nelder-Mead","CG"))
+res
+## p1 p2 value fevals gevals
+## BFGS -1.772901e-06 1.772901e-06 -0.1591549 13 11
+## Nelder-Mead 1.134426e-04 -1.503306e-04 -0.1591549 55 NA
+## CG -8.423349e-06 8.423349e-06 -0.1591549 97 49
+## niter convcode kkt1 kkt2 xtime
+## BFGS NA 0 TRUE TRUE 0.004
+## Nelder-Mead NA 0 TRUE TRUE 0.002
+## CG NA 0 TRUE TRUE 0.011
+```
 
 
 
-
-
-
-
-
-
+### Algumas recomendações
+- Otimização trata todos os parâmetros da mesma forma.
+- Cuidado com parâmetros em escalas muito diferentes.
+- Padronizar entradas pode ser uma opção.
+- Cuidado com parâmetros restritos.
+- Recomendações
+- Torne todos os parâmetros irrestritos.
+- Faça sua função a prova de erros.
+- Entenda quais são as regiões que o algoritmo pode falhar.
+- Use o máximo possível de resultados analiticos.
+- Estude o comportamento da sua função.
 
 
 

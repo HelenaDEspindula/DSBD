@@ -1,0 +1,46 @@
+---
+title: "04_3-Caderno-InfEst-parte6"
+author: "Helena R. S. D'Espindula"
+output:
+  html_document: 
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+  pdf_document:
+date: "2024-04-27"
+---
+
+```{r setup, echo=TRUE, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE, eval = TRUE, warning = TRUE, error = TRUE)
+library(ggplot2)
+```
+\usepackage{amsmath}
+
+```{r eval=FALSE, include=TRUE}
+# Variáveis Aleatórias e Distribuições de Probabilidade
+
+
+## Variáveis aleatórias
+
+
+### Definição
+- Variável aleatória: Descrição numérica do resultado de um experimento aleatório.
+- Notação: 𝑌 denota a variável aleatória, enquanto 𝑦 denota os valores realizados de uma variável aleatória.
+
+
+### Exemplo: Lançamento de duas moedas
+Lançamento de duas moedas honestas e defina $Y =$ número de resultados cara $(C)$.
+
+[[]]
+Figura 2. Variável aleatória definida sobre pontos do espaço amostral
+```
+
+
+
+
+
+
+
+
