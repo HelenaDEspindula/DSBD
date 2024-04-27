@@ -1,0 +1,185 @@
+---
+title: "Caderno_Infraestrutura_Computacional-Avaliação2"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+date: "`r Sys.Date()`"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE, include = TRUE)
+```
+
+
+```{bash}
+he2@h10:~$ cd Downloads/
+he2@h10:~/Downloads$ cat lucas-aval2.txt 
+Aldebaran Leite Agner,-,-,6
+Alessandro Bueno de Souza,103,A,0
+Alexandre Rodizio Bento,91.5,A,0
+Charles Laudemaine,82,B,0
+Debora Ruedell,102.5,A,0
+Dirlei F. Lopes da Silva,97.5,A,0
+Edson Flavio de Souza,108,A,2
+Fabiana Cristian Penter,107.5,A,0
+Helio Augusto Goncalves,79,C,0
+Isaias Arcilio dos Santos,70,C,1
+Joao Carlos Balzan,70.5,C,0
+Jonsue Trapp Martins,100,A,2
+Misael Alves Bortolaz,102.5,A,1
+Rafael Hammerschimidt,110,A,0
+Ricardo Esteves da Costa,99,A,0
+Rosangela Binneck,81,B,0
+Sergio Ribeiro da Luz Wanderley,90.2,A,3
+Stefano Chapoval Fontes,102,A,1
+Wanderlei Wormsbecker,82.5,B,2
+Wellington Telles Cunha,97.5,A,0
+Yuri Matos Freitas,99.5,A,0
+```
+
+
+
+
+```{bash}
+he2@h10:~/Downloads$ cut -d',' -f1,3 lucas-aval2.txt 
+Aldebaran Leite Agner,-
+Alessandro Bueno de Souza,A
+Alexandre Rodizio Bento,A
+Charles Laudemaine,B
+Debora Ruedell,A
+Dirlei F. Lopes da Silva,A
+Edson Flavio de Souza,A
+Fabiana Cristian Penter,A
+Helio Augusto Goncalves,C
+Isaias Arcilio dos Santos,C
+Joao Carlos Balzan,C
+Jonsue Trapp Martins,A
+Misael Alves Bortolaz,A
+Rafael Hammerschimidt,A
+Ricardo Esteves da Costa,A
+Rosangela Binneck,B
+Sergio Ribeiro da Luz Wanderley,A
+Stefano Chapoval Fontes,A
+Wanderlei Wormsbecker,B
+Wellington Telles Cunha,A
+Yuri Matos Freitas,A
+
+
+he2@h10:~/Downloads$ sort -n -t',' -k2 lucas-aval2.txt 
+Aldebaran Leite Agner,-,-,6
+Isaias Arcilio dos Santos,70,C,1
+Helio Augusto Goncalves,79,C,0
+Rosangela Binneck,81,B,0
+Charles Laudemaine,82,B,0
+Ricardo Esteves da Costa,99,A,0
+Jonsue Trapp Martins,100,A,2
+Stefano Chapoval Fontes,102,A,1
+Alessandro Bueno de Souza,103,A,0
+Edson Flavio de Souza,108,A,2
+Rafael Hammerschimidt,110,A,0
+Joao Carlos Balzan,70.5,C,0
+Wanderlei Wormsbecker,82.5,B,2
+Sergio Ribeiro da Luz Wanderley,90.2,A,3
+Alexandre Rodizio Bento,91.5,A,0
+Dirlei F. Lopes da Silva,97.5,A,0
+Wellington Telles Cunha,97.5,A,0
+Yuri Matos Freitas,99.5,A,0
+Debora Ruedell,102.5,A,0
+Misael Alves Bortolaz,102.5,A,1
+Fabiana Cristian Penter,107.5,A,0
+
+
+
+he2@h10:~/Downloads$ egrep '[aeiou]{2}' lucas-aval2.txt 
+Aldebaran Leite Agner,-,-,6
+Alessandro Bueno de Souza,103,A,0
+Alexandre Rodizio Bento,91.5,A,0
+Charles Laudemaine,82,B,0
+Debora Ruedell,102.5,A,0
+Dirlei F. Lopes da Silva,97.5,A,0
+Edson Flavio de Souza,108,A,2
+Fabiana Cristian Penter,107.5,A,0
+Helio Augusto Goncalves,79,C,0
+Isaias Arcilio dos Santos,70,C,1
+Joao Carlos Balzan,70.5,C,0
+Jonsue Trapp Martins,100,A,2
+Misael Alves Bortolaz,102.5,A,1
+Rafael Hammerschimidt,110,A,0
+Sergio Ribeiro da Luz Wanderley,90.2,A,3
+Wanderlei Wormsbecker,82.5,B,2
+Yuri Matos Freitas,99.5,A,0
+
+
+
+he2@h10:~/Downloads$ egrep ',B,' lucas-aval2.txt 
+Charles Laudemaine,82,B,0
+Rosangela Binneck,81,B,0
+Wanderlei Wormsbecker,82.5,B,2
+
+
+
+he2@h10:~/Downloads$ wc -l lucas-aval2.txt 
+21 lucas-aval2.txt
+
+
+he2@h10:~/Downloads$ sort -t',' -k2 lucas-aval2.txt 
+Jonsue Trapp Martins,100,A,2
+Debora Ruedell,102.5,A,0
+Misael Alves Bortolaz,102.5,A,1
+Stefano Chapoval Fontes,102,A,1
+Alessandro Bueno de Souza,103,A,0
+Fabiana Cristian Penter,107.5,A,0
+Edson Flavio de Souza,108,A,2
+Rafael Hammerschimidt,110,A,0
+Aldebaran Leite Agner,-,-,6
+Joao Carlos Balzan,70.5,C,0
+Isaias Arcilio dos Santos,70,C,1
+Helio Augusto Goncalves,79,C,0
+Rosangela Binneck,81,B,0
+Wanderlei Wormsbecker,82.5,B,2
+Charles Laudemaine,82,B,0
+Sergio Ribeiro da Luz Wanderley,90.2,A,3
+Alexandre Rodizio Bento,91.5,A,0
+Dirlei F. Lopes da Silva,97.5,A,0
+Wellington Telles Cunha,97.5,A,0
+Yuri Matos Freitas,99.5,A,0
+Ricardo Esteves da Costa,99,A,0
+
+
+
+
+he2@h10:~/Downloads$ sed 's/,A,/,APROVADO,/g' lucas-aval2.txt 
+Aldebaran Leite Agner,-,-,6
+Alessandro Bueno de Souza,103,APROVADO,0
+Alexandre Rodizio Bento,91.5,APROVADO,0
+Charles Laudemaine,82,B,0
+Debora Ruedell,102.5,APROVADO,0
+Dirlei F. Lopes da Silva,97.5,APROVADO,0
+Edson Flavio de Souza,108,APROVADO,2
+Fabiana Cristian Penter,107.5,APROVADO,0
+Helio Augusto Goncalves,79,C,0
+Isaias Arcilio dos Santos,70,C,1
+Joao Carlos Balzan,70.5,C,0
+Jonsue Trapp Martins,100,APROVADO,2
+Misael Alves Bortolaz,102.5,APROVADO,1
+Rafael Hammerschimidt,110,APROVADO,0
+Ricardo Esteves da Costa,99,APROVADO,0
+Rosangela Binneck,81,B,0
+Sergio Ribeiro da Luz Wanderley,90.2,APROVADO,3
+Stefano Chapoval Fontes,102,APROVADO,1
+Wanderlei Wormsbecker,82.5,B,2
+Wellington Telles Cunha,97.5,APROVADO,0
+Yuri Matos Freitas,99.5,APROVADO,0
+
+
+
+
+
+
+
+```
+
