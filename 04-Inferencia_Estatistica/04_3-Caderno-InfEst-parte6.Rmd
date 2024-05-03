@@ -37,7 +37,9 @@ Lançamento de duas moedas honestas e defina $Y =$ número de resultados cara $(
 Figura 2. Variável aleatória definida sobre pontos do espaço amostral
 ```
 
+## Exercicios de Metodos Numericos
 
+http://shiny.leg.ufpr.br/wagner/MetodosNumericos/
 
 
 

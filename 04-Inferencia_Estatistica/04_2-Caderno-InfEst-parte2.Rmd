@@ -100,10 +100,12 @@ y <- minha_funcao(x = x_vec)
 plot(y ~ x_vec, xlab = "x", type = "l", 
 ylab = expression(y = f(x)))
 points(x_vec,y)
+```
 
+```{r}
 ## ou com GGPLOT
 
-ggplot(mapping = aes(x_vec,y))
+ggplot(y, aes(x = x_vec, y = y))
 
 ```
 

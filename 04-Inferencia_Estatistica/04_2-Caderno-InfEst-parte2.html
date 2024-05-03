@@ -11,7 +11,7 @@
 
 <meta name="author" content="Helena R. S. D’Espindula" />
 
-<meta name="date" content="2024-04-19" />
+<meta name="date" content="2024-05-03" />
 
 <title>04_2-Caderno-InfEst-parte2</title>
 
@@ -1487,7 +1487,7 @@ font-size: 0.95em;
 
 <h1 class="title toc-ignore">04_2-Caderno-InfEst-parte2</h1>
 <h4 class="author">Helena R. S. D’Espindula</h4>
-<h4 class="date">2024-04-19</h4>
+<h4 class="date">2024-05-03</h4>
 
 </div>
 
@@ -2012,9 +2012,11 @@ válidas as fórmulas de derivação:</li>
 <li>Se <span class="math inline">\(f(x) = exp(x)\)</span> então <span class="math inline">\(f&#39;(x) = exp(x)\)</span>.</li>
 </ol>
 <p>Exemplo: <span class="math display">\[f(x) = exp(2 x^2 + 3y)\]</span>
-<span class="math display">\[\frac{\partial}{\partial x}exp(2 x^2 +
-3y)\]</span> onde $ u = 2 x^2 + 3y$ e <span class="math display">\[
-\frac{\partial exp(u)}{\partial u} = exp(u)\]</span></p>
+<span class="math display">\[\frac{\partial}{\partial x}e^{(2 x^2 +
+3y)}\]</span> onde <span class="math inline">\(u = 2 x^2 + 3y\)</span>
+e</p>
+<p><span class="math display">\[ \frac{\partial (e^u)}{\partial u} =
+exp(u)\]</span></p>
 <p><span class="math display">\[\frac{\partial}{\partial x}exp(2 x^2 +
 3y) = exp(2 x^2 + 3y) * (\frac{\partial}{\partial x} (2 x^2 +
 3y)\]</span></p>
@@ -2032,7 +2034,7 @@ válidas as fórmulas de derivação:</li>
 f&#39;(x).\)</span></li>
 <li><span class="math inline">\((f * g )&#39;(x) = f&#39;(x)g (x) +
 f(x)g &#39;(x).\)</span></li>
-<li><span class="math inline">\(( f g )&#39;(x) = f&#39;(x)g (x)-f(x)g
+<li><span class="math inline">\(( f g  )&#39;(x) = f&#39;(x)g (x)-f(x)g
 &#39;(x) [g (x)]2 .\)</span></li>
 </ol>
 <ul>
@@ -2050,10 +2052,10 @@ f(x)g &#39;(x).\)</span></li>
 <ul>
 <li>“Uma função dentro da outra”</li>
 <li>Sejam <span class="math inline">\(y = f(x)\)</span> e $x = g (t ) $
-duas funções deriváveis, com <span class="math inline">\(I \in D
+duas funções deriváveis, com <span class="math inline">\(I  \in D
 f\)</span> . A função composta <span class="math inline">\(h (t ) = f(g
 (t ))\)</span> é derivável, sendo <span class="math inline">\(h &#39;(t
-) = f&#39;(g (t ))g &#39;(t ), t \in D g\)</span> .</li>
+) = f&#39;(g (t ))g &#39;(t ), t  \in D g\)</span> .</li>
 <li>Existe uma infinidade de fórmulas de derivação.</li>
 <li>Na prática é comum usar um software de matemática simbólica como o
 wxMaxima.</li>
@@ -2111,7 +2113,7 @@ que <span class="math inline">\(f(c) &gt;= f(x)\)</span> para todo <span class="
 <li>Dizemos que um ponto <span class="math inline">\(c\)</span> é um
 valor mínimo relativo de <span class="math inline">\(f(x)\)</span> se
 existir um intervalo aberto contendo <span class="math inline">\(c\)</span>, no qual f(x) esteja definida, tal que
-<span class="math inline">\(f(c ) \le f(x)\)</span> para todo x neste
+<span class="math inline">\(f(c ) \le  f(x)\)</span> para todo x neste
 intervalo. (maximo e minimo dentro de um trecho de grafico)</li>
 </ul>
 <pre class="r"><code>## Figura 15. Ilustração de máximo/mínimo relativos.</code></pre>
@@ -2125,7 +2127,7 @@ intervalo. (maximo e minimo dentro de um trecho de grafico)</li>
 <li>Se <span class="math inline">\(f(x)\)</span> existe para todos os
 valores de <span class="math inline">\(x\)</span> no intervalo aberto
 <span class="math inline">\((a,b)\)</span>, e se <span class="math inline">\(f(x)\)</span> tem um extremo relativo em <span class="math inline">\(c\)</span> , em que <span class="math inline">\(a
-&lt; c &lt; b\)</span> , então <span class="math inline">\(f&#39;(c
+&lt; c  &lt; b\)</span> , então <span class="math inline">\(f&#39;(c
 )\)</span> existe e <span class="math inline">\(f&#39;(c ) =
 0\)</span></li>
 <li>Implicação - Sendo <span class="math inline">\(f(x)\)</span>
@@ -2269,8 +2271,8 @@ primeiro derivamos em <span class="math inline">\(x 1\)</span> e depois
 em <span class="math inline">\(x 2\)</span>. - A ordem da derivada
 cruzada não importa (se ambas contínuas), ou seja <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 1\partial x 2\]</span> <span class="math display">\[\partial 2f (x 1,x 2)\]</span> <span class="math display">\[\partial x 2\partial x 1\]</span></p>
 <p>Exemplo: derivadas parciais de segunda ordem - Obtenha as derivadas
-parciais de até segunda ordem em relação a <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span> de <span class="math inline">\(y = 7x
-31 + 9x 1x 2 + 2x 52\)</span></p>
+parciais de até segunda ordem em relação a <span class="math inline">\(x_1\)</span> e <span class="math inline">\(x_2\)</span> de <span class="math inline">\(y  =
+7x 31 + 9x 1x 2 + 2x 52\)</span></p>
 <ul>
 <li><p>Derivadas parciais de primeira ordem <span class="math display">\[\frac{\partial y }{\partial x_1} = 21x 21 + 9x 2,
 \partial y
@@ -2298,7 +2300,7 @@ mínimo</strong>.</li>
 </div>
 <div id="exemplo-1" class="section level2">
 <h2>Exemplo</h2>
-<p>Considere a função <span class="math inline">\(y = 6x 21\)</span>
+<p>Considere a função <span class="math inline">\(y  = 6x 21\)</span>
 <span class="math inline">\(- 9x 1 - 3x 1x 2 - 7x 2 + 5x 22\)</span></p>
 <p>Encontre os pontos críticos e determine se são de máximo ou minímo. -
 Graficamente</p>
@@ -2426,7 +2428,7 @@ R_n(x)\]</span></p></li>
 \beta_0 + \beta_1x i  + R n(x i ),\]</span> em que o termo R n(x i ) é o
 erro cometido em aproximar y i por <span class="math inline">\(\beta_0 +
 \beta_1x i\)</span></p></li>
-<li><p>Notação usual <span class="math inline">\(Ei = y i - (\beta_0 +
+<li><p>Notação usual <span class="math inline">\(Ei  = y i  - (\beta_0 +
 \beta_1x i ).\)</span></p></li>
 <li><p>Note que o erro é uma função dos parâmetros desconhecidos <span class="math inline">\(\beta_0\)</span> e <span class="math inline">\(\beta_1\)</span></p></li>
 <li><p>Objetivo: minimizar a soma de quadrados dos erros ou resíduos
@@ -2437,9 +2439,9 @@ erro cometido em aproximar y i por <span class="math inline">\(\beta_0 +
 <strong>[[ARRUMAR]]</strong></p></li>
 </ul>
 <ol style="list-style-type: decimal">
-<li><p>Chame <span class="math inline">\(y_i - (\beta_0 + \beta_1x i ) =
-erro_i\)</span> .</p></li>
-<li><p>Chame <span class="math inline">\(\beta_0 + \beta_1x i = \mu
+<li><p>Chame <span class="math inline">\(y_i  - (\beta_0 + \beta_1x i )
+= erro_i\)</span> .</p></li>
+<li><p>Chame <span class="math inline">\(\beta_0 + \beta_1x i  = \mu
 i\)</span></p></li>
 <li><p>Assim, <strong>[[ARRUMAR]]</strong></p></li>
 </ol>

@@ -1,6 +1,8 @@
 ---
 title: "Caderno_Markdown_notes"
 output:
+  pdf_document:
+    toc: true
   html_document:
     toc: true
     toc_float:
@@ -12,6 +14,9 @@ date: "`r Sys.Date()`"
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(ggplot2)
+library(ggh4x)
+
 ```
 
 ## R Markdown
@@ -223,5 +228,60 @@ $$\Theta = \begin{pmatrix}\alpha & \beta\\
 $$\begin{vmatrix}a & b\\
 c & d
 \end{vmatrix}=ad-bc$$
+
+# Graficos
+
+## Gerando numeros
+
+```{r}
+set.seed(123)
+y <- rpois(1000, lambda = 3)
+head(y)
+
+## gerou 1000 obs de uma poison
+```
+
+
+```{r}
+plot(y) #grafico basico do R
+```
+
+```{r}
+#ggplot(y, aes(x)) + 
+#  geom_histogram( stat = "count")
+## NÃO FUNCIONA PQ PRECISA SER DATA FRAME
+```
+
+### Pokemon - Kaggle
+
+```{r chunk-1}
+dados_pkm <- read.csv2("Pokemon.csv", sep = ",")
+
+head(dados_pkm,n =10)
+
+
+ggplot(dados_pkm, aes(type1)) + 
+  geom_histogram( stat = "count")
+
+```
+
+
+## Graficos mais avançados
+
+```{r}
+set.seed(42)
+df <- data.frame(
+  x = c(rpois(50, 5), rpois(50, 10)),
+  group = rep(c("A", "B"), each = 50)
+)
+
+ggplot(df, aes(x)) +
+  geom_bar(aes(fill = group, y = after_stat(prop)),
+           alpha = 0.5, width = 1, position = "identity") +
+  stat_theodensity(aes(colour = group), distri = "pois")
+```
+
+
+
 
 
