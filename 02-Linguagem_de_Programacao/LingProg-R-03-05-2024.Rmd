@@ -1,0 +1,562 @@
+---
+title: "DSBD - Linguagens de Programação - R"
+author: "Helena R. S. D'Espindula"
+output:
+  pdf_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+date: "2024-05-03"
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+library(ggplot2)
+#library(BiocManager)
+
+
+```
+
+
+# R Base
+
+Livros: 
+- <a>https://rstudio-education.github.io/hopr/</a>
+- <a>https://r4ds.had.co.nz/</a>
+- https://www.amazon.com/Hands-Data-Science-Techniques-manipulation-ebook/dp/B07FDD1KWJ
+- https://r-graphics.org/
+- https://adv-r.hadley.nz/
+- https://ggplot2-book.org/
+- https://www.tmwr.org/
+
+### Primeiro código em R
+
+- Tudo após o # é um comentário
+
+```{r}
+## Somando dois números
+2 + 2
+```
+
+```{r}
+## Quantos segundos tem uma hora?
+## Cada minuto tem 60 segundos,
+## cada hora tem 60 minutos
+60 * 60
+```
+
+
+### Atribuição
+
+- Para atribuírmos valores aos objetos, utilizamos o operador `<-` ou `=`
+- Para inserir o operador `<-` no RStudio, pressione `Alt` + `-`
+
+```{r}
+## Atribuindo um valor a um objeto
+x <- 2
+x
+
+y <- 3
+y
+```
+### Área de Trabalho
+
+- Para visualizar os objetos criados, podemos utilizar a função `ls()`
+- Para remover um objeto, utilizamos a função `rm()`
+
+```{r}
+## Lista objetos
+ls()
+
+## Remove objetos
+rm(x)
+
+## Lista objetos
+ls()
+
+## Apaga todos os objetos
+rm(list = ls())
+
+## Lista objetos
+ls()
+```
+
+### Ambientes na Área de Trabalho
+
+- A função mostra o conteúdo da área de trabalho em `.GlobalEnv`
+- Cada biblioteca (pacote) carregado cria um novo ambiente de trabalho (namespace)
+- `search()` retorna a lista de espaços de trabalho
+
+```{r}
+ls()
+
+# Busca
+search()
+
+# Lista o conteúdo de um pacote
+ls("package:datasets")
+
+women #parte do pacote datasets
+
+women <- 10986 #criei uma local
+
+women # local tem prioridade
+
+datasets::women # especifica origem
+
+# Se for uma função "escondida" usa 3x dois pontos
+# wTO:::CN_aux
+
+```
+
+### Diretórios e Arquivos
+
+- O diretório de trabalho é o local onde o R está apontando. Isto é, onde ele está lendo e salvando os arquivos - por padrão.
+- Para saber qual é o diretório de trabalho, utilize a função `getwd()`.
+- Para mudar o diretório de trabalho, utilize a função `setwd()`.
+- Para listar o conteúdo de um diretório, utilize a função `list.files()` ou `dir()`
+
+### Arquivos da linguagem R
+
+- Os arquivos da linguagem R possuem a extensão `.R`.
+- `.RData` é um arquivo binário que contém todos os objetos da área de trabalho.
+- `.Rhistory` é um arquivo que contém o histórico de comandos executados.
+- `.Rprofile` é um arquivo que contém comandos que são executados toda vez que o R é iniciado.
+- Pode ser utilizado para carregar pacotes, por exemplo.
+- `.Renviron` é um arquivo que contém variáveis de ambiente.
+- `.Rproj` é um arquivo que contém as configurações do projeto.
+
+
+### Pacotes
+
+- Pacotes são coleções de funções, dados e documentação que ampliam as funcionalidades do R.
+- Para instalar um pacote da CRAN, utilize a função `install.packages()`
+- Para carregar um pacote, utilize a função `library()`
+- Pacotes podem estar disponíveis em outros repositórios, como o Bioconductor e GitHub.
+
+
+```{r eval=FALSE, include=TRUE}
+# Instalar o pacote
+#install.packages("ggplot2")
+
+# Carregar o pacote
+library(ggplot2)
+
+# Verificar o conteúdo
+head(ls("package:ggplot2"), 30)
+
+# Documentação do pacote
+#help(package = "ggplot2")
+
+# Caminhos de instalação
+.libPaths()
+
+# Remover o pacote da sessão
+#("package:ggplot2", unload = TRUE)
+```
+### Instalando do Biocondutor
+
+- https://www.bioconductor.org/
+
+```{r eval=FALSE, include=TRUE}
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install(version = "3.19")
+
+BiocManager::install("msdata")
+# Various Mass Spectrometry raw data example files
+```
+
+
+
+### Buscando Ajuda
+
+- Para acessar a documentação de uma função, utilize a função `help()` ou `?`
+- `??`, `help.search` e `apropos()` são funções que buscam por termos na documentação.
+- Para acessar a documentação de um pacote, utilize a função `help(package = "nome_do_pacote"
+- Muitos pacotes possuem tutoriais e exemplos de uso em suas vinhetas. Para acessar, utilize a função `vignette()`
+
+```{r}
+# Buscando pela documentação
+#?mean
+#help(mean)
+
+# Buscando por termos
+#??mean
+#help.search("mean")
+#apropos("mean")
+
+# Vignettes
+#browseVignettes(package = "ggplot2")
+
+# Busca pelo termo no r-project.org
+#RSiteSearch("mean")
+```
+
+### Campos da Documentação
+
+- Title: Título da função.
+- Description: Descrição da função.
+- Usage: Como utilizar a função.
+- Arguments: Argumentos da função.
+- Details: Detalhes da função.
+- Value: O que a função retorna.
+- See Also: Funções relacionadas.
+- Examples: Exemplos de uso.
+- Author: Autor da função.
+- References: Referências bibliográficas.
+
+
+### Manipulação de expressões e diferenciação de letras maiúsculas e minúsculas
+
+- O R é case-sensitive, isto é, ele diferencia letras maiúsculas de minúsculas.
+- Nomes de Variáveis e Funções: Ao nomear suas variáveis e funções, separe palavras com underscore (_) ou camelCase. Por exemplo: nome_variavel, meu_contador, calcularMedia, etc.
+- Palavras Reservadas: O R possui palavras reservadas que são usadas para funções ou operações internas e não devem ser usadas como nomes de objetos.
+  - Exemplo: `if`, `else`, `while`, `function`, `for`, `NA`, `TRUE`, entre outras.
+- Boas Práticas: Evite usar palavras reservadas e nomes de funções nativas como nomes de variáveis.
+
+
+### Exemplos
+
+```{r}
+# Exemplo de manipulação de expressões
+x <- 5
+y<-10 # Não recomendado, espaços são mais legíveis
+z <- (x +
+y) # Continuando o comando em outra linha
+x # imprime na tela o valor de x
+
+y # imprime o valor de y
+
+z # imprime o valor de z
+
+# Exemplo de diferenciação de letras maiúsculas e minúsculas
+variavel <- 42
+Variavel <- 24
+
+variavel
+
+Variavel
+
+```
+# Aritimética Básica com o R
+
+## Operações Matemáticas
+
+### Operações Básicas
+
+```{r}
+1 + 1 # Adição
+2 - 1 # Subtração
+3 * 2 # Multiplicação
+4 / 2 # Divisão
+5 ^ 2 # Potenciação
+5 %% 2 # Resto da divisão
+5 %/% 2 # Divisão inteira
+```
+
+### Logarítimo
+
+```{r}
+log(10) # Logarítimo natural
+exp(10) # Exponencial
+log10(100) # Logarítimo base 10
+log2(10) # Logarítimo base 2
+log(100, base = 8) # Log. base 8
+```
+
+
+### Funções Trigonométricas
+
+```{r}
+sin(0) # Seno
+cos(0) # Cosseno
+tan(0) # Tangente
+asin(0) # Arco seno
+acos(0) # Arco cosseno
+atan(0) # Arco tangente
+```
+
+### Arrerondamento
+
+```{r}
+round(pi, digits = 2) # Arredondament
+ceiling(pi) # Teto
+floor(pi) # Piso
+trunc(pi) # Truncamento
+```
+
+
+## Operações Lógicas
+
+### Comparativos
+
+```{r}
+1 == 1 # Igual
+1 != 2 # Diferente
+1 > 2 # Maior
+1 < 2 # Menor
+1 >= 1 # Maior ou Igual
+2 >= 1 # Menor ou Igual
+a <- 1
+b <- 2
+a <= b
+```
+
+
+### Operadores Lógicos
+
+```{r}
+(1 == 1) & (2 == 2) # E / AND
+(1 == 1) | (2 == 3) # OU / OR
+!(1 == 2) # NÃO / NOT
+```
+
+### Strings
+
+```{r}
+"R" == "r" # Comparação de strings
+"a" < "b" # Ordem Alfanumérica
+"1" < "2" # Ordem Alfanumérica
+```
+
+### Tipos Especiais
+
+- `NA`: Valores Ausentes
+- `NaN`: Not a Number
+- `Inf` e `-Inf`: Infinito
+- `NULL`: Valor Nulo (vazio)
+
+# Estruturas de Dados em R
+
+### Vetores
+
+- Um vetor, em R, é uma sequência de elementos do mesmo tipo.
+- Para criar um vetor, utilize a função `c()`
+
+```{r}
+numeros <- c(1, 2, 3, 4, 5)
+numeros
+
+letras <- c("a", "b", "c", "d", "e")
+letras
+
+logicos <- c(TRUE, FALSE, TRUE, FALSE)
+logicos
+
+## Coerção
+vetor <- c(numeros, letras, logicos)
+vetor
+
+```
+
+- Vetores em R começam com o índice 1.
+- Para acessar um elemento de um vetor, utilize `[]`.
+
+```{r}
+# Acessa o primeiro elemento
+numeros[1]
+
+# Acessa o terceiro elemento
+letras[3]
+
+# Acessa o segundo elemento
+logicos[2]
+
+# Acessa o quinto elemento
+vetor[5]
+```
+## Tipos de Vetores
+
+- Numérico: `numeric`
+  - `c(1.2, 2.5, 3.14)`
+- Inteiro: `integer`
+  - `c(1, 2, 3, 4, 5)`
+- Lógico: `logical`
+  - `c(TRUE, FALSE, FALSE)`
+- Complexo: `complex`
+  - `c(1 + 2i, 2 + 0i)`
+- Caracter: `character`
+  - `c("a", "b", "c")`
+- Factor: `factor`
+  - `factor(c("Tipo 1", "Tipo 2", "Tipo 3"))`
+
+### Consultando Tipos
+
+```{r}
+# Funções que começam com `is.`
+# retornam TRUE ou FALSE
+# Lista funções is.
+apropos("^is\\.")
+# Verifica se é inteiro
+is.integer(numeros)
+
+# Verifica se é numérico
+is.numeric(numeros)
+
+# Verifica se é caracter
+is.character(letras)
+
+# Verifica se é lógico
+is.logical(logicos)
+
+fator = factor( c("Tipo 1", "Tipo 2", "Tipo 3")) 
+
+# Verifica se é fator
+is.factor(fator)
+
+```
+
+### Conversão de Tipos
+
+```{r}
+# Funções que começam com `as.`
+# Lista funções as.
+head(apropos("^as\\."),15)
+
+# Converte para caracter
+as.character(numeros)
+
+# Converte para numérico
+as.numeric(fator)
+
+datas <- c("2021-01-01", "2021-01-02", "2021-01-03")
+# Converte para data
+as.Date(datas)
+datas
+```
+
+### Verificando Tipos
+
+- Quando não sabemos a classe de um objeto, podemos utilizar a função `class()`.
+
+```{r}
+#class()
+class(numeros)
+
+class(letras)
+
+class(logicos)
+
+class(datas)
+```
+
+
+### Métodos
+
+- Métodos são funções genéricas que atuam conforme a classe do objeto.
+- Para saber quais métodos estão disponíveis para uma classe, utilize a função `methods(class = "classe")`
+
+```{r}
+methods(class = "numeric")
+methods(class = "character")
+
+## Podemos ter um vetor numérico com
+altura <- c("João" = 1.82,
+           "Bianca" = 1.68,
+           "Eduarda" = 1.62)
+class(altura)
+
+attributes(altura)
+
+names(altura)
+```
+
+## Sequências & Repetições
+
+- Gerar sequências:
+  - `seq(from = x, to = y, by = z)`
+- Repetir elementos:
+  - `rep(x, times = n)`
+  - `rep(x, each = n)`
+  
+```{r}
+# Sequência de 1 a 10
+seq1 <- c(1, 10)
+seq1
+seq
+# [1] 1 2 3 4 5 6 7 8 9 10
+
+# Sequência de 10 a 1, de 2 em 2
+seq2 <- c(10, 1, by = -2)
+seq2
+seq
+# [1] 10 8 6 4 2
+
+# Repete 1, 2 e 3, 3 vezes
+rep1 <- rep( c(1, 2, 3), times = 3)
+rep1
+#[1] 1 2 3 1 2 3 1 2 3
+
+# Repete 1, 2 e 3, 3 vezes cada
+rep2 <- rep(c(1, 2, 3), each = 3)
+rep2
+#[1] 1 1 1 2 2 2 3 3 3
+```
+### Números Aleatórios
+
+- Números aleatórios:
+  - `runif()`
+  - `rnorm()`
+  - `sample()`
+
+```{r}
+set.seed(123) #só para ser sempre os mesmos
+
+# 5 Números aleatórios entre 0 e 1
+runif(5)
+# [1] 0.72837130 0.86886759 0.04289164 0.47154488 0.70211836
+
+# 5 Números aleatórios de uma normal, com média 0 e desvio padrão 1
+rnorm(5)
+# [1] -0.47879958 0.06497995 -0.48012593 1.19685144 0.69212656
+
+# Amostras aleatórias
+sample(numeros,
+size = 3,
+replace = FALSE)
+# [1] 5 2 3
+
+sample(letras,
+size = 5,
+replace = TRUE)
+# [1] "d" "a" "b" "e" "a"
+
+```
+
+## Seleção de Elementos
+
+### Seleção Posicional
+
+```{r}
+alturas <- c("João" = 1.82,
+            "Bianca" = 1.68,
+            "Carlos" = 1.75,
+            "Ana" = 1.70)
+
+# Seleciona o primeiro elemento
+print("Seleciona o primeiro elemento")
+alturas[1]
+
+# Seleciona até o terceiro elemento
+print("Seleciona até o terceiro elemento")
+alturas[1:3]
+
+# Seleciona elementos 1, 3 e 4
+print("Seleciona elementos 1, 3 e 4")
+alturas[c(1, 3, 4)]
+
+# remove o segundo elemento
+print("remove o segundo elemento")
+alturas[-2]
+```
+
+### Seleção Condicional 
+
+
+

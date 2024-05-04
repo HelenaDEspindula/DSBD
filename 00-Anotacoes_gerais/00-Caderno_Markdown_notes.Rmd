@@ -16,6 +16,7 @@ date: "`r Sys.Date()`"
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(ggh4x)
+library(datasets) #dados para testes
 
 ```
 
@@ -247,8 +248,11 @@ plot(y) #grafico basico do R
 ```
 
 ```{r}
-#ggplot(y, aes(x)) + 
-#  geom_histogram( stat = "count")
+df <- data.frame(x = rpois(100, lambda = 3))
+df
+
+ggplot(df, aes(x)) + 
+  geom_histogram( stat = "count")
 ## NÃO FUNCIONA PQ PRECISA SER DATA FRAME
 ```
 
