@@ -558,5 +558,65 @@ alturas[-2]
 
 ### Seleção Condicional 
 
+```{r}
+# Seleciona alturas maiores que 1.70
+mascara_logica <- alturas > 1.70
+alturas[mascara_logica]
+
+alturas[alturas > 1.70]
+```
+### Seleção por Nome
+
+```{r}
+# Seleciona a altura de João
+alturas["João"]
+
+# Seleciona a altura de João e Ana
+alturas[c("João", "Ana")]
+```
+
+## Modificar e Adcionar Elementos
+
+### Modificar
+
+- Podemos selecionar o elemento de interesse e então atribuir um novo valor
+```{r}
+alturas
+
+# Modifica a altura de João
+alturas["João"] <- 1.85
+alturas
+
+# Atribui altura desconhecida a Bianc
+alturas["Bianca"] <- NA
+alturas
+
+# Remove a altura de Carlos
+alturas = alturas[-3]
+```
+
+### Adicionar
+
+```{r}
+# Adiciona a altura de Ivete
+append(alturas, value = c("Ivete", 1.60))
+
+# Adiciona a altura de Anderson no in
+append(alturas, value = c("Anderson", 1.75), after = 0)
+
+# Concatena alturas
+alturas2 <- c("Alana" = 1.70, "Rafael" = 1.80)
+alturas <- c(alturas, alturas2)
+alturas
+```
 
 
+
+```{r}
+
+```
+
+
+```{r}
+
+```
