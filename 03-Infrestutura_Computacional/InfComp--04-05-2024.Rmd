@@ -1,0 +1,401 @@
+---
+title: "Infrestutura Computacional - Paulo"
+author: "Helena R S D'Espindula"
+date: "2024-05-04"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gmp)
+```
+
+# Criptografia
+
+
+```{r}
+p =5
+q=7
+n =p*q
+n
+
+z = ((p-1)*(q-1))
+z
+
+e = 5
+
+d =29 # já que (5*29 - 1 mod 24 = 0)
+
+#Chave pública = (n, e) = 35,5
+#Chave privada = (n, d) = 35, 29 
+
+```
+
+```{r}
+letra_codigo = 3
+
+cifrar <- function(asciiletra){ # c = m^e mod n
+  n = as.bigz(35) # n = chave_pub_1 
+  e = as.bigz(5) # e = chave_pub_2 
+  interm1 <- asciiletra ^ e
+  cifrado <- interm1 %% n
+  return(c(interm1, cifrado))
+}
+
+decifrar <- function(cifrado_recebido){ # m = c^d mod n
+  n  = as.bigz(35) # n = chave_priv_1
+  d  = as.bigz(29) # d = chave_priv_2
+  interm2 <- as.bigz(cifrado_recebido ^ d)
+  decifrado <- as.bigz((interm2) %% n)
+  return(c(interm2, decifrado))
+}
+
+c = cifrar(letra_codigo)
+c
+
+m = decifrar(c[2])
+m
+
+```
+
+
+
+
+
+
+
+
+
+
+```{r}
+#teste modulo
+foo <- function(a,b) c(quotient = floor(a / b), modulo = a %% b)
+
+foo(20,10)
+
+foo(10,20)
+
+foo(1,24)
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h11:~$ ls -a
+ .                       .fontconfig          .Rhistory
+ ..                      Imagens              saida.txt
+'Área de trabalho'       .linuxmint           .ssh
+ .bash_history           .local               .swp
+ .bash_logout            Modelos              tee_file.txt
+ .bashrc                 .mozilla             temp.txt
+ .bashrc.dpkg-dist       Música               teste_saida.txt
+ .cache                  numerolinhas.txt     Vídeos
+ .config                 .pki                 .viminfo
+ .dmrc                   .profile             .wget-hsts
+ Documentos              .profile.dpkg-dist   .Xauthority
+'Documento sem título'   Público              .xsession-errors
+ Downloads               .python_history      .xsession-errors.old
+ .emacs.d                .r
+ erros.txt               R
+
+he2@h11:~$ cd ~/.ssh
+
+he2@h11:~/.ssh$ ls
+known_hosts
+
+he2@h11:~/.ssh$ ssh-keygen -t rsa
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/espinf/he2/.ssh/id_rsa): 
+Enter passphrase (empty for no passphrase): 
+Enter same passphrase again: 
+Your identification has been saved in /home/espinf/he2/.ssh/id_rsa
+Your public key has been saved in /home/espinf/he2/.ssh/id_rsa.pub
+The key fingerprint is:
+SHA256:NFKIWCZadZ3CqXoYpFkj+V7oMFMZqwLjcx4pC7Ze5FQ he2@h11
+The key's randomart image is:
++---[RSA 3072]----+
+| .+*+o.+..       |
+|ooB+..=.o        |
+|+O.o E..o        |
+|Oo+ =  o .       |
+|+@ @    S        |
+|+ / o            |
+| o =             |
+|. .              |
+| .               |
++----[SHA256]-----+
+he2@h11:~/.ssh$ ls -a
+.  ..  id_rsa  id_rsa.pub  known_hosts
+
+
+
+he2@h11:~/.ssh$ cat id_rsa.pub 
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDQuicvc6TR6bKbsBj3gc5ByrvxjCp0AZxq8IPU465HwM1HZzE/UI+kMrNKzwTwhsLKpsgKRPeHCfVK3RHYu0FPHakcwvx5rXrgZcopIKPzCRvqwAEAmQx3+vcWZwn3dEaRHgZFQ7EUxrpYjtvIoLfOtPF7w/JlJjWFlmLwz3IRoXR6P+mlZThMfTyA9+/sCJ0QzjQwLTvBWBn0kPXRSyPgDXz/clJKH6kj9j9RHPfVEpapmwFSrmQopRb4rag4aqaJ8OVtjLQxvrUMAl7NRjknRUj3scL5M8ONXa1eCDwXXjI2IQPcKZu3DL/NeLmAus1ceGhs8/dMUM7aIQnd1hSbT3wkQBuUBqZZjwTCP97HVid1Sfs/ZcJ98GMgad84HdG3bQl1jDaluosv7912VfuO/ubKM+W1oZwRZ2QtrrGNHw71ob5SuDu+CQj6XVNJhZuHD3gE68UAEkMpwyea3m8AfksmoILGI/9bKnmbhnI2U4VKHESCG8r8a6xQikL9t80= he2@h11
+
+
+
+SSH-KEYGEN(1)                                                                                          BSD General Commands Manual                                                                                         SSH-KEYGEN(1)
+
+NAME
+     ssh-keygen — OpenSSH authentication key utility
+
+SYNOPSIS
+     ssh-keygen [-q] [-a rounds] [-b bits] [-C comment] [-f output_keyfile] [-m format] [-N new_passphrase] [-O option] [-t dsa | ecdsa | ecdsa-sk | ed25519 | ed25519-sk | rsa] [-w provider]
+     ssh-keygen -p [-a rounds] [-f keyfile] [-m format] [-N new_passphrase] [-P old_passphrase]
+     ssh-keygen -i [-f input_keyfile] [-m key_format]
+     ssh-keygen -e [-f input_keyfile] [-m key_format]
+     ssh-keygen -y [-f input_keyfile]
+     ssh-keygen -c [-a rounds] [-C comment] [-f keyfile] [-P passphrase]
+     ssh-keygen -l [-v] [-E fingerprint_hash] [-f input_keyfile]
+     ssh-keygen -B [-f input_keyfile]
+     ssh-keygen -D pkcs11
+     ssh-keygen -F hostname [-lv] [-f known_hosts_file]
+     ssh-keygen -H [-f known_hosts_file]
+     ssh-keygen -K [-a rounds] [-w provider]
+     ssh-keygen -R hostname [-f known_hosts_file]
+     ssh-keygen -r hostname [-g] [-f input_keyfile]
+     ssh-keygen -M generate [-O option] output_file
+     ssh-keygen -M screen [-f input_file] [-O option] output_file
+     ssh-keygen -I certificate_identity -s ca_key [-hU] [-D pkcs11_provider] [-n principals] [-O option] [-V validity_interval] [-z serial_number] file ...
+     ssh-keygen -L [-f input_keyfile]
+     ssh-keygen -A [-a rounds] [-f prefix_path]
+     ssh-keygen -k -f krl_file [-u] [-s ca_public] [-z version_number] file ...
+     ssh-keygen -Q [-l] -f krl_file file ...
+     ssh-keygen -Y find-principals -s signature_file -f allowed_signers_file
+     ssh-keygen -Y check-novalidate -n namespace -s signature_file
+     ssh-keygen -Y sign -f key_file -n namespace file ...
+     ssh-keygen -Y verify -f allowed_signers_file -I signer_identity -n namespace -s signature_file [-r revocation_file]
+
+DESCRIPTION
+     ssh-keygen generates, manages and converts authentication keys for ssh(1).  ssh-keygen can create keys for use by SSH protocol version 2.
+
+     The type of key to be generated is specified with the -t option.  If invoked without any arguments, ssh-keygen will generate an RSA key.
+
+     ssh-keygen is also used to generate groups for use in Diffie-Hellman group exchange (DH-GEX).  See the MODULI GENERATION section for details.
+
+     Finally, ssh-keygen can be used to generate and update Key Revocation Lists, and to test whether given keys have been revoked by one.  See the KEY REVOCATION LISTS section for details.
+
+     Normally each user wishing to use SSH with public key authentication runs this once to create the authentication key in ~/.ssh/id_dsa, ~/.ssh/id_ecdsa, ~/.ssh/id_ecdsa_sk, ~/.ssh/id_ed25519, ~/.ssh/id_ed25519_sk or
+     ~/.ssh/id_rsa.  Additionally, the system administrator may use this to generate host keys.
+
+     Normally this program generates the key and asks for a file in which to store the private key.  The public key is stored in a file with the same name but “.pub” appended.  The program also asks for a passphrase.  The passphrase
+     may be empty to indicate no passphrase (host keys must have an empty passphrase), or it may be a string of arbitrary length.  A passphrase is similar to a password, except it can be a phrase with a series of words, punctuation,
+     numbers, whitespace, or any string of characters you want.  Good passphrases are 10-30 characters long, are not simple sentences or otherwise easily guessable (English prose has only 1-2 bits of entropy per character, and pro‐
+     vides very bad passphrases), and contain a mix of upper and lowercase letters, numbers, and non-alphanumeric characters.  The passphrase can be changed later by using the -p option.
+
+     There is no way to recover a lost passphrase.  If the passphrase is lost or forgotten, a new key must be generated and the corresponding public key copied to other machines.
+
+     ssh-keygen will by default write keys in an OpenSSH-specific format.  This format is preferred as it offers better protection for keys at rest as well as allowing storage of key comments within the private key file itself.  The
+     key comment may be useful to help identify the key.  The comment is initialized to “user@host” when the key is created, but can be changed using the -c option.
+
+     It is still possible for ssh-keygen to write the previously-used PEM format private keys using the -m flag.  This may be used when generating new keys, and existing new-format keys may be converted using this option in conjunc‐
+     tion with the -p (change passphrase) flag.
+ Manual page ssh-keygen(1) line 1 (press h for help or q to quit)
+[...]
+
+
+```
+
+```{bash eval=FALSE, include=TRUE}
+he2@h11:~$ cd Downloads/
+he2@h11:~/Downloads$ ls
+ 00-Caderno_Markdown_notes.Rmd  'baixaDadosTransp_v2(1).sh'        'dic_bom_conselho(2)'             figura.jpg                                    informe_epidemiologico_31_03_2022_geral.csv   Sacramentorealestatetransactions.csv
+ 20240101_Despesas.zip           baixaDadosTransp_v2.sh             DSBD2024-Aula02b.pdf             foto.jpg                                      lucas-2024-04-20.Rmd                         'SalesJan2009(1).csv'
+ 20240102_Despesas.zip           bom_conselho                       DSBD2024-Aula02c.pdf             fotos2.sh                                     lucas-aval2.txt                               SalesJan2009.csv
+ 2024-04-05-Inf_Comp.Rmd        'Concurso Policia Cientifica.pdf'   DSBD2024-Aula02.pdf              fotos.sh                                      Lucas.pdf                                     trab1.py
+ 2024-04-13-Inf_Comp.html        cria_grafico.sh                    DSBD-main                       'historico-alg1_SIGA_ANONIMIZADO(1).csv'       Lucas.Rmd                                     variaveis.sh
+ 2024-04-13-Inf_Comp.Rmd         dadosCOVID                         DSBD-main.zip                    historico-alg1_SIGA_ANONIMIZADO.csv           meuscript.sh                                  vazio
+ aula02_2021.pdf                 dados_del.txt                     'dsbd_trab1(1).csv'               InfComp--04-05-2024.Rmd                       png2jpg.zip                                   vgg19_grafico.tar.gz
+ backup2.sh                      dados.txt                          dsbd_trab1.csv                   Inf_Comp--05-04-2024.html                     rmarkdown.pdf
+ backup.sh                       dic_bom_conselho                  'Estatistica - Avaliação 2.Rmd'   Inf_Comp--05-04-2024.Rmd                     'SacramentocrimeJanuary2006(1).csv'
+ baixaDadosCOVID.sh             'dic_bom_conselho(1)'               ex1.sh                           informe_epidemiologico_28_08_2020_geral.csv   SacramentocrimeJanuary2006.csv
+he2@h11:~/Downloads$ cd vazio/
+he2@h11:~/Downloads/vazio$ ls
+
+he2@h11:~/Downloads/vazio$ openssl genrsa -out chave_privada.pem 1024
+Generating RSA private key, 1024 bit long modulus (2 primes)
+.....................................+++++
+.....+++++
+e is 65537 (0x010001)
+he2@h11:~/Downloads/vazio$ openssl rsa -in chave_privada.pem -pubout -out chave_publica.pem
+writing RSA key
+he2@h11:~/Downloads/vazio$ ls -a
+.  ..  chave_privada.pem  chave_publica.pem
+he2@h11:~/Downloads/vazio$ 
+
+
+he2@h11:~/Downloads/vazio$ cat chave_privada.pem 
+-----BEGIN RSA PRIVATE KEY-----
+MIICXgIBAAKBgQDqLmmw9j0xdSADY0kKxlaMX/Ful7uRIknXAPZXU3uVa0yIuYhv
+zYdDsyR6YzX7Urn54jSHWo+KTK1Zkx30lvWqqp7xB61Zel4z58e/J3ahJV/xqgYb
+VzHPCmnX/+oLoDQuuPb24R44FkVpzVowaLiPlairLiPprYwGDTESkTKowwIDAQAB
+AoGBAOCbx4+Nfb/UAPJ+5e3JsfVNiHl0WtinNH9dUukLDzuPAIcavHvPe285gUFJ
+qtr0y5+akJtKBua1CIcjjdWsfM5wamVA0yN874I02LJDZCz3Q7NPDdZwDOjs2MxW
+0xyAm0P/v8MKrAQBGedZlbNtBWtyZfnZrUL7TFdE8Siea0UxAkEA/u3MUh+YvLz+
+2QWKnN84UpJSFqe05VPgRKfhlpBw8COc5w4RBbDLpThOGkDukmookaZl4P/2f/5v
+ex9QLaaftwJBAOsqTG/s/KptVUNM8Lsk4FeklbNPY++9VMDQh5yo5uN6pNn7lpW7
+SD05BqugBqJDIJmTdd+Y6hPKyCVkeAxLZ1UCQQCFlMu8uKvLMmmEBMBWZS1ZLyzu
+jCBhDqt0rleqErPrUW31MMzAo5yCTde3MBETDaeGcp/t35ImDYgTBxx3X1lPAkEA
+1NBWlAN3NBP1UQ5T3Egm7al3/+kcm1xPUp5j2xXOvJXEka/oOmBdo2nz62TKHBV7
+bv/PcCXFz1t3fL9LFHU4cQJATSzeEsR+vlXHA4kTuqz9S25dDBWgEKPcQjY3eGhh
+PydnShfhaWeAHm78haMkjs3FPuFuRRbCZY5cclc+ff9org==
+-----END RSA PRIVATE KEY-----
+he2@h11:~/Downloads/vazio$ cat chave_publica.pem 
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDqLmmw9j0xdSADY0kKxlaMX/Fu
+l7uRIknXAPZXU3uVa0yIuYhvzYdDsyR6YzX7Urn54jSHWo+KTK1Zkx30lvWqqp7x
+B61Zel4z58e/J3ahJV/xqgYbVzHPCmnX/+oLoDQuuPb24R44FkVpzVowaLiPlair
+LiPprYwGDTESkTKowwIDAQAB
+-----END PUBLIC KEY-----
+he2@h11:~/Downloads/vazio$ 
+
+
+
+```
+
+```{bash eval=FALSE, include=TRUE}
+
+he2@h11:~/Downloads/vazio$ ls
+chave_privada.pem  chave_publica.pem  msn.txt
+
+he2@h11:~/Downloads/vazio$ cat msn.txt 
+Olá mundo!
+  
+he2@h11:~/Downloads/vazio$ openssl pkeyutl -encrypt -inkey chave_publica.pem -pubin -in msn.txt -out encriptado
+he2@h11:~/Downloads/vazio$ ls
+chave_privada.pem  chave_publica.pem  encriptado  msn.txt
+he2@h11:~/Downloads/vazio$ cat encriptado 
+���`X��/�
+         ���n\���V�@U��sL�3ogY
+                              �׻*�ˌ�
+                                    �c�|�}�Z�W_ge}L�����
+�r��8k���I�[oN��                                        I�|�:t�G��]�V�~�
+               ���FB<���س����	�e��E��
+                                       
+he2@h11:~/Downloads/vazio$ openssl pkeyutl -decrypt -inkey chave_privada.pem -in encriptado
+Olá mundo!
+
+
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h11:~/Downloads/vazio$ openssl pkeyutl -sign -inkey chave_privada.pem -in msn.txt  -out ASSINADO.bin
+he2@h11:~/Downloads/vazio$ ls -a
+.  ..  ASSINADO.bin  chave_privada.pem  chave_publica.pem  encriptado  msn.txt
+he2@h11:~/Downloads/vazio$ openssl rsautl -verify -inkey chave_publica.pem -pubin -in ASSINADO.bin -out ARQUIVO.txt
+he2@h11:~/Downloads/vazio$ ls
+ARQUIVO.txt   chave_privada.pem  encriptado
+ASSINADO.bin  chave_publica.pem  msn.txt
+he2@h11:~/Downloads/vazio$ cat ASSINADO.bin 
+�U��4�M�+�f
+           <�\E������.#�b�1YƊ�3�
+(�X��Ќ�/h��l���S�4T�T��FSK��#U�:(��>F��gjc~���x,m��_P��]@��\2[H��}�C�he2@h11:~/Downloads/vazio$ cat A
+ARQUIVO.txt   ASSINADO.bin  
+he2@h11:~/Downloads/vazio$ cat ARQUIVO.txt 
+Olá mundo!
+he2@h11:~/Downloads/vazio$ 
+```
+
+```{bash eval=FALSE, include=TRUE}
+he2@h11:~/Downloads/vazio$ ssh he2@ssh.inf.ufpr.br "quota -s"
+The authenticity of host 'ssh.inf.ufpr.br (200.17.202.6)' can't be established.
+ECDSA key fingerprint is SHA256:DPIcGqSIoWJ6X0T6PnKmKrS5GyDzkXZyGnNx8P88U/w.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+Warning: Permanently added 'ssh.inf.ufpr.br' (ECDSA) to the list of known hosts.
+he2@ssh.inf.ufpr.br's password: 
+
+Disk quotas for user he2 (uid 5298): 
+     Filesystem   space   quota   limit   grace   files   quota   limit   grace
+urquell.home:/home
+                  6881M   9766M   9766M           12281       0       0        
+he2@h11:~/Downloads/vazio$ 
+```
+
+
+
+```{bash eval=FALSE, include=TRUE}
+he2@h11:~/Downloads/vazio$ scp ARQUIVO.txt he2@ssh.inf.ufpr.br:Downloads
+he2@ssh.inf.ufpr.br's password: 
+ARQUIVO.txt                                                                         100%   12     3.9KB/s   00:00    
+he2@h11:~/Downloads/vazio$ ssh he2@ssh.inf.ufpr.br
+he2@ssh.inf.ufpr.br's password: 
+Linux macalan 6.1.0-0.deb11.7-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.20-2~bpo11+1 (2023-04-23) x86_64
+===============================================================================
+
+macalan (alias ssh) tem poucos recursos de memória e processadores,
+com limites rígidos de processos, memória e arquivos abertos.
+
+    *** NÃO DEVE SER USADA PARA PROCESSAMENTO ***
+
+Esta máquina deve ser usada apenas como acesso a outras servidoras. 
+
+Use uma das máquinas abaixo para processamento.
+
+Servidoras virtuais:
+- cpu1
+- cpu2
+
+Servidoras físicas:
+- zara (16 cores, 120GB RAM)
+
+Servidoras físicas, com GPUs:
+- orval (2x GTX 750 Ti)
+
+* Para usar CUDA, execute:
+export PATH=$PATH:/usr/local/cuda/bin
+
+Servidoras de uso exclusivo:
+- fradim: exclusiva para professores
+- mumm: exclusiva para C3SL 
+
+===============================================================================
+he2@macalan:~$ ls
+'Área de trabalho'       Downloads   Modelos            Público     tee_file.txt      Vídeos
+ Documentos              erros.txt   Música             R           temp.txt
+'Documento sem título'   Imagens     numerolinhas.txt   saida.txt   teste_saida.txt
+he2@macalan:~$ cd Downloads/
+he2@macalan:~/Downloads$ ls
+ 00-Caderno_Markdown_notes.Rmd     'Estatistica - Avaliação 2.Rmd'
+ 20240101_Despesas.zip              ex1.sh
+ 20240102_Despesas.zip              figura.jpg
+ 2024-04-05-Inf_Comp.Rmd            foto.jpg
+ 2024-04-13-Inf_Comp.html           fotos2.sh
+ 2024-04-13-Inf_Comp.Rmd            fotos.sh
+ ARQUIVO.txt                       'historico-alg1_SIGA_ANONIMIZADO(1).csv'
+ aula02_2021.pdf                    historico-alg1_SIGA_ANONIMIZADO.csv
+ backup2.sh                         InfComp--04-05-2024.Rmd
+ backup.sh                          Inf_Comp--05-04-2024.html
+ baixaDadosCOVID.sh                 Inf_Comp--05-04-2024.Rmd
+'baixaDadosTransp_v2(1).sh'         informe_epidemiologico_28_08_2020_geral.csv
+ baixaDadosTransp_v2.sh             informe_epidemiologico_31_03_2022_geral.csv
+ bom_conselho                       lucas-2024-04-20.Rmd
+'Concurso Policia Cientifica.pdf'   lucas-aval2.txt
+ cria_grafico.sh                    Lucas.pdf
+ dadosCOVID                         Lucas.Rmd
+ dados_del.txt                      meuscript.sh
+ dados.txt                          png2jpg.zip
+ dic_bom_conselho                   rmarkdown.pdf
+'dic_bom_conselho(1)'              'SacramentocrimeJanuary2006(1).csv'
+'dic_bom_conselho(2)'               SacramentocrimeJanuary2006.csv
+ DSBD2024-Aula02b.pdf               Sacramentorealestatetransactions.csv
+ DSBD2024-Aula02c.pdf              'SalesJan2009(1).csv'
+ DSBD2024-Aula02.pdf                SalesJan2009.csv
+ DSBD-main                          trab1.py
+ DSBD-main.zip                      variaveis.sh
+'dsbd_trab1(1).csv'                 vazio
+ dsbd_trab1.csv                     vgg19_grafico.tar.gz
+
+he2@macalan:~/Downloads$ exit
+sair
+Connection to ssh.inf.ufpr.br closed.
+he2@h11:~/Downloads/vazio$ 
+
+```
+
