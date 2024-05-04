@@ -6,10 +6,12 @@ output:
     toc: true
   html_document:
     toc: true
+    theme: readable
     toc_float:
       collapsed: false
       smooth_scroll: false
       number_sections: true
+    code_folding: show
 date: "2024-05-03"
 ---
 
@@ -386,6 +388,9 @@ vetor[5]
 - Factor: `factor`
   - `factor(c("Tipo 1", "Tipo 2", "Tipo 3"))`
 
+**Atenção:** Se, misturar tipos vai virar char.
+
+
 ### Consultando Tipos
 
 ```{r}
@@ -565,6 +570,7 @@ alturas[mascara_logica]
 
 alturas[alturas > 1.70]
 ```
+
 ### Seleção por Nome
 
 ```{r}
@@ -611,12 +617,312 @@ alturas
 ```
 
 
-
-```{r}
-
-```
+## Operações Estatísticas
 
 
 ```{r}
 
+y <- c(7, 5, 2, 2, 4, 8, 5, 2, 6, 4, 5, 10, 3, 2, 6, 10, 7, 8, 6, 10, 3, 4, 5, 1)
+y
+# Número de elementos
+length(y)
+#[1] 24
+
+# Soma dos elementos
+sum(y)
+#[1] 125
+
+# Média
+mean(y)
+#[1] 5.208333
+
+# Mediana
+median(y)
+#[1] 5
+
+# Máximo
+max(y)
+#[1] 10
+
+# Mínimo
+min(y)
+#[1] 1
+
+# Variância
+var(y)
+#[1] 7.21558
+
+# Desvio padrão
+sd(y)
+#[1] 2.686183
+
+# Desvio absoluto mediana
+mad(y, constant = 1)
+#[1] 2
+
+# Coeficiente de variação
+100 * sd(y) / mean(y)
+#[1] 51.57472
+
+# Quartis
+quantile(y)
+#0 % 25% 50 % 75% 100%
+#1 3 5 7 10
+
+# Amplitude Interquartilica
+IQR(y)
+#[1] 4
+
+# Tabela de Frequência
+table(y)
+
+prop.table(table(y))
 ```
+
+## Matrizes
+
+- São bidimensionais, com linhas e colunas.
+- Todos elementos são do mesmo tipo.
+
+```{r}
+# Cria uma matriz 2x3
+matriz <- matrix(1:6, nrow = 2)
+matriz
+
+# Cria uma matriz 3x2
+matriz2 <- matrix(1:6, ncol = 2)
+matriz2
+
+# Criando matriz a partir de um vetor
+vet1 <- c(1, 2, 3)
+vet2 <- c(4, 5, 6)
+
+# Junta vet1 e vet2 por linha (row)
+matriz3 <- rbind(vet1, vet2)
+matriz3
+
+# Junta vet1 e vet2 por coluna (collum)
+matriz4 <- cbind(vet1, vet2)
+matriz4
+
+```
+
+## Seleção de Elementos em Matrizes
+
+### Seleção de Elementos em Matrizes
+
+```{r}
+# Seleciona o elemento da primeira li
+# e segunda coluna
+matriz[1, 2]
+#[1] 3
+
+# Seleciona a primeira linha
+matriz[1, ]
+#[1] 1 3 5
+
+# Seleciona a segunda coluna
+matriz[, 2]
+#[1] 3 4
+```
+
+### Operaçõe com Matrizes
+
+```{r}
+mat1 <- matrix(1:4, nrow = 2)
+mat2 <- matrix(5:8, nrow = 2)
+
+# Soma de matrizes
+mat1 + mat2
+matrix
+
+# Multiplicação de matrizes
+mat1 %*% mat2
+
+# Multiplicação por escalar
+mat1 * 2
+
+# Transposta
+t(mat1)
+
+colSums(mat1)
+rowSums(mat1)
+colMeans(mat1)
+rowMeans(mat1)
+
+
+```
+
+
+## Data Frames
+
+- Estrutura de dados mais comum em R
+- Semelhante a uma planilha
+- Cada coluna pode ter um tipo diferente
+- Cada linha é uma observação
+- Podemos criar um data frame a partir de vetores.
+
+```{r}
+# Cria um data frame
+nomes = c("Joao", "Ana", "Carlos")
+idades = c(25, 30, 22)
+alturas = c(1.75, 1.60, 1.80)
+
+df <- data.frame(nome = nomes,
+                 idade = idades,
+                 altura = alturas)
+df
+
+#df2 <- (nome = c("Joao", "Ana", "Carlos"), idade = c(25, 30, 22), altura = c(1.75, 1.60, 1.80))
+#df2
+
+summary(df)
+
+names(df)
+#[1] "nome" "idade" "altura"
+
+df$nome
+#[1] "João" "Ana" "Carlos"
+```
+## Considerações Finais
+- Vetores, matrizes e data frames são estruturas de dados fundamentais em R.
+- Vetores são unidimensionais, matrizes são bidimensionais e data frames são semelhantes a planilhas.
+- Podemos realizar operações estatísticas e matemáticas com essas estruturas.
+
+
+## Exercícios
+
+1. Crie um vetor com 10 números inteiros aleatórios entre 1 e 100.
+2. Calcule a média, mediana, variância e desvio padrão do vetor criado.
+
+
+```{r}
+set.seed(123)
+
+vetor <- sample.int(100, 10)
+vetor
+
+mean(vetor)
+
+median(vetor)
+
+sd(vetor)
+
+```
+
+3. Crie uma matriz 3x3 com números inteiros de 1 a 9.
+4. Selecione o elemento da segunda linha e terceira coluna da matriz criada.
+
+```{r}
+matrix2 <- matrix(1:9, nrow = 3, ncol = 3, byrow = FALSE) 
+# faz por coluna, é o defaut
+matrix2
+
+
+matrix1 <- matrix(1:9, nrow = 3, ncol = 3, byrow = TRUE)
+# para fazer por linha
+matrix1
+
+matrix1[2, 3]
+```
+
+5. Crie um data frame com 5 observações e 3 variáveis: nome, idade e altura.
+
+
+```{r}
+nomes = c("Joao", "Ana", "Carlos", "Andre", "Bia")
+idades = c(25, 30, 22, 45, 33)
+alturas = c(1.75, 1.60, 1.80, 1.56, 1.97)
+
+df <- data.frame(nome = nomes,
+                 idade = idades,
+                 altura = alturas)
+df
+
+mean(df$idade)
+
+```
+
+
+# Estruturas de Programação
+
+## Estruturas de Programação
+
+Existem duas estruturas princiais de programação: controle e repetição.
+
+### Estruturas de Controle
+
+- Permitem a execução de um bloco de código baseado em uma condição testada.
+- If - Else: Executa um bloco de código se a condição for verdadeira.
+- Switch: Executa um bloco de código baseado em múltiplas condições.
+
+### Estruturas de Repetição
+
+- Permitem a execução de um bloco de código repetidamente.
+- For: Executa um bloco de código um número específico de vezes.
+- While: Executa um bloco de código enquanto uma condição for verdadeira.
+- Repeat: Executa um bloco de código indefinidamente.
+
+
+#### If-Else
+
+- A estrutura if - else permite a execução de um bloco de código baseado em uma condição.
+- Se a condição for verdadeira, o bloco de código dentro do if é executado.
+- Se a condição for falsa, o bloco de código dentro do else é executado.
+
+
+```{r eval=FALSE, include=TRUE}
+if(condicao) {
+  # Bloco de código
+} else {
+  # Bloco de código
+}
+```
+
+```{r}
+nota <- 7
+if(nota >= 7) {
+  print("Aprovado")
+} else {
+  print("Reprovado")
+}
+```
+
+#### Exemplo de If - Else
+- Implemente um código que envia um e-mail automaticamente para os clientes de uma empresa que fizeram uma compra de acordo com dois critérios: Horário da compra e valor da compra.
+  - Se a compra for pela manhã, o e-mail deve ser iniciar com Bom
+dia.
+  - Se a compra for à tarde, o e-mail deve ser iniciar com Boa tarde.
+  - Se a compra for à noite, o e-mail deve ser iniciar com Boa noite.
+  - Se o valor da compra for maior que R$100, o e-mail deve conter um cupom de desconto de 10%.
+  - Se o valor da compra for menor ou igual a R$100, o e-mail deve conter um cupom de desconto de 5%.
+
+
+```{r}
+hora_compra <- "manha"
+valor_compra <- 150
+if(hora_compra == "manha" & valor_compra > 100) {
+  print("Bom dia! Você ganhou um cupom de 10% de desconto.")
+} else if(hora_compra == "manha" & valor_compra <= 100) {
+  print("Bom dia! Você ganhou um cupom de 5% de desconto.")
+} else if(hora_compra == "tarde" & valor_compra > 100) {
+  print("Boa tarde! Você ganhou um cupom de 10% de desconto.")
+} else if(hora_compra == "tarde" & valor_compra <= 100) {
+  print("Boa tarde! Você ganhou um cupom de 5% de desconto.")
+} else if(hora_compra == "noite" & valor_compra > 100) {
+  print("Boa noite! Você ganhou um cupom de 10% de desconto.")
+} else {
+  print("Boa noite! Você ganhou um cupom de 5% de desconto.")
+}
+
+```
+
+
+
+
+
+
+
+
+
+
