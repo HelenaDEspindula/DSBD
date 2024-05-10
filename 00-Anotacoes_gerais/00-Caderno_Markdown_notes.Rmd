@@ -29,6 +29,10 @@ When you click the **Knit** button a document will be generated that includes bo
 ```{r cars}
 summary(cars)
 ```
+## Incluindo figuras
+
+![Instância em execusão](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-34-43.png "Instância em execusão")
+
 
 ## Including Plots
 
