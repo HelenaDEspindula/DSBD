@@ -1,0 +1,400 @@
+---
+title: "2024-04-05-Inf_Comp"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+date: "2024-04-05"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# AULA 3 - SHELL SCRIPT - Parte 1
+
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat meuscript.sh 
+#!/bin/bash
+#
+# Exemplo de um script bash
+
+echo "Arquivos no diretorio HOME"
+ls $HOME
+
+```
+```{bash eval=FALSE}
+
+he2@h8:~/Downloads$ ls -l meuscript.sh 
+-rw------- 1 he2 espinf 86 abr  5 19:11 meuscript.sh
+
+he2@h8:~/Downloads$ chmod +x meuscript.sh 
+
+he2@h8:~/Downloads$ ls -l meuscript.sh 
+-rwx------ 1 he2 espinf 86 abr  5 19:11 meuscript.sh
+
+```
+```{bash eval=FALSE}
+
+he2@h8:~/Downloads$ ./meuscript.sh
+Arquivos no diretorio HOME
+'Área de trabalho'   Imagens	        Público        teste_saida.txt
+ Documentos	     Modelos	        R	       Vídeos
+ Downloads	     Música	        saida.txt
+ erros.txt	     numerolinhas.txt   tee_file.txt
+
+```
+```{bash eval=FALSE}
+
+he2@h8:~/Downloads$ cat meuscript.sh 
+#!/bin/bash
+#
+# Exemplo de um script bash
+
+echo "Arquivos no diretorio HOME"
+ls $HOME
+
+var="Hello World"
+echo $var
+
+```
+```{bash eval=FALSE}
+
+he2@h8:~/Downloads$ ./meuscript.sh
+Arquivos no diretorio HOME
+'Área de trabalho'   Imagens	        Público        teste_saida.txt
+ Documentos	     Modelos	        R	       Vídeos
+ Downloads	     Música	        saida.txt
+ erros.txt	     numerolinhas.txt   tee_file.txt
+Hello World
+```
+
+## Variáveis
+
+### Atribuição
+
+- nome=valor, sem espaços. Uso de aspas duplas no valor
+para incluir espaços
+- Acesso à variável deve ser precedido do sinal `$`
+```{bash eval=FALSE}
+var="Hello World"
+echo $var
+```
+### Variáveis especiais:
+
+- `$0`: nome do script
+- `$1-$9`: parâmetros
+- `$#`: número de parâmetros
+- `$*`: todos os parâmetros
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ var="Seu texto aqui"
+he2@h8:~/Downloads$ echo $var
+Seu texto aqui
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat variaveis.sh 
+#!/bin/bash
+
+data=$(date)
+echo "Hoje e dia $data"
+echo "Meu nome e $0 e recebi $# argumentos"
+echo "Os argumentos são $*"
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ls -l variaveis.sh 
+-rw------- 1 he2 espinf 123 abr  5 19:24 variaveis.sh
+
+he2@h8:~/Downloads$ chmod 700 variaveis.sh 
+
+he2@h8:~/Downloads$ ls -l variaveis.sh 
+-rwx------ 1 he2 espinf 123 abr  5 19:24 variaveis.sh
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./variaveis.sh 
+Hoje e dia sex 05 abr 2024 19:27:21 -03
+Meu nome e ./variaveis.sh e recebi 0 argumentos
+Os argumentos são 
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./variaveis.sh arg1
+Hoje e dia sex 05 abr 2024 19:28:02 -03
+Meu nome e ./variaveis.sh e recebi 1 argumentos
+Os argumentos são arg1
+```
+
+Variáveis podem ter seu valor alterado por substituição de padrões:
+
+- `man bash` (/Parameter expansion)
+- `${var/padrao/string}`: substitui padrão pela string
+- `${var#padrao}`: remove padrao do inicio da variável
+- `${var%padrao}`: remove padrao do final da variável
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ var=figura.jpg 
+
+he2@h8:~/Downloads$ echo $var
+figura.jpg
+
+he2@h8:~/Downloads$ echo ${var/jpg/JPG}
+figura.JPG
+## Trocou só na saida, não na variavel.
+
+he2@h8:~/Downloads$ echo ${var%JPG}
+figura.jpg
+
+he2@h8:~/Downloads$ echo ${var%jpg}
+figura.
+
+he2@h8:~/Downloads$ echo ${var#figura}
+.jpg
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ var2=${var/jpg/JPG}
+
+he2@h8:~/Downloads$ echo $var2
+figura.JPG
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ fotos=$(ls *.jpg)
+
+he2@h8:~/Downloads$ echo $fotos
+figura.jpg
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat fotos.sh 
+#!/bin/bash
+
+fotos=$(ls *.jpg)
+
+for f in $fotos; do echo ${f/jpg/JPG}; done
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./fotos.sh 
+figura.JPG
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat fotos2.sh 
+#!/bin/bash
+
+fotos=$(ls *.jpg)
+
+for f in $fotos; do cp $f ${f/figura/foto}; done
+
+ls *jpg
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ ./fotos2.sh 
+figura.jpg  foto.jpg
+```
+
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat backup.sh 
+#!/bin/bash
+# Salva o conteudo de um diretorio
+
+data=$(date +%F)
+dir=$1
+destino=$HOME/backups/
+
+mkdir -p $destino
+cp -R $dir $destino/$dir-$data
+echo "Backup do diretorio $dir completo"
+
+he2@h8:~/Downloads$ chmod +x backup.sh 
+
+```
+
+```{bash eval=FALSE}
+he2@h8:~$ date
+sex 05 abr 2024 20:10:12 -03
+
+he2@h8:~$ date +%F
+2024-04-05
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat backup.sh 
+#!/bin/bash
+# Salva o conteudo de um diretorio
+
+data=$(date +%F)
+dir=$1
+destino=$HOME/backups
+
+mkdir -p $destino
+cp -R $dir $destino/$data-$dir
+echo "Backup do diretorio $dir completo"
+```
+
+```{bash eval=FALSE}
+he2@h8:~$ ls
+'Área de trabalho'   Downloads   Imagens   Música             Público   saida.txt      teste_saida.txt
+ Documentos          erros.txt   Modelos   numerolinhas.txt   R         tee_file.txt   Vídeos
+```
+
+```{bash eval=FALSE}
+he2@h8:~$ ./Downloads/backup.sh Downloads/
+Backup do diretorio Downloads/ completo
+```
+
+```{bash eval=FALSE}
+he2@h8:~$ ls
+'Área de trabalho'  'Documento sem título'   Imagens   numerolinhas.txt   saida.txt         Vídeos
+ backups             Downloads               Modelos   Público            tee_file.txt
+ Documentos          erros.txt               Música    R                  teste_saida.txt
+```
+
+```{bash eval=FALSE}
+he2@h8:~/backups$ ls
+2024-04-05-Downloads
+
+he2@h8:~/backups$ cd 2024-04-05-Downloads/
+
+he2@h8:~/backups/2024-04-05-Downloads$ ls
+ aula02_2021.pdf         'dic_bom_conselho(2)'   fotos2.sh                                 meuscript.sh
+ backup.sh                DSBD2024-Aula02b.pdf   fotos.sh                                  png2jpg.zip
+ baixaDadosTransp_v2.sh   DSBD2024-Aula02c.pdf  'historico-alg1_SIGA_ANONIMIZADO(1).csv'   rmarkdown.pdf
+ bom_conselho             DSBD2024-Aula02.pdf    historico-alg1_SIGA_ANONIMIZADO.csv       variaveis.sh
+ dados_del.txt            DSBD-main.zip          Inf_Comp--05-04-2024.html                 vgg19_grafico.tar.gz
+ dados.txt                dsbd_trab1.csv         Inf_Comp--05-04-2024.Rmd
+ dic_bom_conselho         figura.jpg             Lucas.pdf
+'dic_bom_conselho(1)'     foto.jpg               Lucas.Rmd
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ cat backup2.sh 
+#!/bin/bash
+# Salva o conteudo de um diretorio
+
+data=$(date +%F)
+dir=$1
+destino=$HOME/backups/
+
+if [ $# != 1 ]; then
+echo "Uso: um argumento que e o diretorio a ser salvo"
+exit
+fi
+if [ ! -d $dir ]; then
+echo "O diretorio $dir nao existe"
+exit
+fi
+
+# ja temos um diretorio de backup?
+if [ -d $destino/$dir-$data ]; then
+echo "Este diretorio ja foi salvo hoje. Sobrescrever?"
+read resposta
+if [ $resposta != 's' ]; then
+exit
+fi
+else
+mkdir -p $destino/$dir-$data
+fi
+cp -R $dir $destino/$dir-$data
+echo "Backup do diretorio $dir completo"
+```
+
+```{bash eval=FALSE}
+he2@h8:~/Downloads$ chmod +x backup2.sh 
+
+he2@h8:~/Downloads$ ./backup2.sh $HOME/Downloads/
+Backup do diretorio /home/espinf/he2/Downloads/ completo
+
+he2@h8:~/Downloads$ ./backup2.sh $HOME/Downloads/
+Este diretorio ja foi salvo hoje. Sobrescrever?
+s
+Backup do diretorio /home/espinf/he2/Downloads/ completo
+
+he2@h8:~/Downloads$ ./backup2.sh $HOME/Downloads/
+Este diretorio ja foi salvo hoje. Sobrescrever?
+n
+
+he2@h8:~/Downloads$ 
+```
+
+## Editor V
+
+## Parte 2
+
+Site: https://portaldatransparencia.gov.br/download-de-dados/despesas
+
+Parametros:
+- Exercícios Disponíveis
+- Meses Disponíveis em 2024
+- Dados Disponíveis em Janeiro
+
+
+```{bash eval=FALSE}
+he2@h8:~$ seq -f "%02g" 1 5
+01
+02
+03
+04
+05
+
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+```{bash eval=FALSE}
+
+```
+
+
+

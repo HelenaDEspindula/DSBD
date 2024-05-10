@@ -1,0 +1,177 @@
+---
+title: "Infrestutura Computacional - Paulo"
+author: "Helena R S D'Espindula"
+date: "2024-05-10"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(gmp)
+```
+
+## Criando uma VM na AWS
+
+### Colocando chaves na pasta ssh
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ ls -a
+ .                       .fontconfig          .RData
+ ..                      Imagens              .Rhistory
+'Área de trabalho'       .linuxmint           saida.txt
+ .bash_history           .local               .ssh
+ .bash_logout            Modelos              .swp
+ .bashrc                 .mozilla             tee_file.txt
+ .bashrc.dpkg-dist       Música               temp.txt
+ .cache                  numerolinhas.txt     teste_saida.txt
+ .config                 .pki                 Vídeos
+ .dmrc                   .profile             .viminfo
+ Documentos              .profile.dpkg-dist   .vscode
+'Documento sem título'   Público              .wget-hsts
+ Downloads               .python_history      .Xauthority
+ .emacs.d                .r                   .xsession-errors
+ erros.txt               R                    .xsession-errors.old
+ 
+he2@h8:~$ cd .ssh/
+
+he2@h8:~/.ssh$ ls
+id_rsa  id_rsa.pub  known_hosts
+
+he2@h8:~/.ssh$ cp ~/Downloads/ChavesDSBD.pem ~/.ssh
+
+he2@h8:~/.ssh$ ls
+ChavesDSBD.pem  id_rsa  id_rsa.pub  known_hosts
+
+```
+
+### Conectando AWS
+
+![Instância em execusão](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-34-43.png "Instância em execusão")
+
+![Conectar-se a Instância](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-35-53.png "Conectar-se a Instância")
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~/.ssh$ chmod 400 "ChavesDSBD.pem"
+
+he2@h8:~/.ssh$ ls -l
+total 18
+-r-------- 1 he2 espinf 1674 mai 10 19:30 ChavesDSBD.pem
+-rw------- 1 he2 espinf 2635 mai  4 09:27 id_rsa
+-rw------- 1 he2 espinf  561 mai  4 09:27 id_rsa.pub
+-rw-r--r-- 1 he2 espinf 1110 mai  4 11:24 known_hosts
+
+he2@h8:~/.ssh$ ssh -i "ChavesDSBD.pem" ubuntu@ec2-3-16-162-32.us-east-2.compute.amazonaws.com
+
+The authenticity of host 'ec2-3-16-162-32.us-east-2.compute.amazonaws.com (3.16.162.32)' can't be established.
+ECDSA key fingerprint is SHA256:jmsQKQ2Oe+KCDs9MJsWi6ROi7fCUoZaASG2s4zRHBJo.
+Are you sure you want to continue connecting (yes/no/[fingerprint])? yes
+
+
+Warning: Permanently added 'ec2-3-16-162-32.us-east-2.compute.amazonaws.com,3.16.162.32' (ECDSA) to the list of known hosts.
+Welcome to Ubuntu 24.04 LTS (GNU/Linux 6.8.0-1008-aws x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Fri May 10 22:36:48 UTC 2024
+
+  System load:  0.15              Processes:             107
+  Usage of /:   23.2% of 6.71GB   Users logged in:       0
+  Memory usage: 20%               IPv4 address for enX0: 172.31.41.115
+  Swap usage:   0%
+
+Expanded Security Maintenance for Applications is not enabled.
+
+0 updates can be applied immediately.
+
+Enable ESM Apps to receive additional future security updates.
+See https://ubuntu.com/esm or run: sudo pro status
+
+
+The list of available updates is more than a week old.
+To check for new updates run: sudo apt update
+
+
+The programs included with the Ubuntu system are free software;
+the exact distribution terms for each program are described in the
+individual files in /usr/share/doc/*/copyright.
+
+Ubuntu comes with ABSOLUTELY NO WARRANTY, to the extent permitted by
+applicable law.
+
+To run a command as administrator (user "root"), use "sudo <command>".
+See "man sudo_root" for details.
+
+ubuntu@ip-172-31-41-115:~$ 
+
+ubuntu@ip-172-31-41-115:~$ ls -a
+.  ..  .bash_logout  .bashrc  .cache  .profile  .ssh
+
+ubuntu@ip-172-31-41-115:~$ exit
+logout
+Connection to ec2-3-16-162-32.us-east-2.compute.amazonaws.com closed.
+
+```
+
+### Copiando um arquivo para AWS
+
+```{bash eval=FALSE, include=TRUE}
+he2@h8:~$ scp -i "~/.ssh/ChavesDSBD.pem" /home/espinf/he2/Downloads/Teste_copia.txt ubuntu@ec2-3-16-162-32.us-east-2.compute.amazonaws.com:~
+
+he2@h8:~$ scp -i "~/.ssh/ChavesDSBD.pem" /home/espinf/he2/Downloads/Teste_copia.txt ubuntu@ec2-3-16-162-32.us-east-2.compute.amazonaws.com:~
+Teste_copia.txt                               100%    0     0.0KB/s   00:00   
+
+ubuntu@ip-172-31-41-115:~$ ls -a
+.   .bash_history  .bashrc  .profile  Teste_copia.txt
+..  .bash_logout   .cache   .ssh
+
+```
+
+### Quando a instancia foi interrompida
+
+```{bash eval=FALSE, include=TRUE}
+ubuntu@ip-172-31-41-115:~$ 
+Broadcast message from root@ip-172-31-41-115 (Fri 2024-05-10 22:46:07 UTC):
+
+The system will power off now!
+
+Connection to ec2-3-16-162-32.us-east-2.compute.amazonaws.com closed by remote host.
+Connection to ec2-3-16-162-32.us-east-2.compute.amazonaws.com closed.
+
+```
+
+![Opções Instância](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-46-02.png "Opções Instância")
+
+![Encerrar Instância](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-46-46.png "Encerrar Instância")
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```

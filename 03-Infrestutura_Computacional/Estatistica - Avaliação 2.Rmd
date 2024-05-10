@@ -1,0 +1,514 @@
+---
+title: "Estatistica - Avaliação 2"
+author: "Helena R S D'Espindula"
+date: "2024-05-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+a <- c(10,11,7,13,18)
+alfa <- 10
+b <- alfa*a
+b
+
+soma = b[1] + b[2] +b[3] +b[4] +b[5]
+soma
+```
+
+```{r}
+A = matrix(c(12,16,7,7,6,
+             7,12,15,5,9,
+             8,8,7,12,5,
+             13,10,12,10,5,
+             14,7,11,11,9), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+alfa <- 3
+
+C <- alfa*A
+C
+
+colSums(C)
+
+sum(C)
+
+```
+
+
+```{r}
+a <- c(10,11,16,14,9)
+alfa <- 16
+b <- alfa*a
+b
+
+soma = b[1] + b[2] +b[3] +b[4] +b[5]
+soma
+
+sum(b)
+```
+
+
+
+```{r}
+A = matrix(c(1, 0.7, 0.7, 0.7,
+             0.7, 1, 0.7, 0.7,
+             0.7, 0.7, 1, 0.7,
+             0.7, 0.7, 0.7, 1), nrow = 4, ncol = 4, byrow = TRUE)
+A
+
+
+require(Matrix)
+## Calcula mas não retorna
+LU_M <- lu(A)
+## Captura as matrizes L U e P
+LU_M <- expand(LU_M)
+
+LU_M
+
+a <-c(1, 0.51, 0.4235294, 0.3875)
+a
+sum(a)
+```
+
+```{r}
+#Produto de Hadamard
+a <- c(7, 12, 7, 11, 9)
+a
+b <- c(13,9,10,12,7)
+b
+
+c <- a*b
+c
+
+sum(c)
+
+```
+
+
+```{r}
+A = matrix(c(2, 1.6, 1.6, 1.6,
+             1.6, 2, 1.6, 1.6,
+             1.6,  1.6, 2,  1.6,
+             1.6, 1.6, 1.6,2), nrow = 4, ncol = 4, byrow = TRUE)
+A
+out <- eigen(A)
+out
+
+Q <- out$vectors ## Autovetores
+D <- diag(out$values) ## Autovalores
+
+```
+
+
+
+```{r}
+#Traço
+A = matrix(c(1, 0.8, 0.8, 0.8, 
+             0.8, 1, 0.8, 0.8,
+             0.8, 0.8,1, 0.8,
+             0.8, 0.8, 0.8,1), nrow = 4, ncol = 4, byrow = TRUE)
+A
+
+B <- A%*%A
+B
+
+sum(diag(B))
+```
+
+
+```{r}
+a <- c(7,8,12,9,6)
+alfa <- 11
+b <- alfa*a
+b
+
+sum(b)
+```
+
+
+
+```{r}
+A = matrix(c(2,0.9,0.9,0.8,
+             0,9,2,0.8,0.9,
+             0.9,0.8,2,0.9,
+             0.8,0.9,0.9,2), nrow = 4, ncol = 4, byrow = TRUE)
+A
+
+b <- c(10,8,5,9)
+b
+
+gauss <- function(A, b) {
+  Ae <- cbind(A, b) ## Sistema aumentado
+  rownames(Ae) <- paste0("x", 1:length(b))
+  n_row <- nrow(Ae)
+  n_col <- ncol(Ae)
+  SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+  SOL[1,] <- Ae[1,]
+  pivo <- matrix(0, n_col, n_row)
+  for(j in 1:c(n_row-1)) {
+    for(i in c(j+1):c(n_row)) {
+      pivo[i,j] <- Ae[i,j]/SOL[j,j]
+      SOL[i,] <- Ae[i,] - pivo[i,j]*SOL[j,]
+      Ae[i,] <- SOL[i,]
+    }
+  }
+  return(SOL)
+}
+
+sub_reg <- function(SOL) {
+n_row <- nrow(SOL)
+n_col <- ncol(SOL)
+A <- SOL[1:n_row,1:n_row]
+b <- SOL[,n_col]
+n <- length(b)
+x <- c()
+x[n] <- b[n]/A[n,n]
+for(i in (n-1):1) {
+x[i] <- (b[i] - sum(A[i,c(i+1):n]*x[c(i+1):n] ))/A[i,i]
+}
+return(x)
+}
+
+
+
+S <- gauss(A, b) ## Passo 1: Triangularização
+sol = sub_reg(SOL = S) ## Passo 2: Substituição regressiva
+sol
+
+A%*%sol
+
+```
+
+
+
+```{r}
+#Produto de Hadamard
+A = matrix(c(8,10,9,10,10,
+             5,13,11,10,12,
+             14,11,9,3,15,
+             13,6,11,11,5,
+             12,7,3,12,3), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+B = matrix(c(9,9,11,8,10,
+             11,15,12,6,13,
+             8,14,13,10,10,
+             8,9,12,12,11,
+             10,12,10,17,14), nrow = 5, ncol = 5, byrow = TRUE)
+B
+
+C <- A*B
+C
+
+sum(C)
+
+```
+
+
+```{r}
+#Produto de Hadamard
+A = matrix(c(15,13,14,4,6,
+             10,10,11,12,9,
+             7,7,7,11,10,
+             10,12,5,8,15,
+             6,10,3,7,5), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+B = matrix(c(5,14,14,6,9,
+             8,16,10,12,4,
+             11,11,10,15,9,
+             9,11,14,11,17,
+             14,8,6,9,13), nrow = 5, ncol = 5, byrow = TRUE)
+B
+
+C <- A*B
+C
+
+sum(C)
+
+```
+
+```{r}
+#Traço
+A = matrix(c(12,9,9,10,10,
+             12,12,8,10,9,
+             6,11,12,15,6,
+             8,16,6,9,8,
+             10,19,10,15,11), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+sum(diag(A))
+
+determinant(A, logarithm = FALSE)$modulus
+```
+
+
+
+
+
+
+```{r}
+my_lu <- function(A) {
+n_row <- nrow(A)
+n_col <- ncol(A)
+SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+SOL[1,] <- A[1,]
+pivo <- matrix(0, n_col, n_row)
+for(j in 1:c(n_row-1)) {
+for(i in c(j+1):c(n_row)) {
+pivo[i,j] <- A[i,j]/SOL[j,j]
+SOL[i,] <- A[i,] - pivo[i,j]*SOL[j,]
+A[i,] <- SOL[i,]
+}
+}
+diag(pivo) <- 1
+return(list("L" = pivo, "U" = SOL)) }
+
+solve_lu <- function(LU, b) {
+  y <- forwardsolve(LU_M$L, LU_M$P%*%b)
+  x = backsolve(LU_M$U, y)
+  return(x)
+}
+
+my_solve <- function(LU, B) {
+  n_col <- ncol(B)
+  n_row <- nrow(B)
+  inv <- matrix(NA, n_col, n_row)
+  for(i in 1:n_col) {
+    inv[,i] <- solve_lu(LU, B[,i])
+  }
+  return(inv)
+}
+
+######
+
+
+
+
+
+
+#A = teta_0*I + teta_1*Z
+print("Matrix I")
+I = matrix(c(1,0,0,0,
+             0,1,0,0,
+             0,0,1,0,
+             0,0,0,1), nrow = 4, ncol = 4, byrow = TRUE)
+I
+print("\n")
+print("Matrix Z")
+Z = matrix(c(1,1,0,0,
+             1,1,0,0,
+             0,0,1,1,
+             0,0,1,1), nrow = 4, ncol = 4, byrow = TRUE)
+Z
+
+x = 2
+y = 1
+
+print("Matrix A")
+A = x*I + y*Z
+A
+
+
+
+## Decomposição LU
+LU <- my_lu(A)
+## Obtendo a inversa
+inv_A <- my_solve(LU = LU, B = I)
+inv_A
+## Verificando o resultado
+A%*%inv_A
+
+```
+
+
+
+```{r}
+
+
+```
+
+
+
+
+
+```{r}
+A = matrix(c(1, 0.8, 0.8, 0.7,
+             0.8,1,0.7,0.8,
+             0.8,0.7,1,0.8,
+             0.7,0.8,0.8,1), nrow = 4, ncol = 4, byrow = TRUE)
+A
+
+
+require(Matrix)
+## Calcula mas não retorna
+LU_M <- lu(A)
+## Captura as matrizes L U e P
+LU_M <- expand(LU_M)
+
+LU_M
+
+a <-c(1, 0.36,0.35,0.23)
+a
+sum(diag(a))
+```
+
+
+```{r}
+# traço = soma de autovalores
+a = c(25.2, 1.4 , 1.4 , (2.411738*10^(-15)))
+a
+sum(a)
+
+
+# determinante = produtorio de autovalores
+produtorio = a[1] * a[2] * a[3] * a[4]
+produtorio
+
+```
+
+
+```{r}
+#Multiplicação Matrizes
+A = matrix(c(16,15,8,11,9,
+             8,11,10,13,11,
+             11,9,12,5,8,
+             18,10,10,10,12,
+             15,14,11,7,14), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+B = matrix(c(4,11,9,9,16,
+             14,15,15,9,13,
+             12,9,13,11,10,
+             10,10,10,18,11,
+             13,7,16,13,13), nrow = 5, ncol = 5, byrow = TRUE)
+B
+
+C <- A%*%B
+C
+
+sum(C)
+
+```
+
+```{r}
+
+A = matrix(c(10,12,6,11,16,
+             11,7,10,5,11,
+             11,0,7,10,14,
+             13,13,8,13,10,
+             8,8,10,10,11), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+alfa <- 3
+C <- alfa*a
+C
+
+sum(C)
+```
+
+
+```{r}
+#Produto de Hadamard
+A = matrix(c(8,12,10,7,11,
+             8,5,9,7,13,
+             13,11,11,9,12,
+             8,11,12,16,10,
+             8,19,9,4,14), nrow = 5, ncol = 5, byrow = TRUE)
+A
+
+B = matrix(c(8,10,11,12,6,
+             6,9,10,13,10,
+             10,10,5,11,19,
+             10,12,12,11,11,
+             9,2,13,15,10), nrow = 5, ncol = 5, byrow = TRUE)
+B
+
+C <- A*B
+C
+
+sum(C)
+
+```
+
+```{r}
+A = matrix(c(2, 0.8, 0.8, 0.7,
+             0.8, 2, 0.7, 0.8,
+             0.8, 0.7, 2, 0.8,
+             0.7, 0.8, 0.8, 2), nrow = 4, ncol = 4, byrow = TRUE)
+A
+
+b <- c(18,11,12,8)
+b
+
+gauss <- function(A, b) {
+  Ae <- cbind(A, b) ## Sistema aumentado
+  rownames(Ae) <- paste0("x", 1:length(b))
+  n_row <- nrow(Ae)
+  n_col <- ncol(Ae)
+  SOL <- matrix(NA, n_row, n_col) ## Matriz para receber os resultados
+  SOL[1,] <- Ae[1,]
+  pivo <- matrix(0, n_col, n_row)
+  for(j in 1:c(n_row-1)) {
+    for(i in c(j+1):c(n_row)) {
+      pivo[i,j] <- Ae[i,j]/SOL[j,j]
+      SOL[i,] <- Ae[i,] - pivo[i,j]*SOL[j,]
+      Ae[i,] <- SOL[i,]
+    }
+  }
+  return(SOL)
+}
+
+sub_reg <- function(SOL) {
+n_row <- nrow(SOL)
+n_col <- ncol(SOL)
+A <- SOL[1:n_row,1:n_row]
+b <- SOL[,n_col]
+n <- length(b)
+x <- c()
+x[n] <- b[n]/A[n,n]
+for(i in (n-1):1) {
+x[i] <- (b[i] - sum(A[i,c(i+1):n]*x[c(i+1):n] ))/A[i,i]
+}
+return(x)
+}
+
+
+
+S <- gauss(A, b) ## Passo 1: Triangularização
+sol = sub_reg(SOL = S) ## Passo 2: Substituição regressiva
+sol
+
+A%*%sol
+
+```
+
+
+```{r}
+a <- c(17,6,13,14,12)
+a
+
+b <- c(15,5,5,8,8)
+b
+
+c <- a-b
+c
+
+sum(c)
+
+```
+
+
+
+
+
+
+
+
+
+
+
