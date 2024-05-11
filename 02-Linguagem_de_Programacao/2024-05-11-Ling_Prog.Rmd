@@ -1,0 +1,830 @@
+---
+title: "Linguagens de Programamção - R"
+author: "Helena R S D'Espindula"
+date: "2024-05-11"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+#library(tidyverse)
+library(dplyr)
+library(readr)
+library(forcats)
+library(stringr)
+library(ggplot2)
+library(tibble)
+library(lubridate)
+library(tidyr)
+library(purrr)
+
+library(magrittr)
+library(data.table)
+
+```
+# Aula 02: Estruturas de Programação e Introdução ao Tidyverse
+
+## Estrutura de Programação
+
+### If-Else
+
+```{r eval=FALSE, include=TRUE}
+if(condicao) {
+  # Bloco de código
+} else {
+  # Bloco de código
+}
+```
+
+
+```{r cars}
+nota <- 7
+if(nota >= 7) {
+  print("Aprovado")
+} else {
+  print("Reprovado")
+}
+```
+
+
+#### Exercicio meu
+
+```{r}
+horario <- "manha"
+gasto <- 110
+
+if (gasto > 100) {
+  desconto <- 10
+} else{
+  desconto < 5
+}
+
+#print(desconto)
+print(horario)
+print(gasto)
+
+if (horario == "manha") {
+  print(paste("bom dia, vc recebeu um desconto de",desconto,"% na sua proxima compra"))
+} else if (horaio == "tarde") {
+  print(paste("boa tarde, vc recebeu um desconto de",desconto,"% na sua proxima compra"))
+} else {
+  print(paste("boa noite, vc recebeu um desconto de",desconto," % na sua proxima compra"))
+}
+
+## Tem que ter "paste" ou "paste0" para ter varios argumentos no print
+```
+
+#### Resolução prof
+
+```{r}
+hora_compra <- "manha"
+valor_compra <- 150
+if(hora_compra == "manha" & valor_compra > 100) {
+  ("Bom dia! Você ganhou um cupom de 10% de desconto.")
+} else if(hora_compra == "manha" & valor_compra <= 100) {
+  ("Bom dia! Você ganhou um cupom de 5% de desconto.")
+} else if(hora_compra == "tarde" & valor_compra > 100) {
+  ("Boa tarde! Você ganhou um cupom de 10% de desconto.")
+} else if(hora_compra == "tarde" & valor_compra <= 100) {
+  ("Boa tarde! Você ganhou um cupom de 5% de desconto.")
+} else if(hora_compra == "noite" & valor_compra > 100) {
+  ("Boa noite! Você ganhou um cupom de 10% de desconto.")
+} else {
+  ("Boa noite! Você ganhou um cupom de 5% de desconto.")
+}
+```
+
+
+### Switch
+
+```{r eval=FALSE, include=TRUE}
+switch(expressao,
+       valor1 = { # Bloco de código },
+         valor2 = { # Bloco de código },
+           valor3 = { # Bloco de código },
+             { # Bloco de código })
+```
+
+
+```{r}
+hora_compra <- "noite"
+
+switch (hora_compra,
+        manha = { print("Bom dia")},
+        tarde = { print("Boa tarde")},
+        noite = { print("Boa noite")},
+        {print("Não sei")}
+)
+```
+
+### Versões vetoriais
+
+#### Ifelse
+
+```{r}
+# Notas
+notas <- c("João" = 7.3,
+           "Maria" = 5.1,
+           "Pedro" = 8.9,
+           "Ana" = 6.5)
+# ifelse
+ifelse(notas >= 7, "Aprovado",
+       ifelse(notas >= 4,
+              "Recuperação", "Reprovado"))
+```
+
+#### Case_when
+
+```{r}
+# Utilizando o case_when
+dplyr::case_when (notas >= 7 ~ "Aprovado",
+                  notas >= 4 ~ "Recuperação",
+                  TRUE ~ "Reprovado")
+```
+
+
+#### Exercicio meu
+
+1. Para quaisquer potos (x,y) em um plano cartesiano, indique a qual quadrate esse ponto pertece.
+```{r}
+x <- 2
+y <- 3
+
+## (+,+) = 1o q. 
+## (+,-) = 2o q. 
+## (-,-) = 3o q. 
+## (-,+) = 4o q. 
+
+if (x>=0 & y>=0){
+  print("1o q")
+} else if (x>=0 & y<0){
+  print("2o q")
+} else if (x<0 & y<0){
+  print("3o q")
+} else if (x<0 & y>=0){
+  print("4o q")
+}
+```
+
+2. Crie um código que, dado um número, indique se ele é par ou ímpar
+
+```{r}
+numero <- 4
+
+ifelse(numero %% 2 == 0, "par", "impar") 
+```
+
+#### Resolução prof
+
+1. Para quaisquer potos (x,y) em um plano cartesiano, indique a qual quadrate esse ponto pertece.
+```{r}
+x = 1
+y = -1
+if (x > 0) {
+  if (y > 0) {
+    quadrante = "Quadrante 1"
+    cat(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+    return(quadrante)
+  } else {
+    quadrante = "Quadrante 4"
+    cat(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  }
+} else {
+  if (y > 0) {
+    quadrante = "Quadrante 2"
+    cat(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  } else {
+    quadrante = "Quadrante 3"
+    cat(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  }
+}
+
+## OU (para mostrar a diferença entre "cat" e "print")
+## "cat" interpreta
+
+if (x > 0) {
+  if (y > 0) {
+    quadrante = "Quadrante 1"
+    print(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+    return(quadrante)
+  } else {
+    quadrante = "Quadrante 4"
+    print(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  }
+} else {
+  if (y > 0) {
+    quadrante = "Quadrante 2"
+    print(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  } else {
+    quadrante = "Quadrante 3"
+    print(paste0("\nO ponto (", x, ", ", y, ") pertence ao ", quadrante))
+  }
+}
+```
+
+2. Crie um código que, dado um número, indique se ele é par ou ímpar
+```{r}
+numero = 5
+if (numero %% 2 == 0) {
+  cat(paste0("O número ", numero, " é par."))
+} else {
+  cat(paste0("O número ", numero, " é ímpar."))
+}
+
+```
+
+## Estruturas de Repetição
+
+### For
+
+```{r eval=FALSE, include=TRUE}
+for (variavel in vetor) {
+  # Bloco de código
+}
+```
+
+
+```{r}
+for (i in 1:5) {
+  print(i)
+}
+```
+
+#### Exemplos
+
+Suponha u experieto que coite o laçaeto de doi dado ão vieado de ei face, 1000 veze. O objetivo é calcular a oa do valore obtido e cada laçaeto
+```{r}
+# Número de lançamentos
+n <- 1000
+soma <- numeric(n) ## cria um vetor de numerios de tamanho n
+for (i in 1:n) {
+  # Lançamento dos dados
+  dado1 <- sample(1:6, 1, replace = FALSE)
+  dado2 <- sample(1:6, 1, replace = FALSE)
+  # Soma dos valores
+  soma[i] <- dado1 + dado2
+}
+table(soma)
+```
+
+
+Utilizado o for loop, calcule o prieiro úero da equêcia de Fiboacci. A equêcia de Fiboacci coeça co 1, e o úero ubequete ão a oa do doi ateriore .
+
+
+```{r eval=FALSE, include=TRUE}
+# Número de elementos
+## n <- as.numeric(readline("Coloque um numero:"))
+n <- 10
+
+# Vetor para armazenar os números
+Fibonacci <- numeric(n)
+
+# Inicialização dos dois primeiros números
+Fibonacci[1] <- 1
+Fibonacci[2] <- 1
+
+# Cálculo dos números
+for (i in 3:n) {
+  Fibonacci[i] <- Fibonacci[i - 1] + Fibonacci[i - 2]
+}
+Fibonacci
+
+
+```
+
+ ### While
+ 
+```{r eval=FALSE, include=TRUE}
+#Criar variavel da condição antes
+while (condicao) {
+# Bloco de código
+# Não esquecer incrementação
+}
+```
+ 
+```{r}
+i <- 1
+while (i <= 5) {
+  print(i)
+  i <- i + 1
+}
+```
+
+#### Exemplo
+
+Suponha que você deseja jogar dois dados até que a soma da face eja eor que 5. O objetivo é calcular o úero de laçaeto eceário.
+
+```{r}
+soma <- 0
+n <- 0
+while (soma <= 5) {
+  dado1 <- sample(1:6, 1, replace = FALSE)
+  print(paste0("O dado 1 = ", dado1))
+  dado2 <- sample(1:6, 1, replace = FALSE)
+  print(paste0("O dado 2 = ", dado2))
+  soma <- dado1 + dado2
+  print(paste0("A soma foi = ", soma))
+  n <- n + 1
+}
+n
+```
+
+### Repeat
+
+```{r eval=FALSE, include=TRUE}
+repeat {
+  # Bloco de código
+  if (condicao) {
+    break
+  }
+}
+```
+
+#### Exemplos
+
+```{r}
+i <- 1
+repeat {
+  print(i)
+  i <- i + 1
+  if (i > 5) {
+    break
+  }
+}
+```
+
+Supoa que você deeja jogar doi dado até que a oa da face eja
+eor que 5. O objetivo é calcular o úero de laçaeto eceário
+
+```{r}
+soma <- 0
+n <- 0
+repeat {
+  dado1 <- sample(1:6, 1, replace = FALSE)
+  print(paste0("O dado 1 = ", dado1))
+  dado2 <- sample(1:6, 1, replace = FALSE)
+  print(paste0("O dado 2 = ", dado2))
+  soma <- dado1 + dado2
+  print(paste0("A soma foi = ", soma))
+  n <- n + 1
+  if (soma <= 5) {
+    break
+  }
+}
+n
+```
+
+## Funções
+
+```{r eval=FALSE, include=TRUE}
+nome_funcao <- function(arg1, arg2, ...){
+  # Corpo da função
+  return(valor)
+}
+```
+
+#### Exemplo
+
+Fução que calcula o Coeficiete de Variação (CV) de u vetor de dado.
+
+```{r}
+## coef_variacao = desvio / media
+
+cv <- function(vetor) {
+  desvio <- sd(vetor)
+  media <- mean(vetor)
+  cv <- desvio / media
+  return(cv)
+}
+y <- c(10, 20, 30, 40, 50)
+cv(y)
+
+cv(notas)
+```
+
+
+Com saidas multiplas da função
+```{r}
+## coef_variacao = desvio / media
+
+cv <- function(vetor) {
+  desvio <- sd(vetor)
+  media <- mean(vetor)
+  cv <- desvio / media
+  return(list(cv= cv, media=media, desvio = desvio))
+}
+y <- c(10, 20, 30, 40, 50)
+cv(y)
+
+cv_notas = cv(notas)
+
+cv_notas$desvio
+```
+
+
+```{r}
+## coef_variacao = desvio / media
+
+cv_df <- function(vetor) {
+  desvio <- sd(vetor)
+  media <- mean(vetor)
+  cv <- desvio / media
+  return(data.frame(cv= cv, media=media, desvio = desvio))
+}
+y <- c(10, 20, 30, 40, 50)
+cv_df(y)
+
+cv_df(notas)
+
+```
+### Mensagens
+
+A fuçõe pode exibir mensagens durante a execução:
+- `print()`: Exibe uma mensagem na tela. OBS: Sempre precisa de paste
+- `cat()`: Cocatena, interpreta e exibe mensagem na tela.
+- `menssage()`: Exibe mensagem de aviso.
+- `warning()`: Exibe mensagem de alerta.
+- `stop()`: Interrompe a execução da função com um erro.
+
+```{r}
+valor <- 0
+
+funcao_mensagem <- function(x) {
+  print("Início da função\n")
+  y <- x + 1
+  cat("O valor de y é", y, "\n")
+  message("Mensagem de aviso\n")
+  warning("Mensagem de alerta\n")
+  if(x < 0){
+    stop("Erro")
+  }
+}
+funcao_mensagem(valor)
+
+valor = 1
+funcao_mensagem(valor)
+
+valor = -1
+#funcao_mensagem(valor)
+```
+
+
+#### Exercicios
+
+1. Claificação do Cobutível do Meio de Traporte: Crie ua fução caada
+classifica_combustivel que recebe o oe de u eio de traporte coo argueto e retora o
+tipo de cobutível que ee eio de traporte utiliza. Coidere o eguite eio de traporte e eu repectivo tipo de cobutível:
+
+- Carro: Gasolina, Diesel, Eletrecidade ou Gás Natural
+- Moto: Gasolina
+- Bicicleta: Humana (sem combustível)
+- Ôibu: Diesel ou Gás Natural
+- Trem: Eletricidade ou Dieel
+- Avião: Queroee
+- Barco: Diesel ou Gasolina
+
+
+```{r}
+transp <- "moto"
+classifca_combustivel <- function(meio_de_transporte) {
+  combustivel <- switch (
+    meio_de_transporte,
+    carro = c("Gasolina", "Diesel", "Eletrecidade", "Gás Natural"),
+    moto = "Gasolina",
+    bicicleta = "Humana (sem combustivel)",
+    onibus = "Diesel ou Gás Natural",
+    trem = "Eletrecidade ou Gás Natural",
+    aviao = "Querosone",
+    barco = "Gasolina ou Diesel",
+  )
+return(combustivel)
+}
+
+classifca_combustivel(transp) 
+
+
+
+
+```
+
+## Lendo e Salvando Dados
+
+- A fução é utilizada para ler arquivo de texto.
+- A fução é utilizada para ler arquivo CSV.
+- A fução é ua alterativa ai rápida para ler arquivo CSV, TXT, TSV, etc.
+
+```{r}
+dados <- read.table("caminho/arquivo.txt",
+                    header = TRUE,
+                    sep = "\t",
+                    dec = ",")
+dados <- read.csv()("caminho/arquivo.csv")
+dados <- data.table::fread("caminho/arquivo.csv")
+```
+
+#### Importado Outro Forato de Dado
+
+- Para ler arquivo Excel, é poível utilizar a fução
+- Para ler arquivo SPSS, é poível utilizar a fução
+- Para ler arquivo STATA, é poível utilizar a fução
+- Para ler arquivo SAS, é poível utilizar a fução .
+
+#### Salvado Dados
+A fução é utilizada para alvar arquivo de texto.
+A fução é utilizada para alvar arquivo CSV.
+A fução é ua alterativa ai rápida para alvar arquivo CSV, TXT, TSV, etc.
+
+```{r}
+write.table(dados, "caminho/arquivo.txt",
+            sep = "\t",
+            dec = ",")
+write.csv(dados, "caminho/arquivo.csv")
+data.table::fwrite(dados, "caminho/arquivo.csv")
+```
+
+**[[ARRUMAR]]**
+
+
+
+
+## Tidyverse
+
+![Tidyverse](dados-R/Captura de tela de 2024-05-11 10-46-40.png "Tidyverse")
+
+- Para italar o Tidyvere, bata executar o coado `install.packages("tidyverse")`.
+- Para carregar o Tidyvere, bata executar o coado 
+
+
+```{r}
+dados <- readr::read_csv("dados-R/Mental Health Dataset.csv")
+head(dados, 2)
+
+glimpse(dados)
+
+#tibble não permite nome nas linhas
+
+```
+
+
+```{r eval=FALSE, include=TRUE}
+## Executar no console apenas
+View(dados)
+```
+
+#### O orperador `%>%`
+
+- O operador `%>%` é chamado de _pipe_ e é utilizado para encadear funções.
+- Utilizado para facilitar a leitura e escrita de código.
+  - `x %>% f` é equivalente à $f(x)$
+  - `x %>% f(y)` é equivalente à $f(x, y)$
+  - `x %>% f %>% g %>% h` é equivalente à $h(g(f(x)))$
+- O `%>%` sigifica que o elemeto à equerda será avaliado pela fução à direita.
+- Podemos tabém utilizar o `.` como espaço reservado para o elemeto à esquerda, isto é:
+  - `x %>% f(y, .)` é equivalete à $f(y, x)$
+  - `x %>% f(., y)` é equivalete à $f(x, y)$
+  - `x %>% f(y, z = .)` é equivalete à $f(y, z = x)$
+  
+  
+  
+```{r}
+x <- c(-2:2)
+x
+```
+  
+```{r}
+#sem identação
+sort(cos(unique(x)), decreasing = TRUE)
+```
+
+```{r}
+#com identação
+sort(
+  cos(
+    unique(
+      x
+      )
+    ), 
+  decreasing = TRUE)
+```
+
+```{r}
+# Opção 3 - Utilizando o operador %>%
+require(magrittr)
+x %>%
+  unique() %>%
+  cos() %>%
+  sort(decreasing = TRUE)
+```
+
+```{r}
+x %>%
+  `-`(3) %>%
+  add(2) %>%
+  cos()
+```
+
+```{r}
+x <- 1:10
+x
+
+x %<>% log()
+x
+```
+
+```{r}
+notas["Maria"]
+
+notas["Maria"] %<>%
+  add(5) %<>%
+  divide_by(3)
+```
+
+#### Criando variaveis com o `mutate()`
+
+```{r}
+dados <- dados %>%
+  mutate(mercosul = ifelse(Country %in% 
+                             c("Argentina", "Brazil", "Paraguay", "Uruguay"),
+                           "Mercosul", "Não Mercosul"))
+glimpse(dados)
+```
+
+
+```{r}
+dados <- dados %>%
+  mutate(mercosul = ifelse(Country %in% 
+                             c("Argentina", "Brazil", "Paraguay", "Uruguay"),
+                           "Mercosul", "Não Mercosul"),
+         eh_brasil = ifelse(Country == "Brazil", "sim", "não")
+         )
+
+glimpse(dados)
+```
+
+
+```{r}
+dados2 <- dados %>%
+  select(Country, Timestamp, Days_Indoors)
+glimpse(dados2)
+```
+
+```{r}
+dados %>%
+  select(2:6) #linhas 2 a 6
+
+```
+
+
+```{r}
+dados %>%
+  select(Occupation:family_history) %>%
+  head(., 10)
+```
+
+```{r}
+dados %>%
+  select(starts_with("t")) %>%
+  head(., 10)
+```
+
+
+```{r}
+dados %>%
+  select(ends_with("ss")) %>%
+  head(., 10)
+```
+
+
+
+```{r}
+dados %>%
+  select(contains("ing")) %>%
+  head(., 10)
+```
+
+```{r}
+dados %>%
+  select(matches("^[tT]")) %>%
+  head(., 10)
+```
+
+```{r}
+dados %>%
+  select(-Timestamp) %>%
+  head(., 10)
+```
+
+```{r}
+dados %>%
+  select(-c(Gender, Country, Timestamp, Occupation)) %>%
+  head(., 10)
+```
+
+```{r}
+dados %>%
+  select(-starts_with("t")) %>%
+  head(., 10)
+```
+
+```{r}
+# all_of()
+# any_of()
+
+# variaveis <- c("Country", "Timestamp", "Days_Indoors", "mercosul", "Loss_of_Smell")
+# dados13 <- dados %>%
+#   select(all_of(variaveis))
+# glimpse(dados13)
+
+variaveis <- c("Country", "Timestamp", "Days_Indoors", "mercosul")
+dados13 <- dados %>%
+  select(all_of(variaveis))
+glimpse(dados13)
+
+variaveis <- c("Country", "Timestamp", "Days_Indoors", "mercosul", "Loss_of_Smell")
+dados14 <- dados %>%
+  select(any_of(variaveis))
+glimpse(dados14)
+
+```
+
+
+```{r}
+car_crash <- fread("dados-R/Brazil Total highway crashes 2010 - 2023.csv.gz")
+glimpse(car_crash)
+```
+
+
+```{r}
+car_crash2 <- car_crash %>%
+  filter(tipo_de_ocorrencia == "sem vítima")
+glimpse(car_crash2)
+```
+
+```{r}
+car_crash3 <- car_crash %>%
+  filter(tipo_de_ocorrencia == "sem vítima" & automovel >= 3)
+glimpse(car_crash3)
+```
+
+
+```{r}
+car_crash4 <- car_crash %>%
+  filter(between(automovel,3,5))
+glimpse(car_crash4)
+```
+
+```{r}
+car_crash %>%
+  dplyr::filter(tipo_de_ocorrencia == c("sem vítima", "com vítima"))
+```
+
+```{r}
+car_crash5 <-car_crash %>%
+  filter(tipo_de_ocorrencia %in% c("sem vítima", "com vítima"))
+glimpse(car_crash5)
+
+`%ni%` <- Negate(`%in%`)
+
+car_crash6 <-car_crash %>%
+  filter(tipo_de_ocorrencia %ni% c("sem vítima", "com vítima"))
+glimpse(car_crash6)
+```
+
+```{r}
+car_crash8 <- car_crash %>%
+  filter(tipo_de_ocorrencia %like% "vítima")
+glimpse(car_crash8)
+```
+
+```{r}
+car_crash9 = car_crash %>%
+  filter( grepl("ilesa|fatal", tipo_de_ocorrencia))
+glimpse(car_crash9)
+```
+
+```{r}
+car_crash10 = car_crash %>%
+  arrange(desc(automovel))
+glimpse(car_crash10)
+```
+
+
+```{r}
+car_crash11 = car_crash %>%
+  arrange(desc(automovel), mortos) %>%
+  select(automovel, mortos)
+head(car_crash11)
+```
+
+```{r}
+car_carsh12 = car_crash %>%
+  rename(numero_automoveis = automovel)
+glimpse(car_carsh12)
+```
+
