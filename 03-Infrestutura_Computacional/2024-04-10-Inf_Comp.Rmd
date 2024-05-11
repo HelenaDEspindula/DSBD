@@ -152,6 +152,10 @@ Connection to ec2-3-16-162-32.us-east-2.compute.amazonaws.com closed.
 ![Encerrar Instância](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-46-46.png "Encerrar Instância")
 
 
+## Controle de Versão
+
+
+
 ```{bash eval=FALSE, include=TRUE}
 
 ```
