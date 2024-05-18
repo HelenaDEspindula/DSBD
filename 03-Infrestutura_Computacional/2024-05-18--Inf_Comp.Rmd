@@ -1,0 +1,623 @@
+---
+title: "Infrestutura Computacional - Zanata"
+author: "Helena R S D'Espindula"
+date: "2024-05-18"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Processamento Paralelo em Python
+
+**Atenção:** Não usar Google Colab
+
+#### Informações PC
+
+```{python, eval=FALSE}
+import platform
+import multiprocessing as mp
+print('Python version :', platform.python_version())
+print('compiler :', platform.python_compiler())
+print('system :', platform.system())
+print('release :', platform.release())
+print('machine :', platform.machine())
+print('processor :', platform.processor())
+print('CPU count :', mp.cpu_count())
+print('interpreter:', platform.architecture()[0])
+```
+
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+Python version : 3.9.2
+compiler : GCC 10.2.1 20210110
+system : Linux
+release : 6.1.0-0.deb11.17-amd64
+machine : x86_64
+processor : 
+CPU count : 4
+interpreter: 64bit
+```
+
+
+#### Exemplo complementar site
+
+Site: https://superfastpython.com/multiprocessing-pool-python/#Step_1_Create_the_Process_Pool
+
+```{python, eval=FALSE}
+# example of running a function in a new process
+from multiprocessing import Process
+ 
+# a task to execute in another process
+def task():
+    print('This is another process')
+
+numero = 20
+# entry point for the program
+if __name__ == '__main__':
+  procs = []
+  for i in range(numero):
+    # define a task to run in a new process
+    p = Process(target=task)
+    procs.append(p)
+  for i in range(numero):
+    procs[i].start()    # start the task in a new process
+  for i in range(numero):
+    procs[i].join()    # wait for the task to complete
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comando2.py 
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+This is another process
+```
+
+
+#### Hello bob
+
+```{python, eval=FALSE}
+from multiprocessing import Process
+
+def f(name):
+  print('hello, sou', name)
+if __name__ == '__main__':
+  p = Process(target=f, args=('bob filho', ))
+  p.start()
+  p.join()
+```
+
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+hello, sou bob filho
+he2@h8:~/Downloads$ time python3 comandos.py 
+hello, sou bob filho
+
+real	0m0,115s
+user	0m0,044s
+sys	0m0,034s
+```
+
+#### `__main__`
+
+- Quando o interpretador Python lê um código fonte, ele primeiro define algumas variáveis especiais, como a variável `__name__`
+- Se você o seu código for o programa principal, o interpretador fará `__name__ = “__main__”`
+- Caso seu código esteja sendo importado, o interpretador fará `__name__ = “<nome do arquivo sem .py>”`
+
+```{python, eval=FALSE}
+# Script foo.py
+if __name__ == '__main__':
+  print('me executou pelo terminal')
+else:
+  print('me executou como um módulo')
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+me executou pelo terminal
+```
+
+#### Hello bob pai e filhos
+
+```{python, eval=FALSE}
+from multiprocessing import Process
+def f(name):
+  print('hello, sou', name)
+if __name__ == '__main__':
+  p = Process(target=f, args=('bob filho', ))
+  p.start()
+  print('hello, sou', 'bob pai') ## Temos 2 processos!
+  p.join()
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+hello, sou bob pai
+hello, sou bob filho
+```
+
+#### Hello bob pai e filhos NÃO paralelo
+
+```{python, eval=FALSE}
+from multiprocessing import Process
+
+numero = 20
+
+def f(name, id):
+  print('hello, sou', name, id)
+  
+if __name__ == '__main__':
+  procs = []
+  for i in range(numero):
+    p = Process(target=f, args=('bob filho', i, ))
+    procs.append(p)
+  print('hello, sou', 'bob pai')
+  for i in range(numero):
+    procs[i].start()
+    procs[i].join() ## ficou sequencial
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ time python3 comandos.py
+hello, sou bob pai
+hello, sou bob filho 0
+hello, sou bob filho 1
+hello, sou bob filho 2
+hello, sou bob filho 3
+hello, sou bob filho 4
+hello, sou bob filho 5
+hello, sou bob filho 6
+hello, sou bob filho 7
+hello, sou bob filho 8
+hello, sou bob filho 9
+hello, sou bob filho 10
+hello, sou bob filho 11
+hello, sou bob filho 12
+hello, sou bob filho 13
+hello, sou bob filho 14
+hello, sou bob filho 15
+hello, sou bob filho 16
+hello, sou bob filho 17
+hello, sou bob filho 18
+hello, sou bob filho 19
+
+real	0m0,100s
+user	0m0,047s
+sys	0m0,017s
+```
+
+
+#### Hello bob pai e filhos paraleno
+
+
+```{python, eval=FALSE}
+from multiprocessing import Process
+def f(name, id):
+  print('hello, sou', name, id)
+if __name__ == '__main__':
+  procs = []
+  for i in range(4):
+    p = Process(target=f, args=('bob filho', i, ))
+    procs.append(p)
+  print('hello, sou', 'bob pai')
+  for i in range(4):
+    procs[i].start()
+  for i in range(4):
+    procs[i].join()
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+hello, sou bob pai
+hello, sou bob filho 0
+hello, sou bob filho 1
+hello, sou bob filho 2
+hello, sou bob filho 3
+```
+
+#### Hello bob pai e filhos paralelo (maior numero)
+
+```{python, eval=FALSE}
+from multiprocessing import Process
+def f(name, id):
+  print('hello, sou', name, id)
+if __name__ == '__main__':
+  procs = []
+  for i in range(99):
+    p = Process(target=f, args=('bob filho', i, ))
+    procs.append(p)
+  print('hello, sou', 'bob pai')
+  for i in range(99):
+    procs[i].start()
+  for i in range(99):
+    procs[i].join() 
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+hello, sou bob pai
+hello, sou bob filho 0
+hello, sou bob filho 1
+hello, sou bob filho 2
+hello, sou bob filho 3
+hello, sou bob filho 5
+hello, sou bob filho 4
+hello, sou bob filho 6
+hello, sou bob filho 7
+hello, sou bob filho 8
+hello, sou bob filho 9
+hello, sou bob filho 10
+hello, sou bob filho 11
+hello, sou bob filho 15
+hello, sou bob filho 13
+hello, sou bob filho 12
+hello, sou bob filho 14
+hello, sou bob filho 16
+hello, sou bob filho 17
+hello, sou bob filho 18
+hello, sou bob filho 19
+hello, sou bob filho 20
+hello, sou bob filho 21
+hello, sou bob filho 22
+hello, sou bob filho 24
+hello, sou bob filho 23
+hello, sou bob filho 25
+hello, sou bob filho 26
+hello, sou bob filho 27
+hello, sou bob filho 29
+hello, sou bob filho 28
+hello, sou bob filho 30
+hello, sou bob filho 33
+hello, sou bob filho 34
+hello, sou bob filho 31
+hello, sou bob filho 32
+hello, sou bob filho 35
+hello, sou bob filho 36
+hello, sou bob filho 37
+hello, sou bob filho 38
+hello, sou bob filho 39
+hello, sou bob filho 41
+hello, sou bob filho 40
+hello, sou bob filho 42
+hello, sou bob filho 45
+hello, sou bob filho 43
+hello, sou bob filho 46
+hello, sou bob filho 44
+hello, sou bob filho 47
+hello, sou bob filho 48
+hello, sou bob filho 49
+hello, sou bob filho 50
+hello, sou bob filho 51
+hello, sou bob filho 52
+hello, sou bob filho 53
+hello, sou bob filho 54
+hello, sou bob filho 55
+hello, sou bob filho 56
+hello, sou bob filho 57
+hello, sou bob filho 58
+hello, sou bob filho 60
+hello, sou bob filho 61
+hello, sou bob filho 62
+hello, sou bob filho 63
+hello, sou bob filho 59
+hello, sou bob filho 64
+hello, sou bob filho 67
+hello, sou bob filho 70
+hello, sou bob filho 65
+hello, sou bob filho 66
+hello, sou bob filho 69
+hello, sou bob filho 74
+hello, sou bob filho 68
+hello, sou bob filho 71
+hello, sou bob filho 75
+hello, sou bob filho 72
+hello, sou bob filho 76
+hello, sou bob filho 73
+hello, sou bob filho 77
+hello, sou bob filho 81
+hello, sou bob filho 78
+hello, sou bob filho 79
+hello, sou bob filho 80
+hello, sou bob filho 84
+hello, sou bob filho 82
+hello, sou bob filho 83
+hello, sou bob filho 85
+hello, sou bob filho 86
+hello, sou bob filho 87
+hello, sou bob filho 89
+hello, sou bob filho 88
+hello, sou bob filho 92
+hello, sou bob filho 90
+hello, sou bob filho 93
+hello, sou bob filho 91
+hello, sou bob filho 98
+hello, sou bob filho 95
+hello, sou bob filho 94
+hello, sou bob filho 97
+hello, sou bob filho 96
+```
+
+
+### Calculo PI
+
+#### Pi sequencial base
+
+```{python, eval=FALSE}
+import time
+def pi_naive(start, end, step):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  return sum
+if __name__ == "__main__":
+  num_steps = 10000000 #10.000.000 (10+e7)
+  sums = 0.0
+  step = 1.0/num_steps
+  tic = time.time() # Tempo Inicial
+  sums = pi_naive(0, num_steps, step)
+  toc = time.time() # Tempo Final
+  pi = step * sums
+  print ("Valor Pi: %.10f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic)) 
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  10000000
+Valor Pi: 3.1415926536
+Tempo Pi: 0.89280248 s
+
+he2@h8:~/Downloads$ time python3 comandos.py
+Start:  0
+End:  10000000
+Valor Pi: 3.1415926536
+Tempo Pi: 0.91156650 s
+
+real	0m1,022s
+user	0m0,974s
+sys	0m0,016s
+
+```
+
+
+#### Pi sequencial base (mais steps = mais precisão = mais tempo)
+
+```{python, eval=FALSE}
+import time
+
+numero = 10
+
+def pi_naive(start, end, step):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  return sum
+if __name__ == "__main__":
+  num_steps = 100000000 #100.000.000 (10+e8)
+  sums = 0.0
+  step = 1.0/num_steps
+  tic = time.time() # Tempo Inicial
+  
+  sums = pi_naive(0, num_steps, step)
+  
+  toc = time.time() # Tempo Final
+  pi = step * sums
+  print ("Valor Pi: %.10f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic)) 
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  100000000
+Valor Pi: 3.1415926536
+Tempo Pi: 8.89850640 s
+
+he2@h8:~/Downloads$ time python3 comandos.py
+Start:  0
+End:  100000000
+Valor Pi: 3.1415926536
+Tempo Pi: 9.15769887 s
+
+real	0m9,214s
+user	0m9,172s
+sys	0m0,016s
+```
+
+
+#### Pi paraleno com impressão 
+
+```{python, eval=FALSE}
+import time
+from multiprocessing import Process
+
+numero = 2
+
+def pi_naive(start, end, step):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  print ("Soma = ", str(sum))
+  #return sum -> Não funciona assim, então imprimimos para facilitar
+  
+if __name__ == "__main__":
+  num_steps = 100 #10.000.000 (10+e7)
+  #sums = 0.0
+  step = 1.0/num_steps
+  tic = time.time() # Tempo Inicial
+  
+  procs = []
+  inicio = 0
+  i = 0
+  for i in range(numero):
+    fim = num_steps//numero * (i+1) -1 ## DIvisão tem que dar inteiro
+    p = Process(target=pi_naive, args=(inicio, fim, step, ))
+    procs.append(p)
+    inicio = fim
+  for i in range(numero):
+    procs[i].start()
+  for i in range(numero):
+    procs[i].join()
+    #print("Join ". i)
+
+  toc = time.time() # Tempo Final
+  #pi = step * sums
+  #print ("Valor Pi: %.10f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic)) 
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  49
+Soma =  182.24732339307997
+Start:  49
+End:  99
+Soma =  129.90275029954665
+Tempo Pi: 0.00483108 s
+```
+
+
+#### Pi paraleno com impressão (mais steps = mais precisão = mais tempo)
+
+```{python, eval=FALSE}
+import time
+from multiprocessing import Process
+
+numero = 10
+
+def pi_naive(start, end, step):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  print ("Soma = ", str(sum))
+  #return sum
+  
+if __name__ == "__main__":
+  num_steps = 10000000 #10.000.000 (10+e7)
+  #sums = 0.0
+  step = 1.0/num_steps
+  tic = time.time() # Tempo Inicial
+  
+  procs = []
+  inicio = 0
+  i = 0
+  for i in range(numero):
+    fim = num_steps//numero * (i+1) -1 ## DIvisão tem que dar inteiro
+    p = Process(target=pi_naive, args=(inicio, fim, step, ))
+    procs.append(p)
+    inicio = fim
+  for i in range(numero):
+    procs[i].start()
+  for i in range(numero):
+    procs[i].join()
+    #print("Join ". i)
+
+  toc = time.time() # Tempo Final
+  #pi = step * sums
+  #print ("Valor Pi: %.10f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic)) 
+```
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  999999
+Start:  999999
+End:  1999999
+Start:  2999999
+End:  3999999
+Start:  3999999
+End:  4999999
+Start:  4999999
+Start:  5999999
+End:  5999999
+End:  6999999
+Start:  1999999
+End:  2999999
+Start:  6999999
+End:  7999999
+Start:  7999999
+End:  8999999
+Start:  8999999
+End:  9999999
+Soma =  3909076.408590874
+Soma =  2560599.3589130784
+Soma =  3325649.5238134917
+Soma =  3762449.5615485804
+Soma =  3561983.526828656
+Soma =  3986742.139250529
+Soma =  2322966.6115977885
+Soma =  2812258.821357639
+Soma =  2103322.6743824673
+Soma =  3070875.9096147004
+Tempo Pi: 0.24422455 s
+```
+
+Conta para conferencia:
+
+```{r}
+
+num_steps = 10000000 #10.000.000 (10+e7)
+step = 1.0/num_steps
+
+soma = 3909076.408590874 + 2560599.3589130784 + 3325649.5238134917 + 3762449.5615485804 + 3561983.526828656 + 3986742.139250529 + 2322966.6115977885 + 2812258.821357639 + 2103322.6743824673 + 3070875.9096147004
+
+soma
+
+multiplicacao = soma * step
+
+multiplicacao
+```
+
+
+
+```{python, eval=FALSE}
+
+```
+
+```{bash, eval=FALSE}
+
+```
+
+
+
