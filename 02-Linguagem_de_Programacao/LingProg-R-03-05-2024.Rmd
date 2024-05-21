@@ -27,8 +27,9 @@ library(ggplot2)
 
 # R Base
 
-Livros: 
-- <a>https://rstudio-education.github.io/hopr/</a>
+Livros:
+
+- [https://rstudio-education.github.io/hopr/</a>]
 - <a>https://r4ds.had.co.nz/</a>
 - https://www.amazon.com/Hands-Data-Science-Techniques-manipulation-ebook/dp/B07FDD1KWJ
 - https://r-graphics.org/

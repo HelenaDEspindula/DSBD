@@ -1,0 +1,659 @@
+---
+title: "Quiz3"
+author: "Helena R. S. D'Espindula"
+date: "2024-05-19"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## 1
+
+Obtenha a derivada numérica usando o método de diferença finita central com dois pontos da função
+$$f(x)=7x2+6x+2$$
+e avalie no ponto $x=5$.A sua resposta é um número. Use três casas decimais se necessário. Use $h=0.001$..
+
+```{r cars}
+dif_cen <- function(fx, x, h) {
+df <- (fx(x + h) - fx(x - h))/( (x + h) - (x - h))
+return(df)}
+
+
+xis = 5
+h = 0.001
+
+fx <- function(x) 7*x^2 + 6*x +2 
+dif_cen(fx, xis, h)
+
+```
+
+## 2
+
+Resolva a seguinte integral usando algum método da classe dos métodos baseados em quadratura Gaussiana. A escolha do método adequado é parte da questão. Use 21 pontos de integração. Na equação o valor de $\gamma$ é igual a 0.091. Sua resposta é um número. Use três casas decimais.
+
+$$
+\int_{-\infty}^{\infty} \gamma \space exp(-x-\gamma)^2 dx
+$$
+
+
+
+```{r}
+require(pracma)
+
+gauss_hermite <- function(integrando, npontos, ...) {
+  pontos <- gaussHermite(npontos)
+  integral <- sum(pontos$w*integrando(pontos$x,...)
+                  /exp(-pontos$x^2))
+  return(integral)
+}
+fx <- function(x){
+  0.091*exp(-(x- 0.091)^2)
+  }
+
+
+gauss_hermite(integrando = fx, npontos = 21)
+
+```
+
+## 3
+
+Resolva a seguinte integral usando o método de Gauss-Legendre. Use 22 pontos de integração e considere o limite inferior de integração (a= 0.1) e o limite superior de integração (b= 11.1). Na Equação considere os valores de $\alpha$ igual a 2 e $\beta$ igual a 3. Sua resposta é um número. Use três casas decimais.
+
+$$ \int_{-\infty}^{\infty} \frac{\beta^{\alpha}y^{\alpha-1} exp^{(-\beta y)}}{\Gamma (\alpha)} dy $$
+
+A equação para o problema é:
+$$
+\int_{0.1}^{8.1} 
+\frac
+  { 3^2 y^{2-1} \exp^{(-3 y)} }
+  { \Gamma (2) } 
+dy
+$$
+
+```{r}
+library(pracma) # para a funcao gaussLegrendre
+# Nota a funcao gaussLegrendre opera dentro da funcao gauss_legrendre criada manualmente.
+# ela fornece os pesos e pontos de integração.
+
+# Definir os parâmetros da integral
+alpha <- 2
+beta <- 3
+a <- 0.1
+b <- 11.1
+
+# Função a ser integrada
+integrand <- function(y) {
+  numerator <- beta^alpha * y^(alpha - 1) * exp(-beta * y)
+  denominator <- gamma(alpha)
+  return(numerator / denominator)
+}
+
+# Função gauss_legendre fornecida
+gauss_legendre <- function(integrando, n.pontos, a, b, ...) {
+  pontos <- gaussLegendre(n.pontos, a = a, b = b)
+  integral <- sum(pontos$w * integrando(pontos$x, ...))
+  return(integral)
+}
+
+# Calcular a integral usando Gauss-Legendre com 15 pontos
+n.pontos <- 15
+result <- gauss_legendre(integrand, n.pontos, a, b)
+
+# Exibir o resultado com três casas decimais
+cat("O valor da integral é:", round(result, 3), "\n")
+```
+
+Encontre a raiz da equação $f(x)=−x^2+exp^{−x}$ usando o método regula falsi. Use tolerância de 0.0001 a definição do intervalo de busca é parte da questão. Como critério para parada utilize o erro estimado, ou seja, $|xi+1−xi|<ϵ$, onde $ϵ$ é o erro tolerado. A sua resposta é o valor da raiz use três casas decimais se necessário.
+
+```{r}
+# Função que define a equação
+fx <- function(x) {
+  return(-x^2 - exp(-x))
+}
+
+# Método da regula falsi
+regula_falsi <- function(fx, a, b, tol = 1e-04, max_iter = 100) {
+  fa <- fx(a); fb <- fx(b)
+  if (fa * fb > 0) stop("Solução não está no intervalo")
+  solucao <- c(); sol <- (a * fx(b) - b * fx(a)) / (fx(b) - fx(a))
+  solucao[1] <- sol; limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for (i in 1:max_iter) {
+    test <- fx(a) * fx(sol)
+    if (test < 0) {
+      b <- sol
+    } else {
+      a <- sol
+    }
+    solucao[i + 1] <- (a * fx(b) - b * fx(a)) / (fx(b) - fx(a))
+    if (abs(solucao[i + 1] - solucao[i]) < tol) break
+    sol <- solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <- list("Tentativas" = solucao, "Limites" = limites, "Raiz" = sol)
+  return(out)
+}
+
+# Intervalo inicial
+a <- 6
+b <- 7
+
+# Erro tolerado
+epsilon <- 0.0001
+
+# Solução utilizando o método da regula falsi
+result <- regula_falsi(fx = f, a = a, b = b, tol = epsilon)
+
+# Extraindo o valor da raiz
+raiz <- result$Raiz
+
+# Exibindo o valor da raiz com três casas decimais
+cat("A raiz é:", round(raiz, 3), "\n")
+
+```
+
+## 5
+
+Resolva o seguinte sistema de equações não lineares usando o método de Newton.
+
+$$sin(xy)+e^y −7.10964=0 \\
+(x+y)^2−cos(xy^2)−24.1561=0$$
+
+A escolha de valor inicial é parte da questão. Como critério para parada utilize o erro estimado, ou seja, $|xi+1−xi|< \epsilon$, onde $\epsilon$ é o erro tolerado. Use tolerância de 0.0001. A sua resposta são as duas raízes $\hat{x}$ e $\hat{y}$. Use três casas decimais se necessário.
+
+### Implementação em R
+
+O código R para calcular a Jacobiana é:
+
+```{r}
+# Definir as funções que representam o sistema de equações
+fx <- function(x) {
+  c(
+    sin(x[1]*x[2]) + exp(x[2]) -7.10964, 
+    (x[1]+x[2])^2 - cos(x[1]*x[1]*x[2]) - 24.1561
+  )
+}
+
+# Definir a Jacobiana do sistema
+jacobian <- function(x) {
+  jac <- matrix(NA, 2, 2)
+  jac[1, 1] <- x[2] * cos(x[1]*x[2])
+  jac[1, 2] <- x[1] * cos(x[1]*x[2]) + exp(x[2])
+  jac[2, 1] <- x[2]^2 * sin(x[1]*x[2]*x[2]) + 2*(x[1]+x[2])
+  jac[2, 2] <- 2 * (x[1] * x[2] *sin(x[1]*x[2]*x[2])+x[1]+x[2])
+  return(jac)
+}
+
+## algoritmo de Newton
+newton_sa <- function(fx, jacobian, x1, tol = 1e-04, max_iter = 10) {
+  solucao <- matrix(NA, ncol = length(x1), nrow = max_iter)
+  solucao[1,] <- x1
+  for(i in 1:max_iter) {
+    J <- jacobian(solucao[i,])
+    grad <- fx(solucao[i,])
+    solucao[i+1,] = solucao[i,] - solve(J, grad)
+    if( sum(abs(solucao[i+1,] - solucao[i,])) < tol) break
+  }
+return(solucao)
+}
+
+# Valor inicial
+x1 <- c(1, 1)
+
+# Tolerância
+tol <- 1e-04
+
+# Resolver o sistema usando o método de Newton
+solucao <- newton_sa(fx = fx, jacobian = jacobian, x1 = x1, tol = tol)
+solucao
+
+
+# Extrair a solução final
+raiz <- tail(solucao, 1)
+raiz
+```
+
+
+
+## 7 
+
+```{r}
+library(pracma) # para a funcao gaussLegrendre
+# Nota a funcao gaussLegrendre opera dentro da funcao gauss_legrendre criada manualmente.
+# ela fornece os pesos e pontos de integração.
+
+# Definir os parâmetros da integral
+kapa = 5
+gama = 8
+a <- 0.1
+b <- 12.1
+
+# Função a ser integrada
+integrand <- function(y) {
+  numerator <- (kapa / gama) * (y / gama)^(k-1) * exp(-(y/gama)^kapa)
+  denominator <- 1
+  return(numerator / denominator)
+}
+
+# Função gauss_legendre fornecida
+gauss_legendre <- function(integrando, n.pontos, a, b, ...) {
+  pontos <- gaussLegendre(n.pontos, a = a, b = b)
+  integral <- sum(pontos$w * integrando(pontos$x, ...))
+  return(integral)
+}
+
+# Calcular a integral usando Gauss-Legendre com 15 pontos
+n.pontos <- 15
+result <- gauss_legendre(integrand, n.pontos, a, b)
+
+# Exibir o resultado com três casas decimais
+cat("O valor da integral é:", round(result, 3), "\n")
+```
+## 9
+
+```{r}
+library(pracma) # para a funcao gaussLegrendre
+# Nota a funcao gaussLegrendre opera dentro da funcao gauss_legrendre criada manualmente.
+# ela fornece os pesos e pontos de integração.
+
+# Definir os parâmetros da integral
+alpha <- 2
+beta <- 1
+a <- 1.1
+b <- 8.1
+
+# Função a ser integrada
+integrand <- function(y) {
+  numerator <- beta^alpha * y^(alpha - 1) * exp(-(beta * y))
+  denominator <- gamma(alpha)
+  return(numerator / denominator)
+}
+
+# Função gauss_legendre fornecida
+gauss_legendre <- function(integrando, n.pontos, a, b, ...) {
+  pontos <- gaussLegendre(n.pontos, a = a, b = b)
+  integral <- sum(pontos$w * integrando(pontos$x, ...))
+  return(integral)
+}
+
+# Calcular a integral usando Gauss-Legendre com 15 pontos
+n.pontos <- 15
+result <- gauss_legendre(integrand, n.pontos, a, b)
+
+# Exibir o resultado com três casas decimais
+cat("O valor da integral é:", round(result, 3), "\n")
+```
+
+## 10
+
+
+```{r 15}
+# Fixando a semente para garantir reprodutibilidade
+set.seed(123)
+
+# Número de pontos de integração
+n <- 952
+
+# Valor de κ
+mu <- -0.069
+
+# Função a ser integrada
+integrando <- function(x, mu) {
+  return((1/2)*exp(-abs(x -mu)))
+}
+
+# Amostragem de Monte Carlo
+amostras <- rexp(n, rate = k)
+
+# Calculando a média das amostras multiplicadas pela função integrando
+integral <- mean(integrando(amostras, k))
+
+# Exibindo o resultado
+cat("O valor da integral é:", round(integral, 3), "\n")
+
+```
+
+## 11
+
+```{r}
+# Definir as funções que representam o sistema de equações
+fx <- function(x) {
+  c(
+    x[1] + x[2] - x[1]*x[2] +2, 
+    x[1] * exp(-x[2]) - 1
+  )
+}
+
+# Definir a Jacobiana do sistema
+jacobian <- function(x) {
+  jac <- matrix(NA, 2, 2)
+  jac[1, 1] <- 1 - x[2]
+  jac[1, 2] <- 1 - x[1]
+  jac[2, 1] <- exp(-x[2])
+  jac[2, 2] <- x[1] * (-exp(-x[2]))
+  return(jac)
+}
+
+## algoritmo de Newton
+newton_sa <- function(fx, jacobian, x1, tol = 1e-04, max_iter = 10) {
+  solucao <- matrix(NA, ncol = length(x1), nrow = max_iter)
+  solucao[1,] <- x1
+  for(i in 1:max_iter) {
+    J <- jacobian(solucao[i,])
+    grad <- fx(solucao[i,])
+    solucao[i+1,] = solucao[i,] - solve(J, grad)
+    if( sum(abs(solucao[i+1,] - solucao[i,])) < tol) break
+  }
+return(solucao)
+}
+
+# Valor inicial
+x1 <- c(1, 1)
+
+# Tolerância
+tol <- 1e-04
+
+# Resolver o sistema usando o método de Newton
+solucao <- newton_sa(fx = fx, jacobian = jacobian, x1 = x1, tol = tol)
+solucao
+
+
+# Extrair a solução final
+raiz <- tail(solucao, 1)
+raiz
+```
+
+## 13
+
+```{r 29}
+# Definir a função do polinômio
+f <- function(x) {
+  return(x^3 - 2.2*x^2 -2.15*x +5.1)
+}
+
+# Algoritmo da bisseção
+bissecao <- function(fx, a, b, tol = 1e-04, max_iter = 100) {
+  fa <- fx(a)
+  fb <- fx(b)
+  if(fa * fb > 0) stop("Solução não está no intervalo")
+  solucao <- c()
+  sol <- (a + b) / 2
+  solucao[1] <- sol
+  limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for(i in 1:max_iter) {
+    test <- fx(a) * fx(sol)
+    if(test < 0) {
+      solucao[i + 1] <- (a + sol) / 2
+      b <- sol 
+    } else if(test > 0) {
+      solucao[i + 1] <- (b + sol) / 2
+      a <- sol 
+    } else {
+      solucao[i + 1] <- sol
+      break
+    }
+    if(abs((b - a) / 2) < tol) break
+    sol <- solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <- list("Tentativas" = solucao, "Limites" = limites, "Raiz" = solucao[i + 1])
+  return(out)
+}
+
+# Escolha do intervalo inicial
+a <- 0
+b <- 2
+
+# Tolerância
+tol <- 0.0001
+
+# Resolver a equação usando o método da bisseção
+resultado <- bissecao(f, a, b, tol)
+
+# Extrair a solução final
+raiz <- resultado$Raiz
+
+# Exibir o valor da raiz com três casas decimais
+cat("O valor da raiz é:", round(raiz, 3), "\n")
+```
+
+## 16 
+
+```{r 4}
+library(pracma)
+
+# Função Gauss-Laguerre (gaussLaguerre do pkcg pracma)
+gauss_laguerre <- function(integrando, n.pontos, ...){
+  pontos <- gaussLaguerre(n.pontos)
+  integral <- sum(pontos$w * integrando(pontos$x, ...) / exp(-pontos$x))
+  return(integral)
+}
+# função a ser integrada
+f <- function(t, lambda) {
+  return((lambda * 3^(-t)) * exp(-0.12 * t))
+}
+
+n <- 20
+lambda <- 8002
+
+# Calculando a integral
+integral <- gauss_laguerre(integrando = f, n.pontos = n, lambda = lambda)
+integral
+```
+
+## 17
+
+```{r 20}
+# Definir a função do polinômio
+f <- function(x) {
+  #return((1 / (1.5 + 1.5^(-1)))* exp(-x/1.5))
+  return(0.461538 * exp(-0.666667 *x))
+}
+
+# Algoritmo da bisseção
+bissecao <- function(fx, a, b, tol = 1e-04, max_iter = 100) {
+  fa <- fx(a)
+  fb <- fx(b)
+  if(fa * fb > 0) stop("Solução não está no intervalo")
+  solucao <- c()
+  sol <- (a + b) / 2
+  solucao[1] <- sol
+  limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for(i in 1:max_iter) {
+    test <- fx(a) * fx(sol)
+    if(test < 0) {
+      solucao[i + 1] <- (a + sol) / 2
+      b <- sol 
+    } else if(test > 0) {
+      solucao[i + 1] <- (b + sol) / 2
+      a <- sol 
+    } else {
+      solucao[i + 1] <- sol
+      break
+    }
+    if(abs((b - a) / 2) < tol) break
+    sol <- solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <- list("Tentativas" = solucao, "Limites" = limites, "Raiz" = solucao[i + 1])
+  return(out)
+}
+
+# Escolha do intervalo inicial
+a <- 2
+b <- -2
+
+# Tolerância
+tol <- 0.0001
+
+# Resolver a equação usando o método da bisseção
+resultado <- bissecao(f, a, b, tol)
+
+# Extrair a solução final
+raiz <- resultado$Raiz
+raiz
+# Exibir o valor da raiz com três casas decimais
+cat("O valor da raiz é:", round(raiz, 3), "\n")
+
+```
+
+
+
+## 21
+
+
+```{r}
+library(pracma) # para a funcao gaussLegrendre
+# Nota a funcao gaussLegrendre opera dentro da funcao gauss_legrendre criada manualmente.
+# ela fornece os pesos e pontos de integração.
+
+# Definir os parâmetros da integral
+alpha <- 2
+beta <- 2
+a <- 0.1
+b <- 13.1
+
+# Função a ser integrada
+integrand <- function(y) {
+  numerator <- beta^alpha * y^(alpha - 1) * exp(-beta * y)
+  denominator <- gamma(alpha)
+  return(numerator / denominator)
+}
+
+# Função gauss_legendre fornecida
+gauss_legendre <- function(integrando, n.pontos, a, b, ...) {
+  pontos <- gaussLegendre(n.pontos, a = a, b = b)
+  integral <- sum(pontos$w * integrando(pontos$x, ...))
+  return(integral)
+}
+
+# Calcular a integral usando Gauss-Legendre com 15 pontos
+n.pontos <- 15
+result <- gauss_legendre(integrand, n.pontos, a, b)
+
+# Exibir o resultado com três casas decimais
+cat("O valor da integral é:", round(result, 3), "\n")
+```
+
+## 27
+
+```{r 15}
+# Fixando a semente para garantir reprodutibilidade
+set.seed(123)
+
+# Número de pontos de integração
+n <- 1010
+
+# Valor de κ
+mu <- -0.019
+
+# Função a ser integrada
+integrando <- function(x, mu) {
+  return((1/2)*exp(-abs(x -mu)))
+}
+
+# Amostragem de Monte Carlo
+amostras <- rexp(n, rate = k)
+
+# Calculando a média das amostras multiplicadas pela função integrando
+integral <- mean(integrando(amostras, k))
+
+# Exibindo o resultado
+cat("O valor da integral é:", round(integral, 3), "\n")
+
+```
+
+## 28
+
+
+```{r}
+library(pracma) # para a funcao gaussLegrendre
+# Nota a funcao gaussLegrendre opera dentro da funcao gauss_legrendre criada manualmente.
+# ela fornece os pesos e pontos de integração.
+
+# Definir os parâmetros da integral
+alpha <- 1
+beta <- 1
+a <- 0.1
+b <- 11.1
+
+# Função a ser integrada
+integrand <- function(y) {
+  numerator <- beta^alpha * y^(alpha - 1) * exp(-beta * y)
+  denominator <- gamma(alpha)
+  return(numerator / denominator)
+}
+
+# Função gauss_legendre fornecida
+gauss_legendre <- function(integrando, n.pontos, a, b, ...) {
+  pontos <- gaussLegendre(n.pontos, a = a, b = b)
+  integral <- sum(pontos$w * integrando(pontos$x, ...))
+  return(integral)
+}
+
+# Calcular a integral usando Gauss-Legendre com 15 pontos
+n.pontos <- 15
+result <- gauss_legendre(integrand, n.pontos, a, b)
+
+# Exibir o resultado com três casas decimais
+cat("O valor da integral é:", round(result, 3), "\n")
+```
+
+## 30
+
+```{r 29}
+# Definir a função do polinômio
+f <- function(x) {
+  return(x^3 -155)
+}
+
+# Algoritmo da bisseção
+bissecao <- function(fx, a, b, tol = 1e-04, max_iter = 100) {
+  fa <- fx(a)
+  fb <- fx(b)
+  if(fa * fb > 0) stop("Solução não está no intervalo")
+  solucao <- c()
+  sol <- (a + b) / 2
+  solucao[1] <- sol
+  limites <- matrix(NA, ncol = 2, nrow = max_iter)
+  for(i in 1:max_iter) {
+    test <- fx(a) * fx(sol)
+    if(test < 0) {
+      solucao[i + 1] <- (a + sol) / 2
+      b <- sol 
+    } else if(test > 0) {
+      solucao[i + 1] <- (b + sol) / 2
+      a <- sol 
+    } else {
+      solucao[i + 1] <- sol
+      break
+    }
+    if(abs((b - a) / 2) < tol) break
+    sol <- solucao[i + 1]
+    limites[i, ] <- c(a, b)
+  }
+  out <- list("Tentativas" = solucao, "Limites" = limites, "Raiz" = solucao[i + 1])
+  return(out)
+}
+
+# Escolha do intervalo inicial
+a <- 5
+b <- 6
+
+# Tolerância
+tol <- 0.0001
+
+# Resolver a equação usando o método da bisseção
+resultado <- bissecao(f, a, b, tol)
+
+# Extrair a solução final
+raiz <- resultado$Raiz
+
+# Exibir o valor da raiz com três casas decimais
+cat("O valor da raiz é:", round(raiz, 3), "\n")
+
+
+```
+
+
