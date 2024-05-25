@@ -6,3 +6,11 @@ $ d = \frac{1}{2} g t^2 $
 
 $\hat{g} = \linha{(\frac{2d}{t^2})}$
 
+```{r}
+
+arquivo = "gravidade"
+read.csv(arquivo, sep=" ")
+
+
+
+```
