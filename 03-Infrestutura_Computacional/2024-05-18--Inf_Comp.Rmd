@@ -609,15 +609,767 @@ multiplicacao = soma * step
 multiplicacao
 ```
 
+# 25-05-2024
 
+## Comunicacao de processos
+
+### Pipe exemplo base
+
+```{python base, eval=FALSE}
+from multiprocessing import Process , Pipe
+
+def worker(conn) :
+  while True :
+    item = conn.recv()
+    if item == 'fim' :
+      break
+    print(item)
+  #conn.send('Claro!')
+
+def master(conn) :
+  conn.send(' Isto')
+  conn.send(' esta')
+  conn.send(' funcionando?')
+  conn.send('fim')
+  #item = conn.recv()
+  #print (item)
+  
+if __name__ == '__main__':
+  a, b = Pipe()
+  w = Process(target = worker, args = (a,))
+  m = Process(target = master, args = (b,))
+  w.start()
+  m.start()
+  w.join()
+  m.join()
+```
+
+
+```{bash, eval=FALSE}
+he2@h8:~/Downloads$ chmod +x base.py
+he2@h10:~/Downloads$ python3 base.py 
+ Isto
+ esta
+ funcionando?
+he2@h10:~/Downloads$ 
+```
+
+### Pipe com "race condicions" - resultado prof
 
 ```{python, eval=FALSE}
+from multiprocessing import Process, Pipe
+import time
+PROCS = 2
+a,b = Pipe()
+
+def pi(start, end, step, sums):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  sums.send(sum) ## CONDICOES DE CORRIDA
+  
+if __name__ == "__main__":
+  num_steps = 1000000
+  sum = 0.0
+  step = 1.0/num_steps
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  workers = []
+  for i in range(PROCS):
+    worker = Process( target=pi , args  =(i*proc_size, (i+1)*proc_size - 1, step, a, ))
+    workers.append(worker)
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  toc = time.time()
+  
+  for i in range(PROCS):
+    sum += b.recv()
+  pi = step * sum
+  print ("Valor Pi: %.20f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+```
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  499999
+Start:  500000
+End:  999999
+Valor Pi: 3.14158745358761892774
+Tempo Pi: 0.06355953 s
+```
+
+## Look
+
+### Exempĺo base
+
+```{python base, eval=FALSE}
+import multiprocessing
+import sys
+
+def trabA(stream):
+  stream.write('Trabalhador 1 imprimindo\n')
+
+def trabB(stream):
+  stream.write('Trabalhador 2 imprimindo\n')
+
+if __name__ == "__main__":
+  w1 = multiprocessing.Process(target=trabA, args=(sys.stdout, ))
+  w2 = multiprocessing.Process(target=trabB, args=(sys.stdout, ))
+  w1.start()
+  w2.start()
+  w1.join()
+  w2.join()
+```
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Trabalhador 1 imprimindo
+Trabalhador 2 imprimindo
+he2@h10:~/Downloads$ python3 comandos.py 
+Trabalhador 2 imprimindo
+Trabalhador 1 imprimindo
+```
+
+### Exemplo com lock
+
+```{python base, eval=FALSE}
+import multiprocessing
+import sys
+
+def trabA(lock, stream):
+  with lock:
+    stream.write('Trabalhador 1 imprimindo\n')
+
+def trabB(lock, stream):
+  lock.acquire()
+  stream.write('Trabalhador 2 imprimindo\n')
+  lock.release()
+  
+if __name__ == "__main__":
+  lock = multiprocessing.Lock()
+  w1 = multiprocessing.Process(target=trabA, args=(lock, sys.stdout, ))
+  w2 = multiprocessing.Process(target=trabB, args=(lock, sys.stdout, ))
+  w1.start()
+  w2.start()
+  w1.join()
+  w2.join()
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Trabalhador 1 imprimindo
+Trabalhador 2 imprimindo
+```
+
+### Aplicando o lock no Pi - minha solução
+
+```{python base, eval=FALSE}
+import multiprocessing
+import sys
+import time
+
+PROCS = 2
+a,b = multiprocessing.Pipe()
+
+def pi(start, end, step, sums, lock):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  lock.acquire()
+  sums.send(sum) ## CONDICOES DE CORRIDA
+  lock.release()
+  
+if __name__ == "__main__":
+  lock = multiprocessing.Lock()
+  num_steps = 100000000
+  sum = 0.0
+  step = 1.0/num_steps
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  workers = []
+  for i in range(PROCS):
+    worker = multiprocessing.Process( target=pi , args  =(i*proc_size, (i+1)*proc_size - 1, step, a, lock))
+    workers.append(worker)
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  toc = time.time()
+  
+  for i in range(PROCS):
+    sum += b.recv()
+  pi = step * sum
+  print ("Valor Pi: %.20f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  49999999
+Start:  50000000
+End:  99999999
+Valor Pi: 3.14159260158990916167
+Tempo Pi: 4.51408887 s
+```
+
+### 
+
+```{python base, eval=FALSE}
+from multiprocessing import Process, current_process
+import itertools
+ITEMS = [1, 2, 3, 4, 5, 6]
+
+def worker(items) :
+  for i in itertools.count():
+    try :
+      items.pop()
+    except IndexError :
+      break
+  print(current_process().name, "processed %i items . " %i)
+
+if __name__ == "__main__" :
+  workers = [ Process (target = worker, args = (ITEMS, ) ) for i in range (2) ]
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  print("ITEMS after all workers finished : " , ITEMS)
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Process-1 processed 6 items . 
+Process-2 processed 6 items . 
+ITEMS after all workers finished :  [1, 2, 3, 4, 5, 6]
+```
+
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Process, current_process, Queue
+import itertools
+
+ITEMS = Queue()
+for i in [1, 2, 3, 4, 5, 6, 'end' , 'end' , 'end' ] :
+  ITEMS.put(i)
+
+def worker(items) :
+  for i in itertools.count() :
+    item = items.get()
+    if item == 'end':
+      break
+    print(current_process().name, "processed %i items . " %i)
+
+if __name__ == "__main__" :
+  workers = [ Process ( target=worker , args =(ITEMS, ) ) for i in range(3) ]
+  for worker in workers :
+    worker.start( )
+  for worker in workers :
+    worker.join( )
+  print("#ITEMS after all workers finished : ", ITEMS.qsize( ))
 
 ```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Process-1 processed 0 items . 
+Process-1 processed 1 items . 
+Process-1 processed 2 items . 
+Process-1 processed 3 items . 
+Process-1 processed 4 items . 
+Process-1 processed 5 items . 
+#ITEMS after all workers finished :  0
+
+```
+
+### Usando Queue no Pi - solução minha
+
+```{python base, eval=FALSE}
+from multiprocessing import Process, current_process, Queue
+import sys
+import time
+import itertools
+
+ITEMS = Queue()
+PROCS = 2
+
+def pi(start, end, step, items):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  
+  items.put(sum) ## CONDICOES DE CORRIDA
+  
+if __name__ == "__main__":
+  num_steps = 100000000
+  sum = 0.0
+  step = 1.0/num_steps
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  workers = []
+  for i in range(PROCS):
+    worker = Process( target=pi , args  =(i*proc_size, (i+1)*proc_size - 1, step, ITEMS))
+    workers.append(worker)
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  toc = time.time()
+  
+  for i in range(PROCS):
+    sum += ITEMS.get()
+  pi = step * sum
+  print ("Valor Pi: %.20f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  49999999
+Start:  50000000
+End:  99999999
+Valor Pi: 3.14159260158990916167
+Tempo Pi: 4.56546116 s
+```
+
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Process, current_process, Queue
+import sys
+import time
+import itertools
+
+ITEMS = Queue()
+PROCS = 10
+
+def pi(start, end, step, items):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+
+  items.put(sum) ## CONDICOES DE CORRIDA
+  
+if __name__ == "__main__":
+  num_steps = 1000000000
+  sum = 0.0
+  step = 1.0/num_steps
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  workers = []
+  for i in range(PROCS):
+    worker = Process( target=pi , args  =(i*proc_size, (i+1)*proc_size - 1, step, ITEMS))
+    workers.append(worker)
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  toc = time.time()
+  
+  for i in range(PROCS):
+    sum += ITEMS.get()
+  pi = step * sum
+  print ("Valor Pi: %.20f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  99999999
+Start:  100000000
+End:  199999999
+Start:  200000000
+End:  299999999
+Start:  400000000
+End:  499999999
+Start:  500000000
+End:  599999999
+Start:  700000000
+End:  799999999
+Start:  600000000
+End:  699999999
+Start:  300000000
+End:  399999999
+Start:  900000000
+End:  999999999
+Start:  800000000
+End:  899999999
+Valor Pi: 3.14159262319053356194
+Tempo Pi: 23.43205404 s
+
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  99999999
+Start:  100000000
+End:  199999999
+Start:  200000000
+End:  299999999
+Start:  500000000
+End:  599999999
+Start:  400000000
+End:  499999999
+Start:  700000000
+End:  799999999
+Start:  600000000
+End:  699999999
+Start:  800000000
+End:  899999999
+Start:  300000000
+End:  399999999
+Start:  900000000
+End:  999999999
+Valor Pi: 3.14159262319053400603
+Tempo Pi: 23.16736412 s
+
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  99999999
+Start:  100000000
+End:  199999999
+Start:  200000000
+End:  299999999
+Start:  500000000
+End:  599999999
+Start:  700000000
+End:  799999999
+Start:  800000000
+End:  899999999
+Start:  400000000
+End:  499999999
+Start:  600000000
+End:  699999999
+Start:  900000000
+End:  999999999
+Start:  300000000
+End:  399999999
+Valor Pi: 3.14159262319053267376
+Tempo Pi: 23.23592305 s
+
+he2@h10:~/Downloads$ python3 comandos.py 
+Start:  0
+End:  99999999
+Start:  100000000
+End:  199999999
+Start:  200000000
+End:  299999999
+Start:  400000000
+End:  499999999
+Start:  500000000
+End:  599999999
+Start:  700000000
+End:  799999999
+Start:  800000000
+End:  899999999
+Start:  600000000
+End:  699999999
+Start:  300000000
+End:  399999999
+Start:  900000000
+End:  999999999
+Valor Pi: 3.14159262319053356194
+Tempo Pi: 23.13999486 s
+
+```
+
+
+
+```{python base, eval=FALSE}
+import time
+from multiprocessing import Process, Value
+
+def func(val):
+  for i in range(50):
+    time.sleep(0.01)
+    val.value += 1 ## CONDIÇÃO DE CORRIDA
+
+if __name__ == '__main__':
+  v = Value('i', 0)
+  procs = [Process(target=func, args=(v,)) for i in range(10)]
+  for p in procs: p.start()
+  for p in procs: p.join()
+  print (v.value)
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+344
+
+he2@h10:~/Downloads$ python3 comandos.py 
+399
+
+he2@h10:~/Downloads$ python3 comandos.py 
+311
+
+he2@h10:~/Downloads$ python3 comandos.py 
+417
+
+he2@h10:~/Downloads$ python3 comandos.py 
+361
+
+he2@h10:~/Downloads$ python3 comandos.py 
+325
+```
+
+
+
+```{python base, eval=FALSE}
+import time
+from multiprocessing import Process, Value
+
+def func(val):
+  for i in range(50):
+    time.sleep(0.01)
+    with val.get_lock():
+      val.value += 1
+
+if __name__ == '__main__':
+  v = Value('i', 0, lock = True)
+  procs = [Process(target=func, args=(v,)) for i in range(10)]
+  for p in procs: p.start()
+  for p in procs: p.join()
+  print (v.value)
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+500
+
+he2@h10:~/Downloads$ python3 comandos.py 
+500
+
+he2@h10:~/Downloads$ python3 comandos.py 
+500
+
+```
+
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Process, current_process, Value
+import sys
+import time
+import itertools
+
+PROCS = 10
+
+def pi(start, end, step, soma_g):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  with soma_g.get_lock():
+    soma_g.value += sum
+  
+if __name__ == "__main__":
+  soma_geral = Value('d', 0, lock = True)
+  num_steps = 100000000
+  sum = 0.0
+  step = 1.0/num_steps
+  print(step)
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  workers = []
+  for i in range(PROCS):
+    worker = Process( target=pi , args  =(i*proc_size, (i+1)*proc_size - 1, step, soma_geral))
+    workers.append(worker)
+  for worker in workers :
+    worker.start()
+  for worker in workers :
+    worker.join()
+  toc = time.time()
+  
+  # for i in range(PROCS):
+  #   sum += soma_geral
+  pi = step * soma_geral.value
+  print ("Valor Pi: %.20f" %pi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+1e-08
+Start:  0
+End:  9999999
+Start:  10000000
+End:  19999999
+Start:  20000000
+End:  29999999
+Start:  40000000
+End:  49999999
+Start:  30000000
+End:  39999999
+Start:  60000000
+Start:  50000000
+End:  69999999
+End:  59999999
+Start:  80000000
+End:  89999999
+Start:  70000000
+End:  79999999
+Start:  90000000
+End:  99999999
+Valor Pi: 3.14159234959702482470
+Tempo Pi: 2.32412434 s
+
+he2@h10:~/Downloads$ python3 comandos.py 
+1e-08
+Start:  0
+End:  9999999
+Start:  10000000
+End:  19999999
+Start:  20000000
+End:  29999999
+Start:  50000000
+End:  59999999
+Start:  60000000
+End:  69999999
+Start:  80000000
+Start:  70000000
+End:  89999999
+Start:  30000000
+End:  39999999
+End:  79999999
+Start:  40000000
+End:  49999999
+Start:  90000000
+End:  99999999
+Valor Pi: 3.14159234959702438061
+Tempo Pi: 2.35381722 s
+```
+
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Pool
+
+def func(val):
+  return val*val
+
+if __name__ == '__main__':
+  itens = [1, 2, 3]
+  resultado = map(func, itens) # mapeia os itens para a função
+  print(resultado)
+  numbersSquare = list(resultado) # converte objetos map -> list
+  print(numbersSquare)
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+<map object at 0x7f3292a92100>
+[1, 4, 9]
+```
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Pool
+
+def func(val):
+  return val*val
+
+if __name__ == '__main__':
+  itens = [1, 2, 3]
+  p = Pool(8) # Cria um conjunto de 8 trabalhadores!
+  resultado = p.map(func, itens)
+  print(resultado)
+  p.close()
+  p.join() 
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+[1, 4, 9]
+
+```
+
+
+```{python base, eval=FALSE}
+from multiprocessing import Pool
+
+def func(val):
+  return val*val
+
+if __name__ == '__main__':
+  p = Pool(8) # Cria um conjunto de 8 trabalhadores!
+  resultado = p.map(func, range(1,6)) # [1 a 5]
+  print(resultado)
+  p.close()
+  p.join() 
+```
+
+
+```{bash, eval=FALSE}
+he2@h10:~/Downloads$ python3 comandos.py 
+[1, 4, 9, 16, 25]
+```
+
+
+```{python base, eval=FALSE}
+
+```
+
 
 ```{bash, eval=FALSE}
 
 ```
 
 
+```{python base, eval=FALSE}
+
+```
+
+
+```{bash, eval=FALSE}
+
+```
+
+
+```{python base, eval=FALSE}
+
+```
+
+
+```{bash, eval=FALSE}
+
+```
+
+
+```{python base, eval=FALSE}
+
+```
+
+
+```{bash, eval=FALSE}
+
+```
 
