@@ -1,0 +1,5 @@
+
+## Teorema de Newton da gravidade 
+
+$ d = \frac{1}{2} g t^2 $
+
