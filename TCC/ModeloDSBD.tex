@@ -1,0 +1,421 @@
+\documentclass[twocolumn]{rbef}
+\usepackage{lipsum}
+
+\usepackage{bbm}
+\usepackage{subfig}
+\usepackage{pdfpages} % Para incluir a capa.
+
+\newcommand{\1}{\mathbbm{1}}
+\newcommand{\s}{\mathcal{S}}
+\newcommand{\T}{\mathcal{T}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\ket}{\rangle}
+\newcommand{\bra}{\langle}
+
+\newtheorem{defi}{Definição}
+\newtheorem{theorem}{Teorema}
+\newtheorem{acknowledgement}[theorem]{Acknowledgement}
+\newtheorem{algorithm}[theorem]{Algorithm}
+\newtheorem{axiom}[theorem]{Axiom}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{conclusion}[theorem]{Conclusion}
+\newtheorem{condition}[theorem]{Condition}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{criterion}[theorem]{Criterion}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{exercise}[theorem]{Exercise}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{problem}[theorem]{Problem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{solution}[theorem]{Solution}
+\newtheorem{summary}[theorem]{Summary}
+\newenvironment{proof}[1][Proof]{\noindent\textbf{#1.} }{\ \rule{0.5em}{0.5em}}
+
+\titulocabecalho{Sobre Dinâmica de Partículas Carregadas em Campos Elétrico e Magnético Estáticos}
+\autorcabecalho{M. L. Medeiros and A. C. Santos}
+
+\numeracao{01}
+\volume{01}
+\numero{01}
+\ano{2019}
+\doi{http://dsbd.leg.ufpr.br/tcc}
+% \tipodeartigo{TCC DSBD}
+\tipodeartigo{Especialização em Data Science \& Big Data}
+% \addtocounter{page}{566} %% \setcounter produces extra white page!!! use ===\addtocounter===
+
+\author[1]{Marciano L. Medeiros}
+
+\affil[1]{Departamento de Física, Universidade Regional do Cariri
+  Av. Leão Sampaio 107, Triângulo, 63041-082, Juazeiro do Norte, CE,
+  Brasil\thanks{\href{emailto:martefeynman@gmail.com}{martefeynman@gmail.com}}
+}
+
+\author[2]{Alan C. Santos}
+
+\affil[2]{Instituto de Física, Universidade Federal Fluminense
+  Av. General Milton Tavares de Sousa s/n, Gragoatá, 24410-346, Niterói,
+  RJ, Brasil\thanks{\href{emailto:alancs@if.uff.br}{alancs@if.uff.br}}
+}
+
+\titulo{Sobre Dinâmica de Partículas Carregadas em Campos Elétrico e
+  Magnético Estáticos}
+
+\subtitulo{On Dynamic of charged particles in Electric and Magnetic
+  statics fields}
+
+% -----------------------------------------------------------------------
+
+\begin{document}
+
+\includepdf[pages=-]{Capa.pdf} % Incluí a capa
+
+\begin{primeirapagina}
+
+  % \begin{center}
+  %   \vspace{-12pt} \small{Recebido em xxx. Aceito em xxx}
+  % \end{center}
+
+  \begin{abstract}
+    Um desenvolvimento didático para determinar a solução da
+    equação de movimento para uma partícula carregada imersa em
+    uma região na presença de campos elétrico e magnéticos
+    estáticos genéricos é proposto. Nossa proposta tem como
+    alicerce a vantagem de, utilizando as propriedades da
+    transformada de Laplace, podermos mapear um sistema de
+    equações diferenciais não-homogêneas de segunda ordem no
+    problema simples de encontrar as soluções de um sistema linear
+    de equações. A partir da solução mais geral possível para o
+    sistema, estudamos alguns casos particulares e recuperamos de
+    forma simples alguns resultados já existentes na literatura. A
+    fim de motivar nosso estudo, partimos do Teorema de Ehrenfest
+    e discutimos como os resultados obtidos para o caso clássico
+    podem ser interpretados na sua versão quântica.
+    \palavraschave{movimento de cargas, campos elétrico e
+      magnético, trajetória, análogo quântico}
+
+  \end{abstract}
+
+  \begin{otherlanguage}{english}
+
+
+    \begin{abstract}
+      A didactic development to determinate the solution of the
+      motion equations for a charged particle under influence of
+      electric and magnetic static fields is proposed. Our proposed
+      uses the advantages and proprieties of the Laplace’s
+      transformation, to map a system of N non-homogeneous
+      differential equations of second order in a system composed by
+      N linear equations. From the solution more general for
+      dynamics of the system, we study some particular cases to
+      recover, of a simple way, the results present in the
+      literature. In order to give a motivation to our study, we use
+      the Ehrenfest’s theorem and we discuss as the classical
+      results can be interpreted in its quantum version.
+      \keywords{Charge moving, electric and magnetic fields,
+        trajectory, quantum analogue}
+
+    \end{abstract}
+  \end{otherlanguage}
+
+\end{primeirapagina}
+\saythanks
+
+\section{Introdução}
+
+De forma elegante a Mecânica Newtoniana (Mecânica Clássica)
+permite-nos entender o comportamento de partículas que estão
+sujeitas a determinadas forças e condições iniciais
+\cite{Sommerfeld,Landau}. Porém o tamanho de sistemas físicos
+impõe um limite sobre o regime de validade da Mecânica Clássica,
+de modo que sistemas do tamanho do átomo de Hidrogênio, por
+exemplo, podem apresentar comportamentos peculiares à luz da
+Mecânica Clássica. Porém há casos onde o tratamento clássico do
+comportamento de um sistema pode nos dá informações relevantes
+sobre o sistema de interesse. Um exemplo é o de uma partícula de
+carga $q$ na presença de campos magnético $\vec{B}$ e elétrico
+$\vec{E}$ estáticos, como discutiremos aqui.
+
+É conhecido que quando uma partícula penetra em uma região do
+espaço onde há campos magnético e elétrico estáticos ela pode
+estar sujeita a uma força, a depender de como ela penetra nessa
+região e da configuração dos campos $\vec{E}$ e $\vec{B}$
+\cite{Griffiths,Moyses,Marion}. Nossa motivação em determinar de
+forma genérica todas as possíveis trajetórias (para as mais
+gerais condições iniciais) se dá pelo fato de que não há, com
+facilidade em livros de física básica, uma determinação
+matematicamente simples da solução para as equações de movimento
+de tal sistema. Alguns livros resolvem casos particulares quando
+temos, por exemplo, apenas o campo $\vec{B}$ em ação, que
+mostraremos como obter esse resultado como um caso particular do
+nosso desenvolvimento. No entanto, um estudo matemático
+detalhado alternativo ao que faremos aqui, pode ser encontrado
+nas refs. \cite{Griffiths,Marion}, ou para o leitor em outras
+usam-se provas intuitivas de que o comportamento deve ser este
+\cite{Moyses2}.
+
+O ferramental matemático que será utilizado aqui é o método de
+solução de equações diferenciais ordinárias (ou sistemas delas)
+por meio da Transformada de Laplace. Esse método tem uma
+potencial aplicação para facilitar o processo de solução de
+problemas simples (como o que será tratado aqui) ou até mesmo de
+problemas mais complicados como o de determinar a solução da
+equação de Schrödinger para potenciais dependentes do tempo
+\cite{Natascha:16}, bem como para discutir o comportamento
+temporal das soluções de tal equação para fenômenos de
+tunelamento \cite{Ref1Natascha:16,Ref2Natascha:16}. A principal
+vantagem da utilização da tranformada de Laplace, aplicada a
+certos sistemas equações diferenciais, é que podemos reduzir o
+problema de encontrar a solução de $N$ equações diferenciais
+não-homogêneas acopladas (isto é, a solução para uma dada função
+$x_{i}(t)$ desse sistema pode depender, a \textit{priori}, do
+comportamento de todas as $N-1$ funções restantes) em um
+problema de determinar apenas a solução de um sistema linear de
+$N$ equações. Assim, usaremos tal benefício para tornar nosso
+desenvolvimento simples.
+
+Nosso trabalho está dividido como segue. Na Seção \ref{Laplace}
+nós nos preocuparemos em definir bem o formalismo matemático que
+será usado na Seção \ref{Classico}, onde analisaremos a
+trajetória de uma partícula clássica que está sujeito a campos
+estáticos $\vec{E}$ e $\vec{B}$. Uma vez obtido, no tratamento
+clássico, a solução unívoca das equações de movimento do nosso
+sistema de interesse, na seção \ref{Particular} nós estudaremos
+alguns casos particulares com relação ao arranjo dos campos
+estáticos $\vec{E}$ e $\vec{B}$ e da condições iniciais do
+problema (velocidade e posição da partícula no início do
+movimento). Por fim, na seção \ref{Quantico} nós mostramos como
+o tratamento clássico feito na seção \ref{Classico} pode nos
+fornecer informações importantes a cerca da dinâmica de um
+\textit{ensemble} (feixe) de partículas carregadas.
+
+\section{Formalismo matemático} \label{Laplace}
+
+O ferramental matem\'{a}tico usado para alcan\c{c}ar o objetivo
+deste presente artigo \'{e} a conhecida \textit{Transformada de
+  Laplace}. A transformada de Laplace \'{e} um caso particular
+de um conjunto de transformadas mais gerais ditas
+\textit{Transformadas Integrais}. Em geral transformadas
+integrais de uma fun\c{c}\~{a}o $f\left( t\right) $ s\~{a}o
+definidas como \cite{Arfken}
+\begin{equation}
+  T\left[ f\left( t\right) \right] \equiv F\left( \xi \right) =\int_{I}K\left(
+    t,\xi \right) f\left( t\right) dt \text{ ,}
+\end{equation}%
+onde $K\left( t,\xi \right) $ \'{e} denominado
+\textit{n\'{u}cleo da transsforma\c{c}\~{a}o} e $I$ \'{e} um
+intervalo em $t$ que pode, ou n\~{a}%
+o, ser infinito. A ideia b\'{a}sica de transformadas integrais
+\'{e} que, dado um problema, possamos definir uma transformada a
+partir de um n\'{u}%
+cleo $K\left( t,\xi \right) $ que mapeia o problema um novo
+espa\c{c}o de par%
+\^{a}metros $\xi $, de modo que nesse novo espa\c{c}o seja
+poss\'{\i}vel resolver o problema original de forma simples. Ao
+final, deve ser poss\'{\i}%
+vel retornar ao espa\c{c}o dos par\^{a}metros $t$, assim devemos
+definir a transformada de modo que exista uma transformada
+inversa associada $T$ de modo que%
+\[
+  T^{-1}\left\{ T\left[ f\left( t\right) \right] \right\} \equiv
+  T^{-1}\left\{ F\left( \xi \right) \right\} =f\left( t\right)
+  \text{ .}
+\]
+
+Na Fig. \ref{EDO} n\'{o}s mostramos um esquema de cada etapa
+descrita acima. A importância da existência de uma transformada
+inversa é que a solução do problema no espaço do parâmetro $t$
+só pode ser obtido, a partir da solução obtida no espaço do
+parâmetro $\xi$, se pudermos definir a transformada inversa
+$T^-1[\bullet]$.
+
+\begin{figure}[!htb]
+  \centering \includegraphics[scale=0.5]{EDO.jpg}
+  \caption{Diagrama do algoritimo que deve ser executado quando usa-se
+    de transformadas integrais para solucionar algum problema. Nesse
+    caso, nosso problema considerado é a de determinar a solução de uma
+    EDO via transformadas de Laplace, mas o algoritmo é genérico.}
+  \label{EDO}
+\end{figure}
+
+A transformada integral de nosso interesse está associado ao formalismo
+das Transformadas de Laplace (TL). Aqui discutiremos sobre as TL de
+forma objetiva, bem como resultados e propriedades relevantes para este
+trabalho.
+
+\begin{defi}
+  Seja $f:[0,\infty) \longrightarrow \mathbb{R}$ uma função integrável
+  para todo subintervalo finito de $\left[ 0,\infty\right) $. A
+  transformada de Laplace da função $f$, denotada por
+  $\mathcal{L}[f(t)]$ ou $F(\xi)$, é definida por
+  \begin{equation}
+    F(\xi)=\int\limits_{0}^{\infty}e^{-\xi t}f(t)dt=\lim_{n \to \infty}\left[\int\limits_{0}^{n}e^{-\xi t}f(t)dt\right] \text{ ,}
+  \end{equation}
+  que resulta em uma função do parâmetro $\xi$.
+\end{defi}
+
+A primeira propriedade da transformada de Laplace $\mathcal{L}$ é a
+linearidade, logo se
+$\left\lbrace f_{i}(t)\right\rbrace = \left\lbrace
+  f_{1}(t),\cdots,f_{m}(t)\right\rbrace $ com $i=1,\cdots,m$ é um
+conjunto de funções cujas transformadas de Laplace existem, então
+\begin{equation}
+  \mathcal{L}\left[\sum_{i=1}^{m}a_{i}f_{i}(t)\right]= \sum_{i=1}^{m}a_{i}\mathcal{L}\left[f_{i}(t) \right] \text{ .} \label{linear}
+\end{equation}
+
+Uma aplicação notável das transformadas de Laplace é na resolução de
+equações diferenciais ordinárias com coeficientes constantes sujeitas à
+condições de contorno. Isso decorre do seguinte teorema \cite{Arfken}
+\begin{theorem} \label{Teo1} Seja $f\left( t\right) $ uma fun\c{c}\~{a}o
+  tal que sua $n$%
+  -\'{e}sima derivada com rela\c{c}\~{a}o ao par\^{a}metro $t$ seja
+  integr\'{a}%
+  vel e dado um conjunto de condi\c{c}\~{o}es de contorno
+  $d^{n}f\left( 0\right) /dt^{n}=c_{n}$ para todo $n$. Ent\~{a}o%
+  \begin{equation}
+    \mathcal{L}\left[ \frac{d^{n}f\left( t\right) }{dt^{n}}\right] \equiv \xi^{n}%
+    \mathcal{L}\left[ f\left( t\right) \right] -\sum_{j=1}^{n}\xi^{n-j}c_{j-1} \text{ ,}  \label{TransfDerN}
+  \end{equation}%
+  onde $\mathcal{L}\left[ f\left( t\right) \right] $ \'{e} a
+  transformada de Laplace de $f\left( t\right)$.
+\end{theorem}
+
+O resultado acima em conjunto com a propriedade de linearidade das
+transformadas de Laplace podem ser usados para encontrar
+solu\c{c}\~{o}es de sistemas de ED de ordem $n$. De fato, considere um
+sistema de equa\c{c}\~{o}es diferenciais nas fun\c{c}\~{o}es
+$x_{i}\left( t\right) $ e com condi\c{c}%
+\~{o}es de contorno $d^{n}x_{i}\left( 0\right) /dt^{n}=c_{n}^{i}$. A
+partir da Eq. (\ref{TransfDerN}) podemos concluir que aplicando a
+transformada a um sistema de ED, reca\'{\i}mos em um problema de
+encontrar solu\c{c}\~{o}es de sistemas de equa\c{c}\~{o}es lineares nas
+vari\'{a}veis $%
+\chi _{i}\left( \xi\right) =\mathcal{L}\left[ x_{i}\left( t\right)
+\right] $.  Ent\~{a}o, desde que o sistema de equa\c{c}\~{o}es lineares
+associados ao sistema de ED nos forne\c{c}a solu\c{c}\~{o}es
+integr\'{a}veis $\chi _{i}\left( \xi\right) $, podemos usar a
+transformada de Laplace inversa e obter as solu\c{c}\~{o}es
+$x_{i}\left( t\right) $ do sistema de ED.
+
+\section{Tratamento Clássico} \label{Classico} Nesta seção descreveremos
+o tratamento clássico da dinâmica de uma partícula sujeita a campos
+elétrico $\vec{E}$ e magnético $\vec{B}$ estáticos. Para isso,
+definiremos o problema a ser tratado classicamente e em seguida
+determinaremos a equação de movimento do sistema. Além disso nós
+determinamos, de forma unívoca com ajuda de condições iniciais, a
+solução paramétrica para a equação de movimento, onde nosso parâmetro é
+o tempo $t$ de evolução do sistema. Em seguida estudaremos o
+comportamento do sistema em casos particulares fazendo considerações
+relacionadas aos campos $\vec{E}$ e $\vec{B}$ e as condições iniciais do
+sistema.
+
+\subsection{Solução das Equações de Movimento: Caso
+  Geral} \label{Solucao}
+
+Considere uma part\'{\i}cula de massa $m$ e carga el\'{e}trica
+l\'{\i}quida $%
+q$ que est\'{a} imersa em uma regi\~{a}o que, no instante $t=t_{0}$,
+fica submetida à ação de dois campos est\'{a}ticos, um de natureza
+magn\'{e}tica $%
+\vec{B}$ e outro de natureza el\'{e}trica $\vec{E}$. J\'{a} \'{e} sabido
+que cada um destes campos, a depender das condi\c{c}\~{o}es sobre a
+posi\c{c}%
+\~{a}o e a velocidade da part\'{\i}cula em $t=t_{0}$, exercer\'{a} uma
+for%
+\c{c}a sobre a part\'{\i}cula, de modo que em geral a for\c{c}a
+resultante \'{e} dada pela for\c{c}a de Lorentz%
+\begin{equation}
+  \vec{F}_{Lor}=q\vec{E}+q\vec{v}\times \vec{B} \text{ .} \label{resultante}
+\end{equation}
+
+Sem perda de generalidade n\'{o}s adotamos que o nosso sistema de
+coordenadas tem o eixo $Z$ orientado na dire\c{c}\~{a}o do campo
+$\vec{B}$ e que a configura\c{c}\~{a}o incial do sistema, quando
+acionamos os campos est\'{a}%
+ticos, tem a forma representada pela Fig. \ref{Esquemainicial}.
+
+\begin{figure}[!htb]
+  \centering \includegraphics[scale=0.3]{Esquemainicial.jpg}
+  \caption{Configuração inicial do sistema, onde estamos adotando nosso
+    sistemas de coordenadas no ponto onde a partícula se encontra
+    inicialmente.}
+  \label{Esquemainicial}
+\end{figure}
+
+
+A origem do nosso sistema de coordenadas est\'{a} fixada exatamente no
+ponto onde a part\'{\i}cula se localiza em $t=0 $, de modo que as
+condi\c{c}\~{o}es iniciais são
+\begin{equation}
+  \vec{r}\left(
+    0\right) =\left( 0,0,0\right) \text { \ e \ } \vec{v}\left( 0\right) =\left(v_{1}(0) ,v_{2}(0) ,v_{3}(0) \right) \text{ ,} \label{initialconditions}
+\end{equation}
+que é o m\'{a}ximo de simplifica\c{c}\~{a}o que conseguimos admitir sem
+perder a generalidade do problema. Assim, as componentes da
+acelera\c{c}\~{a}o do sistema na forma diferencial s\~{a}o dadas, de
+acordo com a 2ª lei de Newton, por%
+\begin{eqnarray}
+  \frac{d^{2}x_{1}\left( t\right) }{dt^{2}} &=&\frac{q}{m} \left( \frac{dx_{2}\left(
+                                                t\right) }{dt}B+E_{1} \right) \label{dx1} \text{ ,} \\
+  \frac{d^{2}x_{2}\left( t\right) }{dt^{2}} &=&-\frac{q}{m} \left( \frac{dx_{1}\left(
+                                                t\right) }{dt}B-E_{2} \right) \label{dx2} \text{ ,} \\
+  \frac{d^{2}x_{3}\left( t\right) }{dt^{2}} &=&\frac{qE_{3}}{m}  \label{dx3}
+\end{eqnarray}%
+onde rotulamos as componentes $x,y$ e $z$ por $1,2$ e $3$,
+respectivamente.  As Eqs. (\ref{dx1}) e (\ref{dx2}) claramente formam um
+sistema de equa\c{c}\~{o}es diferenciais acopladas, mas por outro lado
+vemos que a Eq. (\ref{dx3}) est\'{a} desacoplada das demais. Assim
+n\'{o}s iniciamos por determinar a solu\c{c}\~{a}o da Eq. (\ref{dx3})
+onde, por integração, facilmente podemos mostrar que%
+\begin{equation}
+  x_{3}\left( t\right) = v_{3} t+\frac{qE_{3}}{m}%
+  \frac{t^{2}}{2} \text{ ,} \label{x3}
+\end{equation}%
+onde denotaremos de agora em diante a notação $\beta_{k}(0)=\beta_{k}$,
+\'{e} solu\c{c}\~{a}o da Eq. (\ref{dx3}), dando assim o comportamento da
+part\'{\i}cula ao longo do eixo $Z$ do sistema de
+coordenadas. Continuando, para sistema composto pelas Eqs. (\ref{dx1}) e
+(\ref{dx2}) n\'{o}s usamos o método da transformada de Laplace descrito
+na seção \ref{Laplace}. Aplicando a transformada de Laplace às
+Eqs. (\ref{dx1}) e (\ref{dx2}) obtemos, de acordo com o Teorema
+\ref{Teo1} e as Eqs. (\ref{linear}) e (\ref{initialconditions})
+\begin{eqnarray}
+  \xi^{2}\chi _{1}\left( \xi\right) -v_{1}  &=&\frac{q}{m}%
+                                                \left( B\xi\chi _{2}\left( \xi\right) +\frac{E_{1}}{\xi} \right) \text{ ,} \\
+  \xi^{2}\chi _{2}\left( \xi\right) -v_{2}  &=&-\frac{q}{m}%
+                                                \left( B\xi\chi _{1}\left( \xi\right) - \frac{qE_{2}}{\xi} \right) \text{ ,}
+\end{eqnarray}%
+onde a partir daqui vamos definir $\omega _{0}=qB/m$ e
+$\gamma _{k}=qE_{k}/m$ com $k=1,2$. Para resolver o sistema acima
+n\'{o}s primeiro resolvemos o sistema para $\chi _{1}\left( \xi\right) $
+e $\chi _{2}\left( \xi\right) $ e em seguida aplicamos a transformada de
+Laplace inversa $(5)$ para obtermos as soluções $%
+x_{1}\left( t\right) $ e $x_{2}\left( t\right) $, respectivamente. O
+resultado dessa sequencia de passos \'{e} que a solu\c{c}\~{a}o para as
+Eqs. (\ref%
+{dx1}) e (\ref{dx2}) s\~{a}o, respectivamente, dadas por%
+\begin{eqnarray}
+  x_{1}\left( t\right)  &=&\frac{1}{\omega_{0} ^{2}}\left[ A_{1}-C_{2}\cos \left(
+                            \omega_{0} t\right) +C_{1}\sin \left( \omega_{0} t\right) \right] \text{ ,}  \label{x1} \\
+  x_{2}\left( t\right)  &=&\frac{1}{\omega_{0} ^{2}}\left[ A_{2}+C_{1}\cos \left(
+                            \omega_{0} t\right) +C_{2}\sin \left( \omega_{0} t\right) \right]  \text{ ,} \label{x2}
+\end{eqnarray}%
+onde definimos as quantidades (com $k=\{ 1,2 \}$)
+\begin{eqnarray}
+  A_{1} &=&\gamma _{2}+\left( \gamma _{1}t+v_{2} \right) \omega_{0} \text{ ,}
+            \label{coe1} \\
+  A_{2} &=&\gamma _{1}-\left( \gamma _{2}t+v_{1} \right) \omega_{0} \text{ ,}
+            \label{coe2} \\
+  C_{k} &=&\left( -1\right) ^{k}\gamma _{k}+v_{k} \omega_{0} \text{ ,}
+            \label{coe3}
+\end{eqnarray}%
+de forma que uma an\'{a}lise dimensional mostra que
+$\left[ A_{k}/\omega_{0} ^{2}\right] =\left[ C_{k}/\omega_{0}
+  ^{2}\right] =\left[ \text{posi\c{c}\~{a}o}\right] $.  Isso nos permite
+concluir que a part\'{\i}cula descreve uma trajet\'{o}ria dada pelas
+equações param\'{e}tricas (\ref{x1}), (\ref{x2}) e (\ref{x3}). Das
+Eqs. (\ref{coe1}), (\ref{coe2}) e (\ref{coe3}) podemos ver que, de fato,
+a configura\c{c}\~{a}o dos c
