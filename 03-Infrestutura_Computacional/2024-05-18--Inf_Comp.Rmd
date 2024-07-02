@@ -1335,37 +1335,97 @@ he2@h10:~/Downloads$ python3 comandos.py
 
 
 ```{python base, eval=FALSE}
+from multiprocessing import Pool
 
+def func(val1, val2):
+  return val1*val2
+
+if __name__ == '__main__':
+  p = Pool(8) # Cria um conjunto de 8 trabalhadores!
+  itens = [1, 2, 3]
+  resultado = []
+  for i in itens:
+    resultado = p.apply(func, args=(2, 4))
+  print(resultado)
+  p.close()
+  p.join() 
 ```
 
+## Trabalho pi pool
 
 ```{bash, eval=FALSE}
-
+he2@h10:~/Downloads$ python3 comandos.py 
+8
 ```
 
 
 ```{python base, eval=FALSE}
+from multiprocessing import Pool
 
+def func(val1, val2):
+  return val1*val2
+
+if __name__ == '__main__':
+  p = Pool(8) # Cria um conjunto de 8 trabalhadores!
+  itens = [1, 2, 3]
+  resultado = []
+  for i in itens:
+    resultado.append(p.apply(func, args=(i, i)))
+  print(resultado)
+  p.close()
+  p.join() 
 ```
 
 
 ```{bash, eval=FALSE}
-
+he2@h10:~/Downloads$ python3 comandos.py 
+[1, 4, 9]
 ```
 
 
 ```{python base, eval=FALSE}
+## Professor, normalmente eu uso Google colab para trabalhar com python, mas para múltiplos procesos não funciona bem. Então tive que fazer o código e teste no meu notebook (windows) o que foi um pouco problematico. Só para avisar caso de algum erro bizarro por diferença de sist. operacional...
 
-```
+from multiprocessing import Pool
+import sys
+import time
 
+PROCS = 10
 
-```{bash, eval=FALSE}
+def func(val1, val2):
+  return val1*val2
 
-```
+def pi(start, end, step):
+  print ("Start: ", str(start))
+  print ("End: ", str(end))
+  sum = 0.0
+  for i in range(start, end):
+    x = (i+0.5) * step
+    sum = sum + 4.0/(1.0+x*x)
+  return(sum)
 
-
-```{python base, eval=FALSE}
-
+if __name__ == '__main__':
+  p = Pool(8) # Cria um conjunto de 8 trabalhadores!
+  num_steps = 1000000
+  sum = 0.0
+  step = 1.0/num_steps
+  proc_size = num_steps // PROCS
+  tic = time.time()
+  somapi = 0.0
+  itens = [1, 2, 3]
+  resultado = []
+  for i in range(PROCS):
+    resultado.append(p.apply_async(pi,args=(i*proc_size, (i+1)*proc_size - 1, step))) ## no seu codigo de aula o "i" estava entre chaves, mas aqui só funcionou sem chaves ¯\_(ツ)_/¯
+    
+  output = [p.get() for p in resultado]
+  for i in range(PROCS):
+    somapi = somapi + (output[i] * step)
+  p.close()
+  p.join() 
+  toc = time.time()
+  print ("Valor Pi: %.20f" %somapi)
+  print ("Tempo Pi: %.8f s" %(toc-tic))
+  
 ```
 
 

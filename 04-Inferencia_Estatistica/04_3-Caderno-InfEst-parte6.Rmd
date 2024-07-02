@@ -43,6 +43,21 @@ http://shiny.leg.ufpr.br/wagner/MetodosNumericos/
 
 
 
+```{r}
+# Y ~ Normal(mu, sigma).
+y <- 1; mu <- 100; sigma <- 100
+# f(y; mu, sigma).
+dnorm(y, mean = mu, sd = sigma)
+## [1] 0.02419707
+# exp(-(y - mu)^2/(2 * sigma^2))/sqrt(2 * pi * sigma^2)
+# F(y; mu, sigma).
+pnorm(y, mean = mu, sd = sigma)
+## [1] 0.8413447
+# Quantil.
+q <- 0.25
+y_q <- qnorm(q, mean = mu, sd = sigma); y_q
+## [1] 173.2551
+```
 
 
 
