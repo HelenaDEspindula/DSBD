@@ -1,0 +1,506 @@
+---
+title: "Exercicios_20-07-2024"
+author: "Helena R. S. D'Espindula"
+date: "2024-07-21"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+1) Considere as notas de alunos descritas no vetor numérico nomeado em Notas e os alunos que entregaram os trabalhos descritas no vetor lógico nomeado em Trabalhos
+
+Notas
+
+##     João    Maria     José      Ana    Pedro    Paula   Carlos  Mariana Fernando 
+##       70       74       54       42       74       88       97       75       46 
+##    Luiza 
+##       68
+
+Trabalhos
+
+##     João    Maria     José      Ana    Pedro    Paula   Carlos  Mariana Fernando 
+##     TRUE     TRUE    FALSE    FALSE     TRUE     TRUE     TRUE     TRUE    FALSE 
+##    Luiza 
+##    FALSE
+
+Responda as seguintes questões, considerando quatro casas decimais.
+
+    A raiz quadrada da média dos alunos é:
+    Resposta 1 Questão 1
+    A mediana dos alunos que entregaram o trabalho é:
+    Resposta 2 Questão 1
+    A maior nota dentre os alunos que não entregaram o trabalho é:
+    Resposta 3 Questão 1
+    Assuma que a média para aprovação direta é 70, alunos com média inferior a 40 tem reprovação direta, os demais estão em recuperação. A quantidade de alunos em recuperação que entregou os trabalhos é:
+    Resposta 4 Questão 1
+    O desvio-padrão das notas dos alunos que entregaram os trabalhos é:
+    Resposta 5 Questão 1
+
+
+```{r}
+notas <- list("Joao" = 70, "Maria" = 74, "Jose" = 54, "Ana" =42, "Pedro"=74)  
+notas
+
+notas2 <- list(c("Joao", "Maria", "Jose", "Ana", "Pedro", "Paula", "Carlos", "Mariana", "Fernando", "Luiza"), 
+               c(70, 74, 
+                 54, 42, 
+                 74, 88, 97, 75, 
+                 46, 68), 
+               c(TRUE, TRUE, 
+                 FALSE, FALSE, 
+                 TRUE, TRUE, TRUE, TRUE, 
+                 FALSE, FALSE))
+notas2
+
+medianotas <- mean(notas2[[2]])
+
+sqrt(medianotas)
+
+notastrabentreg <- c(70,74,74, 88, 97, 75)
+
+notastrabentreg
+
+notastrabnao <- c(54, 42, 46, 68)
+
+median(notastrabentreg)
+
+sd(notastrabentreg)
+
+```
+
+2) Considere as matrizes A, B e C
+
+dadas por:
+
+A=⎡⎣⎢⎢⎢⎢⎢⎢383117158445928482328171518126402239303114049⎤⎦⎥⎥⎥⎥⎥⎥
+
+B=⎡⎣⎢⎢⎢⎢⎢⎢1026395049189291005032481228395174042371373518⎤⎦⎥⎥⎥⎥⎥⎥
+
+C=B⋅(BT⋅B)−1⋅BT
+
+Responda as seguintes questões. Considere quatro casas decimais para as respostas.
+
+    O log10
+
+do valor absoluto do determinante de C
+é:
+Resposta 1 Questão 2
+O log10
+do valor absoluto do determinante da matriz resultante do produto matricial entre A e B
+é:
+Resposta 2 Questão 2
+A soma dos valores absolutos da diagonal da matriz B
+é:
+Resposta 3 Questão 2
+A soma dos elementos que estão acima da diagonal de A é:
+Resposta 4 Questão 2
+O maior elemento da diagonal do inverso da matriz resultante do produto matricial entre A
+e o transposto de B é:
+Resposta 5 Questão 2
+
+
+
+
+
+```{r}
+A <- matrix(c(38, 04, 23, 01, 30,
+              31, 45, 28, 26, 31,
+              17, 09, 17, 40, 14,
+              15, 28, 15, 22, 00,
+              08, 48, 18, 39, 49),
+            byrow = TRUE,
+            nrow = 5,
+            ncol = 5)
+A
+
+B <- matrix(c(10, 18, 50, 39, 37,
+              26, 09, 32, 05, 01,
+              39, 29, 48, 17, 37,
+              50, 10, 12, 40, 35,
+              49, 00, 28, 42, 18),
+            byrow = TRUE,
+            nrow = 5,
+            ncol = 5)
+
+B
+
+C <- B %*% (solve(t(B) %*% B)) %*% t(B)
+C
+determinant(C, logarithm = TRUE)$modulus
+determinant(C, logarithm = FALSE)$modulus
+
+
+D <- A %*% B
+D
+determinant(D, logarithm = TRUE)$modulus
+
+digB <- sum(diag(B))
+digB
+
+somaAsup <- sum(04, 23, 01, 30,
+                28, 26, 31,
+                40, 14,
+                00)
+
+somaAsup
+
+E <- solve(A %*% t(B))
+E
+
+diag(E)
+
+
+```
+
+
+3) A variância amostral (S2), o desvio médio absoluto (DMA) e o segundo coeficiente de assimetria de Pearson (AS2) são medidas definidas, respectivamente, por
+
+S2=1n−1∑i=1n(xi−x¯)2,
+DMA=1n−1∑i=1n|xi−x¯|
+e
+AS2=3⋅x¯−MdS,
+
+em que x¯
+é a média amostral, Md é a mediana e |a| corresponde ao módulo de a.
+
+Implemente uma função em R que retorne uma lista com os valores de S2, DMA e AS2 de uma variável quantitativa qualquer. Na sequência, considere o banco de dados Orange disponível no R para responder às questões abaixo, dê suas respostas utilizando quatro casas decimais.
+
+    A S2
+
+da variável age é:
+Resposta 1 Questão 3
+O DMA
+da variável age é:
+Resposta 2 Questão 3
+No nível 2 da variável Tree, o AS2
+da variável age é:
+Resposta 3 Questão 3
+Considerando apenas o nível 2 da variável Tree, o DMA
+da variável age é:
+Resposta 4 Questão 3
+
+
+```{r}
+summary(Orange)
+
+var(Orange$age) ## variancia amostral
+
+require(ie2misc)
+require(moments)
+require(magrittr)
+require(dplyr)
+
+madstat(Orange$age) ##  desvio médio absoluto (DMA) 
+
+laranjas2 <- filter(Orange, Orange$Tree == "2")
+
+skewness(laranjas2$age) ## segundo coeficiente de assimetria de Pearson (AS2) 
+
+madstat(laranjas2$age)
+
+```
+
+4) Considere uma matriz m×m, em que m é um inteiro positivo. Implemente uma função em R que realize a varredura de uma matriz e execute uma operação específica que depende do valor encontrado na matriz (aij
+
+), conforme as seguintes regras:
+
+    Se aij
+
+for um número primo, multiplique-o por 9.
+Se aij
+for um quadrado perfeito, subtraia 4. Caso o resultado obtido for negativo, eleve a 3a
+potência.
+Se aij
+for negativo na matriz original, calcule a raiz 3a
+
+    de seu módulo.
+    Caso contrário, não faça nada.
+
+A função a ser criada deve retornar a matriz transformada. Considere:
+
+A=⎡⎣⎢8910−23−3−660⎤⎦⎥
+
+B=⎡⎣⎢⎢⎢20163−8019618−385−515121110⎤⎦⎥⎥⎥
+
+C=⎡⎣⎢⎢⎢⎢⎢⎢−129−10−71530−5−9−4262018219781661917222712−2⎤⎦⎥⎥⎥⎥⎥⎥
+
+Considerando o contexto proposto, responda o que se pede utilizando quatro casas decimais.
+
+    A soma dos elementos da diagonal principal da matriz A
+
+transformada é:
+Resposta 1 Questão 4
+O maior elemento, em módulo, da matriz C
+transformada é:
+Resposta 2 Questão 4
+A soma dos elementos da coluna 2 da matriz C
+transformada é:
+Resposta 3 Questão 4
+O número de primos na matriz B
+transformada é:
+Resposta 4 Questão 4
+O número de elementos da matriz A
+transformada que são quadrados perfeitos é:
+Resposta 5 Questão 4
+
+```{r}
+
+require(primes)
+require(pracma)
+require(ds4psy)
+require(FRACTION)
+
+A <- matrix(
+  c(08, -2, -6, 09, 03, 06, 10, -3, 0),
+  byrow = TRUE,
+  nrow = 3,
+  ncol = 3
+)
+A
+
+i <- 1
+j <- 1
+for (i in 1:3) {
+  print(paste("i = ", i))
+  for (j in 1:3) {
+    print(paste("j = ", j))
+    numtransf = 0
+    print(paste("num = ", A[i,j]))
+    if (A[i,j] < 0)    {
+      numtemporario = abs(A[i,j])
+      #print(paste("absoluto = ", numtemporario))
+      numtransf = nthroot(x = numtemporario, n = 3)
+    } else if (is_prime(A[i,j]))    {
+      numtransf = A[i,j] * 9
+    } else if (is.wholenumber(sqrt(A[i,j])))
+    {
+      numtransf = A[i,j] - 4
+      if (numtransf < 0)
+      {
+        numtransf = numtransf ** 3
+      }
+    } else{
+      numtransf = A[i,j]
+    }
+    print(paste("pos = ", numtransf))
+    A[i,j] = numtransf
+  }
+}
+
+A
+
+sum(diag(A))
+
+
+contador = 0
+i <- 1
+j <- 1
+for (i in 1:3) {
+  for (j in 1:3) {
+    print(paste("num = ", A[i,j]))
+    if (is.wholenumber(sqrt(A[i,j]))){
+      print(paste("o numero ", A[i,j], "eh primo"))
+      contador = contador +1
+    }
+  }
+}
+contador
+
+
+
+
+
+B <- matrix(c(20, 0, -3, 15,
+              16, 19, 8, 12,
+              3, 6, 5, 11,
+              -8, 18, -5, 10),
+  byrow = TRUE,
+  nrow = 4,
+  ncol = 4
+)
+B
+
+i <- 1
+j <- 1
+for (i in 1:4) {
+  print(paste("i = ", i))
+  for (j in 1:4) {
+    print(paste("j = ", j))
+    numtransf = 0
+    print(paste("num = ", B[i,j]))
+    if (B[i,j] < 0)    {
+      numtemporario = abs(B[i,j])
+      #print(paste("absoluto = ", numtemporario))
+      numtransf = nthroot(x = numtemporario, n = 3)
+    } else if (is_prime(B[i,j]))    {
+      numtransf = B[i,j] * 9
+    } else if (is.wholenumber(sqrt(B[i,j])))
+    {
+      numtransf = B[i,j] - 4
+      if (numtransf < 0)
+      {
+        numtransf = numtransf ** 3
+      }
+    } else{
+      numtransf = B[i,j]
+    }
+    print(paste("pos = ", numtransf))
+    B[i,j] = numtransf
+  }
+}
+
+B
+
+contador = 0
+for (i in 1:4) {
+  for (j in 1:4) {
+    if(is_prime(B[i,j])){
+      print(paste("o numero ", B[i,j], "eh primo"))
+      contador = contador +1
+    }
+  }
+}
+contador
+
+
+
+
+
+
+
+C <- matrix(c(-1, 30, 20, 7, 17,
+              29, -5, 18, 8, 22,
+              -10, -9, 2, 16, 27,
+              -7, -4, 1, 6, 12,
+              15, 26, 9, 19, -2),
+  byrow = TRUE,
+  nrow = 5,
+  ncol = 5
+)
+C
+
+i <- 1
+j <- 1
+for (i in 1:5) {
+  print(paste("i = ", i))
+  for (j in 1:5) {
+    print(paste("j = ", j))
+    numtransf = 0
+    print(paste("num = ", C[i,j]))
+    if (C[i,j] < 0)    {
+      numtemporario = abs(C[i,j])
+      #print(paste("absoluto = ", numtemporario))
+      numtransf = nthroot(x = numtemporario, n = 3)
+    } else if (is_prime(C[i,j]))    {
+      numtransf = C[i,j] * 9
+    } else if (is.wholenumber(sqrt(C[i,j])))
+    {
+      numtransf = C[i,j] - 4
+      if (numtransf < 0)
+      {
+        numtransf = numtransf ** 3
+      }
+    } else{
+      numtransf = C[i,j]
+    }
+    print(paste("pos = ", numtransf))
+    C[i,j] = numtransf
+  }
+}
+
+C
+
+sum(C[,2])
+
+
+
+
+
+
+```
+
+Considere o banco de dados diamonds do pacote ggplot2. Esse banco de dados contém informações sobre o preço, quilates, cor, clareza, etc. de 53.940 diamantes.
+
+As variáveis presentes no banco de dados estão descritas no help do banco de dados.
+
+Responda as seguintes questões:
+
+    Quantos diamantes possuem o corte Fair?
+    Resposta 1 Questão 5
+    O preço médio dos diamantes com a cor J e a clareza SI2 é de:
+    Resposta 2 Questão 5
+    Existem quantos diamantes com mais do que 1.4 quilates?
+    Resposta 3 Questão 5
+    Qual é o preço médio dos diamantes com mais do que 1.4 quilates?
+    Resposta 4 Questão 5
+    Qual é o preço mediano dos diamantes com a cor J e a clareza VS2 e com mais do que 2.9 quilates?
+    
+    
+    
+```{r}
+require(ggplot2)
+
+diamonds
+
+diamantes2 <- filter(diamonds, diamonds$cut == "Fair")
+diamantes2
+
+count(diamantes2)
+
+diamantes3 <- filter(diamonds, diamonds$color == "J", diamonds$clarity == "SI2")
+diamantes3
+
+mean(diamantes3$price)
+
+
+diamantes4 <- filter(diamonds, diamonds$carat > 1.4) 
+
+diamantes4
+mean(diamantes4$price)
+
+diamantes5 <- filter(diamonds, diamonds$color == "J", diamonds$clarity == "VS2", diamonds$carat > 2.9)
+
+diamantes5
+
+median(diamantes5$price)
+
+```
+
+
+Para esse exercício você deverá utilizar os banco de dados refugiados_pais.csv.gz e refugiados.csv.gz. Considere apenas observações completas. Responda:
+
+    A partir de 2017 houveram quantos refugiados do pais Central African Rep. para o Romania?
+    Resposta 1 Questão 6
+    Qual é a sub-região de origem com mais refugiados em 2010?
+    Resposta 2 Questão 6
+    Qual é a sub-região de destino com mais refugiados em 1985?
+    Resposta 3 Questão 6
+    Os 5 países que mais receberam refugiados em 1966 receberam juntos quantos refugiados?
+    Resposta 4 Questão 6
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
