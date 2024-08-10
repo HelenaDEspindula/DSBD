@@ -1,0 +1,338 @@
+---
+title: "Aprendizagem_de_Maquina-2024-08-09"
+author: "Helena R. S. D'Espindula"
+date: "2024-08-09"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Aprendizagem de Maquina
+
+## Qual a diferença?
+
+- IA (Artificial Intelligence) - 1950
+- ML (Machine Learning) - 1959
+- DL (Deep Learning) - 1986 [2009 - NVidia]
+- DS (Data Science) - 2012
+ - Probabilidade
+ - Estatistica
+ - Algebra Linear
+ - Computação
+
+## Porque é importante?
+
+Dados criados 
+[[grafico]]
+
+- Impossivel para o ser humano lidar .....
+
+## GPU
+
+Permitiu uma agilização dos processos
+
+## Alguns frameworks
+
+Machine Learning Frameworks
+- scikit-learn
+- torch
+- TensorFlow
+- Pytorch
+.....
+
+
+## O que é Aprendizagem de Máquina?
+
+[...]
+
+## Desafios
+
+- Aspecto chave: versatilidade (fazer diversas coisas)
+- Sistemas de IA atualmente são muito bons e superam os seres humanos em algumas atividades:
+ - Jogos (xadrez, go etc)
+ - Diagnostico médico (detecção de câncer de pele)
+ - Geração de texto (LLM)
+ 
+
+## Quando usar?
+
+Sempre que não for possível escrever um algoritmo deterministico para resolver o problema. Nesses casos o conhecimento deve ser extraido a partir de exemplos (grande quantidade de dados).
+
+### Aplicações
+
+## Tipos de Aprendizagem
+
+- Supervisionada: dados de treinamento estão rotulados
+- Não supervisionada: Sem rótulos, descobrir estruturas (grupos/ clustering)
+- Semi-supervisionada: Uso de dados não rotulados para melhorar a aprendisagem supervisionada
+- Por reforço: robotica e otimização
+
+[figura]
+
+## Pipeline
+
+1. Get Data
+2. Clean, Prepare & Manipulate Data
+3. Train Model
+4. Test Data
+5. Improve (volta ao 3 se necessario)
+6. Explain (opcional)
+
+### Aprendizagem Supervisionada - Classificação
+
+1. [dados rotulados...]
+
+ - Base de treinamento x teste
+
+2. Representação (tipo por no grafico)
+ - O que diferencia um salmão de um robalo?
+ - Extrair atributos [... botar num vetor numerico]
+ 
+de imagem para vetor numerico de 2+1 posições (tamanho, intencidade e rotulo/classe)
+
+3. Fronteiras de decisão
+
+[grafico]
+
+- Separação Linear: $y = ax + b$
+- Funções Discriminantes Lineares (Perceptron, SVM)
+- Linear funciona  mas dá pra melhorar
+- Para melhorar coloca mais caracteristicas
+
+Rede neural [grafico]
+- Funciona perfeito para o treinamento, mas fica ruim para o teste (overfiting)
+- Super especifico vs generalista
+
+#### Maldição da Dimencionalidade
+
+- Em geral para classificar criam-se vetores de caracteristicas com mais informações - melhor ter mais dados (para não ter espaços vazios)
+- Conforme adicionamos caracteristicas ao vetor, o número de celulas cresce de forma exponencial
+- Em função disso, quanto mais caracteristicas temos, mais base de dados temos que ter para preencher todas as células
+- Na maioria dos problemas, entretanto, a quantidade de dados disponiveis para a aprendizagem é limitada
+
+#### Deep Learning (Representation Learning)
+
+- Extrair a representação a partir dos dados (precisa de muitos dados , tipo milhaes)
+- Qualquer algoritmos de aprendizagem de máquina depende da representação usada
+- Definição de caracteristica não é uma tarefa trivial
+- Porque não deixa-la então por conta do algoritmo de aprendizagem?
+
+### Aprendizagem Supervisionada - Regressão
+
+- Construir um sistema para estimar preço de um imóvel
+vetor : _|_|_|_|_|_|_|_|_|_|preço
+
+[...]
+
+### Aprendizagem Não Supervisionada
+
+- Em problemas de aprendizagem supervisionada, contamos como a tupla[X, y], em que o objetivo é classificar y usando o vetor de caracteristicas X.
+[...]
+
+- Exemplos de aplicações:
+ - Segmentações de mercado (Marketing)
+ - Agrupamento de paciente / clientes / documentos etc
+ - Sistemas de Recomendação
+
+Quantos grupos (clusters) existem nesses dados?
+
+O que é um bom cluster?
+ - Compactos e longe um dos outros
+ - Índices de clusters
+ 
+Indices ou Metricas para avaliar o grupo
+
+- Indice de silueta / Silhouette Index (1 é o maximo. )
+
+
+LLM (Large Language Models)
+- Mecanismo de atenção (Transformers)
+- GPT, Llama, etc
+- O modelo é treinado em grandes quantidades de texto sem rotulos especificos. O objetivo do treinamento é aprender a prever a proxima palavra ou sequecia de palavras em uma frase, dada a sequencia anterior
+(gerador de imagem é um pouco diferente, tem alguns rotulos e é mais complexo)
+
+
+#### Redução da Dimensionalidade
+
+- Independentemente do algoritmo de aprendizagem de maquina escolhido, um dos principais aspectos na construção de um bom classificador é a utilização de caracteristicas discriminantes.
+- A adição de uma nova caracteristica não significa [...]
+
+- Não é um problema trivial
+[...]
+
+Wrapper e filter
+[...]
+
+#### eXplainable AI (XAI) - etapa extra muito legal
+
+- [...]
+- Entender erros, explicar raciocínio
+
+- Abordagens:
+ - Feature Importance (Arvore de Decisão)
+ - Permutation Feature Importance (remover uma caracteristica e verificar o impacto)
+ - LIME (Local Interpretable Model-Agnodtic Explanation)
+ - SHAP (SHapley Addtive exPlanations)
+
+
+
+Fine-tunein -> treinar na ultima camada para fazer um expecialista (exemplo usando Lhama)
+
+
+# Representação
+
+Caracterizar um objetos atraves de medidas, as quais são bastante similares para objetos [...]
+
+## Dados
+
+### Dados Numericos
+
+Por exemplo dados tabulares:
+- Medidas de sensores
+- Preço de compra etc
+
+Transformações necessarias:
+- Escala / Normalização [...]
+
+### Escalares, Vetores e Epaços
+
+Vetor = Lista de escalares
+
+
+### Transformações Basicas
+
+- Binarização:
+ - Aconteceu ou não
+ - Quantidade de vezes pode não importar
+ [...]
+ 
+- Quantização:
+ - Valores de continuos para discretos
+ [...]
+ 
+- Log:
+ - Interessante para lidar com distribuições fortemente desbalanceadas (heavy-tailed...)
+ - Realçar a relação entre dados
+ 
+- Escala:
+ - Nomalizar os dados de forma que todas as caracteristicas tenham a mesma escala ("Feature Scaling")
+ 
+ $$
+ \hat{x} = \frac{x - min(x)}{max(x) - min(x)}
+ $$
+
+- Variância ("standartization")
+ - Subtrai a media e divid pelo devio padrão
+ - Como resultado temos: media = 0 , dp = 1
+ 
+$$
+\hat{x} = \frac{x - \mu}{\sqrt{\sigma}}
+$$
+
+
+- Normatização L2
+
+$$
+\hat{x} = \frac{x}{||x||_2}
+$$
+em que $||x||_2$:
+
+$$
+||x||_2 = \sqrt{\sum{x^2_i}}
+$$
+
+### Seleção de caracteristicas
+
+- Eliminar caracteristicas correlacionadas ou pouco discriminantes
+- Reduz complexidade do modelo
+[...]
+
+
+### Texto
+
+[...]
+
+#### Bag-of-Words (BoW)
+
+- Dois passos:
+ - Definir um vocabulario conhecido
+ - [contar palavra?]
+ 
+Ex:
+1. Aquisição de dados. [texto ex]
+2. Definir meu vocabulario (no exemplo as palavras únicas)
+3. Criar vetores
+ - Vetor tem o tamanho do vocabulario
+ - Contar a frequencia da aparição (aparece ou não / 1 ou 0) de cada palavra no texto
+ - Para esse documento: 
+ $[it, was, the, best, of, times, ... ] \arrowr tamanho = 10 $
+ $[1,1,1,0,1,0,0,1,1,0]$
+ 
+##### Gerenciando o Vocabulario
+
+- Evitar vetores muito grandes e esparços
+- Ignorar maiusculas/minusculas, pontuação, palavras muito frequentes (of, the, a etc)
+- Verbos no infinitivo
+[...]
+
+##### TF-IDF
+
+- Normatização de contagem de palavras
+
+TF = Term Frequency
+IDF = Inverse Document Frequency
+
+Limitações BoW
+
+Vocabulario:
+- Definição cuidadosa [...]
+
+
+##### Word Embedding
+
+[...]
+
+###### Word2Vec
+- Treinando a rede
+ - 
+[...]
+
+##### BERT
+
+Biderctional Encoder Representations from Transformers
+- Tec que depende do contexto
+[...]
+- Considera palavras fora do vocabulario inicial
+
+### Imagem
+
+- Momentos de Hu - objetos bem definidos
+
+[...]
+
+### Caracteristicas estruturais
+
+[...]
+
+- Contorno
+- Histograma
+- Zoneamento 
+- Textura (padrão repetitivo / de homogenidade)
+ - [...]
+ - LBP (Local Binary Patterns) - convulução [imagem]
+- Gradientes:
+ - HoG
+ - SIFT
+- Cor
+ - RGB
+ - HSI
+ - CMYK
+- CNN (Convolutional Neral Nets) -> extrai bordas por exemplo
+[...]
+
+
+
+
+
