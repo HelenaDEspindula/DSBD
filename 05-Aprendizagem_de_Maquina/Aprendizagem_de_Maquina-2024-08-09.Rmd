@@ -17,10 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 - ML (Machine Learning) - 1959
 - DL (Deep Learning) - 1986 [2009 - NVidia]
 - DS (Data Science) - 2012
- - Probabilidade
- - Estatistica
- - Algebra Linear
- - Computação
+  - Probabilidade
+  - Estatistica
+  - Algebra Linear
+  - Computação
 
 ## Porque é importante?
 
@@ -51,9 +51,9 @@ Machine Learning Frameworks
 
 - Aspecto chave: versatilidade (fazer diversas coisas)
 - Sistemas de IA atualmente são muito bons e superam os seres humanos em algumas atividades:
- - Jogos (xadrez, go etc)
- - Diagnostico médico (detecção de câncer de pele)
- - Geração de texto (LLM)
+  - Jogos (xadrez, go etc)
+  - Diagnostico médico (detecção de câncer de pele)
+  - Geração de texto (LLM)
  
 
 ## Quando usar?
@@ -171,10 +171,10 @@ Wrapper e filter
 - Entender erros, explicar raciocínio
 
 - Abordagens:
- - Feature Importance (Arvore de Decisão)
- - Permutation Feature Importance (remover uma caracteristica e verificar o impacto)
- - LIME (Local Interpretable Model-Agnodtic Explanation)
- - SHAP (SHapley Addtive exPlanations)
+  - Feature Importance (Arvore de Decisão)
+  - Permutation Feature Importance (remover uma caracteristica e verificar o impacto)
+  - LIME (Local Interpretable Model-Agnodtic Explanation)
+  - SHAP (SHapley Addtive exPlanations)
 
 
 
@@ -204,28 +204,28 @@ Vetor = Lista de escalares
 ### Transformações Basicas
 
 - Binarização:
- - Aconteceu ou não
- - Quantidade de vezes pode não importar
+  - Aconteceu ou não
+  - Quantidade de vezes pode não importar
  [...]
  
 - Quantização:
- - Valores de continuos para discretos
+  - Valores de continuos para discretos
  [...]
  
 - Log:
- - Interessante para lidar com distribuições fortemente desbalanceadas (heavy-tailed...)
- - Realçar a relação entre dados
+  - Interessante para lidar com distribuições fortemente desbalanceadas (heavy-tailed...)
+  - Realçar a relação entre dados
  
 - Escala:
- - Nomalizar os dados de forma que todas as caracteristicas tenham a mesma escala ("Feature Scaling")
+  - Nomalizar os dados de forma que todas as caracteristicas tenham a mesma escala ("Feature Scaling")
  
  $$
  \hat{x} = \frac{x - min(x)}{max(x) - min(x)}
  $$
 
 - Variância ("standartization")
- - Subtrai a media e divid pelo devio padrão
- - Como resultado temos: media = 0 , dp = 1
+  - Subtrai a media e divid pelo devio padrão
+  - Como resultado temos: media = 0 , dp = 1
  
 $$
 \hat{x} = \frac{x - \mu}{\sqrt{\sigma}}
@@ -257,16 +257,16 @@ $$
 #### Bag-of-Words (BoW)
 
 - Dois passos:
- - Definir um vocabulario conhecido
- - [contar palavra?]
+  - Definir um vocabulario conhecido
+  - [contar palavra?]
  
 Ex:
 1. Aquisição de dados. [texto ex]
 2. Definir meu vocabulario (no exemplo as palavras únicas)
 3. Criar vetores
- - Vetor tem o tamanho do vocabulario
- - Contar a frequencia da aparição (aparece ou não / 1 ou 0) de cada palavra no texto
- - Para esse documento: 
+  - Vetor tem o tamanho do vocabulario
+  - Contar a frequencia da aparição (aparece ou não / 1 ou 0) de cada palavra no texto
+  - Para esse documento: 
  $[it, was, the, best, of, times, ... ] \arrowr tamanho = 10 $
  $[1,1,1,0,1,0,0,1,1,0]$
  
@@ -320,15 +320,15 @@ Biderctional Encoder Representations from Transformers
 - Histograma
 - Zoneamento 
 - Textura (padrão repetitivo / de homogenidade)
- - [...]
- - LBP (Local Binary Patterns) - convulução [imagem]
+  - [...]
+  - LBP (Local Binary Patterns) - convulução [imagem]
 - Gradientes:
- - HoG
- - SIFT
+  - HoG
+  - SIFT
 - Cor
- - RGB
- - HSI
- - CMYK
+  - RGB
+  - HSI
+  - CMYK
 - CNN (Convolutional Neral Nets) -> extrai bordas por exemplo
 [...]
 

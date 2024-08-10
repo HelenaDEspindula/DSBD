@@ -31,7 +31,9 @@ summary(cars)
 ```
 ## Incluindo figuras
 
-![Instância em execusão](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-34-43.png "Instância em execusão")
+![Instância em execusão](/home/espinf/he2/Imagens/AWS/Captura de tela de 2024-05-10 19-34-43.png "Instância em execusão"){width=50%}
+
+ou `height` 
 
 
 ## Including Plots
