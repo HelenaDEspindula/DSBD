@@ -180,6 +180,15 @@ $$\mu M$$
 
 $$\omega \Omega$$
 
+$$
+\widehat{gggg}
+$$
+
+$$
+\usepackage{ dsfont }
+\mathds{R}
+$$
+
 Link: <http://detexify.kirelabs.org/symbols.html>
 
 \begin{align*}

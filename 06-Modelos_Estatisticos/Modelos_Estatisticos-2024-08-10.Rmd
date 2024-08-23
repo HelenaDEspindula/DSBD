@@ -18,7 +18,7 @@ knitr::opts_chunk$set(echo = TRUE)
 require("ISLR")
 require("ggplot2")
 require("GGally")
-require("leaps")
+require("leaps") ## seleção de variaveis
 require("car")
 
 options(device = X11)
@@ -346,11 +346,121 @@ de acordo com os valores de p é significativo, então manteria essa variavel
 
 ```{r eval=TRUE, include=TRUE}
 
+ajuste22 <- lm(formula = Grad.Rate ~ ., data = College)
+summary(ajuste22)
 
+## PrivateYes -> 1 se privada (YES); 0 se publica(No)
 
+## Nesse modelo (ajustado com todas as outras variaveis) as escolas privadas tem p<0.05, portanto ser privada tem um impacto  no (maior) número de formados (3.3 pontos percentuais)
+
+ajuste23 <- lm(formula = Grad.Rate ~ Private , data = College)
+summary(ajuste23)
+
+## Num modelo só com a privada ela (por "acaso") tambem teve p<0.05 mas com um impacto diferente (12.9 pontos percentuais)
+```
+
+```{r eval=TRUE, include=TRUE}
+confint(ajuste22) ### Intervalo de confiaça
 ```
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$$
+\hat{Grad.Rate} = 33,87 + 3,38 \times (Private = Yes) + 0.0012984 \times (Apps)
+$$
+
+
+
+Variavel Dummie: (relevel)
+
+- Sexo: F, M -> Sexo Feminino (1 se feminino, 0 se masculino)
+
+- Escolaridade: Sem_Escolaridade, EF, EM, ES ->
+  - EF (1 ou 0)
+  - EM (1 ou 0)
+  - ES (1 ou 0)
+  - Sendo 1 TEM e 0 Não tem, consequentemente os 3 zeros é Sem_Escolaridade
+
+$$
+\hat{y} = \hat{\beta_0} + \hat{\beta_1} \times EF + \hat{\beta_2} \times EM + \hat{\beta_3} \times ES
+$$
+- Sem escolaridade: $\hat{y} = \hat{\beta_0}$
+
+- Ens. Fund: $\hat{y} = \hat{\beta_0} + \hat{\beta_1}$
+
+- Ens. Med: $\hat{y} = \hat{\beta_0} + \hat{\beta_2}$
+
+- Ens. Sup: $\hat{y} = \hat{\beta_0} + \hat{\beta_3}$
+
+Se for EM/EF: 
+$$
+\hat{y} = (\hat{\beta_0} + \hat{\beta_1}) - (\hat{\beta_0} + \hat{\beta_2}) = \hat{\beta_1} - \hat{\beta_2}
+$$
+
+
+
+
+
+
+
+
+
+
+$$
+y = \beta_0 + \beta_1 x + \varepsilon
+$$
+$$
+\varepsilon = (y - (\beta_0 + \beta_1 x))
+$$
+$$
+residuo = y - (\hat{\beta_0} + \hat{ \beta_1 } x)
+$$
+Erro é o "real", residuo é o estimado.
 
 
 ```{r eval=TRUE, include=TRUE}
@@ -369,8 +479,30 @@ de acordo com os valores de p é significativo, então manteria essa variavel
 ```{r eval=TRUE, include=TRUE}
 ### Vamos extrair alguns elementos do modelo ajustado
 ajuste2$coefficients ### Estimativas dos parâmetros
-ajuste2$residuals ### Resíduos ordeinários
-ajuste2$fitted.values ### Valores ajustados pelo modelo
+
+
+```
+```{r eval=FALSE, include=TRUE}
+ajuste2$residuals ### Resíduos ordeinários, resultado muito longo, então resumido a seguir
+```
+
+```{r eval=TRUE, include=TRUE}
+head(ajuste2$residuals) 
+
+tail(ajuste2$residuals)
+```
+
+```{r eval=FALSE, include=TRUE}
+ajuste2$fitted.values ### Valores ajustados pelo modelo, resultado muito longo, então resumido a seguir
+```
+
+```{r eval=TRUE, include=TRUE}
+head(ajuste2$fitted.values) 
+
+tail(ajuste2$fitted.values)
+```
+
+```{r eval=TRUE, include=TRUE}
 model.matrix(ajuste2) ### Matriz do modelo (matriz X)
 vcov(ajuste2) ### Matriz de variâncias e covariâncias dos estimadores.
 ```
@@ -385,27 +517,84 @@ ggplot(College, aes(x = perc.alumni, y = Grad.Rate)) + geom_point() +
 ```{r eval=TRUE, include=TRUE}
 ### Extraindo os intervalos de confiança (95%) para os parâmetros
 confint(ajuste2)
+```
 
-### vamos realizar algumas predições. Considere faculdades com os seguintes
-### percentuais de ex-alunos contribuintes: 13, 28 e 45
+## Intervalo de confiança para a resposta média e para uma predição
+
+Considere interesse em estimar a resposta **média** em um ponto $x′_0 = (1, x_{01], x_{02}, ..., x_{0k})$, ou seja, $E (y |x_0)$.
+
+A estimativa pontual é dada pelo valor ajustado pelo modelo em $x_0$:
+$$
+\widehat{E(y|x_0)} = \hat{y_0} = x′_0 \hat{\beta}
+$$
+O estimador apresentado é não viciado para a real resposta média, com variância:
+
+$$
+Var(\widehat{E(y|x_0)}) = x'_0 Var(\hat{\beta})x_0
+$$
+[73]
+
+Um intervalo de confiança 100(1 − α)% para a resposta média em x′
+0 = (1, x01, x02, ..., x0k )
+é dado por:
+\E (y |x0) ± tn−p,α/2 ×
+√
+x′
+0
+\Var ( ˆβ)x0.
+Considere agora que se deseja predizer a resposta em um ponto (novo indivíduo)
+x′
+0 = (1, x01, x02, ..., x0k ).
+A estimativa pontual, novamente, é dada pelo valor ajustado de y em x′
+0:
+ˆy0 = x′
+0 ˆβ.
+
+[74]
+
+Neste caso, a variância de ˆy0 fica dada por:
+Var (ˆy0) = σ2 + x′
+0Var ( ˆβ)x0.
+Um intervalo de confiança 100(1 − α)% para a predição de uma nova observação em x0
+fica dada por:
+ˆy0 ± tn−p,α/2 ×
+√
+ˆσ2 + x′
+0
+\Var ( ˆβ)x0,
+em que ˆσ2 = QMRes .
+
+
+
+
+
+```{r eval=TRUE, include=TRUE}
+### vamos realizar algumas predições. Considere faculdades com os seguintes percentuais de ex-alunos contribuintes: 13, 28 e 45
 
 new_data <- data.frame(perc.alumni = c(13,28,45))
 predict(ajuste2, newdata = new_data, se.fit = TRUE)
-### Estimativas pontuais e erros padrões (nota: erros padrões para a resposta
-### média)
 
-predict(ajuste2, newdata = new_data, interval = 'confidence') 
-### Estimativas pontiais e intervalos de confiança (95%) para a resposta média.
+### Estimativas pontuais e erros padrões (nota: erros padrões para a resposta média)
 
-predict(ajuste2, newdata = new_data, interval = 'prediction') 
-### Estimativas pontiais e intervalos de confiança (95%) para a predição
-### de uma nova observação.
+```
+
+```{r eval=TRUE, include=TRUE}
+predict(ajuste2, newdata = new_data, interval = 'confidence') # para grupo com essa média
+### fit = estimando os formados a partir de um número de doadores (13,28,45). lwr e upr = limites do 95% de confiaça.
+
+### Estimativas pontiais e intervalos de confiança (95%) para a resposta **média**.
+```
+
+```{r eval=TRUE, include=TRUE}
+predict(ajuste2, newdata = new_data, interval = 'prediction') ## Para caso isolado (observação única)
+### fit = estimando os formados a partir de um número de doadores (13,28,45). lwr e upr = limites do 95% de confiaça
+
+### Estimativas pontiais e intervalos de confiança (95%) para a predição de **uma nova observação**.
 ```
 
 ```{r eval=FALSE, include=TRUE}
-### Vamos plotar as bandas de confiança e predição. Para isso, vamos preparar 
-### uma base de dados com os valores ajustados e os ICs(95%) para a resposta
-### média e para as predições.
+
+### Vamos plotar as bandas de confiança e predição. Para isso, vamos preparar uma base de dados com os valores ajustados e os ICs(95%) para a resposta média e para as predições.
 
 pred_int <- predict(ajuste2, interval="prediction")
 med_int <- predict(ajuste2, interval="confidence")
@@ -633,4 +822,59 @@ summary(step_both_BIC)
 ### Vamos comparar os ajustes.
 data.frame(compareCoefs(step_back_BIC, step_for_BIC, step_both_BIC))
 ```
+
+## Seleção de variáveis explicativas
+
+Princípio de Occam: Dentre as várias explicações possíveis para um fenômeno, a mais simples é a melhor
+
+Fuechsel, técnico da IBM: Garbage in, garbage out
+
+
+- Neste módulo vamos tratar da seleção de covariáveis para o ajuste de modelos de regressão
+linear.
+- O objetivo é identificar um modelo parcimonioso, capaz de proporcionar bom ajuste com a menor quantidade possível de parâmetros.
+- Diferentes métodos podem ser aplicados na seleção de um subconjunto “ótimo” de
+variáveis.
+- Importante ter em mente que diferentes métodos de seleção, frequentemente, remetem a
+modelos distintos (lembre-se: “All models are wrong but some are useful”)
+
+
+### Por que não incluir todas as covariáveis no modelo?
+
+1 Um dos objetivos principais da análise de regressão é explicar a relação entre as variáveis de maneira simples e interpretável;
+2 Quanto maior o número de parâmetros no modelo, menos graus de liberdade para os resíduos, menor precisão para as inferências;
+3 Quanto maior o número de variáveis incluídas no modelo, maior a possibilidade de multicolinearidade;
+4 Quanto mais complexo (parametrizado) o modelo, melhor o ajuste da amostra, mas menor seu poder de generalização (baixo poder preditivo)
+
+
+### Como proceder a seleção do modelo?
+
+Antes de aplicar qualquer método analítico para seleção de covariáveis, é conveniente fazer uma pré-triagem de variáveis, buscando eliminar variáveis que, a título de exemplo:
+- Sejam redundantes;
+- Apresentem elevado erro de medida;
+- Não estejam no contexto do estudo;
+- Apresentem elevada taxa de dados missing. . .
+
+### Critérios para avaliação e comparação de modelos
+
+- No processo de seleção de covariáveis, diferentes critérios podem ser usados para comparar os modelos produzidos. Alguns deles são descritos na sequência.
+- Coeficiente de deteminação - O coeficiente de determinação corresponde à proporção da variação dos dados explicada pela regressão:
+
+$$
+R^2 = \frac{SQ_{Total}-SQ_{R}^{es}}{SQ_{total}} = 1 = \frac{SQ_{Res}}{SQ_{total}}
+$$
+
+em que
+
+$$
+SQ_{Total} = \sum^n_{i-1}{(y_i - \overline{y})^2} \space \space e \space \space SQ_{Res} = \sum^n_{i-1}{(y_i - \hat{y}_i)^2}
+$$
+
+são as somas de quadrados total e atribuída aos resíduos, respectivamente
+
+### Critérios para avaliação e comparação de modelos
+
+- O coeficiente de determinação expressa a proporção da variabilidade total explicada pelo modelo ajustado.
+- O valor de R2 nunca decresce à medida que novas covariáveis são incluídas no modelo.
+- Assim, não se deve optar pela seleção do modelo que produz maior $R^2$, pois esse modelo incluiria, necessariamente, o maior número possível de covariáveis.
 

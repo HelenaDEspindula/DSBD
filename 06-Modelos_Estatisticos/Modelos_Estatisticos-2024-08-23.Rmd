@@ -1,0 +1,72 @@
+---
+title: "Modelos_Estatisticos-2024-08-23"
+author: "Helena R. S. D'Espindula"
+date: "2024-08-23"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Modelos lineares generalizados
+
+Prof Cesar Augusto Taconeli
+
+## Objetivo
+Os modelos lineares generalizados configuram extensões do modelo de regressão linear, permitindo modelar, num contexto de regressão, variáveis respostas com distribuição pertencente à família exponencial de distribuições
+
+
+## Sumário
+
+1 Introdução
+2 Família exponencial de distribuições
+3 Modelo linear generalizado
+4 Estimação
+5 Inferência
+6 Diagnóstico do ajuste
+7 Regressão para dados binários
+8 Modelos preditivos
+9 Regressão para dados de contagens
+
+## Introdução - Modelos Lineares Generalizados
+
+- Origem: Nelder e Wedderburn (1972): “Generalized Linear Models”, publicado no Journal of the Royal Statistical Society
+- Extensão dos modelos lineares, incorporando, sob uma teoria unificada, diversos outros modelos propostos até então.
+- Como casos particulares dos modelos lineares generalizados, temos os modelos de regressão
+linear, a regressão logística para resposta binária e o modelo log-linear para resposta de contagem.
+
+
+## Família exponencial de distribuições
+
+- Os modelos lineares generalizados permitem analisar, num contexto de regressão, variáveis
+respostas pertencentes à família exponencial de distribuições.
+- Mais especificamente, assumimos que a função (densidade) de probabilidades de y possa ser expressa na seguinte forma:
+
+$$
+f(y;\theta; \phi) = exp \space \{ \frac{y \theta - b \theta }{a(\phi)} + c(y;\phi) \}
+$$
+
+
+## Família exponencial de distribuições
+
+Dentre as principais distribuições pertencentes à família exponencial, temos:
+
+- Binomial (Bernoulli);
+- Poisson;
+- Normal;
+- Gamma (exponencial);
+- Normal inversa;
+- Binomial negativa*.
+
+## Distribuição binomial
+
+A distribuição binomial é uma alternativa na modelagem de dados binários (dicotômicos).
+Como exemplos:
+
+- E-mails classificados por um algoritmo como spam ou não spam;
+- Clientes de um banco classificados como pagadores ou não pagadores;
+- Pacientes submetidos a certo tipo de cirurgia que apresentam ou não determinada sequela;
+- Resultados dos jogos da NBA (liga norte-americana de basquete) quanto à vitória ou derrota do time mandante.
+
+
