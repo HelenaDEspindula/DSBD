@@ -1,8 +1,14 @@
 ---
 title: "Modelos_Estatisticos-2024-08-10"
 author: "Helena R. S. D'Espindula"
-date: "2024-08-10"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+date: "`r Sys.Date()`"
 ---
 
 ```{r setup, include=FALSE}
@@ -20,6 +26,9 @@ require("ggplot2")
 require("GGally")
 require("leaps") ## seleção de variaveis
 require("car")
+require(tidyverse)
+require(caret)
+require(MASS)
 
 options(device = X11)
 ```
@@ -767,17 +776,230 @@ plot(n_cov, s1$rsq, type = 'b', xlab = 'Número de covariáveis',
 axis(1,1:17)
 
 
+
+
+## Seleção de variáveis explicativas
+
+Princípio de Occam: Dentre as várias explicações possíveis para um fenômeno, a mais simples é a melhor
+
+Fuechsel, técnico da IBM: Garbage in, garbage out
+
+
+- Neste módulo vamos tratar da seleção de covariáveis para o ajuste de modelos de regressão
+linear.
+- O objetivo é identificar um modelo parcimonioso, capaz de proporcionar bom ajuste com a menor quantidade possível de parâmetros.
+- Diferentes métodos podem ser aplicados na seleção de um subconjunto “ótimo” de
+variáveis.
+- Importante ter em mente que diferentes métodos de seleção, frequentemente, remetem a
+modelos distintos (lembre-se: “All models are wrong but some are useful”)
+
+
+### Por que não incluir todas as covariáveis no modelo?
+
+1 Um dos objetivos principais da análise de regressão é explicar a relação entre as variáveis de maneira simples e interpretável;
+2 Quanto maior o número de parâmetros no modelo, menos graus de liberdade para os resíduos, menor precisão para as inferências;
+3 Quanto maior o número de variáveis incluídas no modelo, maior a possibilidade de multicolinearidade;
+4 Quanto mais complexo (parametrizado) o modelo, melhor o ajuste da amostra, mas menor seu poder de generalização (baixo poder preditivo)
+
+
+### Como proceder a seleção do modelo?
+
+Antes de aplicar qualquer método analítico para seleção de covariáveis, é conveniente fazer uma pré-triagem de variáveis, buscando eliminar variáveis que, a título de exemplo:
+- Sejam redundantes;
+- Apresentem elevado erro de medida;
+- Não estejam no contexto do estudo;
+- Apresentem elevada taxa de dados missing. . .
+
+### Critérios para avaliação e comparação de modelos
+
+- No processo de seleção de covariáveis, diferentes critérios podem ser usados para comparar os modelos produzidos. Alguns deles são descritos na sequência.
+- **Coeficiente de deteminação** ($R^2$) - O coeficiente de determinação corresponde à proporção da variação dos dados explicada pela regressão:
+
+$$
+R^2 = \frac{SQ_{Total}-SQ_{R}^{es}}{SQ_{total}} = 1 = \frac{SQ_{Res}}{SQ_{total}}
+$$
+
+em que
+
+$$
+SQ_{Total} = \sum^n_{i-1}{(y_i - \overline{y})^2} \space \space e \space \space SQ_{Res} = \sum^n_{i-1}{(y_i - \hat{y}_i)^2}
+$$
+
+são as somas de quadrados total e atribuída aos resíduos, respectivamente
+
+```{r eval=TRUE, include=TRUE}
+summary(ajuste22)
+```
+
+**Multiple R-squared:  0.4615**
+
+
+
+
+
+
+
+
+
+
+
+### Critérios para avaliação e comparação de modelos
+
+- O coeficiente de determinação expressa a proporção da variabilidade total explicada pelo modelo ajustado.
+- O valor de $R^2$ nunca decresce à medida que novas covariáveis são incluídas no modelo.
+- Assim, não se deve optar pela seleção do modelo que produz maior $R^2$, pois esse modelo incluiria, necessariamente, o maior número possível de covariáveis.
+
+- **Coeficiente de deteminação ajustado** - O coeficiente de determinação ajustado (ou simplesmente $R^2$ ajustado) é definido por:
+
+$$
+R_{Aj}^2 = 1 - (\frac{n-1}{n-p}) (1 - R^2)
+$$
+
+em que n e p são o número de observações e o número de parâmetros do modelo.
+
+- Diferentemente do que ocorre para $R_2$, o valor de $R_{Aj}^2$ pode não aumentar mediante inclusão de novas variáveis ao modelo. Deve-se optar por modelos com maiores valores de $R_{Aj}^2$.
+
+- Tem problemas com _overfiting_, pq o $R^2$ nunca diminui (podendo aumentar) quando aumenta o numero de parametros (mais $\beta$s)
+
+```{r eval=TRUE, include=TRUE}
+resumo22 <- summary(ajuste22)
+resumo22$r.squared
+```
+
+### Critérios de Informação
+
+#### Akaike Information Criterion (AIC)
+
+- O critério de informação de Akaike (Akaike Information Criterion), ou simplesmente AIC, é
+definido por:
+$$
+AIC = -2l(\hat{\theta}) + 2p
+$$
+
+em que $l(\hat{\theta})$ é a log-verossimilhança maximizada do modelo (calculada com base nos emv’s dos parâmetros) e p o número de parâmetros do modelo (evitar _overfiting_).
+
+- Basicamente quero modelo que explique bem com poucos parametros.
+
+- O AIC pode ser usado para qualquer modelo ajustado por máxima verossimilhança. No caso de um modelo de regressão linear temos:
+
+$$
+AIC = −n \space ln(SQ_{Res} /n) + 2p.
+$$
+
+- O componente 2p, na expressão do AIC , atua como termo de penalização atribuído à complexidade (número de parâmetros) do modelo. Pelo dobro, no caso.
+
+
+
+```{r eval=TRUE, include=TRUE}
+AIC(ajuste22)
+```
+
+#### Critério de Informação Bayesiano (BIC)
+
+- Um critério alternativo ao AIC é o Critério de Informação Bayesiano (BIC), definido, para um modelo de regressão linear, por:
+
+$$
+BIC = −n \space ln(SQ_{Res} /n) + ln(n)p 
+$$
+
+- O BIC penaliza mais fortemente a complexidade (número de parâmetros) do modelo que o AIC ao substituir p por $ln(n)$ como fator de penalização. O $ln(n)$ (BIC) penaliza mais de o $2p$  (AIC).
+
+- Devemos selecionar modelos com menores valores de AIC (ou BIC).
+
+
+```{r eval=TRUE, include=TRUE}
+BIC(ajuste22)
+```
+
+## Seleção de modelos baseada em critérios de qualidade de ajuste
+
+- Um primeiro algoritmo de seleção de modelos, baseados em critérios de qualidade de ajuste, é o método **todas as regressões possíveis**;
+- Suponha uma análise de regressão com k variáveis;
+- Uma primeira alternativa consiste em ajustar todos os possíveis modelos de regressão com $j \le k$ covariáveis, para $j = 0, 1, 2, ..., k$;
+- Para cada modelo de regressão ajustado calcula-se o valor do critério de seleção escolhido $(AIC, BIC \space ou \space R_{Aj}^2 . . . )$;
+- O modelo selecionado será quele que apresentar o valor ótimo para o critério adotado (maior $R_{Aj}^2$, menor AIC,. . . ).
+
+$$
+y \sim x_1, x_2, x_3
+$$
+$y \sim 1$
+
+$y \sim x_1$
+
+$y \sim x_2$
+
+$y \sim x_3$
+
+$y \sim x_1 + x_2$
+
+$y \sim x_1 + x_3$
+
+$y \sim x_2 + x_3$
+
+$y \sim x_1 + x_2 + x_3$
+
+Para 3 variáveis $2^3 = 8$ modelos
+
+Busca exaustiva gera $2^k$ modelos (sendo $k$ o número de variaveis)
+
+
+```{r eval=TRUE, include=TRUE}
+
+
+
+```
+
+- O método baseado em todas as regressões possíveis torna-se inviável mesmo para um número moderado de covariáveis;
+
+- Para k variáveis o número de regressões possíveis é $2^k$ . Para k = 30, por exemplo, teríamos $1.073.741.824$ modelos possíveis!
+
+- Como alternativa ao método de todas as regressões possíveis podemos usar os algoritmos backward, forward ou stepwise substituindo o teste F por algum dos critérios apresentado
+
+### Seleção de covariáveis - Método backward
+
+Backward selection (or backward elimination)
+
+1. Ajuste o modelo de regressão com todas as k covariáveis disponíveis;
+2.Remova uma a uma as covariáveis do modelo e calcule o valor do critério de qualidade de ajuste adotado (digamos o AIC, para ilustração);
+3. Remova do modelo (em definitivo) a variável cuja exclusão resultar em menor AIC;
+4. Os passos 1 a 3 são repetidos para o novo modelo (com a remoção da covariável) e o processo continua até o momento em que nenhuma remoção produzir um ajuste com menor AIC
+
+
+### Seleção de covariáveis - Método forward
+
+Forward selection
+
+1. Ajuste o modelo nulo (sem covariáveis);
+2. Adicione uma a uma as covariáveis ao modelo e calcule o valor do critério de qualidade de ajuste adotado (digamos o AIC, para ilustração);
+3. Inclua no modelo (em definitivo) a variável cuja exclusão resultar em menor AIC;
+4. Os passos 1 a 3 são repetidos para o novo modelo (com a inclusão da covariável) e o
+processo continua até o momento em que nenhuma inclusão produzir um ajuste com menor AIC
+
+### Seleção de covariáveis - Método combinado
+
+Stepwise selection (or sequential replacement)
+
+1. Ajuste o modelo de regressão com todas as k covariáveis disponíveis. Proceda como descrito no algoritmo backward, mas. . .
+2. A cada passo do algoritmo, avalie uma a uma tanto a inclusão das variáveis não inseridas
+quanto a exclusão das variáveis que compõem o modelo.
+3. Inclua (exclua) no modelo a variável cuja inclusão (exclusão) resultar em menor AIC;
+4. Os passos 1 a 3 são repetidos para o novo modelo (com a inclusão (exclusão) da covariável) e o processo continua até o momento em que nenhuma inclusão (ou exclusão) produzir um ajuste com menor AIC.
+
+```{r}
 ### Para finalizar, vamos aplicar os algoritmos de seleção do tipo
 ### stepwise. Primeiramente fixando k = 2, estamos definindo o AIC como critério de
 ### seleção, temos:
 
-### Método backward
+aj_full <- ajuste22
+
+### Método backward (obj: reduzir AIC)
 step_back_AIC <- step(aj_full, direction = "backward", data = College, k = 2)
 summary(step_back_AIC)
 
-### Método forward. Para o método forward devemos definir o escopo da seleção
-### (menor e maior modelo). O menor seria o modelo nulo (apenas com o intercepto),
-### enquanto o maior seria o modelo com todas as covariáveis.
+### Método forward. Para o método forward devemos definir o escopo da seleção (menor e maior modelo). O menor seria o modelo nulo (apenas com o intercepto), enquanto o maior seria o modelo com todas as covariáveis.
+
+
+
 aj_lower <- lm(Grad.Rate~1, data = College)
 
 aj_upper <- lm(Grad.Rate~., data = College)
@@ -823,58 +1045,9 @@ summary(step_both_BIC)
 data.frame(compareCoefs(step_back_BIC, step_for_BIC, step_both_BIC))
 ```
 
-## Seleção de variáveis explicativas
+```{r}
+data.frame(compareCoefs(step_back_AIC, step_for_AIC, step_both_AIC, step_back_BIC, step_for_BIC, step_both_BIC))
+```
 
-Princípio de Occam: Dentre as várias explicações possíveis para um fenômeno, a mais simples é a melhor
-
-Fuechsel, técnico da IBM: Garbage in, garbage out
-
-
-- Neste módulo vamos tratar da seleção de covariáveis para o ajuste de modelos de regressão
-linear.
-- O objetivo é identificar um modelo parcimonioso, capaz de proporcionar bom ajuste com a menor quantidade possível de parâmetros.
-- Diferentes métodos podem ser aplicados na seleção de um subconjunto “ótimo” de
-variáveis.
-- Importante ter em mente que diferentes métodos de seleção, frequentemente, remetem a
-modelos distintos (lembre-se: “All models are wrong but some are useful”)
-
-
-### Por que não incluir todas as covariáveis no modelo?
-
-1 Um dos objetivos principais da análise de regressão é explicar a relação entre as variáveis de maneira simples e interpretável;
-2 Quanto maior o número de parâmetros no modelo, menos graus de liberdade para os resíduos, menor precisão para as inferências;
-3 Quanto maior o número de variáveis incluídas no modelo, maior a possibilidade de multicolinearidade;
-4 Quanto mais complexo (parametrizado) o modelo, melhor o ajuste da amostra, mas menor seu poder de generalização (baixo poder preditivo)
-
-
-### Como proceder a seleção do modelo?
-
-Antes de aplicar qualquer método analítico para seleção de covariáveis, é conveniente fazer uma pré-triagem de variáveis, buscando eliminar variáveis que, a título de exemplo:
-- Sejam redundantes;
-- Apresentem elevado erro de medida;
-- Não estejam no contexto do estudo;
-- Apresentem elevada taxa de dados missing. . .
-
-### Critérios para avaliação e comparação de modelos
-
-- No processo de seleção de covariáveis, diferentes critérios podem ser usados para comparar os modelos produzidos. Alguns deles são descritos na sequência.
-- Coeficiente de deteminação - O coeficiente de determinação corresponde à proporção da variação dos dados explicada pela regressão:
-
-$$
-R^2 = \frac{SQ_{Total}-SQ_{R}^{es}}{SQ_{total}} = 1 = \frac{SQ_{Res}}{SQ_{total}}
-$$
-
-em que
-
-$$
-SQ_{Total} = \sum^n_{i-1}{(y_i - \overline{y})^2} \space \space e \space \space SQ_{Res} = \sum^n_{i-1}{(y_i - \hat{y}_i)^2}
-$$
-
-são as somas de quadrados total e atribuída aos resíduos, respectivamente
-
-### Critérios para avaliação e comparação de modelos
-
-- O coeficiente de determinação expressa a proporção da variabilidade total explicada pelo modelo ajustado.
-- O valor de R2 nunca decresce à medida que novas covariáveis são incluídas no modelo.
-- Assim, não se deve optar pela seleção do modelo que produz maior $R^2$, pois esse modelo incluiria, necessariamente, o maior número possível de covariáveis.
+```
 
