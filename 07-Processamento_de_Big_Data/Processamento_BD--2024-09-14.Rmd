@@ -97,8 +97,29 @@ codigo|nome|cod_municipio|endereco|compl_endereco|bairro
 13190202|CENTRO EDUCACIONAL MARA TOSCANO|1302603|||
 13204203|CENTRO DE ENSINO LUCA PACCIOLI|1302603|||
 
+
+sqlite> select COUNT(*) from escola where bairro IS NOT NULL;
+COUNT(*)
+6579
+
+sqlite> SELECT COUNT(*) FROM escola where endereco IS NOT NULL;
+COUNT(*)
+9984
+
+sqlite> SELECT COUNT(*) FROM escola where endereco IS NOT NULL;
+COUNT(*)
+9984
+
+sqlite> SELECT COUNT(*) FROM escola where endereco IS NOT NULL or
+   ...> endereco IS NOT NULL OR
+   ...> compl_endereco IS NOT NULL;
+COUNT(*)
+9984
+
 ```
 
+
+https://www.sqlitetutorial.net/sqlite-import-csv/
 
 
 ```{bash eval=FALSE, include=TRUE}
