@@ -1,0 +1,183 @@
+---
+title: "Processamento_BD--2024-09-14"
+author: "Helena"
+date: "2024-08-24"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Dia 14-09-2024
+
+
+```{bash eval=FALSE, include=TRUE}
+
+hrsdespindula@h9:~/DSBD/07-Processamento_de_Big_Data$ sqlite3 dsbd.db
+sqlite> .read regioes.sql
+sqlite> .read estados.sql
+sqlite> .read municipios.sql
+sqlite> .read escolas10k.sql
+
+sqlite> select count(*) from escola;
+count(*)
+9987
+
+sqlite> select * from escola limit 5;
+codigo|nome|cod_municipio|endereco|compl_endereco|bairro
+11022558|EIEEF HAP BITT TUPARI|1100015|TERRA INDIGENA RIO BRANCO|ALDEIA COLORADO|RURAL
+11024275|CEEJA LUIZ VAZ DE CAMOES|1100015|AVENIDA RIO DE JANEIRO|ESCOLA|CIDADE ALTA
+11024291|EMMEF 7 DE SETEMBRO|1100015|LINHA 60 COM A 140||
+11024372|EMEIEF ANA NERY|1100015|ROLIM DE MOURA DO GUAPORE||
+11024666|EMEIEF BOA ESPERANCA|1100015|LINHA P 50 KM 22|ZONA RURAL|LINHA P.50
+```
+
+**Não funciona igualdade para NULL**
+
+```{bash eval=FALSE, include=TRUE}
+sqlite> select COUNT(*) from escola where bairro = NULL;
+COUNT(*)
+0
+```
+
+Para isso usamos o "IS NULL"
+
+```{bash eval=FALSE, include=TRUE}
+sqlite> select COUNT(*) from escola where bairro IS NULL;
+COUNT(*)
+3408
+
+sqlite> select * from escola where bairro IS NULL LIMIT 10;
+codigo|nome|cod_municipio|endereco|compl_endereco|bairro
+11024291|EMMEF 7 DE SETEMBRO|1100015|LINHA 60 COM A 140||
+11024372|EMEIEF ANA NERY|1100015|ROLIM DE MOURA DO GUAPORE||
+11024917|EMEIEF JOSE BASILIO DA GAMA|1100015|LINHA 42||
+11025034|EMMEF MALBA TAHAN|1100015|LINHA 95 COM 140||
+11025077|EMEIEF MARIA DE SOUZA PEGO|1100015|LINHA 47||
+11025115|EMMEF MARTIM AFONSO DE SOUZA|1100015|LINHA 50 COM A 134||
+11025310|EMEIEF PEDRO ALEIXO|1100015|LINHA 148 COM A 65 KM 38||
+11025476|EMMEF SAO JORGE|1100015|LINHA 156 COM A 85 ESQUINA COM A 90 KM 53||
+11049782|EMMEF HERBERT JOSE DE SOUSA|1100015|LINHA 144 KM 50|ZONA RURAL|
+11007079|EMEF DR DIRCEU DE ALMEIDA|1100023|RUA MONTEIRO LOBATO|3348|
+
+
+sqlite> select COUNT(*) from escola where compl_endereco IS NULL;
+COUNT(*)
+4501
+
+sqlite> select COUNT(*) from escola where endereco IS NULL;
+COUNT(*)
+3
+
+
+sqlite> select COUNT(*) from escola where endereco IS NULL;
+COUNT(*)
+3
+
+sqlite> select COUNT(*) from escola where bairro IS NULL 
+   ...> AND endereco IS NULL
+   ...> AND compl_endereco IS NULL;
+COUNT(*)
+3
+
+
+sqlite> select * from escola where bairro IS NULL 
+   ...> AND endereco IS NULL
+   ...> AND compl_endereco IS NULL;
+codigo|nome|cod_municipio|endereco|compl_endereco|bairro
+13185209|CENTRO DEENSINO SEMENTINHA DO FUTURO|1302603|||
+13190202|CENTRO EDUCACIONAL MARA TOSCANO|1302603|||
+13204203|CENTRO DE ENSINO LUCA PACCIOLI|1302603|||
+
+```
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+
+
