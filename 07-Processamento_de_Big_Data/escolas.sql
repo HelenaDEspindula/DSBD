@@ -7,5 +7,6 @@ CREATE TABLE escola (
   endereco TEXT NULL,
   compl_endereco TEXT NULL,
   bairro TEXT NULL,
-  FOREIGN KEY (cod_municipio) REFERENCES municipio(codigo)
+  FOREIGN KEY (cod_municipio) REFERENCES municipio(codigo),
+  FOREIGN KEY (cod_loc_dif) REFERENCES localizacao_dif(codigo)
 );
