@@ -1,30 +1,282 @@
 ---
-title: "lab02"
-author: "Helena"
+title: "Lab 02  - Aprendizagem de Maquina"
+author: "Helena Regina Salomé D'Espindula"
 date: "2024-08-31"
-output: html_document
+output:
+  pdf_document:
+    highlight: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+# Lab 02 - Aprendizagem de Maquina
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Codigo base, com leves modificações da aluna: 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+```{python eval=FALSE, include=TRUE}
+#!/usr/bin/python
+# -*- encoding: iso-8859-1 -*-
 
-```{r cars}
-summary(cars)
+import sys
+import numpy as np
+import time
+
+from sklearn import linear_model
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+
+from sklearn.metrics import confusion_matrix 
+from sklearn.datasets import load_svmlight_file
+
+from sklearn.naive_bayes import BernoulliNB
+from sklearn.naive_bayes import GaussianNB
+from sklearn.naive_bayes import MultinomialNB 
+from sklearn.linear_model import Perceptron
+
+def main(X_train, y_train, X_test, y_test, history):
+	# cria o classificador - ESCOLHER UM
+	clf = linear_model.LogisticRegression() 
+	#clf = KNeighborsClassifier(n_neighbors=3, metric='euclidean')
+	#clf = GaussianNB()
+	#clf = LinearDiscriminantAnalysis()
+	
+	X_train_dense = X_train.toarray()
+	clf.fit(X_train_dense, y_train)
+
+	X_test_dense = X_test.toarray()
+	y_pred = clf.predict(X_test_dense) 
+	
+	# mostra o resultado do classificador na base de teste
+	history.append( "{:5.4f}".format(clf.score(X_test_dense, y_test)))
+	print("CLF score = ", "{:5.4f}".format(clf.score(X_test_dense, y_test)))
+
+	# cria a matriz de confusao
+	#cm = confusion_matrix(y_test, y_pred)
+	#print cm
+
+	#print y_predProb
+
+if __name__ == "__main__":
+	#if len(sys.argv) != 3:
+	#	sys.exit("Use: lab2.py <dataTR> <dataTS>")
+	arq_test = "test.txt"
+	arq_train = "train.txt"
+
+	# loads data
+	print ("Loading data...")
+	X_train, y_train = load_svmlight_file(arq_test)
+	X_test, y_test = load_svmlight_file(arq_train)
+	size = X_train.shape
+	batchsize = 1000
+	ini = 0
+	end = batchsize
+
+	history = []
+	tempo = []
+
+	while(end <= size[0] ):
+		xt = X_train[0:end]
+		yt = y_train[0:end]
+		print ("Training size... ", end)
+		start_time = time.time()
+		main(xt, yt, X_test, y_test, history)
+		tempo.append(round((time.time() - start_time), 4))
+		print("--- %6.8f seconds ---" % (time.time() - start_time))
+		end = end + batchsize
+
+	print("Scores")
+	print(history)
+	
+	print("Tempo")
+	print(tempo)
 ```
 
-## Including Plots
+## Regressão Logistica
 
-You can also embed plots, for example:
+Utilizando a linha _clf = linear_model.LogisticRegression()_
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+
+```{bash eval=FALSE, include=TRUE, highlight: espresso}
+Training size...  58000
+CLF score =  0.9474
+--- 7.63602424 seconds ---
+Scores
+['0.7393', '0.8624', '0.8943', '0.9000', '0.9129', '0.9197', '0.9242', '0.9283', '0.9280', '0.9314', '0.9335', '0.9362', '0.9352', '0.9368', '0.9372', '0.9370', '0.9388', '0.9395', '0.9404', '0.9392', '0.9392', '0.9395', '0.9415', '0.9415', '0.9418', '0.9428', '0.9428', '0.9432', '0.9431', '0.9424', '0.9441', '0.9440', '0.9451', '0.9449', '0.9458', '0.9455', '0.9459', '0.9447', '0.9457', '0.9458', '0.9455', '0.9452', '0.9460', '0.9461', '0.9459', '0.9464', '0.9462', '0.9466', '0.9466', '0.9465', '0.9471', '0.9466', '0.9467', '0.9463', '0.9467', '0.9469', '0.9465', '0.9474']
+Tempo
+[0.0899, 0.14, 0.2183, 0.2937, 0.308, 0.3606, 0.4414, 0.6034, 0.5488, 0.7374, 0.8759, 1.5395, 1.64, 1.7404, 1.0159, 1.2865, 1.6415, 1.3815, 1.4373, 1.5375, 1.785, 2.9986, 2.3637, 1.7514, 1.9094, 2.0526, 2.1938, 3.7246, 2.8442, 2.0327, 2.2646, 2.5917, 3.803, 4.2085, 2.8272, 2.7035, 3.6217, 4.4679, 3.2281, 2.9803, 5.3806, 3.6973, 3.6798, 3.7304, 6.337, 3.5324, 3.545, 6.3027, 4.2397, 4.3436, 6.4197, 5.2754, 6.2462, 4.8627, 4.5575, 7.6344, 4.7969, 7.636]
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## K-nearest-neighbor (KNN)
+
+Utilizando a linha _clf = KNeighborsClassifier(n_neighbors=3, metric='euclidean')_
+
+```{bash eval=FALSE, include=TRUE}
+Loading data...
+Training size...  1000
+--- 2.380507230758667 seconds ---
+Training size...  2000
+--- 2.8666324615478516 seconds ---
+
+[...]
+
+Training size...  58000
+--- 32.63629508018494 seconds ---
+[0.7532, 0.8995, 0.9194, 0.9252, 0.9354, 0.9333,
+0.9363, 0.9369, 0.9367, 0.9368, 0.9394, 0.94,
+0.9403, 0.9425, 0.9431, 0.9445, 0.945, 0.9459,
+0.9458, 0.945, 0.9451, 0.9452, 0.9478, 0.9496,
+0.9506, 0.9511, 0.9517, 0.9516, 0.9518, 0.9513,
+0.9516, 0.9516, 0.9531, 0.9527, 0.9536, 0.9533,
+0.9531, 0.9532, 0.9533, 0.9541, 0.9544, 0.9538,
+0.9538, 0.954, 0.9541, 0.9547, 0.9544, 0.9542,
+0.9552, 0.9557, 0.956, 0.956, 0.9555, 0.9558, 
+0.9553, 0.9556, 0.9554, 0.9557]
+```
+
+## Gaussiana NB
+
+Utilizando a linha _clf = GaussianNB()_
+
+```{bash eval=FALSE, include=TRUE}
+Loading data...
+Training size...  1000
+--- 0.31212711334228516 seconds ---
+Training size...  2000
+--- 0.309798002243042 seconds ---
+
+[...]
+
+Training size...  58000
+--- 0.5339694023132324 seconds ---
+[0.6558, 0.8556, 0.8691, 0.8796, 0.8971, 0.8941,
+0.8958, 0.8948, 0.8958, 0.9001, 0.8988, 0.9001,
+0.8984, 0.8993, 0.8995, 0.8977, 0.9017, 0.9004,
+0.9018, 0.9031, 0.9078, 0.9074, 0.9097, 0.9088,
+0.9097, 0.9109, 0.9109, 0.9112, 0.9112, 0.9112,
+0.9109, 0.9111, 0.9115, 0.911, 0.9118, 0.9115,
+0.9105, 0.9106, 0.9109, 0.9113, 0.9106, 0.9108,
+0.9109, 0.9117, 0.9119, 0.9122, 0.9125, 0.9111,
+0.9115, 0.9112, 0.9121, 0.9118, 0.912, 0.9124,
+0.912, 0.9118, 0.9119, 0.9121]
+
+```
+
+## Linear discriminant analysis (LDA)
+
+Utilizando a linha _clf = LinearDiscriminantAnalysis()_
+
+```{bash eval=FALSE, include=TRUE}
+Loading data...
+Training size...  1000
+--- 0.08165097236633301 seconds ---
+Training size...  2000
+--- 0.09105205535888672 seconds ---
+
+[...]
+
+Training size...  58000
+--- 2.976746082305908 seconds ---
+[0.7908, 0.9055, 0.9169, 0.9182, 0.9275, 0.9295,
+0.9305, 0.9325, 0.9319, 0.9316, 0.933, 0.9338,
+0.9336, 0.9343, 0.9334, 0.9335, 0.933, 0.9339,
+0.9343, 0.9341, 0.9338, 0.9334, 0.9334, 0.9336,
+0.9344, 0.9349, 0.9355, 0.9349, 0.9346, 0.9345,
+0.9348, 0.935, 0.9351, 0.9352, 0.9349, 0.9355,
+0.9356, 0.9358, 0.936, 0.9357, 0.9357, 0.9358,
+0.9351, 0.9353, 0.9349, 0.935, 0.9348, 0.9352,
+0.9353, 0.9358, 0.9358, 0.9361, 0.9354, 0.9359,
+0.9355, 0.9359, 0.9357, 0.9354]
+```
+
+## Analise comparativa
+
+
+```{r}
+batelada <- 1:58
+
+## scores
+
+lr_score <- c(
+  0.7393, 0.8624, 0.8943, 0.9000, 0.9129, 0.9197,
+  0.9242, 0.9283, 0.9280, 0.9314, 0.9335, 0.9362,
+  0.9352, 0.9368, 0.9372, 0.9370, 0.9388, 0.9395,
+  0.9404, 0.9392, 0.9392, 0.9395, 0.9415, 0.9415,
+  0.9418, 0.9428, 0.9428, 0.9432, 0.9431, 0.9424,
+  0.9441, 0.9440, 0.9451, 0.9449, 0.9458, 0.9455,
+  0.9459, 0.9447, 0.9457, 0.9458, 0.9455, 0.9452, 
+  0.9460, 0.9461, 0.9459, 0.9464, 0.9462, 0.9466, 
+  0.9466, 0.9465, 0.9471, 0.9466, 0.9467, 0.9463, 
+  0.9467, 0.9469, 0.9465, 0.9474
+)
+knn_score <- c(
+  0.7532, 0.8995, 0.9194, 0.9252, 0.9354, 0.9333,
+  0.9363, 0.9369, 0.9367, 0.9368, 0.9394, 0.94,
+  0.9403, 0.9425, 0.9431, 0.9445, 0.945, 0.9459,
+  0.9458, 0.945, 0.9451, 0.9452, 0.9478, 0.9496,
+  0.9506, 0.9511, 0.9517, 0.9516, 0.9518, 0.9513,
+  0.9516, 0.9516, 0.9531, 0.9527, 0.9536, 0.9533,
+  0.9531, 0.9532, 0.9533, 0.9541, 0.9544, 0.9538,
+  0.9538, 0.954, 0.9541, 0.9547, 0.9544, 0.9542,
+  0.9552, 0.9557, 0.956, 0.956, 0.9555, 0.9558, 
+  0.9553, 0.9556, 0.9554, 0.9557
+)
+gnb_score <- c(
+  0.6558, 0.8556, 0.8691, 0.8796, 0.8971, 0.8941,
+  0.8958, 0.8948, 0.8958, 0.9001, 0.8988, 0.9001,
+  0.8984, 0.8993, 0.8995, 0.8977, 0.9017, 0.9004,
+  0.9018, 0.9031, 0.9078, 0.9074, 0.9097, 0.9088,
+  0.9097, 0.9109, 0.9109, 0.9112, 0.9112, 0.9112,
+  0.9109, 0.9111, 0.9115, 0.911, 0.9118, 0.9115,
+  0.9105, 0.9106, 0.9109, 0.9113, 0.9106, 0.9108,
+  0.9109, 0.9117, 0.9119, 0.9122, 0.9125, 0.9111,
+  0.9115, 0.9112, 0.9121, 0.9118, 0.912, 0.9124,
+  0.912, 0.9118, 0.9119, 0.9121
+)
+lda_score <- c(
+  0.7908, 0.9055, 0.9169, 0.9182, 0.9275, 0.9295,
+  0.9305, 0.9325, 0.9319, 0.9316, 0.933, 0.9338,
+  0.9336, 0.9343, 0.9334, 0.9335, 0.933, 0.9339,
+  0.9343, 0.9341, 0.9338, 0.9334, 0.9334, 0.9336,
+  0.9344, 0.9349, 0.9355, 0.9349, 0.9346, 0.9345,
+  0.9348, 0.935, 0.9351, 0.9352, 0.9349, 0.9355,
+  0.9356, 0.9358, 0.936, 0.9357, 0.9357, 0.9358,
+  0.9351, 0.9353, 0.9349, 0.935, 0.9348, 0.9352,
+  0.9353, 0.9358, 0.9358, 0.9361, 0.9354, 0.9359,
+  0.9355, 0.9359, 0.9357, 0.9354
+)
+
+## tempo
+
+lr_tempo <- c(
+  0.0899, 0.14, 0.2183, 0.2937, 0.308, 0.3606,
+  0.4414, 0.6034, 0.5488, 0.7374, 0.8759, 1.5395,
+  1.64, 1.7404, 1.0159, 1.2865, 1.6415, 1.3815,
+  1.4373, 1.5375, 1.785, 2.9986, 2.3637, 1.7514,
+  1.9094, 2.0526, 2.1938, 3.7246, 2.8442, 2.0327,
+  2.2646, 2.5917, 3.803, 4.2085, 2.8272, 2.7035,
+  3.6217, 4.4679, 3.2281, 2.9803, 5.3806, 3.6973,
+  3.6798, 3.7304, 6.337, 3.5324, 3.545, 6.3027,
+  4.2397, 4.3436, 6.4197, 5.2754, 6.2462, 4.8627,
+  4.5575, 7.6344, 4.7969, 7.636
+)
+
+
+todos_dados <- data.frame("batelada" = batelada, "score" = c(lr_score, knn_score, gnb_score, lda_score), "tempo" = c(lr_tempo, ) "metodo" = c(rep("LR", 58), rep("KNN", 58), rep("GNB", 58), rep("LDA", 58)))
+
+head(todos_dados)
+```
+
+```{r}
+require(ggplot2)
+
+grafico <- ggplot(todos_dados, aes(x=batelada, y=score, color=metodo)) +
+    geom_line(aes(group=metodo))
+
+grafico
+
+ggsave("test.png", grafico)
+```
+
