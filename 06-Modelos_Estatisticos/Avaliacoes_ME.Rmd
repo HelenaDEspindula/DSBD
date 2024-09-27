@@ -1,0 +1,289 @@
+---
+title: "Avaliacões_ME"
+author: ""
+output:
+  pdf_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+date: "`r Sys.Date()`"
+
+---
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+require("ISLR")
+require("ggplot2")
+require("GGally")
+require("leaps") ## seleção de variaveis
+require("car")
+require(tidyverse)
+require(caret)
+require(MASS)
+require(labeling)
+
+```
+
+# Ajuste modelo Geral
+
+```{r}
+#Carseats
+data("Carseats") 
+#help("Carseats")
+
+head(Carseats, 10) ### Visualizando as dez primeiras linhas
+dim(Carseats) ### Acessando a dimensão da base
+summary(Carseats) ### Resumo das variáveis
+
+ggplot(Carseats, aes(x = Sales)) + geom_histogram() +
+    theme_bw(base_size = 14)
+
+
+ajuste01 <- lm(formula = Sales ~ ., data = Carseats)
+summary(ajuste01)
+
+ajuste02 <- lm(formula = Sales ~ CompPrice + Income + Advertising +Population +Price +ShelveLoc + Age + Education +Urban +US, data = Carseats)
+summary(ajuste02)
+
+ajuste02$fitted.values 
+
+# Extrair os coeficientes do modelo
+coeficientes <- coef(ajuste02)
+
+```
+
+# QUIZ 
+
+## Perguta 1
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-18-09.png "Pergunta 1"){width=80%}
+
+```{r}
+### 1
+
+# Criar um data frame com os valores fornecidos para prever
+novos_valores <- data.frame(
+  CompPrice = 125,
+  Income = 80,
+  Advertising = 0,
+  Population = 300,
+  Price = 125,
+  ShelveLoc = 'Good',  # ShelveLoc é uma variável categórica
+  Age = 60,
+  Education = 15,
+  Urban = 'No',        # Urban é uma variável categórica
+  US = 'Yes'           # US é uma variável categórica
+)
+
+# Prever o número de vendas ajustado pelo modelo
+predicao <- predict(ajuste02, newdata = novos_valores)
+predicao
+```
+
+## Perguta 2
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-21-33.png "Pergunta 1"){width=80%}
+
+```{r}
+### 2
+
+# Resíduos ordinários
+residuos_ordinarios <- residuals(ajuste02)
+
+# Primeiro resíduo ordinário (primeira observação)
+residuo_ordinario_primeira_obs <- residuos_ordinarios[1]
+residuo_ordinario_primeira_obs
+ 
+# Resíduos studentizados
+residuos_studentizados <- rstudent(ajuste02)
+
+# Primeiro resíduo studentizado (primeira observação)
+residuo_studentizado_primeira_obs <- residuos_studentizados[1]
+residuo_studentizado_primeira_obs
+```
+
+## Perguta 3
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-24-19.png "Pergunta 1"){width=80%}
+
+```{r}
+### 3
+
+# Coeficiente para CompPrice
+coef_compprice <- coeficientes["CompPrice"]
+
+# Aumento em Sales para um aumento de 10 unidades em CompPrice
+K <- coef_compprice * 10
+K
+```
+
+## Perguta 4
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-26-10.png "Pergunta 1"){width=80%}
+
+```{r}
+### 4 
+
+# Extrair os coeficientes do modelo
+coeficientes <- coef(ajuste02)
+
+# Coeficiente para ShelveLocGood
+coef_good <- coeficientes["ShelveLocGood"]
+```
+
+## Perguta 5
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-28-30.png "Pergunta 1"){width=80%}
+
+```{r}
+### 5
+
+# Coeficiente para ShelveLocMedium
+coef_medium <- coeficientes["ShelveLocMedium"]
+
+# Calcular a diferença entre Good e Medium
+K <- coef_good - coef_medium
+K
+```
+
+## Perguta 6
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-38-10.png "Pergunta 1"){width=80%}
+
+```{r}
+# Intervalo de confiança de 99% para os coeficientes
+confint(ajuste02, level = 0.99)
+```
+
+## Perguta 7
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-41-16.png "Pergunta 1"){width=80%}
+
+```{r}
+# Criar o data frame com os valores das variáveis explicativas
+novos_valores <- data.frame(
+  CompPrice = 125,
+  Income = 80,
+  Advertising = 0,
+  Population = 300,
+  Price = 125,
+  ShelveLoc = 'Good',
+  Age = 60,
+  Education = 15,
+  Urban = 'No',
+  US = 'Yes'
+)
+
+# Prever o número esperado de vendas com intervalo de confiança de 95%
+previsao <- predict(ajuste02, newdata = novos_valores, interval = "confidence", level = 0.95)
+
+# Exibir o resultado da previsão com o intervalo de confiança
+previsao
+
+```
+
+## Perguta 8
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-43-19.png "Pergunta 1"){width=80%}
+
+```{r}
+# Criar o data frame com os valores das variáveis explicativas
+novos_valores <- data.frame(
+  CompPrice = 125,
+  Income = 80,
+  Advertising = 0,
+  Population = 300,
+  Price = 125,
+  ShelveLoc = 'Good',
+  Age = 60,
+  Education = 15,
+  Urban = 'No',
+  US = 'Yes'
+)
+# Prever o número esperado de vendas com intervalo de predição de 95%
+predicao <- predict(ajuste02, newdata = novos_valores, interval = "prediction", level = 0.95)
+
+# Exibir o resultado da predição com o intervalo de predição
+predicao
+
+```
+
+## Perguta 9
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-45-24.png "Pergunta 1"){width=80%}
+
+```{r}
+summary(ajuste02)
+
+```
+
+## Perguta 10
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-51-05.png "Pergunta 1"){width=80%}
+
+```{r}
+# Seleção backward usando AIC
+modelo_aic <- step(ajuste02, direction = "backward", criterion = "AIC")
+
+# Resumo do modelo resultante
+summary(modelo_aic)
+
+# Seleção backward usando BIC
+modelo_bic <- step(ajuste02, direction = "backward", criterion = "BIC")
+
+# Resumo do modelo resultante
+summary(modelo_bic)
+```
+
+## Perguta 11
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-52-22.png "Pergunta 1"){width=80%}
+
+```{r}
+# Seleção backward usando AIC
+modelo_aic <- step(ajuste02, direction = "forward", criterion = "AIC")
+
+# Resumo do modelo resultante
+summary(modelo_aic)
+
+# Seleção backward usando BIC
+modelo_bic <- step(ajuste02, direction = "forward", criterion = "BIC")
+
+# Resumo do modelo resultante
+summary(modelo_bic)
+```
+
+## Perguta 12
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 18-59-28.png "Pergunta 1"){width=80%}
+
+```{r}
+# Resumo do modelo
+resumo <- summary(ajuste02)
+
+# Obter o valor de R^2
+r_squared <- resumo$r.squared
+
+# Calcular K%
+K <- r_squared * 100
+K
+```
+
+## Perguta 13
+
+![Instância em execusão](~/Imagens/Captura de tela de 2024-09-27 19-00-01.png "Pergunta 1"){width=80%}
+
+```{r}
+
+### não é conta
+
+```
+
+
+
+
