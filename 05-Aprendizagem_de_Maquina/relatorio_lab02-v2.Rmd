@@ -11,11 +11,10 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```{r eval=FALSE, include=TRUE}
+```{r eval=TRUE, include=TRUE}
 library(plotly)
 library(ggplot2)
 library(tidyverse)
-library(purrr)
 ```
 
 
@@ -285,8 +284,6 @@ head(todos_dados)
 ### Bloco x Score
 
 ```{r}
-library(ggplot2)
-
 grafico1 <- ggplot(todos_dados, aes(x=bloco, y=score, color=metodo)) +
     geom_line(aes(group=metodo))
 
@@ -342,8 +339,7 @@ A partir desse gráfico pode se perceber que:
 
 ### Tempo x Score (sem KNN)
 
-```{r eval=FALSE, include=TRUE}
-
+```{r eval=TRUE, include=TRUE}
 grafico4 <- todos_dados %>%
   group_by(metodo) %>%
   filter(metodo != "KNN") %>%
@@ -354,8 +350,6 @@ grafico4
 
 ggsave("grafico4.png", grafico4)
 ```
-
-![Grafico04](C://RStudio/DSBD/05-Aprendizagem_de_Maquina/grafico4.png "Grafico 04"){width=50%}
 
 A partir desse gráfico pode se perceber que:
 
@@ -385,6 +379,12 @@ bloco1 <- todos_dados %>%
   filter(bloco == 1)
 
 bloco1
+
+# equivale a...
+# bloco1 <- group_by(.data = todos_dados, metodo)
+# bloco1 <- filter(.data = bloco1, bloco == 1)
+# 
+# bloco1
 ```
 
 2. Qual é o classificador que tem melhor desempenho com todos os dados.
