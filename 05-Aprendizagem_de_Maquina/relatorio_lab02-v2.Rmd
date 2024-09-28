@@ -12,13 +12,10 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ```{r eval=FALSE, include=TRUE}
-require(plotly)
-require(ggplot2)
-require(dplyr)
-require(tidyverse)
-require(purrr)
-require(magrittr)
-
+library(plotly)
+library(ggplot2)
+library(tidyverse)
+library(purrr)
 ```
 
 
@@ -288,7 +285,7 @@ head(todos_dados)
 ### Bloco x Score
 
 ```{r}
-require(ggplot2)
+library(ggplot2)
 
 grafico1 <- ggplot(todos_dados, aes(x=bloco, y=score, color=metodo)) +
     geom_line(aes(group=metodo))
