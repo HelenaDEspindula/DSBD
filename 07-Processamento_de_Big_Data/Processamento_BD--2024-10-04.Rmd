@@ -1,0 +1,377 @@
+---
+title: "Processamento_BD--2024-10-04"
+author: "Helena"
+date: "2024-08-24"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(reticulate)
+```
+
+
+
+```{bash eval=FALSE, include=TRUE}
+hrsdespindula@h8:~$ cd DSBD/
+
+hrsdespindula@h8:~/DSBD$ cd 07-Processamento_de_Big_Data/
+
+hrsdespindula@h8:~/DSBD/07-Processamento_de_Big_Data$ ls
+ bd_complains_prof.py
+ bd_complains.py
+'Captura de tela de 2024-08-17 09-11-26.png'
+'Captura de tela de 2024-08-17 11-30-17.png'
+ city.csv
+ dsbd_aula5.db
+ dsbd.db
+ dsbd_h.db
+ escolas10k.sql
+ escolas.sql
+ estados2.sql
+ estados_h.sql
+ estados_original.sql
+ estados.sql
+ localiz_cod_h.sql
+ localiz_cod_o.sql
+ municipios.sql
+ ponto_sqliterc
+ Processamento_BD--2024-08-17.Rmd
+ Processamento_BD--2024-08-24.html
+ Processamento_BD--2024-08-24.Rmd
+ Processamento_BD--2024-09-14.Rmd
+ regioes.sql
+ telefones.sql
+ testecsv.db
+ txt.txt
+ 
+hrsdespindula@h8:~/DSBD/07-Processamento_de_Big_Data$ sqlite3 dsbd_
+dsbd_aula5.db  dsbd_h.db      
+
+hrsdespindula@h8:~/DSBD/07-Processamento_de_Big_Data$ sqlite3 dsbd_aula5.db 
+-- Loading resources from /home/espinf/hrsdespindula/.sqliterc
+SQLite version 3.40.1 2022-12-28 14:03:47
+Enter ".help" for usage hints.
+sqlite> 
+
+```
+
+
+
+```{bash eval=FALSE, include=TRUE}
+sqlite> BEGIN TRANSACTION;
+
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('AD', 'Adiue', 'N');
+
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('SF', 'SemFut', 'N');
+
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('FE', 'FoundEtant', 'N');
+
+sqlite> ROLLBACK;
+
+sqlite> SELECT COUNT(*) from estado;
+
+COUNT(*)
+27
+
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+hrsdespindula@h8:~/DSBD/07-Processamento_de_Big_Data$ sqlite3 dsbd_aula5.db 
+-- Loading resources from /home/espinf/hrsdespindula/.sqliterc
+SQLite version 3.40.1 2022-12-28 14:03:47
+Enter ".help" for usage hints.
+sqlite> BEGIN TRANSACTION;
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('AD', 'Adiue', 'N');
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('SF', 'SemFut', 'N');
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('FE', 'FoundEtant', 'N');
+sqlite> SELECT COUNT(*) from estado;
+COUNT(*)
+30
+
+sqlite> ROLLBACK;
+sqlite> SELECT COUNT(*) from estado;
+COUNT(*)
+27
+
+
+```
+
+```{bash eval=FALSE, include=TRUE}
+sqlite> BEGIN TRANSACTION;
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('AD', 'Adiue', 'N');
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('SF', 'SemFut', 'N');
+sqlite> INSERT INTO estado (uf, nome, regiao) VALUES ('FE', 'FoundEtant', 'N');
+
+sqlite> SELECT COUNT(*) from estado;
+COUNT(*)
+30
+sqlite> COMMIT;
+
+sqlite> SELECT COUNT(*) from estado;
+COUNT(*)
+30
+
+
+## FECHAR O SQLITE ANTES DE MEXER NO PYTHON
+```
+
+
+```{python}
+
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("INSERT INTO estado (uf, nome, regiao) VALUES ('AA', 'TESTEA', 'N')")
+
+con.commit()
+con.close()
+
+```
+
+
+
+```{bash eval=FALSE, include=TRUE}
+hrsdespindula@h8:~/DSBD/07-Processamento_de_Big_Data$ sqlite3 dsbd_aula5.db 
+-- Loading resources from /home/espinf/hrsdespindula/.sqliterc
+SQLite version 3.40.1 2022-12-28 14:03:47
+Enter ".help" for usage hints.
+sqlite> SELECT COUNT(*) from estado;
+COUNT(*)
+31
+
+```
+
+
+
+```{python}
+
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("SELECT codigo, nome, uf FROM municipio WHERE codigo = 4106902")
+resultado = cursor.fetchone() ### UMA UNICA TUPLA/LINHA DE RESULTADO
+
+print(type(resultado), type(resultado[0]), type(resultado[1]), type(resultado[2]))
+print(resultado)
+con.close()
+```
+
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("SELECT uf, nome FROM estado")
+resultado = cursor.fetchall() ### LISTA DE TUPLAS
+
+print(type(resultado))
+for tupla in resultado:
+  print(tupla)
+con.close()
+```
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("SELECT uf, nome FROM estado")
+resultado = cursor.fetchall() ### LISTA DE TUPLAS
+
+print(type(resultado))
+resultado.sort() #### SUPER INEFICIENTE
+for tupla in resultado:
+  print(tupla)
+con.close()
+```
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("SELECT uf, nome FROM estado ORDER BY uf")
+resultado = cursor.fetchall() ### LISTA DE TUPLAS
+
+print(type(resultado))
+for tupla in resultado:
+  print(tupla)
+con.close()
+```
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+cursor = con.cursor()
+cursor.execute("SELECT codigo, nome, uf FROM municipio WHERE codigo = 5300108")
+resultado = cursor.fetchone()
+
+if (resultado is None):
+  print("Não há resultados")
+else:
+  print(resultado)
+con.close()
+```
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+uf = input("Digite uma UF: ")
+nome_cidade = input("Digite um nome de cidade para buscar: ")
+
+cursor = con.cursor()
+cursor.execute(
+  f"SELECT codigo, nome, uf FROM municipio WHERE UPPER(nome) = UPPER('{nome_cidade}') AND UPPER(uf) = UPPER('{uf}')"
+  ) 
+  ### Pode dar merda se o usuario ecrever um "DROP TABLE" por exemplo
+resultado = cursor.fetchone()
+
+if resultado is not None:
+  print(resultado)
+else:
+  print("Cidade não encontrada.")
+con.close()
+
+```
+
+
+```{python}
+import sqlite3
+con = sqlite3.connect("dsbd_aula5.db")
+
+uf = input("Digite uma UF: ")
+nome_cidade = input("Digite um nome de cidade para buscar: ")
+
+cursor = con.cursor()
+cursor.execute(
+  "SELECT codigo, nome, uf FROM municipio WHERE UPPER(nome) = UPPER(?) AND UPPER(uf) = UPPER(?)"
+  , (nome_cidade,uf)) ## Esse não dá tanto problema
+resultado = cursor.fetchone()
+
+if resultado is not None:
+  print(resultado)
+else:
+  print("Cidade não encontrada.")
+con.close()
+
+```
+
+# .php?id='
+
+
+```{python}
+import csv
+
+with open('microdados_1k.csv',encoding=" ISO-8859-1") as dados_csv:
+  
+  leitor = csv.DictReader(dados_csv,delimiter=";")
+  for linha in leitor:
+    print(linha["NO_ENTIDADE"], linha["CO_ENTIDADE"])
+    
+print("Fim")
+
+```
+
+
+<docs.python.org/3/library/sqlite3.html>
+
+
+```{python}
+
+
+```
+
+
+
+
+
+```{python}
+
+
+```
+
+
+
+
+
+```{python}
+
+
+```
+
+
+
+
+
+```{python}
+
+
+```
+
+# DuckDB
+
+<https://duckdb.org/>
+
+
+```{python}
+
+
+```
+
+
+
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
+
+
+```{bash eval=FALSE, include=TRUE}
+
+```
