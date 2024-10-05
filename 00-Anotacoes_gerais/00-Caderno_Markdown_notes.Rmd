@@ -233,7 +233,9 @@ $$\circ$$
 $$\odot$$
 -- to me the dot makes it look naturally like a multiply operation (unlike other suggestions I've seen like ⋄) so is relatively easy to visually parse, but does not have an overloaded meaning as far as I know.
 
+$$\bot $$
 
+$$ \mid $$
 
 
 
@@ -415,5 +417,191 @@ grViz("digraph G1 {
 library(here)
 
 source(here::here("functions.R"))
+```
+
+
+
+###  Summations
+
+### Without Indices
+
+$\sum x_{i}$
+
+$\sum x_{i}^2$
+
+$\sum x_{i}y_{i}$
+
+#### With Indices - Inline Form
+
+$\sum_{i=1}^n x_{i}$
+
+$\sum_{i=1}^n x_{i}^2$
+
+$\sum_{i=1}^n x_{i}y_{i}$
+
+#### With Indices - Display Form
+
+$$\sum_{i=1}^n x_{i}y_{i}$$
+
+### Independent Samples
+
+$$\mu_{\bar{x_{1}} - \bar{x_{2}}} = \mu_{1} - \mu_{2}$$
+
+$$\sigma_{\bar{x_{1}} - \bar{x_{2}}}^2 = \frac {\sigma_{1}^2}{n_{1}} + \frac{\sigma_{2}^2}{n_{2}}$$
+
+$$\mu_{\hat{p}_{1} - \hat{p}_{2}} = p_{1} - p_{2}$$
+
+$$\sigma_{\hat{p}_{1} - \hat{p}_{2}}^2 = \frac {p_{1}(1 - p_{1})}{n_{1}} + \frac {p_{2}(1 - p_{2})}{n_{2}}$$
+
+
+### Pooled Sample Variance
+
+$$s_{p}^2 = \frac {(n_{1} - 1)s_{1}^2 + (n_{2} - 1)s_{2}^2}{n_{1} + n_{2} - 2}$$
+
+### Pooled Sample Proportion
+
+$$\hat{p} = \frac {n_{1}\hat{p}_1 + n_{2}\hat{p}_{2}}{n_{1} + n_{2}}$$
+
+### Chi-Square Test
+
+$$\chi^2 = \sum \frac {(O - E)^2}{E}$$
+
+
+### Correlations
+
+$${SS}_{xx} = \sum (x - \bar{x})^2 = \sum x^2 - \frac {(\sum x)^2}{n}$$
+
+$${SS}_{xy} = \sum (x - \bar{x})(y - \bar{y}) = \sum xy - \frac {(\sum x)(\sum y)}{n}$$
+
+$$r = \frac {{SS}_{xy}}{\sqrt {{SS}_{xx}{SS}_{yy}}}$$
+
+
+### Regression
+
+#### Population Regression Line
+
+$$E(y) = \alpha + \beta{x}$$
+
+$$var(y) = \sigma^2$$
+
+#### Least Squares Line
+
+$$\hat{y} = a + bx$$
+
+where 
+
+$$b = \frac {{SS}_{xy}}{{SS}_{xx}}$$
+
+and 
+
+$$\bar{y} = a + b\bar{x}$$
+
+
+#### Residual Sum of Squares
+
+$$SSResid = \sum (y - \hat{y})^2 = \sum y^2 - a\sum y - b \sum xy$$
+
+#### Standard Errors
+
+$$s_{e} = \sqrt \frac {SSResid}{n - 2}$$
+
+$$s_{b} = \frac {s_{e}}{\sqrt {{SS}_{xx}}}$$
+
+$$s_{a + bx} = s_{e} \sqrt {1 + \frac {1}{n} + \frac {(x - \bar{x})^2}{{SS}_{xx}}}$$
+
+for prediction:
+
+$$se(y - \hat{y}) = s_{e} \sqrt {1 + \frac {1}{n} + \frac {(x - \bar{x})^2}{{SS}_{xx}}}$$
+
+
+### Variance
+
+$$SSTr = \frac {T_{1}^2}{n_{1}} + \frac {T_{2}^2}{n_{2}} + ... + \frac {T_{k}^2}{n_{k}} - \frac {T^2}{n}$$
+
+$$SSTo = x_{1}^2 + x_{2}^2 + ... + x_{k}^2 - \frac {T^2}{n}$$
+
+$$SSE = SSTo - SSTr$$
+
+
+Diagrams: <https://support.typora.io/Draw-Diagrams-With-Markdown/>
+
+
+```{r}
+mermaid(diagram = '
+sequenceDiagram
+  participant Alice
+  participant Bob
+  Alice->>John: Hello John, how are you?
+  loop Healthcheck
+      John->>John: Fight against hypochondria
+  end
+  Note right of John: Rational thoughts<br/>prevail...
+  John-->>Alice: Great!
+  John->>Bob: How about you?
+  Bob-->>John: Jolly good!
+')
+
+```
+
+
+Possible FlowChart orientations are:
+
+- TB - Top to bottom
+- TD - Top-down/ same as top to bottom
+- BT - Bottom to top
+- RL - Right to left
+- LR - Left to right
+
+```{r}
+library(DiagrammeR)
+mermaid(diagram = 'graph TD;
+    A(("A"))-->B;
+    B-->D;
+    C-->D;
+')
+
+```
+
+```{r}
+library(DiagrammeR)
+mermaid(diagram = 'graph LR;
+    id1["Texto"];')
+
+```
+
+```{r}
+library(DiagrammeR)
+mermaid(diagram = 'graph LR;
+    id1(("Texto"));')
+
+```
+
+
+Mermaid: <https://mermaid.js.org/syntax/flowchart.html>
+
+
+```{r}
+
+a_graph <-
+  create_graph() %>%
+  add_node(label = "A") %>%
+  add_node(label = "B") %>%
+  add_node(label = "C") %>%
+  add_edge(from = 1, to = 2) %>%
+  add_edge(from = 2, to = 3)
+
+render_graph(a_graph, layout = "nicely")
+## Possible layouts include: nicely, circle, tree, kk, and fr.
+
+```
+
+```{r}
+
+b_graph <-
+  create_graph() %>% add_path(n = 3)
+
+render_graph(b_graph, layout = "tree", title = "Diagrama B", width = 300)
+
+
 ```
 

@@ -19,6 +19,13 @@ Prof Anderson Ara
 knitr::opts_chunk$set(echo = TRUE)
 require(RMySQL)
 library(RMySQL)
+
+library(DiagrammeR)
+
+if (!require("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+
+BiocManager::install("Rgraphviz")
 ```
 
 bd = Sakila (aluguel de DVDs)
@@ -65,4 +72,77 @@ ALGOqNAOdeuTEMPOdeLER <- dbGetQuery(con, "SELECT * FROM TESTE")
 
 dbDisconnect(con)
 ```
+
+
+# 05-10-2024
+
+## Fundamentos: Causa Comum
+
+$A \bot B$ = A é independente de B
+
+$A \bot B | C$ = Sabendo de C, A é independente de B (independencia condicional)
+
+Se $A_1 \bot A_2$ -> $P(A_1 | A_2) = P(A_1)$
+
+Se $A_1 \bot A_3 | A_2$ -> $P(A_1 |A_3, A_2) = P(A_1 | A_2)$
+
+```{r}
+library(DiagrammeR)
+mermaid(diagram = 'graph LR;
+    A(("A"))-->B(("B" ));
+    B --> C(("C"));')
+
+```
+
+
+
+dISTRIBUIÇÃO DE Probabilidade ($\theta$) - valor entre 0 e 1.
+
+Priori + dados = posteriori
+
+
+$$X ~Bin(n, \theta)$$
+$$ \theta ~ Beta (a,b)$$
+$$\theta(x ~ Beta (a+x, b+n)) $$
+
+Beta tem dominio entre 0 e 1
+```{r}
+n = 10
+x = 2
+a = 1
+b = 2
+theta <-  seq(0,1, length.out=1000)
+plot(theta, dbeta(theta, a ,b), type = "l")
+
+
+
+a = 1
+b = 0.2
+plot(theta, dbeta(theta, a ,b), type = "l")
+
+
+a = 2
+b = 2
+theta <-  seq(0,1, length.out=1000)
+plot(theta, dbeta(theta, a ,b), type = "l", ylim = c(0,5))
+lines(theta, 
+      dbeta(theta, a+x, b+n-x), 
+      col = "red", lwd =2)
+
+EMV = x=n
+MAP = (a+x-1)/(a+b-x )hel =p.RERT 
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
 
