@@ -1,0 +1,68 @@
+---
+title: "Processamento_BD--2024-10-04--Ara"
+author: "Helena"
+date: "2024-08-24"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+Prof Anderson Ara
+<http://leg.ufpr.br/~ara/>
+
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+require(RMySQL)
+library(RMySQL)
+```
+
+bd = Sakila (aluguel de DVDs)
+<https://dev.mysql.com/doc/sakila/en/sakila-installation.html>
+
+
+BD FREE = https://www.db4free.net/signup.php
+user = araufpr
+senha = @r@ufpr1234
+
+GMail
+- bd: helenadsbd
+- user: helena
+- senha: dsbd@dsbd
+
+Email UFPR:
+- bd: helenaufpr
+- user: helena2
+- senha: dsbd@dsbd
+
+
+![Instância em execusão](~/DSBD/07-Processamento_de_Big_Data/Imagens/Captura de tela de 2024-10-04 21-59-35.png "Instância em execusão"){width=50%}
+
+
+
+![Instância em execusão](~/DSBD/07-Processamento_de_Big_Data/Imagens/Captura de tela de 2024-10-04 21-56-59.png "Instância em execusão"){width=50%}
+
+
+
+```{r}
+con <- dbConnect(MySQL(),
+                host="db4free.net",
+                user="helena2",
+                password="dsbd@dsbd",
+                dbname="helenaufpr")
+
+dbGetInfo(con)
+
+dbListTables(con)
+
+teste <- dbGetQuery(con, "SELECT * FROM TESTE")
+rental <- dbGetQuery(con, "SELECT * FROM rental")
+ALGOqNAOdeuTEMPOdeLER <- dbGetQuery(con, "SELECT * FROM TESTE")
+
+dbDisconnect(con)
+```
+
