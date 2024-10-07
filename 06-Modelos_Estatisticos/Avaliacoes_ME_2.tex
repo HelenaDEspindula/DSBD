@@ -1,0 +1,1245 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Avaliacões\_ME 2},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Avaliacões\_ME 2}
+\author{}
+\date{\vspace{-2.5em}2024-10-07}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{2}
+\tableofcontents
+}
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{knitr}\SpecialCharTok{::}\NormalTok{opts\_chunk}\SpecialCharTok{$}\FunctionTok{set}\NormalTok{(}\AttributeTok{echo =} \ConstantTok{TRUE}\NormalTok{)}
+
+\FunctionTok{require}\NormalTok{(}\StringTok{"ISLR"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: ISLR
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(}\StringTok{"ggplot2"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: ggplot2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(}\StringTok{"GGally"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: GGally
+\end{verbatim}
+
+\begin{verbatim}
+## Registered S3 method overwritten by 'GGally':
+##   method from   
+##   +.gg   ggplot2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(}\StringTok{"leaps"}\NormalTok{) }\DocumentationTok{\#\# seleção de variaveis}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: leaps
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(}\StringTok{"car"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: car
+\end{verbatim}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: carData
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(tidyverse)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: tidyverse
+\end{verbatim}
+
+\begin{verbatim}
+## -- Attaching core tidyverse packages ------------------------ tidyverse 2.0.0 --
+## v dplyr     1.1.4     v readr     2.1.5
+## v forcats   1.0.0     v stringr   1.5.1
+## v lubridate 1.9.3     v tibble    3.2.1
+## v purrr     1.0.2     v tidyr     1.3.1
+## -- Conflicts ------------------------------------------ tidyverse_conflicts() --
+## x dplyr::filter() masks stats::filter()
+## x dplyr::lag()    masks stats::lag()
+## x dplyr::recode() masks car::recode()
+## x purrr::some()   masks car::some()
+## i Use the conflicted package (<http://conflicted.r-lib.org/>) to force all conflicts to become errors
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(caret)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: caret
+## Carregando pacotes exigidos: lattice
+## 
+## Anexando pacote: 'caret'
+## 
+## O seguinte objeto é mascarado por 'package:purrr':
+## 
+##     lift
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(MASS)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: MASS
+## 
+## Anexando pacote: 'MASS'
+## 
+## O seguinte objeto é mascarado por 'package:dplyr':
+## 
+##     select
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(labeling)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: labeling
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(faraway)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: faraway
+## 
+## Anexando pacote: 'faraway'
+## 
+## O seguinte objeto é mascarado por 'package:lattice':
+## 
+##     melanoma
+## 
+## Os seguintes objetos são mascarados por 'package:car':
+## 
+##     logit, vif
+## 
+## O seguinte objeto é mascarado por 'package:GGally':
+## 
+##     happy
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(pscl)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: pscl
+## Classes and Methods for R originally developed in the
+## Political Science Computational Laboratory
+## Department of Political Science
+## Stanford University (2002-2015),
+## by and under the direction of Simon Jackman.
+## hurdle and zeroinfl functions by Achim Zeileis.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{require}\NormalTok{(pROC)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Carregando pacotes exigidos: pROC
+## Type 'citation("pROC")' for a citation.
+## 
+## Anexando pacote: 'pROC'
+## 
+## Os seguintes objetos são mascarados por 'package:stats':
+## 
+##     cov, smooth, var
+\end{verbatim}
+
+\section{Ajuste modelo Geral}\label{ajuste-modelo-geral}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#Carseats}
+\FunctionTok{data}\NormalTok{(}\StringTok{"wbca"}\NormalTok{) }
+\CommentTok{\#help("wbca")}
+
+\FunctionTok{head}\NormalTok{(wbca, }\DecValTok{10}\NormalTok{) }\DocumentationTok{\#\#\# Visualizando as dez primeiras linhas}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Class Adhes BNucl Chrom Epith Mitos NNucl Thick UShap USize
+## 1      1     1     1     3     2     1     1     5     1     1
+## 2      1     5    10     3     7     1     2     5     4     4
+## 3      1     1     2     3     2     1     1     3     1     1
+## 4      1     1     4     3     3     1     7     6     8     8
+## 5      1     3     1     3     2     1     1     4     1     1
+## 6      0     8    10     9     7     1     7     8    10    10
+## 7      1     1    10     3     2     1     1     1     1     1
+## 8      1     1     1     3     2     1     1     2     2     1
+## 9      1     1     1     1     2     5     1     2     1     1
+## 10     1     1     1     2     2     1     1     4     1     2
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(wbca)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    681 obs. of  10 variables:
+##  $ Class: int  1 1 1 1 1 0 1 1 1 1 ...
+##  $ Adhes: int  1 5 1 1 3 8 1 1 1 1 ...
+##  $ BNucl: int  1 10 2 4 1 10 10 1 1 1 ...
+##  $ Chrom: int  3 3 3 3 3 9 3 3 1 2 ...
+##  $ Epith: int  2 7 2 3 2 7 2 2 2 2 ...
+##  $ Mitos: int  1 1 1 1 1 1 1 1 5 1 ...
+##  $ NNucl: int  1 2 1 7 1 7 1 1 1 1 ...
+##  $ Thick: int  5 5 3 6 4 8 1 2 2 4 ...
+##  $ UShap: int  1 4 1 8 1 10 1 2 1 1 ...
+##  $ USize: int  1 4 1 8 1 10 1 1 1 2 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{dim}\NormalTok{(wbca) }\DocumentationTok{\#\#\# Acessando a dimensão da base}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 681  10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{summary}\NormalTok{(wbca) }\DocumentationTok{\#\#\# Resumo das variáveis}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      Class            Adhes            BNucl            Chrom       
+##  Min.   :0.0000   Min.   : 1.000   Min.   : 1.000   Min.   : 1.000  
+##  1st Qu.:0.0000   1st Qu.: 1.000   1st Qu.: 1.000   1st Qu.: 2.000  
+##  Median :1.0000   Median : 1.000   Median : 1.000   Median : 3.000  
+##  Mean   :0.6505   Mean   : 2.816   Mean   : 3.542   Mean   : 3.433  
+##  3rd Qu.:1.0000   3rd Qu.: 4.000   3rd Qu.: 6.000   3rd Qu.: 5.000  
+##  Max.   :1.0000   Max.   :10.000   Max.   :10.000   Max.   :10.000  
+##      Epith            Mitos            NNucl            Thick       
+##  Min.   : 1.000   Min.   : 1.000   Min.   : 1.000   Min.   : 1.000  
+##  1st Qu.: 2.000   1st Qu.: 1.000   1st Qu.: 1.000   1st Qu.: 2.000  
+##  Median : 2.000   Median : 1.000   Median : 1.000   Median : 4.000  
+##  Mean   : 3.231   Mean   : 1.604   Mean   : 2.859   Mean   : 4.436  
+##  3rd Qu.: 4.000   3rd Qu.: 1.000   3rd Qu.: 4.000   3rd Qu.: 6.000  
+##  Max.   :10.000   Max.   :10.000   Max.   :10.000   Max.   :10.000  
+##      UShap            USize      
+##  Min.   : 1.000   Min.   : 1.00  
+##  1st Qu.: 1.000   1st Qu.: 1.00  
+##  Median : 1.000   Median : 1.00  
+##  Mean   : 3.204   Mean   : 3.14  
+##  3rd Qu.: 5.000   3rd Qu.: 5.00  
+##  Max.   :10.000   Max.   :10.00
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Redefinir o nível de referência da variável Class (1 = maligno, 0 = benigno)}
+\NormalTok{wbca}\SpecialCharTok{$}\NormalTok{Class }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(wbca}\SpecialCharTok{$}\NormalTok{Class, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}0\textquotesingle{}}\NormalTok{))}
+
+\CommentTok{\# Dividir a base de dados em base de ajuste (500 primeiras linhas) e base de validação (resto)}
+\NormalTok{base\_ajuste }\OtherTok{\textless{}{-}}\NormalTok{ wbca[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{500}\NormalTok{, ]}
+\NormalTok{base\_validacao }\OtherTok{\textless{}{-}}\NormalTok{ wbca[}\DecValTok{501}\SpecialCharTok{:}\DecValTok{681}\NormalTok{, ]}
+
+
+\CommentTok{\# Ajustar o modelo de regressão logística}
+\NormalTok{modelo\_logistico }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Adhes }\SpecialCharTok{+}\NormalTok{ BNucl }\SpecialCharTok{+}\NormalTok{ Thick, }\AttributeTok{data =}\NormalTok{ base\_ajuste, }\AttributeTok{family =}\NormalTok{ binomial)}
+
+\CommentTok{\# Ver o resumo do modelo ajustado}
+\FunctionTok{summary}\NormalTok{(modelo\_logistico)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Class ~ Adhes + BNucl + Thick, family = binomial, 
+##     data = base_ajuste)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -8.66162    0.96280  -8.996  < 2e-16 ***
+## Adhes        0.50432    0.11748   4.293 1.76e-05 ***
+## BNucl        0.63393    0.09394   6.748 1.50e-11 ***
+## Thick        0.89154    0.13201   6.753 1.44e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 671.36  on 499  degrees of freedom
+## Residual deviance: 116.62  on 496  degrees of freedom
+## AIC: 124.62
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Instalar pacote para métricas de ajuste, se necessário {-}\textgreater{} install.packages("pscl")}
+\CommentTok{\# Obter o pseudo{-}R\^{}2 de McFadden}
+\FunctionTok{pR2}\NormalTok{(modelo\_logistico)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## fitting null model for pseudo-r2
+\end{verbatim}
+
+\begin{verbatim}
+##          llh      llhNull           G2     McFadden         r2ML         r2CU 
+##  -58.3106800 -335.6782179  554.7350757    0.8262899    0.6702664    0.9071583
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Fazer previsões na base de validação}
+\NormalTok{previsoes }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ base\_validacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Classificar como maligno (1) ou benigno (0) com um limiar de 0.5}
+\NormalTok{previsao\_class }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(previsoes }\SpecialCharTok{\textgreater{}} \FloatTok{0.5}\NormalTok{, }\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}0\textquotesingle{}}\NormalTok{)}
+
+\CommentTok{\# Comparar com a variável Class na base de validação}
+\NormalTok{tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(previsao\_class, base\_validacao}\SpecialCharTok{$}\NormalTok{Class)}
+
+\CommentTok{\# Ver a matriz de confusão}
+\FunctionTok{print}\NormalTok{(tabela\_confusao)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               
+## previsao_class   1   0
+##              0 141   4
+##              1   0  36
+\end{verbatim}
+
+\section{QUIZ}\label{quiz}
+
+\subsection{Perguta 1}\label{perguta-1}
+
+Qual a chance estimada de tumor maligno para uma observação com as
+seguintes características:
+
+\begin{itemize}
+\tightlist
+\item
+  Adhes = 4
+\item
+  BNucl = 7
+\item
+  Thick = 5
+\end{itemize}
+
+Obs minha:
+
+\[ Chance = \frac{prob.est}{(1 - prob.est)}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Criar uma nova observação com os valores fornecidos}
+\NormalTok{nova\_observacao }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Adhes =} \DecValTok{4}\NormalTok{, }\AttributeTok{BNucl =} \DecValTok{7}\NormalTok{, }\AttributeTok{Thick =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Prever a probabilidade de tumor maligno para a nova observação}
+\NormalTok{probabilidade\_maligno }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ nova\_observacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Exibir a probabilidade}
+\NormalTok{probabilidade\_maligno}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1 
+## 0.9047231
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular a chance (odds)}
+\NormalTok{chance\_maligno }\OtherTok{\textless{}{-}}\NormalTok{ probabilidade\_maligno }\SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ probabilidade\_maligno)}
+\NormalTok{chance\_maligno}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        1 
+## 9.495722
+\end{verbatim}
+
+\subsection{Perguta 2}\label{perguta-2}
+
+Qual a probabilidade estimada de tumor maligno para uma observação com
+as seguintes características:
+
+\begin{itemize}
+\tightlist
+\item
+  Adhes = 4
+\item
+  BNucl = 7
+\item
+  Thick = 5
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Criar uma nova observação com os valores fornecidos}
+\NormalTok{nova\_observacao }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Adhes =} \DecValTok{4}\NormalTok{, }\AttributeTok{BNucl =} \DecValTok{7}\NormalTok{, }\AttributeTok{Thick =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Prever a probabilidade de tumor maligno}
+\NormalTok{probabilidade\_maligno }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ nova\_observacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Exibir a probabilidade estimada}
+\NormalTok{probabilidade\_maligno}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1 
+## 0.9047231
+\end{verbatim}
+
+\subsection{Perguta 3}\label{perguta-3}
+
+Considere a seguinte conjectura:
+
+Estima-se um que a chance de tumor maligno aumente K\% para um aumento
+unitário em BNucl mantendo fixos Adhes e Thick.
+
+Qual das alternativas abaixo apresenta o valor de K?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ver o resumo do modelo para obter os coeficientes}
+\FunctionTok{summary}\NormalTok{(modelo\_logistico)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Class ~ Adhes + BNucl + Thick, family = binomial, 
+##     data = base_ajuste)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -8.66162    0.96280  -8.996  < 2e-16 ***
+## Adhes        0.50432    0.11748   4.293 1.76e-05 ***
+## BNucl        0.63393    0.09394   6.748 1.50e-11 ***
+## Thick        0.89154    0.13201   6.753 1.44e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 671.36  on 499  degrees of freedom
+## Residual deviance: 116.62  on 496  degrees of freedom
+## AIC: 124.62
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extraindo o coeficiente de BNucl}
+\NormalTok{beta\_BNucl }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(modelo\_logistico)[}\StringTok{"BNucl"}\NormalTok{]}
+
+\CommentTok{\# Calcular o aumento percentual nas chances (odds)}
+\NormalTok{K }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{exp}\NormalTok{(beta\_BNucl) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{K}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    BNucl 
+## 88.49985
+\end{verbatim}
+
+\subsection{Perguta 4}\label{perguta-4}
+
+Considere a seguinte conjectura:
+
+Estima-se um que a chance de tumor maligno aumente K\% para um aumento
+de duas unidades em Adhes mantendo fixos BNucl e Thick.
+
+Qual das alternativas abaixo apresenta o valor de K?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extrair o coeficiente de Adhes do modelo}
+\NormalTok{beta\_Adhes }\OtherTok{\textless{}{-}} \FunctionTok{coef}\NormalTok{(modelo\_logistico)[}\StringTok{"Adhes"}\NormalTok{]}
+
+\CommentTok{\# Calcular o aumento percentual nas chances (odds) para um aumento de duas unidades}
+\NormalTok{K }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{exp}\NormalTok{(}\DecValTok{2} \SpecialCharTok{*}\NormalTok{ beta\_Adhes) }\SpecialCharTok{{-}} \DecValTok{1}\NormalTok{) }\SpecialCharTok{*} \DecValTok{100}
+\NormalTok{K}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##    Adhes 
+## 174.1883
+\end{verbatim}
+
+\subsection{Perguta 5}\label{perguta-5}
+
+O número de variáveis explicativas que estão significativamente
+associadas ao tipo de tumor, ao nível de significância de 5\%, é:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Exibir o resumo do modelo ajustado}
+\FunctionTok{summary}\NormalTok{(modelo\_logistico)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = Class ~ Adhes + BNucl + Thick, family = binomial, 
+##     data = base_ajuste)
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) -8.66162    0.96280  -8.996  < 2e-16 ***
+## Adhes        0.50432    0.11748   4.293 1.76e-05 ***
+## BNucl        0.63393    0.09394   6.748 1.50e-11 ***
+## Thick        0.89154    0.13201   6.753 1.44e-11 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 671.36  on 499  degrees of freedom
+## Residual deviance: 116.62  on 496  degrees of freedom
+## AIC: 124.62
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Extrair os valores de p dos coeficientes}
+\NormalTok{valores\_p }\OtherTok{\textless{}{-}} \FunctionTok{summary}\NormalTok{(modelo\_logistico)}\SpecialCharTok{$}\NormalTok{coefficients[, }\StringTok{"Pr(\textgreater{}|z|)"}\NormalTok{]}
+
+\CommentTok{\# Contar o número de variáveis significativas ao nível de 5\%}
+\NormalTok{variaveis\_significativas }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(valores\_p }\SpecialCharTok{\textless{}} \FloatTok{0.05}\NormalTok{)}
+
+\CommentTok{\# Exibir o número de variáveis significativas}
+\NormalTok{variaveis\_significativas}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4
+\end{verbatim}
+
+\subsection{Perguta 6}\label{perguta-6}
+
+Qual das alternativas a seguir apresenta um intervalo de confiança
+(95\%) para a chance estimada de tumor maligno para uma observação com
+as seguintes características:
+
+\begin{itemize}
+\tightlist
+\item
+  Adhes = 4
+\item
+  BNucl = 7
+\item
+  Thick = 5
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Criar a nova observação}
+\NormalTok{nova\_observacao }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Adhes =} \DecValTok{4}\NormalTok{, }\AttributeTok{BNucl =} \DecValTok{7}\NormalTok{, }\AttributeTok{Thick =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Prever as log{-}odds e o intervalo de confiança}
+\NormalTok{previsao }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ nova\_observacao, }\AttributeTok{type =} \StringTok{"link"}\NormalTok{, }\AttributeTok{se.fit =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Calcular o intervalo de confiança para as log{-}odds (95\%)}
+\NormalTok{z\_value }\OtherTok{\textless{}{-}} \FunctionTok{qnorm}\NormalTok{(}\FloatTok{0.975}\NormalTok{)  }\CommentTok{\# Valor z para 95\% de confiança}
+\NormalTok{IC\_logodds\_lower }\OtherTok{\textless{}{-}}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{fit }\SpecialCharTok{{-}}\NormalTok{ z\_value }\SpecialCharTok{*}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{se.fit}
+\NormalTok{IC\_logodds\_upper }\OtherTok{\textless{}{-}}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{fit }\SpecialCharTok{+}\NormalTok{ z\_value }\SpecialCharTok{*}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{se.fit}
+
+\CommentTok{\# Converter as log{-}odds para chances (odds)}
+\NormalTok{odds\_lower }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(IC\_logodds\_lower)}
+\NormalTok{odds\_upper }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(IC\_logodds\_upper)}
+
+\CommentTok{\# Exibir o intervalo de confiança para a chance}
+\NormalTok{odds\_lower}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      1 
+## 3.9861
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{odds\_upper}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        1 
+## 22.62079
+\end{verbatim}
+
+\subsection{Perguta 7}\label{perguta-7}
+
+Qual das alternativas a seguir apresenta um intervalo de confiança
+(95\%) para a probabilidade estimada de tumor maligno para uma
+observação com as seguintes características:
+
+\begin{itemize}
+\tightlist
+\item
+  Adhes = 4
+\item
+  BNucl = 7
+\item
+  Thick = 5
+\end{itemize}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Criar a nova observação}
+\NormalTok{nova\_observacao }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{Adhes =} \DecValTok{4}\NormalTok{, }\AttributeTok{BNucl =} \DecValTok{7}\NormalTok{, }\AttributeTok{Thick =} \DecValTok{5}\NormalTok{)}
+
+\CommentTok{\# Prever as log{-}odds e o intervalo de confiança}
+\NormalTok{previsao }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ nova\_observacao, }\AttributeTok{type =} \StringTok{"link"}\NormalTok{, }\AttributeTok{se.fit =} \ConstantTok{TRUE}\NormalTok{)}
+
+\CommentTok{\# Valor z para o intervalo de confiança de 95\%}
+\NormalTok{z\_value }\OtherTok{\textless{}{-}} \FunctionTok{qnorm}\NormalTok{(}\FloatTok{0.975}\NormalTok{) }
+
+\CommentTok{\# Calcular o intervalo de confiança para as log{-}odds (fit = previsão das log{-}odds, se.fit = erro padrão)}
+\NormalTok{IC\_logodds\_lower }\OtherTok{\textless{}{-}}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{fit }\SpecialCharTok{{-}}\NormalTok{ z\_value }\SpecialCharTok{*}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{se.fit}
+\NormalTok{IC\_logodds\_upper }\OtherTok{\textless{}{-}}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{fit }\SpecialCharTok{+}\NormalTok{ z\_value }\SpecialCharTok{*}\NormalTok{ previsao}\SpecialCharTok{$}\NormalTok{se.fit}
+
+\CommentTok{\# Converter as log{-}odds para probabilidades (usando a função logística)}
+\NormalTok{prob\_lower }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(IC\_logodds\_lower) }\SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(IC\_logodds\_lower))}
+\NormalTok{prob\_upper }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(IC\_logodds\_upper) }\SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(IC\_logodds\_upper))}
+
+\CommentTok{\# Exibir o intervalo de confiança para a probabilidade}
+\NormalTok{prob\_lower}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1 
+## 0.7994425
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob\_upper}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         1 
+## 0.9576644
+\end{verbatim}
+
+\subsection{Perguta 8}\label{perguta-8}
+
+Com base na amostra de validação, a acurácia estimada do modelo, ao
+classificar como tumor maligno as observações com probabilidade estimada
+maior que 0.50, e como tumor benigno as observações com probabilidade
+estimada menor que 0.50, é igual a:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{prob\_validacao }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ base\_validacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Classificar com base na probabilidade de corte 0.50}
+\NormalTok{predicoes }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(prob\_validacao }\SpecialCharTok{\textgreater{}} \FloatTok{0.50}\NormalTok{, }\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{)}
+
+\CommentTok{\# Comparar as previsões com as classes reais}
+\NormalTok{tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ predicoes, }\AttributeTok{Real =}\NormalTok{ base\_validacao}\SpecialCharTok{$}\NormalTok{Class)}
+
+\CommentTok{\# Calcular a acurácia}
+\NormalTok{acuracia }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(}\FunctionTok{diag}\NormalTok{(tabela\_confusao)) }\SpecialCharTok{/} \FunctionTok{sum}\NormalTok{(tabela\_confusao)}
+\NormalTok{acuracia}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9779006
+\end{verbatim}
+
+\subsection{Perguta 9 - ERRO}\label{perguta-9---erro}
+
+Com base na amostra de validação, a sensibilidade estimada do modelo, ao
+classificar como tumor maligno as observações com probabilidade estimada
+maior que 0.50, e como tumor benigno as observações com probabilidade
+estimada menor que 0.50, é igual a:
+
+\subsubsection{Metodo 1}\label{metodo-1}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{predicoes }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ base\_validacao, }\AttributeTok{type =} \StringTok{\textquotesingle{}response\textquotesingle{}}\NormalTok{)}
+
+\NormalTok{tab\_pred }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\FunctionTok{ifelse}\NormalTok{(predicoes }\SpecialCharTok{\textless{}} \FloatTok{0.5}\NormalTok{, }\StringTok{\textquotesingle{}Pred\_No\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}Pred\_Yes\textquotesingle{}}\NormalTok{), base\_validacao}\SpecialCharTok{$}\NormalTok{Class)}
+\NormalTok{tab\_pred}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           
+##              1   0
+##   Pred_No  141   4
+##   Pred_Yes   0  36
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Cálculo da acurácia}
+\NormalTok{TP }\OtherTok{\textless{}{-}}\NormalTok{ tab\_pred[}\StringTok{"Pred\_Yes"}\NormalTok{,}\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{]    }\CommentTok{\# Verdadeiros Positivos}
+\NormalTok{TN }\OtherTok{\textless{}{-}}\NormalTok{ tab\_pred[}\StringTok{"Pred\_No"}\NormalTok{, }\StringTok{\textquotesingle{}0\textquotesingle{}}\NormalTok{]      }\CommentTok{\# Verdadeiros Negativos}
+\NormalTok{FP }\OtherTok{\textless{}{-}}\NormalTok{ tab\_pred[}\StringTok{"Pred\_Yes"}\NormalTok{, }\StringTok{\textquotesingle{}0\textquotesingle{}}\NormalTok{]      }\CommentTok{\# Falsos Positivos}
+\NormalTok{FN }\OtherTok{\textless{}{-}}\NormalTok{ tab\_pred[}\StringTok{"Pred\_No"}\NormalTok{, }\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{]      }\CommentTok{\# Falsos Negativos}
+\NormalTok{total }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(tab\_pred)                }\CommentTok{\# Total de observações}
+
+\CommentTok{\# Acurácia}
+\NormalTok{acuracia }\OtherTok{\textless{}{-}}\NormalTok{ (TP }\SpecialCharTok{+}\NormalTok{ TN) }\SpecialCharTok{/}\NormalTok{ total}
+\NormalTok{acuracia}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.02209945
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{sensibilidade }\OtherTok{\textless{}{-}}\NormalTok{ (TP)}\SpecialCharTok{/}\NormalTok{(TP }\SpecialCharTok{+}\NormalTok{ FN)}
+\NormalTok{sensibilidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{especificidade }\OtherTok{\textless{}{-}}\NormalTok{ (TN)}\SpecialCharTok{/}\NormalTok{(TN }\SpecialCharTok{+}\NormalTok{ FP)}
+\NormalTok{especificidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1
+\end{verbatim}
+
+\subsubsection{Metodo 2}\label{metodo-2}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Ajustar o modelo de regressão logística com base na amostra de ajuste}
+\NormalTok{modelo\_logistico }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Adhes }\SpecialCharTok{+}\NormalTok{ BNucl }\SpecialCharTok{+}\NormalTok{ Thick, }\AttributeTok{data =}\NormalTok{ base\_ajuste, }\AttributeTok{family =}\NormalTok{ binomial)}
+
+\CommentTok{\# Prever probabilidades para a amostra de validação}
+\CommentTok{\#prob\_validacao \textless{}{-} predict(modelo\_logistico, newdata = base\_validacao, type = "response")}
+\CommentTok{\#print(prob\_validacao)}
+
+\CommentTok{\# Classificar com base na probabilidade de corte 0.50}
+\CommentTok{\#predicoes \textless{}{-} ifelse(prob\_validacao \textgreater{}= 0.50, "1", "0")}
+
+\CommentTok{\# Criar uma matriz de confusão}
+\NormalTok{tabela\_confusao2 }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ previsao\_class, }\AttributeTok{Real =}\NormalTok{ base\_validacao}\SpecialCharTok{$}\NormalTok{Class)}
+\CommentTok{\#print(tabela\_confusao)}
+\FunctionTok{print}\NormalTok{(tabela\_confusao2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Real
+## Predito   1   0
+##       0 141   4
+##       1   0  36
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular a sensibilidade}
+\NormalTok{verdadeiros\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao2[}\StringTok{"1"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{falsos\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao2[}\StringTok{"0"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{sensibilidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_positivos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_positivos }\SpecialCharTok{+}\NormalTok{ falsos\_negativos)}
+
+\CommentTok{\# Exibir a sensibilidade}
+\NormalTok{sensibilidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\subsubsection{Metodo 3}\label{metodo-3}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Supondo que o modelo foi ajustado e as predições foram feitas}
+\CommentTok{\# Prever as probabilidades para a amostra de validação}
+\NormalTok{prob\_validacao }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ base\_validacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Classificar com base na probabilidade de corte 0.50}
+\NormalTok{predicoes }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(prob\_validacao }\SpecialCharTok{\textgreater{}} \FloatTok{0.50}\NormalTok{, }\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{)}
+
+\CommentTok{\# Criar uma matriz de confusão}
+\NormalTok{tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ predicoes, }\AttributeTok{Real =}\NormalTok{ base\_validacao}\SpecialCharTok{$}\NormalTok{Class)}
+
+\CommentTok{\# Calcular a sensibilidade}
+\NormalTok{verdadeiros\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"1"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{falsos\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"0"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+
+\CommentTok{\# Se não houver verdadeiros positivos, a sensibilidade será 0}
+\ControlFlowTok{if}\NormalTok{ (}\FunctionTok{is.na}\NormalTok{(verdadeiros\_positivos) }\SpecialCharTok{||}\NormalTok{ (verdadeiros\_positivos }\SpecialCharTok{+}\NormalTok{ falsos\_negativos) }\SpecialCharTok{==} \DecValTok{0}\NormalTok{) \{}
+\NormalTok{  sensibilidade }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{\} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{  sensibilidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_positivos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_positivos }\SpecialCharTok{+}\NormalTok{ falsos\_negativos)}
+\NormalTok{\}}
+
+\CommentTok{\# Exibir a sensibilidade}
+\NormalTok{sensibilidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\subsubsection{Metodo 4}\label{metodo-4}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Carregar o pacote necessário}
+\FunctionTok{library}\NormalTok{(faraway)}
+
+\CommentTok{\# Redefinir a variável Class para modelar a probabilidade de tumor maligno}
+\NormalTok{wbca}\SpecialCharTok{$}\NormalTok{Class }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(wbca}\SpecialCharTok{$}\NormalTok{Class, }\AttributeTok{levels =} \FunctionTok{c}\NormalTok{(}\StringTok{\textquotesingle{}1\textquotesingle{}}\NormalTok{, }\StringTok{\textquotesingle{}0\textquotesingle{}}\NormalTok{))}
+
+\CommentTok{\# Dividir os dados em amostra de ajuste e amostra de validação}
+\NormalTok{ajuste }\OtherTok{\textless{}{-}}\NormalTok{ wbca[}\DecValTok{1}\SpecialCharTok{:}\DecValTok{500}\NormalTok{, ]}
+\NormalTok{validacao }\OtherTok{\textless{}{-}}\NormalTok{ wbca[}\DecValTok{501}\SpecialCharTok{:}\DecValTok{681}\NormalTok{, ]}
+
+\CommentTok{\# Ajustar o modelo de regressão logística com base na amostra de ajuste}
+\NormalTok{modelo\_logistico }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(Class }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Adhes }\SpecialCharTok{+}\NormalTok{ BNucl }\SpecialCharTok{+}\NormalTok{ Thick, }\AttributeTok{data =}\NormalTok{ ajuste, }\AttributeTok{family =}\NormalTok{ binomial)}
+
+\CommentTok{\# Prever probabilidades para a amostra de validação}
+\NormalTok{prob\_validacao }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(modelo\_logistico, }\AttributeTok{newdata =}\NormalTok{ base\_validacao, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Classificar com base na probabilidade de corte 0.50}
+\NormalTok{predicoes }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(prob\_validacao }\SpecialCharTok{\textgreater{}} \FloatTok{0.50}\NormalTok{, }\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{)}
+
+\CommentTok{\# Criar uma matriz de confusão}
+\NormalTok{tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ predicoes, }\AttributeTok{Real =}\NormalTok{ validacao}\SpecialCharTok{$}\NormalTok{Class)}
+
+\CommentTok{\# Exibir a matriz de confusão}
+\FunctionTok{print}\NormalTok{(tabela\_confusao)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Real
+## Predito   1   0
+##       0 141   4
+##       1   0  36
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular a sensibilidade}
+\NormalTok{verdadeiros\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"1"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{falsos\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"0"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{sensibilidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_positivos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_positivos }\SpecialCharTok{+}\NormalTok{ falsos\_negativos)}
+
+\CommentTok{\# Exibir a sensibilidade}
+\NormalTok{sensibilidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0
+\end{verbatim}
+
+\subsection{Perguta 10 - ERRO}\label{perguta-10---erro}
+
+Com base na amostra de validação, a especificidade estimada do modelo,
+ao classificar como tumor maligno as observações com probabilidade
+estimada maior que 0.50, e como tumor benigno as observações com
+probabilidade estimada menor que 0.50, é igual a:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Criar a matriz de confusão (caso ainda não tenha feito)}
+\NormalTok{tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ predicoes, }\AttributeTok{Real =}\NormalTok{ validacao}\SpecialCharTok{$}\NormalTok{Class)}
+
+\CommentTok{\# Exibir a matriz de confusão}
+\FunctionTok{print}\NormalTok{(tabela\_confusao)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##        Real
+## Predito   1   0
+##       0 141   4
+##       1   0  36
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular a especificidade}
+\NormalTok{verdadeiros\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"0"}\NormalTok{, }\StringTok{"0"}\NormalTok{]  }\CommentTok{\# Tumores benignos corretamente classificados}
+\NormalTok{falsos\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{]       }\CommentTok{\# Tumores benignos que foram classificados como malignos}
+\NormalTok{especificidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_negativos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_negativos }\SpecialCharTok{+}\NormalTok{ falsos\_positivos)}
+
+\CommentTok{\# Exibir a especificidade}
+\NormalTok{especificidade}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1
+\end{verbatim}
+
+\subsection{Perguta 11}\label{perguta-11}
+
+Com base na amostra de validação, a área sob a curva ROC produzida pelo
+modelo é igual a
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Calcular a curva ROC e a AUC}
+\NormalTok{roc\_curve }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(validacao}\SpecialCharTok{$}\NormalTok{Class, prob\_validacao)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Setting levels: control = 1, case = 0
+\end{verbatim}
+
+\begin{verbatim}
+## Setting direction: controls < cases
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Exibir a AUC}
+\NormalTok{area\_auc }\OtherTok{\textless{}{-}} \FunctionTok{auc}\NormalTok{(roc\_curve)}
+\FunctionTok{print}\NormalTok{(area\_auc)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Area under the curve: 0.9928
+\end{verbatim}
+
+\subsection{Perguta 12}\label{perguta-12}
+
+Com base na amostra de validação, e usando o método de Youden, a regra
+de classificação ótima ao se considerar as informações fornecidas na
+sequência consiste em classificar um tumor como maligno caso a
+probabilidade estimada seja superior a K.
+
+\begin{itemize}
+\tightlist
+\item
+  Prevalência de tumor maligno igual a 0.20;
+\item
+  Custo de classificar um tumor positivo como negativo é três vezes o
+  custo de classificar um tumor negativo como positivo.
+\end{itemize}
+
+Qual o valor de K?
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Suponha que você tenha a matriz de confusão com base em um modelo existente}
+\CommentTok{\# A prevalência é 0.20}
+\NormalTok{prevalencia }\OtherTok{\textless{}{-}} \FloatTok{0.20}
+\NormalTok{custo\_positivo }\OtherTok{\textless{}{-}} \DecValTok{3}
+\NormalTok{custo\_negativo }\OtherTok{\textless{}{-}} \DecValTok{1}
+
+\CommentTok{\# Cálculo do custo total para cada ponto de corte possível}
+\NormalTok{pontos\_de\_corte }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{by =} \FloatTok{0.01}\NormalTok{)}
+\NormalTok{custos\_totais }\OtherTok{\textless{}{-}} \FunctionTok{numeric}\NormalTok{(}\FunctionTok{length}\NormalTok{(pontos\_de\_corte))}
+
+\ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \FunctionTok{seq\_along}\NormalTok{(pontos\_de\_corte)) \{}
+\NormalTok{  k }\OtherTok{\textless{}{-}}\NormalTok{ pontos\_de\_corte[i]}
+  
+  \CommentTok{\# Calcule as previsões de acordo com o ponto de corte}
+\NormalTok{  predicoes }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(prob\_validacao }\SpecialCharTok{\textgreater{}}\NormalTok{ k, }\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{)}
+  
+  \CommentTok{\# Crie a matriz de confusão}
+\NormalTok{  tabela\_confusao }\OtherTok{\textless{}{-}} \FunctionTok{table}\NormalTok{(}\AttributeTok{Predito =}\NormalTok{ predicoes, }\AttributeTok{Real =}\NormalTok{ validacao}\SpecialCharTok{$}\NormalTok{Class)}
+  
+  \CommentTok{\# Calcule a sensibilidade e a especificidade}
+  \ControlFlowTok{if}\NormalTok{ (}\StringTok{"1"} \SpecialCharTok{\%in\%} \FunctionTok{rownames}\NormalTok{(tabela\_confusao) }\SpecialCharTok{\&\&} \StringTok{"0"} \SpecialCharTok{\%in\%} \FunctionTok{rownames}\NormalTok{(tabela\_confusao)) \{}
+\NormalTok{    verdadeiros\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"1"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{    falsos\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"0"}\NormalTok{, }\StringTok{"1"}\NormalTok{]}
+\NormalTok{    verdadeiros\_negativos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"0"}\NormalTok{, }\StringTok{"0"}\NormalTok{]}
+\NormalTok{    falsos\_positivos }\OtherTok{\textless{}{-}}\NormalTok{ tabela\_confusao[}\StringTok{"1"}\NormalTok{, }\StringTok{"0"}\NormalTok{]}
+
+\NormalTok{    sensibilidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_positivos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_positivos }\SpecialCharTok{+}\NormalTok{ falsos\_negativos)}
+\NormalTok{    especificidade }\OtherTok{\textless{}{-}}\NormalTok{ verdadeiros\_negativos }\SpecialCharTok{/}\NormalTok{ (verdadeiros\_negativos }\SpecialCharTok{+}\NormalTok{ falsos\_positivos)}
+\NormalTok{  \} }\ControlFlowTok{else}\NormalTok{ \{}
+\NormalTok{    sensibilidade }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{    especificidade }\OtherTok{\textless{}{-}} \DecValTok{0}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Calcule o custo total para o ponto de corte}
+\NormalTok{  custo\_total }\OtherTok{\textless{}{-}}\NormalTok{ custo\_positivo }\SpecialCharTok{*}\NormalTok{ (falsos\_negativos }\SpecialCharTok{/}\NormalTok{ (falsos\_negativos }\SpecialCharTok{+}\NormalTok{ verdadeiros\_positivos)) }\SpecialCharTok{+}
+\NormalTok{                 custo\_negativo }\SpecialCharTok{*}\NormalTok{ (falsos\_positivos }\SpecialCharTok{/}\NormalTok{ (falsos\_positivos }\SpecialCharTok{+}\NormalTok{ verdadeiros\_negativos))}
+\NormalTok{  custos\_totais[i] }\OtherTok{\textless{}{-}}\NormalTok{ custo\_total}
+\NormalTok{\}}
+
+\CommentTok{\# Encontre o ponto de corte que minimiza o custo total}
+\NormalTok{indice\_otimo }\OtherTok{\textless{}{-}} \FunctionTok{which.min}\NormalTok{(custos\_totais)}
+\NormalTok{k\_otimo }\OtherTok{\textless{}{-}}\NormalTok{ pontos\_de\_corte[indice\_otimo]}
+
+\CommentTok{\# Exibir o valor de K}
+\FunctionTok{print}\NormalTok{(k\_otimo)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Supondo que r1 é um objeto de curva ROC criado anteriormente, e \textquotesingle{}validacao$Class\textquotesingle{} e \textquotesingle{}prob\_validacao\textquotesingle{} são os dados de validação e as probabilidades estimadas}
+\CommentTok{\# Exemplo de ajuste do modelo e cálculo da curva ROC}
+
+\NormalTok{best\_coords\_equal\_cost }\OtherTok{\textless{}{-}} \FunctionTok{coords}\NormalTok{(roc\_curve, }\AttributeTok{x =} \StringTok{"best"}\NormalTok{, }\AttributeTok{best.method =} \StringTok{"youden"}\NormalTok{)}
+\FunctionTok{print}\NormalTok{(best\_coords\_equal\_cost)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   threshold specificity sensitivity
+## 1 0.1194988    0.964539       0.975
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Custos do falso negativo são 3 vezes o do falso positivo}
+
+\NormalTok{r2 }\OtherTok{\textless{}{-}} \FunctionTok{roc}\NormalTok{(validacao}\SpecialCharTok{$}\NormalTok{Class, prob\_validacao)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Setting levels: control = 1, case = 0
+\end{verbatim}
+
+\begin{verbatim}
+## Setting direction: controls < cases
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Encontrar as coordenadas para a classificação ótima usando o método de Youden}
+\NormalTok{best\_coords\_equal\_cost }\OtherTok{\textless{}{-}} \FunctionTok{coords}\NormalTok{(r2, }\AttributeTok{x =} \StringTok{"best"}\NormalTok{, }\AttributeTok{best.method =} \StringTok{"youden"}\NormalTok{, }\AttributeTok{best.weights =} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, (}\DecValTok{1}\SpecialCharTok{/}\DecValTok{3}\NormalTok{)))}
+\FunctionTok{print}\NormalTok{(best\_coords\_equal\_cost)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   threshold specificity sensitivity
+## 1 0.2533834   0.9787234        0.95
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Custos do falso negativo são 3 vezes o do falso positivo}
+
+\CommentTok{\# Cálculo dos escores de crédito}
+\NormalTok{cred\_escores }\OtherTok{\textless{}{-}} \DecValTok{100} \SpecialCharTok{*}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ prob\_validacao)  }\CommentTok{\# Assumindo que prob\_validacao contém as probabilidades de um evento (ex: pagar)}
+\FunctionTok{head}\NormalTok{(cred\_escores, }\DecValTok{20}\NormalTok{)  }\CommentTok{\# Exibir os primeiros 20 escores de crédito}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##         501         502         503         504         505         506 
+## 99.86839922 99.86839922 98.71875089  5.97058237 99.86839922 98.12424805 
+##         507         508         509         510         511         512 
+##  0.43178442  0.01282205 99.22228811 98.71875089 98.12424805 98.12424805 
+##         513         514         515         516         517         518 
+## 84.15529815 98.12424805  0.43580025 98.12424805 99.86839922 99.22228811 
+##         519         520 
+## 99.67964874 99.78227505
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Histograma dos escores de crédito}
+\FunctionTok{hist}\NormalTok{(cred\_escores, }\AttributeTok{main =} \StringTok{\textquotesingle{}Distribuição dos Escores de Crédito\textquotesingle{}}\NormalTok{, }\AttributeTok{xlab =} \StringTok{\textquotesingle{}Escore de Crédito\textquotesingle{}}\NormalTok{, }\AttributeTok{ylab =} \StringTok{\textquotesingle{}Frequência\textquotesingle{}}\NormalTok{, }\AttributeTok{col =} \StringTok{\textquotesingle{}lightblue\textquotesingle{}}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Avaliacoes_ME_2_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\end{document}
