@@ -1,0 +1,499 @@
+---
+title: "Aprendizagem_de_Maquina-2024-08-09"
+author: "Helena R. S. D'Espindula"
+date: "2024-10-25"
+output:
+  pdf_document:
+    toc: true
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# Aprendizagem de Máquina: Seleção de Atributos e Interpretabilidade
+
+## Introdução
+
+- Um dos principais aspectos na construção de um bom classificador é a utilização de características discriminantes.
+- Não é difícil encontrar situações nas quais centenas de características são utilizadas para alimentar um classificador.
+- A adição de uma nova característica não significa necessariamente um bom classificador.
+- Depois de um certo ponto, adicionar novas características pode piorar o desempenho do classificador.
+- Outro aspecto importante consiste em entender a contribuição de cada característica
+- Aspectos diretamente relacionados com a escolha das características:
+  - Desempenho
+  - Tempo de aprendizagem
+  - Tamanho da base de dados
+- Seleção de características
+  - Tarefa de identificar e selecionar um subconjunto de características relevantes para um determinado problema, a partir de um conjunto inicial
+    - Características relevantes, correlacionadas, ou mesmo irrelevantes
+- Não é um problema trivial
+  - Em problemas reais, características discriminantes não são conhecidas a priori.
+  - Características raramente são totalmente independentes.
+  - Duas características irrelevantes, quando unidas pode formar uma nova característica relevante e com bom pode de discriminação
+
+## Objetivos
+
+- Encontrar um subconjunto que pode ser:
+  - Ideal: O menor subconjunto necessário e suficiente para resolver um dado problema
+    - Para buscar o menor na força bruta é $2^n$, ou seja, para 100 caracteristicas $2^{100}$
+  - Clássico: Selecionar um subconjunto de M características a partir de N características, na qual M < N, de maneira a minimizar uma dada função objetivo.
+  - Melhor desempenho: Buscar um subconjunto que melhore o desempenho de um dado classificador.
+  
+
+## Visão Geral
+
+- Um método de seleção de características deve utilizar um método de busca para encontrar um subconjunto M a partir de N características
+  - Espaço de busca é 2N
+- Para cada solução encontrada nessa busca, uma avaliação se faz necessária.
+- Critério de parada
+- Validação
+
+[[Imagem]]
+
+
+## Gerando subconjuntos candidatos
+
+- Existem diferentes abordagens que podem ser usadas para gerar os subconjuntos
+  - Exaustiva (força bruta)
+    - Explora todas as possíveis combinações do espaço de busca ($2^N$)
+    - Garante que o subconjunto ótimo será encontrado.
+    - Custo computacional elevado e inviável quando o espaço de busca é grande.
+  - Heurísticas - só avalia uma variavel de cada vez, não considera o impacto do conjunto
+    - Forward Selection
+    - Backward Elimination
+  - Computação evolutiva
+    - Algoritmos Genéticos
+    - Particle Swarm Optimization
+
+
+## Funções de Avaliação
+
+- Para julgar se um dado subconjunto é ótimo, temos que avaliar o mesmo.
+- As funções de avaliação podem ser divididas em:
+  - Filter: Independentes do algoritmo de aprendizagem.
+  - Wrapper: Dependente do algoritmo de aprendizagem.
+  - Embedded: Usa algoritmos capazes de avaliar o poder de discriminação de características.
+
+
+## Métodos 
+
+### Filter
+
+- Geralmente usados como uma passo de pré-processamento
+- Independente de qualquer algoritmos de aprendizagem
+- Importância das características são medidas através de diversos testes estatísticos, por exemplo, características com pouca variância.
+- Sklearn implementa alguns desses métodos na classe "feature_selection"
+
+
+### Wrapper
+
+- Em geral produz melhores resultados do que métodos filter
+- Custo computacional mais alto
+- É importante ter em mente que o processo de seleção de características deve ser visto como um processo de aprendizagem
+- Sendo assim, é importante utilizar *uma base de validação* para evitar over-fitting.
+- Não usar a base teste!
+- Quando possível utilize uma base diferente de todas para calcular a função de avaliação
+- Devido ao poder de explorar grandes espaços de busca, algoritmos genéticos tem sido largamente utilizados em problemas de seleção de características
+- Um objetivo (desempenho ou um índice qualquer)
+- Múltiplos objetivos (quantidade de características, desempenho, etc..)
+
+
+### Embedded
+
+- Combina as qualidades as abordagens filter e wrapper.
+- Utiliza algoritmos de aprendizagem que tem a capacidade de avaliar características, como por exemplo, árvores de decisão
+
+
+## Análise de Componentes Principais (PCA)
+
+- *Não seleciona atributos. Faz redução de dimencionalidade.*
+- Uma ferramenta que pode ser utilizada para redução de dimensionalidade
+- A idéia é aplicar PCA na base de aprendizagem e encontrar os principais autovetores da base.
+- Abordagem filter, visto que o algoritmo de aprendizagem não é utilizado.
+- Note que após o PCA, os dados se encontram em um novo espaço de representação.
+- Apesar de uma possível redução, todas as características devem continuar sendo extraídas.
+- O custo da extração de características não é alterado (somente o custo do algoritmo de aprendizagem)
+
+## Como interpretar as características?
+
+- Capacidade de entender e explicar como um modelo toma suas decisões ou faz previsões
+- É um aspecto crucial para garantir a confiança, a transparência e a responsabilidade nos sistemas de aprendizado de máquina
+  - Especialmente em aplicações críticas como medicina, finanças e justiça.
+- Métodos Intrínsecos
+  - Árvores de decisão: Cada decisão é baseada em uma série de regras simples e claras.
+  - Regressão Linear/Logística: As relações entre as variáveis são representadas por coeficientes que indicam a importância de cada característica.
+- Métodos Pós-Hoc
+  - SHAP (SHapley Additive exPlanations): Usa valores de Shapley para explicar as
+contribuições de cada característica em uma predição.
+  - LIME (Local Interpretable Model-agnostic Explanations): Cria explicações locais
+aproximando o comportamento do modelo complexo com um modelo interpretable simples
+
+
+## SHAP Values
+
+- Os valores de Shapley, originados da teoria dos jogos, são usados para atribuir importância às contribuições de cada característica (ou variável) em um modelo de aprendizado de máquina.
+- Eles fornecem uma forma justa de atribuir crédito a cada característica com base em seu impacto no resultado do modelo.
+- Para calcular os valores de Shapley de uma característica específica, são consideradas todas as possíveis combinações das características. Isso é muito caro computacionalmente.
+- Uma aproximação que torna o cálculo mais viável é o SHAP (SHapley Additive exPlanations)
+
+
+## Representações Gráficas
+
+### Waterfall
+
+- Esse gráfico mostra os valores SHAP para uma dada observação da base de dados.
+- E [f (x)] = 9.933 é o valor médio das predições do modelo para toda base.
+- f (x) = 13.043 é a predição para um dado exemplo
+- Os valores SHAP mostram quanto cada característica contribui
+  - 13.043 - 9.933 = 3.11
+  - 1.68+0.98-0.85+0.78+0.42+0.22-0.09-0.03 = 3.11
+
+
+### Force Plot
+
+- Esse gráfico pode ser visto como o gráfico anterior condensado.
+- Começando no valor base (9.933), é possível visualizar o quanto cada característica
+contribui para a valor final de predição (13.04)
+
+
+### Stacked Force Plot
+
+- Os dois gráficos anteriores são usados para analizar uma predição.
+- O Stacked Force Plot combina vários Force Plot
+  - Gráfico interativo (é possível escolher a variável de interesse
+
+### Stacked Force Plot
+
+- No exemplo abaixo a variável “shell weight” foi escolhida
+- Nesse caso, pode-se observar que valores maiores dessa variável aumentam os Shap Values
+
+
+### Mean Shap
+
+- Mostra as características mais importantes.
+- O valor médio de todas as observações é utilizado.
+- Características com maiores contribuições (positiva/negativa) apresentam maiores valores médios.
+- Muito útil para aqueles modelos que não possuem o atributo de “feature_importance”, por exemplo, SVM.
+
+
+### BeeSwarm
+
+- Mostra todos os SHAP Values
+- No eixo y , os valores são agrupados por característica. Para cada grupo, a cor dos pontos é determinado pelo valor da característica (vermelho → maior)
+- Impacto na predição
+  - Por exemplo, valores maiores para “shell weight” tem um valor maior na predição. O contrário é observado para “shucked weight”
+
+
+## Local Interpretable Model-agnostic Explanations (LIME)
+
+- Explica uma instância especifica dos dados.
+- Para isso, cria um conjunto de dados artificiais ao perturbar a instância original.
+  - Isso é feito gerando variações da entrada e obtendo as previsões do modelo para essas variações.
+- Com base nas previsões do modelo para os dados perturbados, o LIME ajusta um modelo interpretable e simples, como uma regressão linear, que se aproxima das previsões do modelo complexo para a instância específica.
+- O modelo simples fornece uma explicação mais fácil de entender sobre como as características da instância influenciam a previsão do modelo complexo.
+- Perturbação em variáveis categóricas é mais desafiador.
+  - Perturbar variáveis categóricas requer substituir categorias por outras categorias válidas, o que é diferente de perturbar variáveis numéricas onde podemos adicionar ou subtrair valores contínuos.
+- Uma alternativa é usar a codificação one-hot. Nesse caso, as perturbações são feitas em variáveis binárias.
+
+# Foundation Models
+
+## Deep Learning
+
+- Subárea da IA que utiliza redes neurais profundas para aprender a partir de grandes
+volumes de dados.
+- O que é uma rede neural?
+  - Modelo computacional inspirado no funcionamento do cérebro humano.
+  - Composta por um conjunto interconectado de unidades de processamento chamados neurônios artificiais.
+Perceptron (F. Rosenblatt, 1959): Rede neural de uma camada capaz de resolver problemas linearmente separáveis.
+
+Problema Linearmente Separável
+
+## Multi-Layer Perceptron
+
+Backpropagation (D. Rumelhart, G. Hinton, R. Williams, 1986 - Learning Representations by back-propagating errors): Uso do algoritmo de retro-propagação de erros para treinar redes neurais.
+
+- Mais camadas (extratores de características) → Mais parâmetros → Mais dados de
+treinamento.
+
+
+## Redes Neurais Recorrentes (RNN)
+
+- Propostas na década de 90.
+- Redes capazes de modelar dependências temporais.
+  - (Hochreiter & Schmidhuber, 1997) LSTM - Long Short Term Memory.
+  - (Cho et al, 2014) GRU - Gated Recurrent Unit.
+- Utilizadas largamente em problemas de Processamento de Linguagem Natural.
+- Dificuldades no treinamento e manuseio de sequências longas e em capturar contexto não sequenciais.
+
+
+## Redes Neurais Convolucionais (CNN)
+- (K. Fukushima, 1980) Neocognitron.
+  - Arquitetura inspirada no processamento visual do cérebro
+- (Y. LeCun & Y. Bengio, 1998) LeNet 51
+  - Aplicada com sucesso no reconhecimento de caracteres manuscritos.
+  - Dificuldade no treinamento em função da grande quantidade de parâmetros (cerca de 60k)
+- (A. Krizhevsky & G. Hinton, 2012) ImageNet (60 milhões de parâmetros)
+  - Uso de GPU para treinar CNN
+
+1.Gradient-based learning applied to document recognition, Procs IEEE, 1998
+
+
+## IA Generativa
+
+- CNNs são em geral modelos discriminativos, ou seja, usados para classificação e predição.
+- Outro tipo de redes neurais profundas que ganharam bastante atenção nos últimos anos são as redes generativas, entre elas as GANs ((I. Goodfellow, 2014) Generative Adversarial Networks).
+- Compostas por um gerador e um discriminador
+  - O gerador cria exemplos sintéticos e o discriminador avalia a autenticidade desses exemplos.
+  - O objetivo é treinar o gerador para enganar o discriminador, gerando dados cada vez mais realistas.
+
+- Dado o sucesso das GANs em diversas aplicações, a aplicação desta arquitetura para
+geração de texto começou a ganhar mais atenção a partir de 2016.
+  - Geração de sequências de palavras.
+  - Diálogos e resumos de texto.
+  - Geração de código
+
+- Dado o sucesso das GANs em diversas aplicações, a aplicação desta arquitetura para geração de texto começou a ganhar mais atenção a partir de 2016.
+  - Geração de sequências de palavras.
+  - Diálogos e resumos de texto.
+  - Geração de código.
+- Dificuldade de avaliação objetiva
+  - Ao contrário de tarefas de geração de imagem, onde a qualidade visual pode ser avaliada com relativa facilidade, avaliar a qualidade do texto gerado é uma tarefa mais complexa.
+  - As GANs podem enfrentar dificuldades em aprender essas estruturas complexas, resultando em textos que são gramaticalmente incorretos, incoerentes ou difíceis de interpretar.
+
+
+## Transformers
+
+- Arquitetura proposta em 2017 por pesquisadores do Google
+- A ideia principal foi a introdução de um mecanismo de atenção (self-atention)
+- Selecionar quais partes do texto devem ser utilizada ao invés de usar todo o texto.
+
+Vantagens:
+- Mecanismo de atenção permite que cada elemento de uma sequência se relacione com todos os outros elementos, independente da distância.
+- Processamento paralelo pois cada elemento pode ser processado independentemente. Não precisa de uma ordem sequêncial como uma RNN, por exemplo.
+- Aprende representações contextuais das palavras em uma sequência.
+- Capturar contexto em textos longos.
+- Adequados para transferência de aprendizado (transfer learning). Podem ser pré-treinados em grandes conjuntos de dados não rotulados, e em seguida, adaptados para tarefas especificas.
+- Dominou a área de PLN em pouco tempo
+
+
+## Foundation Models
+
+- Modelo treinado em grande volume de dados que pode ser adaptado para uma ampla gama de tarefas (transfer learning).
+- Transfer learning é a base para esses modelos.
+- Aprendizagem usando dados não rotulados, evitando assim o custo de rotulação.
+- Reuso de modelos.
+
+- Escala é o que os torna poderosos.
+  - GPU
+  - Transformers (paralelismo)
+
+Muitas habilidades dos modelos emergem somente quando os modelos atingem um certo
+tamanho. https://arxiv.org/abs/2206.07682
+
+
+### Estratégias de Aprendizagem de Máquina
+
+Clássica:
+- Definição das características
+- Definição do algoritmo aprendizagem
+- Treinamento do modelo
+
+Aprendizagem Profunda:
+- Definição da arquitetura profunda (RNN, CNN, etc...)
+- Treinamento do modelo
+
+Modelos pré-treinados:
+- Fine-tuning.
+- Não envolve definição de arquitetura
+
+## Foundation models (LLM):
+
+- Zero-shot learning:
+  - Modelo que é capaz de classificar novos exemplos de classes desconhecidas, ou seja que não foram vistas durante o treinamento.
+  - Zero-shot learning usando Mask2Former (Swin backbone). https://huggingface.co/facebook/mask2former-swin-large-cityscapes-semantic
+  
+- Few-show learning:
+  - O modelo recebe alguns exemplos sobre o problema, para então inferir sobre o problema.
+  - Pesos do modelo não são atualizados.
+  
+- In-context learning:
+  - A ideia nesse caso é fazer o modelo aprender por analogia.
+  - Mostrar ao modelo as etapas (passo a passo) usadas para se chegar a uma determinada resposta.
+    - Chain-of-thought
+
+[[Evolução do número de artigos na literatura usando esses paradigmas]]
+
+
+## Foundation Models
+
+- Essas estratégias são importante pois:
+  - Permitem aplicar os modelos a novas tarefas sem coletar dados adicionais,
+  - Sem a necessidade de um treinamento adicional (fine-tunning).
+- Reduz a quantidade de esforço necessário para construir uma aplicação
+- Mudança de paradigma
+  - Aproxima o desenvolvedor do usuário de aprendizagem de máquina.
+- Adaptar tarefas ao modelo e não modelos as tarefas
+
+Evolução no desempenho dos modelos de linguagem
+- Tamanho
+- Treinamento dos modelos com texto e código
+  - Aparentemente faz com que os modelos aprendam como identificar a estrutura do texto.
+- Treinamento com dados anotados por humanos8
+- Muita pesquisa em curso sobre como melhor treinar esses modelos.
+Foundation Models
+Evolução no desempenho dos modelos de linguagem
+Tamanho
+Treinamento dos modelos com texto e código
+▶ Aparentemente faz com que os modelos aprendam como identificar a estrutura do texto.
+Treinamento com dados anotados por humanos. <https://arxiv.org/pdf/2109.01652.pdf>
+Muita pesquisa em curso sobre como melhor treinar esses modelos.
+
+
+
+Benchmarks
+
+- A velocidade da inovação está tornando benchmarks obsoletos rapidamente. <https://aclanthology.org/2021.naacl-main.324.pdf>
+- Apensa 66% dos benchmarks receberam mais de 3 resultados. <https://arxiv.org/pdf/2203.04592.pdf>
+- Muitos deles são saturados logo após o lançamento.
+
+
+- Interpretabilidade
+  - Redes neurais são frequentemente descritas como “caixas pretas”.
+  - Os humanos que os usam podem nunca entender como os modelos chegam a suas previsões ou recomendações.
+  - Isso pode tornar difícil para as empresas explicar ou justificar suas decisões aos clientes ou reguladores
+
+- Segurança e Privacidade
+  - Exigem acesso a dados confidenciais, como informações de clientes ou dados comerciais proprietários.
+  - Isso pode gerar preocupações sobre privacidade e segurança, principalmente se o modelo for implantado na nuvem ou acessado por provedores terceirizados.
+
+## Desafios para Adoção em Empresas
+
+- Aspectos legais:
+  - Os modelos são treinados em uma enorme quantidade de dados da natureza, e nem todos esses dados se alinharão aos valores do seu negócio.
+  - O uso desses modelos pode levantar considerações legais e éticas relacionadas a preconceito, discriminação e outros danos potenciais.
+- Múltiplas fontes de informação → Modelo Multimodal
+
+
+## Preocupações
+
+- Concentração de poder
+  - Somente grandes empresas, ou start-ups (com grande investimento, e.g., OpenAI) com recursos disponíveis para treinar esse modelos.
+  - Como o desempenho dos modelos tem alta correlação com a escala, isso levanta preocupações sobre concentração de mercado.
+- Algumas alternativa para modelos aberto:
+  - Huggingface. <https://huggingface.co>
+  - Masakhane (African Languages). <https://www.masakhane.io>
+  - Eleuther.ai <https://www.eleuther.ai>
+  - BLOOM (Open LLM - 176 bilhões de parâmetros - BigScience - CNRS,GENCI)
+  - Ollama <https://ollama.com>
+
+
+## Em resumo...
+
+- Enorme potencial, mas ainda estamos no começo.
+- Apesar de sua implantação no mundo real, esses modelos são protótipos de pesquisa e pouco compreendidos.
+- Coloca novos desafios na área da educação.
+- Passo para trás em reprodutibilidade
+  - Iniciativas de disponibilizar dados e código (PyTorch, TensorFlow) com a “onda” da aprendizagem profunda não acontece mais.
+  - Em muitos casos somente uma API é disponibilizada.
+- Preocupação da academia nos rumos da pesquisa liderada exclusivamente pelas grandes corporações.
+
+# Links
+
+<https://scikit-learn.org/1.5/modules/feature_selection.html>
+<https://www.datacamp.com/pt/tutorial/introduction-t-sn>
+<https://github.com/lesoliveira/XAI/blob/main/SHAP-LIME.ipynb>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
