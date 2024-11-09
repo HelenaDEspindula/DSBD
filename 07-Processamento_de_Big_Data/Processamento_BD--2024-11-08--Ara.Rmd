@@ -1,0 +1,319 @@
+---
+title: "Processamento_BD--2024-11-08--Ara"
+author: "Helena"
+date: "2024-11-08"
+output:
+  html_document:
+    toc: true
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
+      number_sections: true
+---
+
+Prof Anderson Ara
+<http://leg.ufpr.br/~ara/>
+
+
+```{r setup, include=TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+
+require(kernlab)
+require(randomForest)
+require(dplyr)
+require(gt)
+```
+
+# Dia 08 de Setembro de 2024
+
+Pense sobre: Como usar a apralelização para seleção de variaveis e validação para Florestas Aleatórias!
+
+```{r, cache=TRUE}
+library(kernlab)
+library(randomForest)
+library(dplyr)
+
+data(spam)
+## View(spam)
+
+
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+mod.rf <- randomForest(type~., 
+                       data=spam,
+                       ntree=500,
+                       mtry=mtry1,
+                       importance=TRUE)
+  
+importance(mod.rf) ## %>% View
+varImpPlot(mod.rf)
+```
+
+
+```{r, cache=TRUE}
+
+### Separar: Treinamento/Validação (-> Estimações) // Teste
+
+n <- nrow(spam)
+set.seed(123)
+l=sample(1:n, n*0.7)
+
+dados.trein <- spam[l,] ## AMOSTRA TESTE NÃO PODE SER USADA AQUI!
+
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+mod.rf <- randomForest(type~., 
+                       data=dados.trein,
+                       ntree=500,
+                       mtry=mtry1,
+                       importance=TRUE)
+  
+importance(mod.rf) %>% View
+varImpPlot(mod.rf)
+```
+
+
+
+```{r, cache=TRUE}
+
+### Separar: Treinamento/Validação (-> Estimações) // Teste
+
+n <- nrow(spam)
+set.seed(123)
+l=sample(1:n, n*0.8)
+
+dados.treinT <- spam[l,] ## AMOSTRA TESTE NÃO PODE SER USADA AQUI!
+nt <- nrow(dados.treinT)
+l2=sample(1:nt, nt*0.8)
+dados.trein <- dados.treinT[ l2, ]
+dados.valid <- dados.treinT[-l2, ]
+dados.teste <- spam[-l,]
+
+nrow(dados.trein)/n
+nrow(dados.valid)/n
+nrow(dados.teste)/n
+
+
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+mod.rf <- randomForest(type~., 
+                       data=dados.trein,
+                       ntree=500,
+                       mtry=mtry1,
+                       importance=TRUE)
+  
+importance(mod.rf) ## %>% View
+varImpPlot(mod.rf)
+```
+
+
+
+```{r, cache=TRUE}
+
+library(gt)
+
+### Separar: Treinamento/Validação (-> Estimações) // Teste
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+n <- nrow(spam)
+
+set.seed(123)
+l=sample(1:n, n*0.8)
+
+dados.treinT <- spam[l,] ## AMOSTRA TESTE NÃO PODE SER USADA AQUI!
+dados.teste <- spam[-l,]
+
+nt <- nrow(dados.treinT)
+
+## VARIAÇÃO A PARTIR DAQUI
+
+importancias <- list()
+mod.rf_list <- list()
+
+for (i in 1:10) {
+  
+  l2=sample(1:nt, nt*0.9)
+  dados.trein <- dados.treinT[ l2, ]
+  dados.valid <- dados.treinT[-l2, ]
+  
+  # nrow(dados.trein)/n
+  # nrow(dados.valid)/n
+  # nrow(dados.teste)/n
+  
+  mod.rf <- randomForest(type~., 
+                         data=dados.trein,
+                         ntree=500,
+                         mtry=7,
+                         importance=TRUE)
+  
+  mod.rf_list[[i]] <- mod.rf
+  importancias[[i]] <- importance(mod.rf)
+  cat("int", i, "\n")
+  
+}
+
+varImpPlot(mod.rf_list[[1]])
+
+teste1 <- as.data.frame(do.call(cbind, lapply(importancias, function(x){x[,3]})))
+teste1 <- t(teste1)
+
+medias <- as.data.frame(sort(colMeans(teste1, na.rm = TRUE), decreasing = TRUE))
+medias
+
+#plot(medias)
+
+
+
+
+
+```
+
+
+
+```{r, cache=TRUE}
+
+library(gt)
+
+### Separar: Treinamento/Validação (-> Estimações) // Teste
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+n <- nrow(spam)
+
+set.seed(123)
+l=sample(1:n, n*0.8)
+
+dados.treinT <- spam[l,] ## AMOSTRA TESTE NÃO PODE SER USADA AQUI!
+dados.teste <- spam[-l,]
+
+REP <- 100
+nt <- nrow(dados.treinT)
+
+## VARIAÇÃO A PARTIR DAQUI
+
+importancias <- list()
+mod.rf_list <- list()
+
+system.time({
+  for (i in 1:REP) {
+    
+    l2=sample(1:nt, nt*0.9)
+    dados.trein <- dados.treinT[ l2, ]
+    dados.valid <- dados.treinT[-l2, ]
+    
+    # nrow(dados.trein)/n
+    # nrow(dados.valid)/n
+    # nrow(dados.teste)/n
+    
+    mod.rf <- randomForest(type~., 
+                           data=dados.trein,
+                           ntree=500,
+                           mtry=7,
+                           importance=TRUE)
+    
+    mod.rf_list[[i]] <- mod.rf
+    importancias[[i]] <- importance(mod.rf)
+    cat("int", i, "\n")
+  }
+  ## contagem tempo
+})
+varImpPlot(mod.rf_list[[1]])
+
+teste1 <- as.data.frame(do.call(cbind, lapply(importancias, function(x){x[,3]})))
+teste1 <- t(teste1)
+
+medias <- as.data.frame(sort(colMeans(teste1, na.rm = TRUE), decreasing = TRUE))
+medias
+
+#plot(medias)
+
+
+```
+
+
+
+
+```{r, cache=TRUE}
+library(gt)
+require(parallel)
+require(doParallel)
+require(foreach)
+
+topVar <- function(dados.treinT){
+  l2=sample(1:nt, nt*0.9)
+  dados.trein <- dados.treinT[ l2, ]
+  dados.valid <- dados.treinT[-l2, ]
+  
+  mod.rf <- randomForest(type~., 
+                         data=dados.trein,
+                         ntree=500,
+                         mtry=mtry1,
+                         importance=TRUE)
+  resultado <- importance(mod.rf)[,3]
+  return(resultado)
+  
+  #importancias[[i]] <- importance(mod.rf)
+}
+
+### Separar: Treinamento/Validação (-> Estimações) // Teste
+mtry1 <- as.integer(sqrt(58))
+mtry1
+
+n <- nrow(spam)
+
+set.seed(123)
+l=sample(1:n, n*0.8)
+
+dados.treinT <- spam[l,] ## AMOSTRA TESTE NÃO PODE SER USADA AQUI!
+dados.teste <- spam[-l,]
+
+REP <- 100
+nt <- nrow(dados.treinT)
+
+importancias <- list()
+mod.rf_list <- list()
+
+
+### PARALELISMO ###
+
+cores_aqui <- detectCores()
+registerDoParallel(cores = cores_aqui-1)
+
+system.time({
+  IMPS <- 
+    foreach(i=1:REP,
+            .packages=c('randomForest'),
+            .combine='cbind') 
+  %dopar% {
+    cat("Int", i,"\n")
+    imps <- topVar(dados.treinT)
+    return(imps)
+  }
+  teste1 <- as.data.frame(IMPS)
+  teste1 <- t(teste1)
+  
+  medias <- as.data.frame(sort(colMeans(teste1, na.rm = TRUE), decreasing = TRUE))
+  medias
+  
+})
+stopImplicitCluster()
+
+
+# varImpPlot(mod.rf_list[[1]])
+# 
+# teste1 <- as.data.frame(do.call(cbind, lapply(importancias, function(x){x[,3]})))
+# teste1 <- t(teste1)
+# 
+# medias <- as.data.frame(sort(colMeans(teste1, na.rm = TRUE), decreasing = TRUE))
+# medias
+
+#plot(medias)
+
+
+```
+
+
