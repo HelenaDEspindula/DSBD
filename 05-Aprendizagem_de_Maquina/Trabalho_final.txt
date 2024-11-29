@@ -1,0 +1,8 @@
+Avaliação Geral: 30/11/2024 à 30/01/2025
+Trio (até 3 pessoas)
+
+- Banco de Dados de interesse (n>= 300.000, p>= 5)
+- Aplicar uma técnica de ML em uma amostra (n >= 5.000)
+- Aplicar a mesma técnica na base toda
+- Comparar os resultados
+- Apresentação de vídeos de até 10 minutos.
