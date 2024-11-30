@@ -1,0 +1,267 @@
+---
+title: "Untitled"
+author: "Helena"
+date: "2024-11-29"
+output: html_document
+---
+
+# Sparklyr
+
+```{r}
+install.packages("sparklyr")
+#install.packages("SparkR")
+#install.packages("dbplot")
+
+require(dbplot)
+require(ggplot2)
+
+library(sparklyr)
+
+#spark_install()
+
+sparklyr::spark_install_tar(tarfile = "~/Downloads/spark-3.5.3-bin-hadoop3.tgz")
+
+sc <- sparklyr::spark_connect(master = "local")
+
+```
+
+
+```{r}
+# Carregando sparklyr
+require(sparklyr)
+require(dplyr)
+
+# Conectando ao ambiente Spark cluster local
+sc <- sparklyr::spark_connect(master="local")
+# Verificando versão do Spark
+sparklyr::spark_version(sc)
+# Listando os conjuntos no ambiente Spark
+src_tbls(sc)
+
+#scr_databases(sc)
+# Copiando um dataset para o Spark
+# dataset_tbl <- copy_to(sc, dataset, overwrite = TRUE)
+
+# Desconectando do ambiente Spark
+spark_disconnect(sc)
+```
+
+
+Lista de trabalhos:
+<http://localhost:4040/jobs/>
+
+<https://www.kaggle.com/datasets/wordsforthewise/lending-club>
+
+```{r, eval=FALSE}
+#Leitura de diversos tipos de base de dados
+spark_read_csv()
+spark_read_parquet()
+spark_read_json()
+```
+
+```{r, cache=TRUE}
+# Carregando sparklyr
+require(sparklyr)
+require(dplyr)
+
+# Conectando ao ambiente Spark cluster local
+sc <- sparklyr::spark_connect(master="local")
+# Verificando versão do Spark
+sparklyr::spark_version(sc)
+
+#BASE DE ACEITOS
+spark_connection_is_open(sc)
+setwd("~/Downloads/")
+dados_ac <- spark_read_csv(sc, "ACEITOS", "accepted_2007_to_2018q4.csv",
+                           memory = FALSE, delim = ",",
+                           dec=".")
+
+src_tbls(sc)
+dados_ac %>% count()
+```
+
+
+```{r, cache=TRUE}
+#BASE DE REJEITADOS
+dados_rj <- spark_read_csv(sc, "REJEITADOS", "rejected_2007_to_2018q4.csv",
+                           memory = FALSE, delim = ",",
+                           dec=".")
+
+src_tbls(sc)
+dados_rj %>% count()
+```
+
+
+[Imagem: Captura de tela de 2024-11-29 20-35-08.png]
+
+
+```{r, cache=TRUE}
+dados_rj
+class(dados_rj)
+glimpse(dados_rj)
+
+n_rj <- dados_rj %>% count()
+n_rj+1
+
+n_rj <- dados_rj %>% count() %>% collect()
+n_rj+1
+
+dados_rj %>% colnames()
+
+dados_rj %>% sdf_ncol()
+
+dados_rj %>% summarise(m=mean(Amount_Requested))
+```
+
+
+```{r, cache=TRUE}
+
+```
+
+
+```{r, cache=TRUE}
+dados_rj %>%
+  dbplot::dbplot_histogram(Amount_Requested, bins = 10)
+```
+
+
+```{r, cache=TRUE}
+dados_rj %>% 
+  filter(Amount_Requested<10000) %>%
+  dbplot::dbplot_histogram(Amount_Requested, bins=10) + ## ver regra de Sutrges
+  labs(title = "Montante requerido até 10 mil") +
+  theme_bw()
+```
+
+
+```{r, cache=TRUE}
+dados_rj %>%
+  filter(Amount_Requested<5000) %>%
+  count()
+```
+
+
+```{r, cache=TRUE}
+glimpse(dados_ac)
+
+dados_ac %>% summarise(m.empr=mean(loan_amnt),
+                       m.taxa=mean(int_rate))
+
+
+dados_ac %>% select(loan_amnt, int_rate) %>% 
+  dbplot_raster(loan_amnt, int_rate) +
+  theme_bw()
+```
+
+```{r}
+paleta <- colorRampPalette(c("blue", "red", "green4", "gold"))(100)
+
+barplot(1:100, col = paleta, border = F)
+
+
+```
+
+
+
+```{r, cache=TRUE}
+
+
+dados_ac %>% select(loan_amnt, int_rate) %>% 
+  dbplot_raster(loan_amnt, int_rate) +
+  scale_fill_viridis_c() +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+
+```{r, cache=TRUE}
+dados_ac %>% select(loan_amnt, int_rate) %>% 
+  dbplot_raster(loan_amnt, int_rate) +
+  scale_fill_gradient2( low = "grey",
+                        mid = "white", ## pode botar cor hexad alternativamente
+                        high = "brown",
+                        midpoint = .1) +
+  theme_bw() +
+  theme(legend.position = "bottom")
+```
+
+
+```{r, cache=TRUE}
+require(ggplot2)
+
+amostra<- dados_ac %>% 
+  sample_n(3000) %>% 
+  collect()
+
+class(amostra)
+
+amostra %>% ggplot(aes(x=loan_amnt, y=int_rate))+
+  geom_point(alpha=0.15, col="tomato") +
+  theme_bw()
+
+```
+
+
+```{r, cache=TRUE}
+require(corrr)
+
+dados_ac %>% 
+  select(loan_amnt, int_rate, installment) %>%
+  na.omit() %>%
+  correlate()
+```
+
+
+```{r, cache=TRUE}
+#ml_kmeans()
+
+spark_disconnect(sc)
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+```{r, cache=TRUE}
+
+
+```
+
+
+
+
+
